@@ -3,8 +3,6 @@ let
   username = config.properties.user.name;
 in
 {
-  nixpkgs.config.allowUnfree = true;
-
   nixpkgs.config = {
     allowUnfree = true;
     allowedUsers = [ "@wheel" ];
