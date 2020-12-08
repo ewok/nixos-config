@@ -1,6 +1,7 @@
 { config, pkgs, ... }:
 let
   username = config.properties.user.name;
+  secrets = config.secrets;
 in
 {
   nixpkgs.config = {
