@@ -3,26 +3,12 @@ let
   secrets = config.secrets;
 in
 {
-  nixpkgs.config.allowUnfree = true;
-
   imports = [
     ./secrets.nix
+    ../common.nix
     ../../modules
     ./configuration.nix
   ];
-
-  home-manager = {
-    useGlobalPkgs = true;
-  };
-
-  properties.user = {
-    name = secrets.name;
-    email = secrets.email;
-  };
-
-  properties.device = {
-    name = secrets.deviceName;
-  };
 
   properties.timezone = "Europe/Moscow";
   time.timeZone = "Europe/Moscow";

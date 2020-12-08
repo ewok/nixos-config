@@ -1,13 +1,11 @@
 { config, pkgs, ... }:
 let
   deviceName = config.properties.device.name;
-  username = config.properties.user.name;
 in
 {
   imports =
     [
       ./hardware-configuration.nix
-      ../nixflake.nix
     ];
 
   boot.loader.systemd-boot.enable = true;
@@ -25,32 +23,19 @@ in
   services.blueman.enable = true;
 
   i18n.defaultLocale = "en_US.UTF-8";
+
   services.printing.enable = true;
+
   sound.enable = true;
   hardware.pulseaudio = {
     enable = true;
   };
-
-  users.users."${username}" = {
-    isNormalUser = true;
-    extraGroups = [ "wheel" ];
-  };
-
-  environment.systemPackages = with pkgs; [
-     git
-  ];
 
   powerManagement.enable = true;
   powerManagement.powertop.enable = true;
   services.tlp = {
     enable = true;
   };
-
-  services.openssh.enable = true;
-
-  users.defaultUserShell = pkgs.fish;
-
-  environment.pathsToLink = [ "/libexec" ];
 
   system.stateVersion = "20.09"; # Did you read the comment?
 }
