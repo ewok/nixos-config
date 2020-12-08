@@ -7,22 +7,19 @@ in
   imports =
     [
       ./hardware-configuration.nix
+      ../nixflake.nix
     ];
 
-  # Use the systemd-boot EFI boot loader.
-  boot.loader.systemd-boot.enable = true;
-  boot.loader.efi.canTouchEfiVariables = true;
+  boot.loader.grub.enable = true;
+  boot.loader.grub.version = 2;
+  boot.loader.grub.device = "/dev/vda";
 
   networking.hostName = "${deviceName}"; # Define your hostname.
 
   networking.networkmanager.enable = true;
 
-  # The global useDHCP flag is deprecated, therefore explicitly set to false here.
-  # Per-interface useDHCP will be mandatory in the future, so this generated config
-  # replicates the default behaviour.
   networking.useDHCP = false;
-  networking.interfaces.enp0s31f6.useDHCP = true;
-  networking.interfaces.wlp0s20f3.useDHCP = true;
+  networking.interfaces.enp1s0.useDHCP = true;
 
   i18n.defaultLocale = "en_US.UTF-8";
 
@@ -31,30 +28,11 @@ in
     extraGroups = [ "wheel" ];
   };
 
-  nixpkgs.config = {
-    allowUnfree = true;
-    allowedUsers = [ "@wheel" ];
-    trustedUsers = [ "@wheel" ];
-  };
-
   environment.systemPackages = with pkgs; [
      git
   ];
 
   services.openssh.enable = true;
-
   environment.pathsToLink = [ "/libexec" ];
-
-  nix.extraOptions = ''
-    keep-outputs = true
-    keep-derivations = true
-    experimental-features = nix-command flakes
-  '';
-
-  nix = {
-    package = pkgs.nixFlakes;
-  };
-
   system.stateVersion = "20.09"; # Did you read the comment?
 }
-

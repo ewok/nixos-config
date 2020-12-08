@@ -98,6 +98,8 @@ in
           git = "LANGUAGE=en_US.UTF-8 command git $argv";
           ll = "ls -la --color";
           ls = "ls -a --color";
+          kgpof = ''kubectl get pod --field-selector="status.phase==Failed"'';
+          krmpof = ''kubectl delete pod --field-selector="status.phase==Failed"'';
         };
       };
 

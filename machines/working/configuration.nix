@@ -7,6 +7,7 @@ in
   imports =
     [
       ./hardware-configuration.nix
+      ../nixflake.nix
     ];
 
   boot.loader.systemd-boot.enable = true;
@@ -35,12 +36,6 @@ in
     extraGroups = [ "wheel" ];
   };
 
-  nixpkgs.config = {
-    allowUnfree = true;
-    allowedUsers = [ "@wheel" ];
-    trustedUsers = [ "@wheel" ];
-  };
-
   environment.systemPackages = with pkgs; [
      git
   ];
@@ -56,16 +51,6 @@ in
   users.defaultUserShell = pkgs.fish;
 
   environment.pathsToLink = [ "/libexec" ];
-
-  nix.extraOptions = ''
-    keep-outputs = true
-    keep-derivations = true
-    experimental-features = nix-command flakes
-  '';
-
-  nix = {
-    package = pkgs.nixFlakes;
-  };
 
   system.stateVersion = "20.09"; # Did you read the comment?
 }
