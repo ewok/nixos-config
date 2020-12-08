@@ -1,0 +1,23 @@
+#!/bin/bash
+
+set -ex
+
+# PORT=$(shuf -i 31000-31999 | head -n 1 )
+PORT=31001
+
+kubectl port-forward -n argocd service/argocd-server $PORT:443 &
+PID=$!
+
+cleanup(){
+
+  echo "***Stopping"
+  kill -15 $PID
+  wait $PID
+}
+
+trap 'cleanup' 1 2 3 6 15
+
+sleep 3
+open "localhost:$PORT" &
+
+wait $PID

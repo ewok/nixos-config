@@ -1,0 +1,3 @@
+#!/bin/bash
+
+ LANGUAGE=en_US.UTF-8 command git --git-dir=$HOME/.cfg/ --work-tree=$HOME "$@"

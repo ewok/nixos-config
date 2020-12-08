@@ -1,0 +1,65 @@
+theme = "solarized-dark"
+icons = "awesome"
+
+[[block]]
+block = "time"
+format = "MSK: %P %I:%M %m/%d"
+timezone = "Europe/Moscow"
+interval = 60
+
+[[block]]
+block = "time"
+format = "PST: %P %I:%M %m/%d"
+timezone = "America/Los_Angeles"
+interval = 60
+
+[[block]]
+block = "time"
+format = "NY: %P %I:%M %m/%d"
+timezone = "America/New_York"
+interval = 60
+
+[[block]]
+block = "disk_space"
+path = "/"
+alias = "/"
+info_type = "used"
+unit = "GiB"
+
+[[block]]
+block = "cpu"
+interval = 1
+format = "{utilization}% {frequency}GHz"
+
+[[block]]
+block = "memory"
+format_mem = "{Mum}MB({Mup}%)"
+format_swap = "{SUm}MB({SUp}%)"
+display_type = "memory"
+icons = true
+clickable = true
+interval = 5
+warning_mem = 80
+warning_swap = 80
+critical_mem = 95
+critical_swap = 95
+
+[[block]]
+block = "music"
+player = "spotify"
+buttons = ["play", "next"]
+
+[[block]]
+block = "sound"
+step_width = 3
+
+[[block]]
+block = "battery"
+interval = 60
+format = "{percentage}% {time}"
+
+[[block]]
+block = "keyboard_layout"
+driver = "setxkbmap"
+interval = 15
+

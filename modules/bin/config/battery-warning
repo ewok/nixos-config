@@ -1,0 +1,48 @@
+#!/bin/bash
+
+BAT="/sys/class/power_supply/BAT0"
+THRESHOLD=15
+WARNING=12
+CRITICAL=10
+SUSPEND=5
+
+export DISPLAY=:0.0
+while true
+do
+    battery_level=$(cat $BAT/capacity)
+    echo "Battery level: $battery_level %"
+    if $(grep "Charging" $BAT/status -q); then
+        echo "Charging"
+    else
+        echo "Not charging"
+        if [ $battery_level -le $THRESHOLD ]; then
+            TIMER=90
+            while ! $(grep "Charging" $BAT/status -q); do
+                # recheck level
+                battery_level=$(cat $BAT/capacity)
+
+                # Critical
+                if [ $battery_level -le $SUSPEND ]; then
+                    notify-send -u critical -t 1000 "(!!)Laptop to suspend! Please plug your AC adapter." "Charging: ${battery_level}%"
+                    systemctl suspend
+
+                elif [ $battery_level -le $CRITICAL ]; then
+                    TIMER=2
+                    notify-send -u critical -t 1000 "(!)Battery is lower than critical level. Need to charging! Please plug your AC adapter." "Charging: ${battery_level}%"
+                    canberra-gtk-play -i dialog-warning -d "Battery warning!" -V 30
+
+                elif [ $battery_level -le $WARNING ]; then
+                    TIMER=30
+                    notify-send -u critical -t 5000 "(W)Battery is lower than warning level. Need to charging! Please plug your AC adapter." "Charging: ${battery_level}%"
+                    canberra-gtk-play -i dialog-warning -d "Battery warning!" -V 20
+
+                else
+                    TIMER=90
+                    notify-send "(T)Battery is lower than $THRESHOLD%. Please plug your AC adapter." "Charging: ${battery_level}%"
+                fi
+                sleep $TIMER
+            done
+        fi
+    fi
+    sleep 10 # 300 seconds or 5 minutes
+done

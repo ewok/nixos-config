@@ -1,0 +1,22 @@
+#!/bin/bash
+
+set -e
+
+LANGUAGE=en_US.UTF-8
+LC_ALL="C"
+
+LIST=$(git --git-dir=$HOME/.cfg/ --work-tree=$HOME ls-tree --name-only HEAD)
+
+CMD=""
+for item in $LIST
+do
+  if [ ${item:0:1} == "." ]
+  then
+    CMD="${CMD}\.${item:1}$|"
+  else
+    CMD="${CMD}\b${item}$|"
+  fi
+done
+CMD=$(echo $CMD | sed 's/|$//')
+
+ls --color=never --group-directories-first -a "${@}" | ag --passthru "$CMD"

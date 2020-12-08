@@ -1,0 +1,11 @@
+#!/bin/bash
+
+NOTE="$HOME/Notes/diary/$(date +%Y-%m-%d).md"
+
+if [ $# -ge 1 ]
+then
+  echo "[$(date +%H:%M)] $*" >> "$NOTE"
+  vim "$NOTE"
+else
+  vim +VimwikiMakeDiaryNote
+fi
