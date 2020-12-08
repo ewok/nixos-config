@@ -64,9 +64,26 @@
           ];
           specialArgs = { inherit inputs; };
         };
+        terminal = lib.nixosSystem {
+          inherit system;
+          modules = [
+            {
+              nixpkgs.overlays = [
+                unstable
+                inputs.neovim-nightly-overlay.overlay
+              ];
+            }
+
+            (import ./machines/terminal)
+            inputs.home-manager.nixosModules.home-manager
+            inputs.unstable.nixosModules.notDetected
+          ];
+          specialArgs = { inherit inputs; };
+        };
       };
 
     nixbox = inputs.self.nixosConfigurations.nixbox.config.system.build.toplevel;
     working = inputs.self.nixosConfigurations.working.config.system.build.toplevel;
+    terminal = inputs.self.nixosConfigurations.terminal.config.system.build.toplevel;
   };
 }
