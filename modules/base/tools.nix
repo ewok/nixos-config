@@ -25,6 +25,9 @@ in
       reptyr
 
       trash-cli
+
+      git
+      git-crypt
     ];
 
   };
