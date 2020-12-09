@@ -50,7 +50,7 @@
     "home-manager": {
       "inputs": {
         "nixpkgs": [
-          "stable"
+          "unstable"
         ]
       },
       "locked": {
