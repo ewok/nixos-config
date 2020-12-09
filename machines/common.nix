@@ -27,6 +27,7 @@ in
   properties.user = {
     name = secrets.name;
     email = secrets.email;
+    fullName = secrets.fullName;
   };
 
   properties.device = {

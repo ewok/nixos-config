@@ -16,7 +16,7 @@ in
   time.timeZone = "Europe/Moscow";
 
   # Enabled by default
-  # modules.base.enable = true;
+  modules.base.enable = true;
 
   modules.backup.enable = true;
   modules.backup.rslsync.enable = true;

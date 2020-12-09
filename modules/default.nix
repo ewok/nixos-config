@@ -17,6 +17,10 @@ with lib;
       type = types.str;
       default = "users";
     };
+    fullName = mkOption {
+      description = "Full name.";
+      type = types.str;
+    };
   };
   options.properties.device = {
     name = mkOption {

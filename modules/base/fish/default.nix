@@ -25,6 +25,8 @@ in
           mproc = "smem -t -k -c pss -P";
           egrep = "egrep --color=always";
           j = "jrnl";
+          kgpof = ''kubectl get pod --field-selector="status.phase==Failed"'';
+          krmpof = ''kubectl delete pod --field-selector="status.phase==Failed"'';
         };
 
         plugins = [
@@ -61,7 +63,7 @@ in
           set -Ux FZF_LEGACY_KEYBINDINGS 0
           set -Ux OPEN_CMD open
           bind \cw backward-kill-word
-          '';
+        '';
         loginShellInit = ''
           set -x LANG en_US.UTF-8
           # set -x LC_CTYPE "ru_RU.UTF-8"
@@ -91,6 +93,7 @@ in
           set -gx XDG_CONFIG_HOME "$HOME/.config"
 
           set fish_greeting
+          __git.reset
           '';
 
         shellAliases = {
@@ -98,11 +101,8 @@ in
           # git = "LANGUAGE=en_US.UTF-8 command git $argv";
           ll = "ls -la --color";
           ls = "ls -a --color";
-          kgpof = ''kubectl get pod --field-selector="status.phase==Failed"'';
-          krmpof = ''kubectl delete pod --field-selector="status.phase==Failed"'';
         };
       };
-
 
       xdg.configFile = mkMerge [
         {

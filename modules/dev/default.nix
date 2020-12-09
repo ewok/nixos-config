@@ -16,6 +16,7 @@ with lib;
         # [X] - msgpack
       # npm
       # git with funny things
+      ./git.nix
       ./docker.nix
     # typora
     # meld
