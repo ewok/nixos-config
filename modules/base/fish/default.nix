@@ -33,7 +33,7 @@ in
             src = pkgs.fetchFromGitHub {
               owner = "jhillyerd";
               repo = "plugin-git";
-              rev = "master";
+              rev = "ac95cd71e961dbe6fc4c15d539a34c42247623f6";
               sha256 = "sjNDQn66M+RB42aYBEE3MUy9MWcPFdKt5w6P/e5WZE8=";
             };
           }
@@ -42,7 +42,7 @@ in
             src = pkgs.fetchFromGitHub {
               owner = "Gazorby";
               repo = "fish-abbreviation-tips";
-              rev = "master";
+              rev = "0be97640909fb20de51ff9ed9bcbda0bd2b28b36";
               sha256 = "QhedoSwlenuRbnd20rdfTEesV8X2IhzefB7bbmUGVq8=";
             };
           }
@@ -51,7 +51,7 @@ in
             src = pkgs.fetchFromGitHub {
               owner = "evanlucas";
               repo = "fish-kubectl-completions";
-              rev = "master";
+              rev = "da5fa3c0dc254d37eb4b8e73a86d07c7bcebe637";
               sha256 = "7pR5/aQCkHct9lBx3u3nHmCAuo/V7XN1lC+ZvlRnNCo=";
             };
           }
