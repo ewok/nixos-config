@@ -1,5 +1,5 @@
 build:
-	nixos-rebuild build --flake ".$(host)"
+	nixos-rebuild build --flake ".$(m)"
 
 switch:
-	sudo nixos-rebuild switch --flake ".$(host)"
+	sudo nixos-rebuild switch --flake ".$(m)"
