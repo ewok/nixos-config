@@ -4,6 +4,7 @@ with lib;
   imports = [
 
     # Development
+    ./cawbird.nix
     ./skype.nix
     ./slack.nix
     ./telegram.nix

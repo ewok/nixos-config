@@ -15,11 +15,10 @@ with lib;
     ./misc/enpass.nix
     ./misc/albert.nix
     ./misc/clipit.nix
+    ./misc/tools.nix
     # deadd-notification-center
       # ./deadd
       # ./nitrogen
-      # xclip
-      # xsel
       # xkb-switch-i3
     # redshift
 
@@ -34,24 +33,13 @@ with lib;
       #   zathura-djvu
       #   zathura-mupdf
 
-    # Sound:
-      # pa-applet
-      # pavucontrol
-      # Pulseaudio
-      # Pulseaudio.bluetooth
-# playerctl
-
     # blueman
 
     # Communication:
-      # slack
-      # telegram
-      # cawbird
 
 # ldoce5viewer-pyqt5-git
 
     # browsers:
-    #[x]   firefox
     #   qutebrowser
 
       # create dirs:
