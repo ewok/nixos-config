@@ -4,10 +4,10 @@ with lib;
   imports = [
 
     # Development
-    ./skype
-    ./slack
-    ./telegram
-    ./zoom
+    ./skype.nix
+    ./slack.nix
+    ./telegram.nix
+    ./zoom.nix
   ];
   options.modules.communication = {
     enable = mkEnableOption "Enable communication soft.";
