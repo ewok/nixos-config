@@ -25,4 +25,5 @@ in
 
   modules.base.ssh.config = secrets.ssh.config;
   modules.system.sudo.askPass = false;
+  modules.system.sound.enable = false;
 }

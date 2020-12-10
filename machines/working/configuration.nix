@@ -26,10 +26,10 @@ in
 
   services.printing.enable = true;
 
-  sound.enable = true;
-  hardware.pulseaudio = {
-    enable = true;
-  };
+  # sound.enable = true;
+  # hardware.pulseaudio = {
+  #   enable = true;
+  # };
 
   powerManagement.enable = true;
   powerManagement.powertop.enable = true;

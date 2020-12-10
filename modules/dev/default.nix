@@ -10,13 +10,10 @@ with lib;
     # npm
     ./git.nix
     ./docker.nix
-    # ./typora.nix
+    ./typora.nix
     ./zeal.nix
     # meld
-    # libgnome-keyring
     ./k8s.nix
-    # kubectl
-    # kubectx
     ./ctags.nix
   ];
   options.modules.dev = {

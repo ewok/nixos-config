@@ -44,4 +44,7 @@ in
 
   # TODO: Change to true
   modules.system.sudo.askPass = false;
+
+  modules.system.sound.enable = true;
+  modules.system.sound.pulse.enable = true;
 }

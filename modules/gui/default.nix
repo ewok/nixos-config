@@ -6,19 +6,18 @@ with lib;
     # GUI tools
     # WM:
     ./wm
-    ./termite.nix
+    ./terminal.nix
     ./fonts.nix
     ./keyboard.nix
-    ./firefox.nix
-    ./enpass.nix
-    ./albert.nix
-    ./clipit.nix
+    ./browser.nix
     ./screenshots.nix
-      # ./deadd
+
+    ./misc/enpass.nix
+    ./misc/albert.nix
+    ./misc/clipit.nix
     # deadd-notification-center
+      # ./deadd
       # ./nitrogen
-      # scrot
-      # peek
       # xclip
       # xsel
       # xkb-switch-i3
@@ -43,11 +42,12 @@ with lib;
 # playerctl
 
     # blueman
-    # flameshot
+
     # Communication:
       # slack
       # telegram
       # cawbird
+
 # ldoce5viewer-pyqt5-git
 
     # browsers:

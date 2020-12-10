@@ -56,7 +56,7 @@ in
       xresources.properties = {
         "Xft.antialias" = true;
         "Xft.autohint" = false;
-        "Xft.dpi" = "${cfg.dpi}";
+        "Xft.dpi" = "${toString cfg.dpi}";
         "Xft.hinting" = true;
         "Xft.hintstyle" = "hintmedium";
       };
