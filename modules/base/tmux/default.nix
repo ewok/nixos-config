@@ -29,8 +29,8 @@ in
           #!/usr/bin/env bash
           argv=( "$@" )
           C=1
-          tmux new-window "ssh $\{argv[0]\}"
-          for i in "$\{argv[@]:1\}";do
+          tmux new-window "ssh ''${argv[0]}"
+          for i in "''${argv[@]:1}";do
           tmux split-window -h "ssh $i"
           C=$((C + 1))
           done
