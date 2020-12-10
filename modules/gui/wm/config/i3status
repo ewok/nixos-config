@@ -1,4 +1,4 @@
-theme = "solarized-dark"
+theme = "native"
 icons = "awesome"
 
 [[block]]
@@ -9,19 +9,19 @@ interval = 60
 
 [[block]]
 block = "time"
-format = "LDN: %P %I:%M %m/%d"
+format = "LDN: %P %I:%M"
 timezone = "Europe/London"
 interval = 60
 
 [[block]]
 block = "time"
-format = "NY: %P %I:%M %m/%d"
+format = "NY: %P %I:%M"
 timezone = "America/New_York"
 interval = 60
 
 [[block]]
 block = "time"
-format = "PST: %P %I:%M %m/%d"
+format = "PST: %P %I:%M"
 timezone = "America/Los_Angeles"
 interval = 60
 
@@ -35,7 +35,7 @@ unit = "GiB"
 [[block]]
 block = "cpu"
 interval = 1
-format = "{utilization}% {frequency}GHz"
+format = "{utilization}%"
 
 [[block]]
 block = "memory"
