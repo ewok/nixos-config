@@ -2,7 +2,7 @@
 with lib;
 let
   gui = config.modules.gui;
-  sound = config.modules.sound;
+  sound = config.modules.system.sound;
   username = config.properties.user.name;
 in
 {
