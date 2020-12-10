@@ -15,14 +15,14 @@ interval = 60
 
 [[block]]
 block = "time"
-format = "PST: %P %I:%M %m/%d"
-timezone = "America/Los_Angeles"
+format = "NY: %P %I:%M %m/%d"
+timezone = "America/New_York"
 interval = 60
 
 [[block]]
 block = "time"
-format = "NY: %P %I:%M %m/%d"
-timezone = "America/New_York"
+format = "PST: %P %I:%M %m/%d"
+timezone = "America/Los_Angeles"
 interval = 60
 
 [[block]]
