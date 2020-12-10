@@ -17,6 +17,11 @@ in
       default = [ "FiraCode Nerd Font Mono" ];
       description = "Default monospace font.";
     };
+    monospaceFontSize = mkOption {
+      type = types.int;
+      default = 14;
+      description = "Default monospace font size.";
+    };
     consoleFont = mkOption {
       type = types.str;
       default = "Lat2-Terminus16";
@@ -26,63 +31,35 @@ in
 
   config = mkIf gui.enable {
 
-      fonts = {
-        fontconfig = {
-          enable = true;
-          antialias = true;
-          dpi = cfg.dpi;
-          defaultFonts.monospace = cfg.monospaceFont;
-        };
-
-        fontDir.enable = true;
-        enableGhostscriptFonts = true;
-        enableDefaultFonts = true;
-
-        fonts = with pkgs; [ nerdfonts ];
+    fonts = {
+      fontconfig = {
+        enable = true;
+        antialias = true;
+        dpi = cfg.dpi;
+        defaultFonts.monospace = cfg.monospaceFont;
       };
 
-      console = {
-        font = cfg.consoleFont;
-        useXkbConfig = true;
+      fontDir.enable = true;
+      enableGhostscriptFonts = true;
+      enableDefaultFonts = true;
+
+      fonts = with pkgs; [ nerdfonts ];
+    };
+
+    console = {
+      font = cfg.consoleFont;
+      useXkbConfig = true;
+    };
+
+    home-manager.users.${username} = {
+
+      xresources.properties = {
+        "Xft.antialias" = true;
+        "Xft.autohint" = false;
+        "Xft.dpi" = "${cfg.dpi}";
+        "Xft.hinting" = true;
+        "Xft.hintstyle" = "hintmedium";
       };
-
-      # home-manager.users.${user} = {
-        # programs.autorandr.hooks = {
-        #   postswitch = { "rescale-wallpaper" = "${rescale-wallpaper}/bin/rescale-wallpaper"; };
-        # };
-        # programs.feh.enable = true;
-
-        # xresources.properties = {
-        #   "Xmessage*Buttons" = "Quit";
-        #   "Xmessage*defaultButton" = "Quit";
-        #   "Xmessage*international" = true;
-
-        #   "urgentOnBell" = true;
-        #   "visualBell" = true;
-
-        #   "Xft.antialias" = true;
-        #   "Xft.autohint" = false;
-        #   "Xft.dpi" = "120";
-        #   "Xft.hinting" = true;
-        #   "Xft.hintstyle" = "hintmedium";
-        # };
-        # home.activation.xrdb = {
-        #   after = [ "linkGeneration" ];
-        #   before = [ ];
-        #   data = "DISPLAY=:0 ${pkgs.xorg.xrdb}/bin/xrdb ${homePrefix ".Xresources"} || exit 0";
-        # };
-
-      # wmCommon.keys = [
-      #   {
-      #     key = [ "Shift" "r" ];
-      #     cmd = "${pkgs.xorg.xrdb}/bin/xrdb $HOME/.Xresources";
-      #     mode = "xserver";
-      #   }
-      #   {
-      #     key = [ "w" ];
-      #     cmd = "${rescale-wallpaper}/bin/rescale-wallpaper";
-      #     mode = "xserver";
-      #   }
-      # ];
+    };
   };
 }

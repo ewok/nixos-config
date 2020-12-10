@@ -36,14 +36,14 @@ with lib;
   };
 
   imports = [
-    ./bin
-    ./base
     ./backup
-    ./system
-    ./mail
+    ./base
+    ./bin
     ./dev
     ./gui
+    ./mail
     ./printer
+    ./system
   ];
   # add user to groups wheel, docker, rfkill
 }

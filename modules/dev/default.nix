@@ -7,20 +7,12 @@ with lib;
     ./fzf.nix
     ./neovim
     ./python.nix
-      # [X] python2
-      # [X] python3
-      # [X] virtualenv
-      # [X] pynvim for neovim in directrory
-        # [X] - neovim
-        # [X] - pynvim
-        # [X] - msgpack
-      # npm
-      # git with funny things
-      ./git.nix
-      ./docker.nix
-    # typora
+    # npm
+    ./git.nix
+    ./docker.nix
+    # ./typora.nix
+    ./zeal.nix
     # meld
-    # ./zeal
     # libgnome-keyring
     ./k8s.nix
     # kubectl
