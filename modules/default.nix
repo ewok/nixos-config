@@ -39,6 +39,7 @@ with lib;
     ./backup
     ./base
     ./bin
+    ./communication
     ./dev
     ./gui
     ./mail

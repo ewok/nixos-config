@@ -1,9 +1,3 @@
-# Sound:
-      # pa-applet
-      # pavucontrol
-      # Pulseaudio
-      # Pulseaudio.bluetooth
-# playerctl
 { config, lib, pkgs, ... }:
 with lib;
 

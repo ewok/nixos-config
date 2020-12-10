@@ -47,4 +47,6 @@ in
 
   modules.system.sound.enable = true;
   modules.system.sound.pulse.enable = true;
+
+  modules.communication.enable = true;
 }
