@@ -8,7 +8,7 @@ in
   config = mkIf gui.enable {
     home-manager.users.${username} = {
       home.packages = with pkgs; [
-        caffeine
+        caffeine-ng
         xclip
         xsel
       ];
