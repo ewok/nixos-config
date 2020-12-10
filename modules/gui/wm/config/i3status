@@ -9,6 +9,12 @@ interval = 60
 
 [[block]]
 block = "time"
+format = "LDN: %P %I:%M %m/%d"
+timezone = "Europe/London"
+interval = 60
+
+[[block]]
+block = "time"
 format = "PST: %P %I:%M %m/%d"
 timezone = "America/Los_Angeles"
 interval = 60
