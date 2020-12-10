@@ -40,6 +40,20 @@ in
       home.file.".ctags".source = ./config/ctags;
       home.file.".vale.ini".source = ./config/vale.ini;
       home.file.".ideavimrc".source = ./config/ideavimrc;
+      home.file."bin/jrnl" = {
+        executable = true;
+        text = ''
+          #!/usr/bin/env bash
+          NOTE="$HOME/Notes/diary/$(date +%Y-%m-%d).md"
+          if [ $# -ge 1 ]
+          then
+          echo "[$(date +%H:%M)] $*" >> "$NOTE"
+          vim "$NOTE"
+          else
+          vim +VimwikiMakeDiaryNote
+          fi
+        '';
+      };
     };
   };
 }

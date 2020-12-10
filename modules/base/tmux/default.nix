@@ -24,16 +24,36 @@ in
         extraConfig = builtins.readFile ./config/tmux.conf;
       };
 
-      home.file."bin/t".text = ''
-        #!/usr/bin/env bash
-        if [[ $1 == "" ]];then
+      home.file."bin/tssh" = {
+        text = ''
+          #!/usr/bin/env bash
+          argv=( "$@" )
+          C=1
+          tmux new-window "ssh $\{argv[0]\}"
+          for i in "$\{argv[@]:1\}";do
+          tmux split-window -h "ssh $i"
+          C=$((C + 1))
+          done
+          if [ "$#" -gt 4 ];then
+          tmux select-layout tiled
+          else
+          tmux select-layout even-vertical
+          fi
+        '';
+        executable = true;
+      };
+      home.file."bin/t" = {
+        text = ''
+          #!/usr/bin/env bash
+          if [[ $1 == "" ]];then
             SESSION="main"
-        else
+          else
             SESSION="$1"
-        fi
-        tmux attach -t $SESSION || tmux new -s $SESSION
-      '';
-      home.file."bin/t".executable = true;
+          fi
+          tmux attach -t $SESSION || tmux new -s $SESSION
+        '';
+        executable = true;
+      };
     };
   };
 }

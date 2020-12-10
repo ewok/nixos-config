@@ -43,6 +43,7 @@ with lib;
     ./dev
     ./gui
     ./mail
+    ./misc
     ./printer
     ./system
   ];
