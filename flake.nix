@@ -14,6 +14,7 @@
       url = "github:nix-community/nix-direnv";
       flake = false;
     };
+    my-nixpkgs.url = "github:ewok/nixpkgs";
 
   };
 

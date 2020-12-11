@@ -67,6 +67,21 @@
         "type": "github"
       }
     },
+    "my-nixpkgs": {
+      "locked": {
+        "lastModified": 1607725788,
+        "narHash": "sha256-IIa3dQyP+pxuCe+s4cJfH1WL5/p1AXJRTjXSVvZJK1E=",
+        "owner": "ewok",
+        "repo": "nixpkgs",
+        "rev": "9fcac4fcf8af435159e71d52a5f0e7dceed8f8f0",
+        "type": "github"
+      },
+      "original": {
+        "owner": "ewok",
+        "repo": "nixpkgs",
+        "type": "github"
+      }
+    },
     "neovim-nightly": {
       "flake": false,
       "locked": {
@@ -173,6 +188,7 @@
     "root": {
       "inputs": {
         "home-manager": "home-manager",
+        "my-nixpkgs": "my-nixpkgs",
         "neovim-nightly-overlay": "neovim-nightly-overlay",
         "nix-direnv": "nix-direnv",
         "nixos-hardware": "nixos-hardware",
