@@ -13,6 +13,7 @@ in
       openssl
       ntfs3g
       dfc
+      gnumake
 
       curl
       wget
