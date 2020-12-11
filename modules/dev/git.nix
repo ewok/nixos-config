@@ -12,15 +12,14 @@ in
       gitAndTools.git-absorb
       gitAndTools.git-crypt
       gitAndTools.git-extras
+      gitAndTools.git-filter-repo
       gitAndTools.git-machete
       gitAndTools.git-octopus
+      gitAndTools.git-reparent
+      gitAndTools.git-trim
       gitAndTools.pass-git-helper
       gitstats
       gomp
-
-      gitAndTools.git-trim
-      gitAndTools.git-reparent
-      gitAndTools.git-filter-repo
     ];
     home-manager.users."${user.name}" = {
 

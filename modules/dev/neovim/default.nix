@@ -54,6 +54,7 @@ in
           fi
         '';
       };
+      home.sessionVariables.EDITOR = "nvim";
     };
   };
 }

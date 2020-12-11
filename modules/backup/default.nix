@@ -10,7 +10,6 @@ with lib;
     # Disabled by default
     ./rslsync.nix
     # cryptomator
-    # sparkleshare
   ];
   options.modules.backup = {
     enable = mkOption {
