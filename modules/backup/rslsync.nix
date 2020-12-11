@@ -5,6 +5,7 @@ let
   backup = config.modules.backup;
   username = config.properties.user.name;
   deviceName = config.properties.device.name;
+  homeDirectory = config.home-manager.users.${username}.home.homeDirectory;
 in
 {
   options.modules.backup = {
@@ -71,7 +72,7 @@ in
       enableWebUI = true;
       httpLogin = cfg.httpLogin;
       httpPass = cfg.httpPass;
-      directoryRoot = "/home/${username}";
+      directoryRoot = "${homeDirectory}";
     };
 
   };

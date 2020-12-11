@@ -2,8 +2,8 @@
   imports = [
     # System:
     # autofs
-    ./sudo.nix
+    ./powermanagement.nix
     ./sound.nix
-    # powermanagement
+    ./sudo.nix
   ];
 }

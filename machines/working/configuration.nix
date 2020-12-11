@@ -30,13 +30,6 @@ in
   # hardware.pulseaudio = {
   #   enable = true;
   # };
-
-  powerManagement.enable = true;
-  powerManagement.powertop.enable = true;
-  services.tlp = {
-    enable = true;
-  };
-
   system.stateVersion = "20.09"; # Did you read the comment?
 }
 

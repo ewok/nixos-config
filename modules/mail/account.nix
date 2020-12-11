@@ -1,16 +1,17 @@
 { config, lib, pkgs, ... }:
 with lib;
 let
-  dev = config.modules.dev;
+  mail = config.modules.mail;
   username = config.properties.user.name;
 in
 {
-  config = mkIf dev.enable {
+  config = mkIf mail.enable {
 
     home-manager.users."${username}" = {
-      home.packages = with pkgs; [
-        universal-ctags
-      ];
+      # TODO: Email accounts
+      # home.packages = with pkgs; [
+      # ];
     };
   };
 }
+

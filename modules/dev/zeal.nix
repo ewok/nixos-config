@@ -1,9 +1,10 @@
-{ config, homeDirectory, lib, pkgs, ... }:
+{ config, lib, pkgs, ... }:
 with lib;
 let
   dev = config.modules.dev;
   gui = config.modules.gui;
   username = config.properties.user.name;
+  dataHome = config.home-manager.users.${username}.xdg.dataHome;
 in
 {
   config = mkIf (dev.enable && gui.enable) {
@@ -35,8 +36,7 @@ in
         smooth_scrolling=false
 
         [docsets]
-        # TODO: use all path as var
-        path=/home/${username}/.local/share/Zeal/Zeal/docsets
+        path=${dataHome}/Zeal/Zeal/docsets
 
         [global_shortcuts]
         show=Alt+Shift+Z

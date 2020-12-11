@@ -21,6 +21,7 @@ in
         kubecfg
         kubectx
         minikube
+        google-cloud-sdk
       ];
 
       home.file = {

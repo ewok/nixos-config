@@ -5,6 +5,7 @@ let
   backup = config.modules.backup;
   username = config.properties.user.name;
   passFile = "nixos/secrets/restic-home-${username}";
+  homeDirectory = config.home-manager.users.${username}.home.homeDirectory;
 in
 {
   options.modules.backup = {
@@ -40,7 +41,7 @@ in
     services.restic.backups = {
       home = {
         passwordFile = "/etc/${passFile}";
-        paths = [ "/etc/" "/home/${username}" ];
+        paths = [ "/etc/" "${homeDirectory}" ];
         repository = cfg.repo;
         timerConfig = {
           OnCalendar = "12:30";
@@ -50,7 +51,7 @@ in
         extraBackupArgs = [
           "--exclude-caches"
           "--exclude-if-present .nobackup"
-          "--exclude-file /home/${username}/.backup_exclude"
+          "--exclude-file ${homeDirectory}/.backup_exclude"
         ];
         rcloneOptions = {
           bwlimit = "1M";

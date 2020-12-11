@@ -16,6 +16,7 @@ with lib;
     ./misc/albert.nix
     ./misc/clipit.nix
     ./misc/tools.nix
+    ./misc/network.nix
     # deadd-notification-center
       # ./deadd
       # ./nitrogen
@@ -23,7 +24,6 @@ with lib;
     # redshift
 
       # autorandr
-      # backlight
 
     # Books:
       # calibre

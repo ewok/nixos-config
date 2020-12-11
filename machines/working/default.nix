@@ -48,4 +48,5 @@ in
   modules.system.sound.pulse.enable = true;
 
   modules.communication.enable = true;
+  modules.system.powermanagement.enable = true;
 }

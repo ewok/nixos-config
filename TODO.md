@@ -10,11 +10,11 @@
     - [ ] mbsync
 - [ ] printer
 - [ ] autofs
-- [ ] powermanagement
+- [X] powermanagement
 - [ ] .[z]?profiles
 - [ ] .(zsh|bash)rc
 - [ ] xprofile - touchpad
 - [ ] add config to rclone modules/backup/rclone.nix
 - [ ] add config to ctags modules/dev/ctags.nix
-- [ ] add homePath to common lib or find existing
-    - [ ] add to zeal modules/dev/zeal.nix
+- [X] add homePath to common lib or find existing
+    - [X] add to zeal modules/dev/zeal.nix
