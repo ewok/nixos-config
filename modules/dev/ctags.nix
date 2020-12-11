@@ -12,8 +12,6 @@ in
       home.packages = with pkgs; [
         universal-ctags
       ];
-
-      # TODO: Add configs
     };
   };
 }

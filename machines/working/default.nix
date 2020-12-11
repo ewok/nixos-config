@@ -42,7 +42,6 @@ in
 
   modules.base.ssh.config = secrets.ssh.config;
 
-  # TODO: Change to true
   modules.system.sudo.askPass = false;
 
   modules.system.sound.enable = true;

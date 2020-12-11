@@ -1,4 +1,3 @@
-# TODO: Add config
 { config, lib, pkgs, ... }:
 with lib;
 let
