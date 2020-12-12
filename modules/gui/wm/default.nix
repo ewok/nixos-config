@@ -3,11 +3,10 @@ with lib;
 let
   gui = config.modules.gui;
   username = config.properties.user.name;
+  blurlock = config.home-manager.users.${username}.xdg.configHome + "/i3/blurlock";
 in
 {
   config = mkIf gui.enable {
-
-    # wmCommon.autostart.entries = lib.optionals (cfg.statusbarImpl == "i3-rs") [ "kbdd" ];
 
     services.xserver = {
       enable = true;
@@ -28,18 +27,54 @@ in
         i3status-rust
         xdotool
         xorg.xwininfo
+        imagemagick
+        xorg.xrandr
       ];
 
       xdg.configFile."i3/config".source = ./config/config;
       xdg.configFile."i3/mc-win-center.sh".source = ./config/mc-win-center.sh;
 
       xdg.configFile."i3/blurlock" = {
-        source = ./config/blurlock;
+        text = ''
+          #!${pkgs.bash}/bin/bash
+          RESOLUTION=$(${pkgs.xorg.xrandr}/bin/xrandr -q|sed -n 's/.*current[ ]\([0-9]*\) x \([0-9]*\),.*/\1x\2/p')
+          ${pkgs.imagemagick}/bin/import -silent -window root jpeg:- | ${pkgs.imagemagick}/bin/convert - -scale 20% -blur 0x2.5 -resize 500% RGB:- | \
+              ${pkgs.i3lock}/bin/i3lock --raw $RESOLUTION:rgb -i /dev/stdin -e $@
+        '';
         executable = true;
       };
 
       xdg.configFile."i3/i3exit" = {
-        source = ./config/i3exit;
+        text = ''
+          #!/usr/bin/env sh
+          case "$1" in
+              lock)
+                  ${blurlock}
+                  ;;
+              logout)
+                  i3-msg exit
+                  ;;
+              switch_user)
+                  dm-tool switch-to-greeter
+                  ;;
+              suspend)
+                  ${blurlock} && systemctl suspend
+                  ;;
+              hibernate)
+                  ${blurlock} && systemctl hibernate
+                  ;;
+              reboot)
+                  systemctl reboot
+                  ;;
+              shutdown)
+                  systemctl poweroff
+                  ;;
+              *)
+                  echo "== ! i3exit: missing or invalid argument ! =="
+                  echo "Try again with: lock | logout | switch_user | suspend | hibernate | reboot | shutdown"
+                  exit 2
+          esac
+        '';
         executable = true;
       };
 
@@ -61,6 +96,11 @@ in
         gtk3.extraConfig = {
           gtk-application-prefer-dark-theme = true;
         };
+      };
+
+      services.screen-locker = {
+        enable = true;
+        lockCmd = "${pkgs.i3lock}/bin/i3lock -n -c 000000";
       };
     };
   };

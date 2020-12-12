@@ -22,6 +22,19 @@ with lib;
       type = types.str;
     };
   };
+  options.properties.backup = {
+    repo = mkOption {
+      type = types.str;
+      default = "";
+    };
+    backupPass = mkOption {
+      type = types.str;
+    };
+    excludePaths = mkOption {
+      type = types.listOf types.str;
+      default = [];
+    };
+  };
   options.properties.device = {
     name = mkOption {
       description = "Device name.";
@@ -32,6 +45,10 @@ with lib;
     timezone = mkOption {
       description = "Timezone.";
       type = types.str;
+    };
+    ssh.config = mkOption {
+      type = types.lines;
+      default = "";
     };
   };
 
@@ -47,6 +64,4 @@ with lib;
     ./printer
     ./system
   ];
-  # add user to groups wheel, docker, rfkill
 }
-

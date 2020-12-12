@@ -2,7 +2,7 @@
 with lib;
 {
   imports = [
-    ./account.nix
+    # ./account.nix
     # mail
     # "neomutt"
     # "mbsync"

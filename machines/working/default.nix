@@ -1,6 +1,6 @@
 { config, inputs, lib, pkgs, ... }:
 let
-  secrets = config.secrets;
+  properties = config.properties;
 in
 {
   imports = [
@@ -21,9 +21,9 @@ in
   modules.backup.enable = true;
   modules.backup.rslsync.enable = true;
   modules.backup.restic = {
-    repo = secrets.repo;
-    excludePaths = secrets.excludePaths;
-    pass = secrets.backupPass;
+    repo = properties.backup.repo;
+    excludePaths = properties.backup.excludePaths;
+    pass = properties.backup.backupPass;
   };
 
   modules.dev = {
@@ -40,7 +40,7 @@ in
     };
   };
 
-  modules.base.ssh.config = secrets.ssh.config;
+  modules.base.ssh.config = properties.ssh.config;
 
   modules.system.sudo.askPass = false;
 

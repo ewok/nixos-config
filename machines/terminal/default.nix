@@ -1,7 +1,4 @@
 { config, inputs, lib, pkgs, ... }:
-let
-  secrets = config.secrets;
-in
 {
   imports = [
     ./secrets.nix
@@ -23,7 +20,7 @@ in
     k8s.enable = true;
   };
 
-  modules.base.ssh.config = secrets.ssh.config;
+  modules.base.ssh.config = properties.ssh.config;
   modules.system.sudo.askPass = false;
   modules.system.sound.enable = false;
 }
