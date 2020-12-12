@@ -1,12 +1,12 @@
 # # HTML
-text/html; ~/.mutt/view_attachment.sh %s html
+text/html; ~/.config/neomutt/view_attachment.sh %s html
 text/html; iconv -f %{charset} -t utf8 | pandoc -s --quiet -f html -t markdown_mmd; copiousoutput; description=HTML Text
 #
 text/calendar; vcal %s; copiousoutput
 text/plain; cat %s; copiousoutput
 
-image/png; ~/.mutt/view_attachment.sh %s png
-image/jpeg; ~/.mutt/view_attachment.sh %s jpeg
-image/gif; ~/.mutt/view_attachment.sh %s gif
+image/png; ~/.config/neomutt/view_attachment.sh %s png
+image/jpeg; ~/.config/neomutt/view_attachment.sh %s jpeg
+image/gif; ~/.config/neomutt/view_attachment.sh %s gif
 
-application/*; ~/.mutt/view_attachment.sh %s -
+application/*; ~/.config/neomutt/view_attachment.sh %s -

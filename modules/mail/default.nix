@@ -3,8 +3,7 @@ with lib;
 {
   imports = [
     # ./account.nix
-    # mail
-    # "neomutt"
+    ./neomutt.nix
     # "mbsync"
     # "msmtp"
     # "notmuch"

@@ -50,6 +50,10 @@ with lib;
       type = types.lines;
       default = "";
     };
+    # email.accounts = mkOption {
+    #   type = types.attrsOf (types.submodule mailAccountOpts);
+    #   default = { };
+    # };
   };
 
   imports = [

@@ -49,4 +49,7 @@ in
 
   modules.communication.enable = true;
   modules.system.powermanagement.enable = true;
+
+  modules.mail.enable = true;
+  # modules.mail.accounts = properties.email.accounts;
 }

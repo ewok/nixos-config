@@ -5,27 +5,19 @@ let
   username = config.properties.user.name;
 in
 {
-  options.modules.mail = mkOption {
-    type = jjjjjjjj
+  options.modules.mail = {
+    accounts = mkOption {
+      type = types.attrs;
+      default = { };
+    };
   };
 
   config = mkIf mail.enable {
-
     home-manager.users."${username}" = {
       accounts.email = {
         maildirBasePath = "${config.home.homeDirectory}/mail";
-        accounts = {
-          name = "main";
-          primary = true/false;
-          flavor = "gmail.com";
-          address = "ewok@ewok.ru";
-          aliases = "artur@taranchiev.ru";
-          realName = "Artur Taranchiev";
-          userName = "ewok@ewok.ru";
-          passwordCommand = "pass main";
-        };
-      }
+        accounts = mail.accounts;
+      };
     };
   };
 }
-
