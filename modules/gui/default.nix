@@ -11,6 +11,7 @@ with lib;
     ./keyboard.nix
     ./browser.nix
     ./screenshots.nix
+    ./eyessaving.nix
 
     ./misc/enpass.nix
     ./misc/albert.nix
