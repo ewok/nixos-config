@@ -29,6 +29,38 @@ in
           krmpof = ''kubectl delete pod --field-selector="status.phase==Failed"'';
         };
 
+        shellAliases = {
+          exit = "sync;sync;sync;clear;builtin exit";
+          ll = "ls -la --color";
+          ls = "ls -a --color";
+        };
+
+        functions = {
+          "nix-my-clean-result" = {
+            body = ''
+              if string match -q -- "-f" $argv
+                echo "Deleting..."
+                nix-store --gc --print-roots | awk '{print $1}' | grep '/result$' | sudo xargs rm
+              else
+                nix-store --gc --print-roots | awk '{print $1}' | grep '/result$' | sudo xargs echo
+                echo
+                echo "To delete run:"
+                echo "nix-my-clean-result -f"
+              end
+            '';
+          };
+          "vifm" = {
+            body = ''
+              set -l dst (command vifm --choose-dir - $argv)
+              if test -z "$dst"
+                echo 'Directory picking cancelled/failed'
+                return 1
+              end
+              cd "$dst"
+            '';
+          };
+        };
+
         plugins = [
           {
             name = "git";
@@ -85,36 +117,28 @@ in
           set -gx PATH $HOME/bin $HOME/.local/bin $PATH
           set -gx TZ '' + tz + ''
 
-          set -gx BROWSER /usr/bin/firefox
-          set -gx EDITOR 'nvim'
-          set -gx GUI_EDITOR /usr/bin/nvim
-          set -gx TERMINAL /usr/bin/termite
-          set -gx VISUAL 'nvim'
-          set -gx XDG_CONFIG_HOME "$HOME/.config"
+            set -gx BROWSER /usr/bin/firefox
+            set -gx EDITOR 'nvim'
+            set -gx GUI_EDITOR /usr/bin/nvim
+            set -gx TERMINAL /usr/bin/termite
+            set -gx VISUAL 'nvim'
+            set -gx XDG_CONFIG_HOME "$HOME/.config"
 
-          set fish_greeting
-          __git.reset
+            set fish_greeting
+            __git.reset
           '';
-
-        shellAliases = {
-          exit = "sync;sync;sync;clear;builtin exit";
-          # git = "LANGUAGE=en_US.UTF-8 command git $argv";
-          ll = "ls -la --color";
-          ls = "ls -a --color";
         };
-      };
 
-      xdg.configFile = mkMerge [
-        {
-          "fish/conf.d/my_git_abbr.fish".source = ./config/conf.d/my_git_abbr.fish;
-          "fish/functions/vifm.fish".source = ./config/functions/vifm.fish;
-          "fish/functions/ssh-agent.fish".source = ./config/functions/ssh-agent.fish;
-        }
-        (optionalAttrs (dev.k8s.enable) {
-          "fish/functions/fish_right_prompt.fish".source = ./config/functions/fish_right_prompt.fish;
-        })
-      ];
+        xdg.configFile = mkMerge [
+          {
+            "fish/conf.d/my_git_abbr.fish".source = ./config/conf.d/my_git_abbr.fish;
+            "fish/functions/ssh-agent.fish".source = ./config/functions/ssh-agent.fish;
+          }
+          (optionalAttrs (dev.k8s.enable) {
+            "fish/functions/fish_right_prompt.fish".source = ./config/functions/fish_right_prompt.fish;
+          })
+        ];
+      };
     };
-  };
-}
+  }
 

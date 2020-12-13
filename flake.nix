@@ -5,7 +5,7 @@
     stable.url = "github:NixOS/nixpkgs/nixos-20.09";
     unstable.url = "github:nixos/nixpkgs/nixos-unstable";
     nixos-hardware.url = "github:NixOS/nixos-hardware";
-    neovim-nightly-overlay.url = "github:mjlbach/neovim-nightly-overlay/flakes";
+    neovim-nightly-overlay.url = "github:mjlbach/neovim-nightly-overlay";
     home-manager = {
       url = "github:rycee/home-manager";
       inputs.nixpkgs.follows = "unstable";

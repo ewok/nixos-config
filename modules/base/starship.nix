@@ -60,6 +60,7 @@ in
           elixir.disabled = true;
           elm.disabled = true;
           erlang.disabled = true;
+          nodejs.disabled = true;
           ocaml.disabled = true;
           php.disabled = true;
         };
