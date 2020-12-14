@@ -1,4 +1,7 @@
 { config, inputs, lib, pkgs, ... }:
+let
+  properties = config.properties;
+in
 {
   imports = [
     ./secrets.nix
@@ -9,9 +12,6 @@
 
   properties.timezone = "Europe/Moscow";
   time.timeZone = "Europe/Moscow";
-
-  # Enabled by default
-  # modules.base.enable = true;
 
   modules.dev = {
     enable = true;
