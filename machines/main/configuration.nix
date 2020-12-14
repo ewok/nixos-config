@@ -12,7 +12,6 @@ in
   boot.loader.efi.canTouchEfiVariables = true;
 
   networking.hostName = "${deviceName}";
-
   networking.networkmanager.enable = true;
 
   networking.useDHCP = false;

@@ -29,6 +29,7 @@ in
         xorg.xwininfo
         imagemagick
         xorg.xrandr
+        xkb-switch
       ];
 
       xdg.configFile."i3/config".source = ./config/config;
