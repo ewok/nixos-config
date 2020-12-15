@@ -26,6 +26,4 @@
     };
 
   swapDevices = [ ];
-
-  powerManagement.cpuFreqGovernor = lib.mkDefault "powersave";
 }

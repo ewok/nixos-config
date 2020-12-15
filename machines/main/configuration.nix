@@ -14,9 +14,9 @@ in
   networking.hostName = "${deviceName}";
   networking.networkmanager.enable = true;
 
-  networking.useDHCP = false;
-  networking.interfaces.enp0s31f6.useDHCP = true;
-  networking.interfaces.wlp0s20f3.useDHCP = true;
+  # networking.useDHCP = false;
+  # networking.interfaces.enp0s31f6.useDHCP = true;
+  # networking.interfaces.wlp0s20f3.useDHCP = true;
 
   hardware.bluetooth.enable = true;
   services.blueman.enable = true;

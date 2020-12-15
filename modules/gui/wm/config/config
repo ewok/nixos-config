@@ -38,7 +38,7 @@ assign [class="Cawbird"] $ws3
 for_window [class="albert"] move position center
 for_window [class="Blueman-manager"] floating enable
 for_window [class="Cawbird"] move right,move right,move right, resize set 20 ppt
-for_window [title=".* - TickTick$"] move container to workspace 3,  move left,move left,move left, resize set 80 ppt
+for_window [title=".* - TickTick — Mozilla Firefox$"] move container to workspace 3,  move left,move left,move left, resize set 80 ppt
 for_window [title="Enpass Assistant"] floating enable", move position mouse
 for_window [class="GParted"] floating enable border normal, move position center
 for_window [class="Insync"] floating enable, move position center
@@ -70,7 +70,7 @@ for_window [urgent=latest] focus
 ################################################################################################
 
 # start a terminal
-bindsym $mod+Return exec "~/.config/i3/mc-win-center.sh exec termite"
+bindsym $mod+Return exec termite
 
 # kill focused window
 bindsym $mod+Shift+q kill
@@ -119,9 +119,9 @@ bindsym $mod_a+space exec "xkb-switch -n"
 ## sound-section - DO NOT EDIT if you wish to automatically upgrade Alsa -> Pulseaudio later! ##
 ################################################################################################
 
-bindsym XF86AudioRaiseVolume exec deadd_volume inc
-bindsym XF86AudioLowerVolume exec deadd_volume dec
-bindsym XF86AudioMute exec deadd_volume mute
+bindsym XF86AudioRaiseVolume exec ponymix increase 5
+bindsym XF86AudioLowerVolume exec ponymix decrease 5
+bindsym XF86AudioMute exec ponymix toggle
 #exec --no-startup-id pa-applet
 #bindsym $mod+Ctrl+m exec pavucontrol
 
@@ -157,7 +157,7 @@ mode "$mode_apps" {
         bindsym d exec telegram-desktop, mode "default"
         bindsym l exec ldoce5viewer, mode "default"
         bindsym e exec pcmanfm, mode "default"
-        bindsym p exec pavucontrol, mode "default"
+        bindsym p exec pavucontrol-qt, mode "default"
         bindsym s exec slack, mode "default"
         bindsym t exec ticktick, mode "default"
 
@@ -173,21 +173,21 @@ mode "$mode_apps" {
 # Windows control
 ################################################################################################
 # change focus
-bindsym $mod+h         exec "~/.config/i3/mc-win-center.sh focus left"
-bindsym $mod+j         exec "~/.config/i3/mc-win-center.sh focus down"
-bindsym $mod+k         exec "~/.config/i3/mc-win-center.sh focus up"
-bindsym $mod+l         exec "~/.config/i3/mc-win-center.sh focus right"
-bindsym $mod+Shift+h         exec "~/.config/i3/mc-win-center.sh move left"
-bindsym $mod+Shift+j         exec "~/.config/i3/mc-win-center.sh move down"
-bindsym $mod+Shift+k         exec "~/.config/i3/mc-win-center.sh move up"
-bindsym $mod+Shift+l         exec "~/.config/i3/mc-win-center.sh move right"
+bindsym $mod+h focus left
+bindsym $mod+j focus down
+bindsym $mod+k focus up
+bindsym $mod+l focus right
+bindsym $mod+Shift+h move left
+bindsym $mod+Shift+j move down
+bindsym $mod+Shift+k move up
+bindsym $mod+Shift+l move right
 
 workspace_auto_back_and_forth no
 
 bindsym $mod+q split toggle
 
 # enter fullscreen mode for the focused container
-bindsym $mod+f exec "~/.config/i3/mc-win-center.sh fullscreen"
+bindsym $mod+f fullscreen
 
 # change container layout (stacked, tabbed, toggle split)
 bindsym $mod+s layout stacking
@@ -204,7 +204,7 @@ bindsym $mod+space focus mode_toggle
 bindsym $mod+p sticky toggle,exec notify-send 'sticky'
 
 # focus the parent container
-bindsym $mod+a exec "~/.config/i3/mc-win-center.sh focus parent"
+bindsym $mod+a focus parent
 
 ################################################################################################
 # Scratchpad
@@ -243,26 +243,26 @@ set $ws8 8
 set $ws9 9
 
 # switch to workspace
-bindsym $mod+1 exec "~/.config/i3/mc-win-center.sh workspace 1"
-bindsym $mod+2 exec "~/.config/i3/mc-win-center.sh workspace 2"
-bindsym $mod+3 exec "~/.config/i3/mc-win-center.sh workspace 3"
-bindsym $mod+4 exec "~/.config/i3/mc-win-center.sh workspace 4"
-bindsym $mod+5 exec "~/.config/i3/mc-win-center.sh workspace 5"
-bindsym $mod+6 exec "~/.config/i3/mc-win-center.sh workspace 6"
-bindsym $mod+7 exec "~/.config/i3/mc-win-center.sh workspace 7"
-bindsym $mod+8 exec "~/.config/i3/mc-win-center.sh workspace 8"
-bindsym $mod+9 exec "~/.config/i3/mc-win-center.sh workspace 9"
+bindsym $mod+1 workspace 1
+bindsym $mod+2 workspace 2
+bindsym $mod+3 workspace 3
+bindsym $mod+4 workspace 4
+bindsym $mod+5 workspace 5
+bindsym $mod+6 workspace 6
+bindsym $mod+7 workspace 7
+bindsym $mod+8 workspace 8
+bindsym $mod+9 workspace 9
 
 # move focused container to workspace
-bindsym $mod+Shift+1 exec "~/.config/i3/mc-win-center.sh move container to workspace 1"
-bindsym $mod+Shift+2 exec "~/.config/i3/mc-win-center.sh move container to workspace 2"
-bindsym $mod+Shift+3 exec "~/.config/i3/mc-win-center.sh move container to workspace 3"
-bindsym $mod+Shift+4 exec "~/.config/i3/mc-win-center.sh move container to workspace 4"
-bindsym $mod+Shift+5 exec "~/.config/i3/mc-win-center.sh move container to workspace 5"
-bindsym $mod+Shift+6 exec "~/.config/i3/mc-win-center.sh move container to workspace 6"
-bindsym $mod+Shift+7 exec "~/.config/i3/mc-win-center.sh move container to workspace 7"
-bindsym $mod+Shift+8 exec "~/.config/i3/mc-win-center.sh move container to workspace 8"
-bindsym $mod+Shift+9 exec "~/.config/i3/mc-win-center.sh move container to workspace 9"
+bindsym $mod+Shift+1 move container to workspace 1
+bindsym $mod+Shift+2 move container to workspace 2
+bindsym $mod+Shift+3 move container to workspace 3
+bindsym $mod+Shift+4 move container to workspace 4
+bindsym $mod+Shift+5 move container to workspace 5
+bindsym $mod+Shift+6 move container to workspace 6
+bindsym $mod+Shift+7 move container to workspace 7
+bindsym $mod+Shift+8 move container to workspace 8
+bindsym $mod+Shift+9 move container to workspace 9
 
 # Set shut down, restart and locking features
 bindsym $mod+$mod_a+0 mode "$mode_system"
@@ -399,28 +399,14 @@ bindsym $mod+m bar mode toggle
 ################################################################################################
 # Autostart applications
 ################################################################################################
-exec_always --no-startup-id pgrep trayer || trayer --transparent true  --alpha 255
-
-exec --no-startup-id /usr/lib/polkit-gnome/polkit-gnome-authentication-agent-1
-
-exec_always --no-startup-id deadd
+# exec --no-startup-id /usr/lib/polkit-gnome/polkit-gnome-authentication-agent-1
+# exec_always --no-startup-id deadd
 # exec_always --no-startup-id pgrep pcloud || pcloud
 # exec_always --no-startup-id pgrep insync || insync start
-exec_always --no-startup-id pgrep cryptomator || cryptomator
+# exec_always --no-startup-id pgrep cryptomator || cryptomator
 exec_always --no-startup-id pgrep telegram-deskto || telegram-desktop
-exec_always --no-startup-id pgrep redshift-gtk || redshift-gtk
 exec_always --no-startup-id pgrep zeal || zeal
 exec_always --no-startup-id pgrep cawbird || cawbird
 exec_always --no-startup-id sparkleshare
 
-exec_always --no-startup-id pgrep nm-applet || nm-applet
-exec_always --no-startup-id pgrep pamac-tray || pamac-tray
 exec_always --no-startup-id pgrep clipit || clipit
-exec_always --no-startup-id pgrep blueman-applet || blueman-applet
-exec_always --no-startup-id pkill xkb-switch; xkb-switch --i3
-exec_always --no-startup-id fix_xcursor
-exec --no-startup-id xautolock -time 15 -locker "~/.config/i3/blurlock"
-exec --no-startup-id battery-warning
-exec --no-startup-id ~/.xprofile
-exec_always --no-startup-id sleep 10; nitrogen --restore
-

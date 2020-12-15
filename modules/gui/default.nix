@@ -18,6 +18,7 @@ with lib;
     ./misc/clipit.nix
     ./misc/tools.nix
     ./misc/network.nix
+    ./misc/gparted.nix
     # deadd-notification-center
       # ./deadd
       # ./nitrogen
