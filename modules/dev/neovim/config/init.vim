@@ -703,6 +703,8 @@ augroup ft_nix
       return
     endif
 
+    set expandtab
+
     imap <buffer> <C-Enter> <ESC>:call NixFTSmartCR()<CR>
 
     PackAdd ale
