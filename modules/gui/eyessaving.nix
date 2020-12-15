@@ -5,6 +5,15 @@ let
   username = config.properties.user.name;
 in
 {
+  options.modules.gui = {
+    latitude = mkOption {
+      type = types.str;
+    };
+    longitude = mkOption {
+      type = types.str;
+    };
+  };
+
   config = mkIf gui.enable {
 
     services.geoclue2 = {
@@ -14,7 +23,8 @@ in
     home-manager.users.${username} = {
       services.redshift = {
         enable = true;
-        provider = "geoclue2";
+        latitude = gui.latitude;
+        longitude = gui.longitude;
         tray = true;
         temperature = {
           day = 5500;

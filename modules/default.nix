@@ -54,6 +54,12 @@ with lib;
       type = types.lines;
       default = "";
     };
+    latitude = mkOption {
+      type = types.str;
+    };
+    longitude = mkOption {
+      type = types.str;
+    };
     # email.accounts = mkOption {
     #   type = types.attrsOf (types.submodule mailAccountOpts);
     #   default = { };

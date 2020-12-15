@@ -17,6 +17,9 @@ in
         profiles = builtins.fromJSON gui.displayProfiles;
       };
     };
+    services.udev.extraRules = ''
+        ACTION=="change", SUBSYSTEM=="drm", RUN+="${pkgs.autorandr}/bin/autorandr --batch --change"
+    '';
   };
 }
 

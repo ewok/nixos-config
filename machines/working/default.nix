@@ -12,8 +12,7 @@ in
     "${inputs.nixos-hardware}/lenovo/thinkpad/p53"
   ];
 
-  properties.timezone = "Europe/Moscow";
-  time.timeZone = "Europe/Moscow";
+  time.timeZone = properties.timezone;
 
   # Enabled by default
   modules.base.enable = true;
@@ -38,6 +37,9 @@ in
     fonts = {
       dpi = 102;
     };
+    displayProfiles = properties.displayProfiles;
+    longitude = properties.longitude;
+    latitude = properties.latitude;
   };
 
   modules.base.ssh.config = properties.ssh.config;

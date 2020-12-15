@@ -15,7 +15,13 @@ in
           enable = true;
         };
       };
-      displayManager = { defaultSession = "none+i3"; };
+      displayManager = {
+        defaultSession = "none+i3";
+        sessionCommands = ''
+          setxkbmap -rules "evdev" -model "pc105" -layout "us,ru" -option "ctrl:swapcaps"
+        '';
+      };
+
     };
     environment.sessionVariables.CURRENT_WM = [ "i3" ];
 

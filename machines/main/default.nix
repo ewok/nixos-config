@@ -12,19 +12,18 @@ in
     # "${inputs.nixos-hardware}/lenovo/thinkpad/p53"
   ];
 
-  services.xserver.libinput.naturalScrolling = true;
-  services.xserver.libinput.middleEmulation = true;
-  services.xserver.libinput.tapping = true;
-  services.xserver.libinput.enable = true;
+  # services.xserver.libinput.naturalScrolling = true;
+  # services.xserver.libinput.middleEmulation = true;
+  # services.xserver.libinput.tapping = true;
+  # services.xserver.libinput.enable = true;
 
-  properties.timezone = "Europe/Moscow";
-  time.timeZone = "Europe/Moscow";
+  time.timeZone = properties.timezone;
 
   # Enabled by default
   modules.base.enable = true;
 
   modules.backup.enable = true;
-  # modules.backup.rslsync.enable = true;
+  modules.backup.rslsync.enable = true;
   modules.backup.restic = {
     repo = properties.backup.repo;
     excludePaths = properties.backup.excludePaths;
@@ -44,6 +43,8 @@ in
       dpi = 102;
     };
     displayProfiles = properties.displayProfiles;
+    longitude = properties.longitude;
+    latitude = properties.latitude;
   };
 
   modules.base.ssh.config = properties.ssh.config;
