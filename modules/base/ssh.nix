@@ -8,7 +8,7 @@ in
   options.modules.base.ssh = {
     config = mkOption {
       type = types.lines;
-      default = "";
+      default = "{}";
     };
   };
 

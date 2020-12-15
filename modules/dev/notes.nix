@@ -8,7 +8,7 @@ in
 {
   config = mkIf (dev.enable && gui.enable) {
     home-manager.users."${username}" = {
-      home.packages = [ pkgs.sparkleshare ];
+      home.packages = [ pkgs.sparkleshare pkgs.git-lfs ];
     };
   };
 }

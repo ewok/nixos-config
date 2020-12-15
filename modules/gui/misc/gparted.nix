@@ -13,6 +13,8 @@ in
     home-manager.users.${username} = {
       home.packages = with stable; [
         gparted
+        mtools
+        dosfstools
       ];
     };
   };
