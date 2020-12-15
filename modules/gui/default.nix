@@ -12,6 +12,7 @@ with lib;
     ./browser.nix
     ./screenshots.nix
     ./eyessaving.nix
+    ./display.nix
 
     ./misc/enpass.nix
     ./misc/albert.nix

@@ -38,6 +38,7 @@ in
     fonts = {
       dpi = 102;
     };
+    displayProfiles = properties.displayProfiles;
   };
 
   modules.base.ssh.config = properties.ssh.config;
