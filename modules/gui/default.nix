@@ -13,6 +13,7 @@ with lib;
     ./screenshots.nix
     ./eyessaving.nix
     ./display.nix
+    ./video.nix
 
     ./misc/enpass.nix
     ./misc/albert.nix
@@ -24,9 +25,6 @@ with lib;
       # ./deadd
       # ./nitrogen
       # xkb-switch-i3
-    # redshift
-
-      # autorandr
 
     # Books:
       # calibre
