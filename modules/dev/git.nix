@@ -28,25 +28,29 @@ in
         ripgrep
       ];
 
+      xdg.configFile."git/gitexcludes".text = ''
+        .direnv
+      '';
+
       programs.git = {
         enable = true;
         userName = user.fullName;
         userEmail = user.email;
         extraConfig = {
           "rebase" = {
-          autoSquash = true;
-          autoStash = true;
+            autoSquash = true;
+            autoStash = true;
           };
           "core" = {
-          autocrlf = false;
-          excludesfile = "~/.gitexcludes";
-          quotepath = false;
-          askPass = "";
+            autocrlf = false;
+            excludesfile = "~/.config/git/gitexcludes";
+            quotepath = false;
+            askPass = "";
           };
           "credential" = { helper = "${pkgs.gitAndTools.pass-git-helper}/bin/pass-git-helper"; };
           "diff" = {
-          algorithm = "patience";
-          gpg = { textconv = "${pkgs.gnupg}/bin/gpg2 --no-tty --decrypt"; };
+            algorithm = "patience";
+            gpg = { textconv = "${pkgs.gnupg}/bin/gpg2 --no-tty --decrypt"; };
           };
           "push" = { default = "current"; };
           "absorb" = { maxstack = 75; };

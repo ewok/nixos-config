@@ -121,22 +121,6 @@
         "type": "github"
       }
     },
-    "nix-direnv": {
-      "flake": false,
-      "locked": {
-        "lastModified": 1604923339,
-        "narHash": "sha256-tYbMEBdSDC9F7Qz2alsY1UWo54mE5fzppUmGPRNrsUw=",
-        "owner": "nix-community",
-        "repo": "nix-direnv",
-        "rev": "9b3e62f10f0b1886ada0346fc922768384ec99fc",
-        "type": "github"
-      },
-      "original": {
-        "owner": "nix-community",
-        "repo": "nix-direnv",
-        "type": "github"
-      }
-    },
     "nixos-hardware": {
       "locked": {
         "lastModified": 1606379629,
@@ -189,7 +173,6 @@
         "home-manager": "home-manager",
         "my-nixpkgs": "my-nixpkgs",
         "neovim-nightly-overlay": "neovim-nightly-overlay",
-        "nix-direnv": "nix-direnv",
         "nixos-hardware": "nixos-hardware",
         "stable": "stable",
         "unstable": "unstable"
