@@ -18,6 +18,7 @@ in
       gitAndTools.git-reparent
       gitAndTools.git-trim
       gitAndTools.pass-git-helper
+      gitAndTools.gh
       gitstats
       gomp
     ];

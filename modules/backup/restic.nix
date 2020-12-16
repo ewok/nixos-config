@@ -54,7 +54,7 @@ in
           "--exclude-file ${homeDirectory}/.backup_exclude"
         ];
         rcloneOptions = {
-          bwlimit = "1M";
+          # bwlimit = "1M";
           drive-use-trash = "true";
         };
         initialize = true;
