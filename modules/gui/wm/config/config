@@ -102,8 +102,8 @@ bindsym $mod+Shift+e exec "i3-nagbar -t warning -m 'You pressed the exit shortcu
 bindsym $mod_a+k mode "$mode_keyb"
 set $mode_keyb (1)laptop,(2)external or default
 mode "$mode_keyb" {
-        bindsym 1 exec keyb-laptop.sh 1, mode "default"
-        bindsym 2 exec keyb-laptop.sh, mode "default"
+        bindsym 1 exec keyb-layout 1, mode "default"
+        bindsym 2 exec keyb-layout, mode "default"
 
         # exit resize mode: Enter or Escape
         bindsym Return mode "default"
