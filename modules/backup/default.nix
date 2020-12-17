@@ -9,7 +9,7 @@ with lib;
 
     # Disabled by default
     ./rslsync.nix
-    # cryptomator
+    ./cryptomator.nix
   ];
   options.modules.backup = {
     enable = mkOption {

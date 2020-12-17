@@ -26,5 +26,10 @@
       fsType = "vfat";
     };
 
+  fileSystems."/mnt/Data" =
+    { device = "/dev/disk/by-label/Data";
+      fsType = "ntfs";
+    };
+
   swapDevices = [ ];
 }
