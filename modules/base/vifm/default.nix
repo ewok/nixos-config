@@ -16,6 +16,7 @@ in
         sshfs
         curlftpfs
         ts
+        archivemount
       ];
 
       xdg.configFile."vifm/colors".source = ./config/colors;
