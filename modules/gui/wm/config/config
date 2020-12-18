@@ -219,6 +219,7 @@ bindsym $mod+minus scratchpad show
 ################################################################################################
 # Workspaces
 ################################################################################################
+bindsym $mod_a+r exec autorandr -c
 #navigate workspaces next / previous
 bindsym $mod+n workspace next
 bindsym $mod+b workspace prev
@@ -304,7 +305,7 @@ mode "resize" {
 }
 
 # Rename
-bindsym $mod_a+r exec i3-input -F 'rename workspace to "%s"' -P 'New name: '
+bindsym $mod_a+m exec i3-input -F 'rename workspace to "%s"' -P 'New name: '
 
 ################################################################################################
 # Colors

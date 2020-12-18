@@ -22,6 +22,17 @@ in
     };
     services.tlp.enable = true;
     services.illum.enable = true;
+    services.logind = {
+      lidSwitchDocked = "ignore";
+      lidSwitchExternalPower = "ignore";
+      lidSwitch = "suspend";
+    };
+
+    services.logind.extraConfig = ''
+      HandlePowerKey=ignore
+      HandleSuspendKey=suspend
+      HandleHibernateKey=ignore
+    '';
     # TODO: Experimental
     # hardware.nvidia.powerManagement.enable = true;
   };
