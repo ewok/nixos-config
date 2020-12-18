@@ -4,18 +4,18 @@ let
   gui = config.modules.gui;
   username = config.properties.user.name;
 in
-{
-  config = mkIf gui.enable {
-    environment.sessionVariables = { BROWSER = "firefox"; };
+  {
+    config = mkIf gui.enable {
+      environment.sessionVariables = { BROWSER = "firefox"; };
 
-    home-manager.users.${username} = {
-      home.packages = with pkgs; [
-        xsel
-      ];
+      home-manager.users.${username} = {
+        home.packages = with pkgs; [
+          xsel
+        ];
 
-      programs.firefox = {
-        enable = true;
-        profiles = {
+        programs.firefox = {
+          enable = true;
+          profiles = {
             options = {
               name = "${username}";
               id = 0;
@@ -44,5 +44,4 @@ in
         };
       };
     };
-}
-
+  }

@@ -8,12 +8,10 @@ in
     config = mkIf gui.enable {
       home-manager.users.${username} = {
         home.packages = with pkgs; [
-          caffeine-ng
-          xclip
-          xsel
+          pcmanfm
         ];
+
+        xdg.configFile."pcmanfm/default".source = ./pcmanfm;
       };
     };
   }
-
-

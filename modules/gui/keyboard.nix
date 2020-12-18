@@ -10,7 +10,7 @@ let
     else
       setxkbmap -rules "evdev" -model "pc105" -layout "us,ru" -option
     fi
-    '';
+  '';
 in
   {
     config = mkIf gui.enable {
@@ -36,5 +36,5 @@ in
     #     ACTION=="add", SUBSYSTEM=="usb", DRIVERS=="usb", RUN+="${pkgs.}/bin/autorandr --batch --change"
     # '';
 
-    };
-  }
+  };
+}

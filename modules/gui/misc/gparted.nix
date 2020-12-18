@@ -8,14 +8,14 @@ let
     localSystem = { system = "x86_64-linux"; };
   });
 in
-{
-  config = mkIf gui.enable {
-    home-manager.users.${username} = {
-      home.packages = with stable; [
-        gparted
-        mtools
-        dosfstools
-      ];
+  {
+    config = mkIf gui.enable {
+      home-manager.users.${username} = {
+        home.packages = with stable; [
+          gparted
+          mtools
+          dosfstools
+        ];
+      };
     };
-  };
-}
+  }

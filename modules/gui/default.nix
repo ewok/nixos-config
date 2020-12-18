@@ -14,6 +14,7 @@ with lib;
     ./eyessaving.nix
     ./display.nix
     ./video.nix
+    ./office.nix
 
     ./misc/enpass.nix
     ./misc/albert.nix
@@ -21,6 +22,7 @@ with lib;
     ./misc/tools.nix
     ./misc/network.nix
     ./misc/gparted.nix
+    ./misc/pcmanfm.nix
     # deadd-notification-center
       # ./deadd
       # ./nitrogen
@@ -33,8 +35,6 @@ with lib;
       #   zathura-cb
       #   zathura-djvu
       #   zathura-mupdf
-
-    # blueman
 
     # Communication:
 

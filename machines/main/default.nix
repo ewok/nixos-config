@@ -45,6 +45,8 @@ in
     displayProfiles = properties.displayProfiles;
     longitude = properties.longitude;
     latitude = properties.latitude;
+
+    office.enable = true;
   };
 
   modules.base.ssh.config = properties.ssh.config;
@@ -59,4 +61,5 @@ in
 
   modules.mail.enable = true;
   # modules.mail.accounts = properties.email.accounts;
+
 }
