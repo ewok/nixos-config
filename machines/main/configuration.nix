@@ -1,6 +1,10 @@
-{ config, pkgs, ... }:
+{ config, pkgs, inputs, ... }:
 let
   deviceName = config.properties.device.name;
+  mypkgs = import inputs.my-nixpkgs ({
+    config = config.nixpkgs.config;
+    localSystem = { system = "x86_64-linux"; };
+  });
 in
 {
   imports =
@@ -24,8 +28,7 @@ in
   # i18n.defaultLocale = "en_US.UTF-8";
 
   services.printing.enable = true;
-  services.printing.drivers = with pkgs; [ canon-cups-ufr2 cups-bjnp ];
+  services.printing.drivers = with mypkgs; [ carps-cups ];
 
   system.stateVersion = "20.09"; # Did you read the comment?
 }
-

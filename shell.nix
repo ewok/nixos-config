@@ -48,6 +48,6 @@ in
     ];
 
     shellHook = ''
-      PATH=${pkgs.nix}/bin:$PATH
+      PATH=${nix}/bin:$PATH
     '';
   }
