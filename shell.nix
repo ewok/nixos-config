@@ -30,11 +30,16 @@ let
     ${pkgs.nixFlakes}/bin/nix --option experimental-features "nix-command flakes ca-references" "$@"
   '';
 
+  git-crypt-status = writeShellScriptBin "git-crypt-status" ''
+    git-crypt status | grep -v not
+  '';
+
 in
   pkgs.mkShell {
     nativeBuildInputs = with pkgs; [
       git
       git-crypt
+      git-crypt-status
 
       nix
       nix-switch
