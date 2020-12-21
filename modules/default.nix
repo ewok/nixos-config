@@ -75,7 +75,6 @@ with lib;
     ./gui
     ./mail
     ./misc
-    ./printer
     ./system
   ];
 }

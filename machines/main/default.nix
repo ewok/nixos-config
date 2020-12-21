@@ -55,11 +55,11 @@ in
 
   modules.system.sound.enable = true;
   modules.system.sound.pulse.enable = true;
+  modules.system.printing.enable = true;
 
   modules.communication.enable = true;
   modules.system.powermanagement.enable = true;
 
   modules.mail.enable = true;
   # modules.mail.accounts = properties.email.accounts;
-
 }
