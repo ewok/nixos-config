@@ -10,8 +10,7 @@ in
     ./configuration.nix
   ];
 
-  properties.timezone = "Europe/Moscow";
-  time.timeZone = "Europe/Moscow";
+  time.timeZone = properties.timezone;
 
   modules.dev = {
     enable = true;
