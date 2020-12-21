@@ -32,8 +32,6 @@
     };
 
   services.xserver.videoDrivers = [ "nvidia" ];
-  # --- or on certain laptops ---
-  # services.xserver.videoDrivers = [ "modesetting" "nvidia" ];
 
   hardware.nvidia.prime = {
     sync.enable = true;

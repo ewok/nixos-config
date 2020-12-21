@@ -24,6 +24,7 @@ in
   # i18n.defaultLocale = "en_US.UTF-8";
 
   services.printing.enable = true;
+  services.printing.drivers = with pkgs; [ canon-cups-ufr2 cups-bjnp ];
 
   system.stateVersion = "20.09"; # Did you read the comment?
 }

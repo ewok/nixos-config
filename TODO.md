@@ -1,7 +1,7 @@
 # TODO
 
 - [ ] General configuration and hardware-configuration
-- [ ] direnv
+- [X] direnv
 - [ ] deadd
 - [ ] wallpapers
 - [ ] Mail
@@ -11,8 +11,8 @@
 - [ ] printer
 - [ ] autofs
 - [X] powermanagement
-- [ ] .[z]?profiles
-- [ ] .(zsh|bash)rc
+- [X] .[z]?profiles
+- [X] .(zsh|bash)rc
 - [ ] xprofile - touchpad
 - [ ] add config to rclone modules/backup/rclone.nix
 - [ ] add config to ctags modules/dev/ctags.nix
