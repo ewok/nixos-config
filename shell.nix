@@ -2,7 +2,7 @@
 
 with pkgs;
 let
-  nix-switch = writeShellScriptBin "nix-switch" ''
+  nix-switch = writeShellScriptBin "nix-my-switch" ''
     if [ "$#" -eq 0 ]; then
       sudo nixos-rebuild switch --flake "."
     else
@@ -10,7 +10,7 @@ let
     fi
   '';
 
-  nix-rebuild = writeShellScriptBin "nix-rebuild" ''
+  nix-rebuild = writeShellScriptBin "nix-my-rebuild" ''
     if [ "$#" -eq 0 ]; then
       sudo nixos-rebuild build --flake "."
     else
@@ -18,7 +18,7 @@ let
     fi
   '';
 
-  nix-rebuild-vm = writeShellScriptBin "nix-rebuild-vm" ''
+  nix-rebuild-vm = writeShellScriptBin "nix-my-rebuild-vm" ''
     if [ "$#" -eq 0 ]; then
       sudo nixos-rebuild build-vm --flake "."
     else
