@@ -116,6 +116,7 @@ in
           bind \cw backward-kill-word
         '';
         loginShellInit = ''
+          curl 'wttr.in?1nq' -m 0.5
           set -x LANG en_US.UTF-8
           # set -x LC_CTYPE "ru_RU.UTF-8"
           set -x LC_NUMERIC "ru_RU.UTF-8"
