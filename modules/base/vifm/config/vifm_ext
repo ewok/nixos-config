@@ -31,21 +31,11 @@
 filextype *.pdf
         \ {View in zathura}
         \ zathura %f &>/dev/null &,
-        \ {Open with MasterPDF}
-        \ masterpdfeditor4 %c %i,
-
-fileviewer *.pdf
-        \ vifmimg pdfpreview %px %py %pw %ph %c
-        \ %pc
-        \ vifmimg clear
-        " \ pdftotext -nopgbrk %c -
 
 " PostScript
-" filextype *.ps,*.eps,*.ps.gz
-"         \ {View in zathura}
-"         \ zathura %f,
-"         \ {View in gv}
-"         \ gv %c %i &,
+filextype *.ps,*.eps,*.ps.gz
+        \ {View in zathura}
+        \ zathura %f,
 
 " Djvu
 filextype *.djvu
@@ -58,13 +48,6 @@ filextype *.djvu
 filextype *.cbr,*.cbz
         \ {View in zathura}
         \ zathura %f &>/dev/null &,
-
-" Audio
-" filextype *.wav,*.mp3,*.flac,*.ogg,*.m4a,*.wma,*.ape,*.ac3
-"        \ {Play using mocp}
-"        \ mocp -l %c %i &,
-"        \ {Add to plyalist mocp}
-"        \ mocp -a %c %i &,
 
 filetype *.wav,*.mp3,*.flac,*.ogg,*.m4a,*.wma,*.ape,*.ac3
        \ {Play using mocp}
@@ -89,24 +72,17 @@ filetype *.avi,*.mp4,*.wmv,*.dat,*.3gp,*.ogv,*.mkv,*.mpg,*.vob,*.flv,*.m2v,*.mov
        \ ffprobe -pretty %c 2>&1
 
 
-fileviewer *.avi,*.mp4,*.wmv,*.dat,*.3gp,*.ogv,*.mkv,*.mpg,*.mpeg,*.vob,
-          \*.fl[icv],*.m2v,*.mov,*.webm,*.ts,*.mts,*.m4v,*.r[am],*.qt,*.divx,
-          \*.as[fx]
-        \ vifmimg videopreview %px %py %pw %ph %c
-        \ %pc 
-        \ vifmimg clear
-        " \ ffprobe -pretty %c 2>&1
+fileviewer *.gif,*.avi,*.mp4,*.wmv,*.dat,*.3gp,*.ogv,*.mkv,*.mpg,*.mpeg,*.vob,*.fl[icv],*.m2v,*.mov,*.webm,*.ts,*.mts,*.m4v,*.r[am],*.qt,*.divx,*.as[fx]
+	\ tput cup %py %px > /dev/tty && ffmpeg -y -hide_banner -loglevel panic -i %c -ss 00:00:01.000 -vframes 1 /tmp/tempfile.jpg > /dev/null && kitty +icat --place %pwx%ph@%pxx%py --silent /tmp/tempfile.jpg
+	\ %pc
+    \ kitty icat --clear --silent %pd
 
 " Web
 filextype *.html,*.htm
         \ {Open with luakit}
         \ luakit %f:p %i &,
-        " \ {Open with dwb}
-        " \ dwb %f %i &,
         \ {Open with firefox}
         \ firefox %f %i &,
-        " \ {Open with uzbl}
-        " \ uzbl-browser %f %i &,
 filetype *.html,*.htm w3m
 
 " Object
@@ -120,29 +96,12 @@ fileviewer *.[1-8] gtbl %c | groff -Tascii -man | col -b
 filetype *.bmp,*.jpg,*.jpeg,*.png,*.gif,*.xpm
         \ {View in viewniorviewnior}
         \ viewnior %c %i &,
-"         \ {View in gpicview}
-"         \ gpicview %c,
-" fileviewer *.bmp,*.jpg,*.jpeg,*.png,*.gif,*.xpm convert -identify %f -verbose /dev/null
 
-" fileviewer *.bmp,*.jpg,*.jpeg,*.png,*.gif,*.xpm
-"          \ imgt %px %py %pw %ph %c
-"          \ %pc
-"          \ imgc %px %py %pw %ph
-
+"
 fileviewer *.bmp,*.jpg,*.jpeg,*.png,*.xpm
-        \ vifmimg draw %px %py %pw %ph %c
+        \ kitty +icat --place %pwx%ph@%pxx%py --silent %c
         \ %pc
-        \ vifmimg clear
-
-fileviewer *.gif
-        \ vifmimg draw %px %py %pw %ph %c
-        \ %pc
-        \ vifmimg clear
-
-fileviewer *.nef
-        \ vifmimg magickpreview %px %py %pw %ph %c
-        \ %pc
-        \ vifmimg clear
+        \ kitty icat --clear --silent %pd
 
 " MD5
 filetype *.md5
@@ -178,6 +137,7 @@ filextype *.pro qtcreator %f &
 filextype */
         \ {View in thunar}
         \ open %f %i &,
+
 fileviewer .*/,*/ tree %f
 
 " Syntax highlighting in preview
@@ -237,4 +197,4 @@ filetype *.ftp
 " settings).  By default all unknown files are opened with 'vi[x]cmd'
 " uncommenting one of lines below will result in ignoring 'vi[x]cmd' option
 " for unknown file types.
-filetype * $OPEN_CMD
+filetype * open

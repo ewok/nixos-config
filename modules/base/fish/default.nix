@@ -5,11 +5,30 @@ let
   dev = config.modules.dev;
   username = config.properties.user.name;
   tz = config.properties.timezone;
+  open = pkgs.writeShellScriptBin "open" ''
+    if [[ "$WSLENV" != "" ]]; then
+        explorer.exe "$@"
+    elif [[ "$OSTYPE" == "linux-gnu" ]]; then
+        xdg-open "$@"
+    elif [[ "$OSTYPE" == "darwin"* ]]; then
+        /usr/bin/open "$@"
+    elif [[ "$OSTYPE" == "cygwin" ]]; then
+        exit 1
+    elif [[ "$OSTYPE" == "msys" ]]; then
+        exit 1
+    elif [[ "$OSTYPE" == "freebsd"* ]]; then
+        exit 1
+    else
+        exit 1
+    fi
+  '';
 in
 {
   config = mkIf base.enable {
 
     home-manager.users."${username}" = {
+
+      home.packages = [ open ];
 
       programs.fish = {
         enable = true;
@@ -120,7 +139,7 @@ in
             set -gx BROWSER /usr/bin/firefox
             set -gx EDITOR 'nvim'
             set -gx GUI_EDITOR /usr/bin/nvim
-            set -gx TERMINAL /usr/bin/termite
+            set -gx TERMINAL /usr/bin/kitty
             set -gx VISUAL 'nvim'
             set -gx XDG_CONFIG_HOME "$HOME/.config"
 
