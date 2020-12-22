@@ -69,11 +69,11 @@
     },
     "my-nixpkgs": {
       "locked": {
-        "lastModified": 1608541523,
-        "narHash": "sha256-QnYzvHeNrCIMfn8eY2uPDOx6Invj0k2sKOaoV7AEQ1M=",
+        "lastModified": 1608667427,
+        "narHash": "sha256-KmZuoW1wqO8j0fvA5N7JS8A1e1Rjwl7CttnHeHSjer8=",
         "owner": "ewok",
         "repo": "nixpkgs",
-        "rev": "7d6bac30a4531a82fac3d5b43396ccaa299955e5",
+        "rev": "7d7ff1528138a7c8e791a26ab14f7eedda976367",
         "type": "github"
       },
       "original": {
