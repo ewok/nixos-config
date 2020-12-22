@@ -1,3 +1,0 @@
-#!/bin/bash
-
-docker run -it --rm --entrypoint=/usr/local/bin/slack-cleaner sgratzl/slack-cleaner "$@"

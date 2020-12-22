@@ -1,3 +1,0 @@
-#!/bin/bash
-
-docker run -ti --rm --entrypoint bash centos:7 -c "$*"
