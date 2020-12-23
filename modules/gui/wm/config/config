@@ -84,7 +84,7 @@ bindsym $mod+d exec --no-startup-id albert, exec albert toggle, exec xkb-switch 
 bindsym $mod_a+z exec --no-startup-id morc_menu
 
 # Lock screen
-bindsym $mod_a+l exec --no-startup-id "~/.config/i3/blurlock"
+bindsym $mod_a+l exec --no-startup-id "blurlock"
 
 # Dmenu
 # bindsym $mod_a+d exec --no-startup-id dmenu_recent -fn 'xos4 Terminus:size=15' -i -l 14 -w 600 -y $PANEL_HEIGHT
@@ -269,13 +269,13 @@ bindsym $mod+Shift+9 move container to workspace 9
 bindsym $mod+$mod_a+0 mode "$mode_system"
 set $mode_system (l)ock, (e)xit, switch_(u)ser, (s)uspend, (h)ibernate, (r)eboot, (Shift+s)hutdown
 mode "$mode_system" {
-    bindsym l exec --no-startup-id "~/.config/i3/i3exit lock", mode "default"
-    bindsym s exec --no-startup-id "~/.config/i3/i3exit suspend", mode "default"
-    bindsym u exec --no-startup-id "~/.config/i3/i3exit switch_user", mode "default"
-    bindsym e exec --no-startup-id "~/.config/i3/i3exit logout", mode "default"
-    bindsym h exec --no-startup-id "~/.config/i3/i3exit hibernate", mode "default"
-    bindsym r exec --no-startup-id "~/.config/i3/i3exit reboot", mode "default"
-    bindsym Shift+s exec --no-startup-id "~/.config/i3/i3exit shutdown", mode "default"
+    bindsym l exec --no-startup-id "i3exit lock", mode "default"
+    bindsym s exec --no-startup-id "i3exit suspend", mode "default"
+    bindsym u exec --no-startup-id "i3exit switch_user", mode "default"
+    bindsym e exec --no-startup-id "i3exit logout", mode "default"
+    bindsym h exec --no-startup-id "i3exit hibernate", mode "default"
+    bindsym r exec --no-startup-id "i3exit reboot", mode "default"
+    bindsym Shift+s exec --no-startup-id "i3exit shutdown", mode "default"
 
     # exit system mode: "Enter" or "Escape"
     bindsym Return mode "default"
@@ -345,7 +345,7 @@ bar {
 	i3bar_command i3bar
     font pango:DejaVu Sans Mono, FontAwesome 11
     position top
-    status_command i3status-rs
+    status_command i3status-rs ~/.config/i3status-rust/config-default.toml
     colors {
         separator #666666
         background #222222
