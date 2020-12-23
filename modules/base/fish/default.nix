@@ -22,13 +22,25 @@ let
         exit 1
     fi
   '';
+  fish-tmux = pkgs.writeShellScriptBin "fish-tmux" ''
+    if [[ -z "$TMUX" ]]
+    then
+      SESS=$(tmux list-sessions | grep -v attached | cut -d: -f1 | head -n 1)
+      if [[ -n "$SESS" ]]
+      then
+        tmux attach -t $SESS
+      else
+        tmux new
+      fi
+    fi
+  '';
 in
 {
   config = mkIf base.enable {
 
     home-manager.users."${username}" = {
 
-      home.packages = [ open ];
+      home.packages = [ open fish-tmux ];
 
       programs.fish = {
         enable = true;
@@ -113,7 +125,7 @@ in
         interactiveShellInit = ''
           set -Ux FZF_LEGACY_KEYBINDINGS 0
           set -Ux OPEN_CMD open
-          bind \cw backward-kill-word
+          fish-tmux
         '';
         loginShellInit = ''
           curl 'wttr.in?1nq' -m 0.5
