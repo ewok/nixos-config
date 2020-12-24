@@ -9,21 +9,21 @@ in
 
     environment.systemPackages = with pkgs; [
       tree
-      binutils
-      openssl
-      ntfs3g
       dfc
       htop
+      reptyr
+
+      binutils
+      pciutils
+      openssl
+      ntfs3g
 
       curl
       wget
-
-      jq
-
       telnet
       netcat
 
-      reptyr
+      jq
 
       trash-cli
 
