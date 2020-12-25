@@ -1,9 +1,14 @@
-{ config, lib, pkgs, ... }:
+{ config, lib, pkgs, inputs, ... }:
 with lib;
 let
   gui = config.modules.gui;
   username = config.properties.user.name;
+  mypkgs = import inputs.my-nixpkgs ({
+    config = config.nixpkgs.config;
+    localSystem = { system = "x86_64-linux"; };
+  });
   blurlock = pkgs.writeShellScriptBin "blurlock" ''
+    ${pkgs.xkb-switch}/bin/xkb-switch -s us
     RESOLUTION=$(${pkgs.xorg.xrandr}/bin/xrandr -q|sed -n 's/.*current[ ]\([0-9]*\) x \([0-9]*\),.*/\1x\2/p')
     ${pkgs.imagemagick}/bin/import -silent -window root jpeg:- | ${pkgs.imagemagick}/bin/convert - -scale 20% -blur 0x2.5 -resize 500% RGB:- | \
       ${pkgs.i3lock}/bin/i3lock --raw $RESOLUTION:rgb -i /dev/stdin -e $@
@@ -65,14 +70,12 @@ in
         home.packages = with pkgs; [
           imagemagick
           xdotool
-          xkb-switch
           xorg.xrandr
           xorg.xwininfo
 
           blurlock
           i3exit
-        ];
-
+        ] ++ [ mypkgs.xkb-switch-i3 ];
 
         xdg.configFile."i3/config".source = ./config/config;
 

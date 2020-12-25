@@ -112,8 +112,8 @@ mode "$mode_keyb" {
         bindsym Ctrl+[ mode "default"
 }
 
-bindsym $mod_a+space exec "xkb-switch -n"
-# bindsym $mod_a+space exec "xkb-switch -n; pkill -x --signal=SIGUSR1 i3status-rs"
+# bindsym $mod_a+space exec "xkb-switch -n"
+bindsym $mod_a+space exec "xkb-switch -n; pkill -x --signal=SIGUSR1 i3status-rs"
 
 ################################################################################################
 ## sound-section - DO NOT EDIT if you wish to automatically upgrade Alsa -> Pulseaudio later! ##
@@ -385,3 +385,4 @@ exec_always --no-startup-id pgrep cawbird || cawbird
 exec_always --no-startup-id sparkleshare
 
 exec_always --no-startup-id pgrep clipit || clipit
+exec_always --no-startup-id pgrep xkb-switch || xkb-switch --i3
