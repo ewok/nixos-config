@@ -1,4 +1,4 @@
-{ config, lib, ...  }:
+{ config, lib, pkgs, ...  }:
 with lib;
 let
   base = config.modules.base;
@@ -13,8 +13,9 @@ in
   };
 
   config = mkIf base.enable {
-
     home-manager.users."${username}" = {
+      home.packages = [ pkgs.sshuttle ];
+
       programs.ssh = {
         enable = true;
         compression = true;
