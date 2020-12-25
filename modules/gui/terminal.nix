@@ -9,6 +9,59 @@ in
     config = mkIf gui.enable {
 
       home-manager.users.${username} = {
+        # programs.alacritty = {
+        #   enable = true;
+        #   settings = {
+        #     scrolling = {
+        #       history = 100000;
+        #     };
+        #     font = {
+        #       normal = {
+        #         family = monospaceFont;
+        #         style = "Regular";
+        #       };
+        #       size = gui.fonts.monospaceFontSize;
+        #     };
+        #     colors = {
+        #       primary = {
+        #         background = "#000000";
+        #         foreground = "#ffffff";
+        #       };
+        #       normal = {
+        #         black = "#222222";
+        #         red = "#e84f4f";
+        #         green = "#b7ce42";
+        #         yellow = "#fea63c";
+        #         blue = "#66aabb";
+        #         magenta = "#b7416e";
+        #         cyan = "#6d878d";
+        #         white = "#dddddd";
+        #       };
+        #       bright = {
+        #         black = "#666666";
+        #         red = "#d23d3d";
+        #         green = "#bde077";
+        #         yellow = "#ffe863";
+        #         blue = "#aaccbb";
+        #         magenta = "#e16a98";
+        #         cyan = "#42717b";
+        #         white = "#cccccc";
+        #       };
+        #     };
+        #     cursor = {
+        #       style = "Block";
+        #       blinking = "On";
+
+        #     };
+            # key_bindings = [
+            #   {
+            #     key = "K";
+            #     mods = "Control";
+            #     chars = "\\x0c";
+            #   }
+            # ];
+          # };
+        # };
         programs.kitty = {
           enable = true;
           settings = {
@@ -20,6 +73,7 @@ in
 
             background = "#000000";
             foreground = "#ffffff";
+            # black
             color0 = "#222222";
             color8 = "#666666";
 
@@ -52,7 +106,8 @@ in
             color15 = "#cccccc";
           };
           keybindings = {
-
+            "shift+enter" = ''send_text all \x1b[13;2u'';
+            "ctrl+enter" = ''send_text all \x1b[13;5u'';
           };
           extraConfig = "";
         };
