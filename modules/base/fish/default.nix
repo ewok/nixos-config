@@ -125,6 +125,7 @@ in
         interactiveShellInit = ''
           set -Ux FZF_LEGACY_KEYBINDINGS 0
           set -Ux OPEN_CMD open
+          bind \cw backward-kill-word
           fish-tmux
         '';
         loginShellInit = ''

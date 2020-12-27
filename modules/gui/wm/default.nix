@@ -117,7 +117,8 @@ in
                  warning = 20.0;
                  alert = 10.0;
                }
-               {
+
+               (mkIf (config.fileSystems ? "/mnt/Data") {
                  block = "disk_space";
                  path = "/mnt/Data";
                  alias = "/Data";
@@ -126,7 +127,8 @@ in
                  interval = 60;
                  warning = 10.0;
                  alert = 5.0;
-               }
+               })
+
                {
                  block = "cpu";
                  interval = 1;
