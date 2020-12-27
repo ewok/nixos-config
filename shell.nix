@@ -10,6 +10,14 @@ let
     fi
   '';
 
+  nix-boot = writeShellScriptBin "nix-my-boot" ''
+    if [ "$#" -eq 0 ]; then
+      sudo nixos-rebuild boot --flake "."
+    else
+      sudo nixos-rebuild boot --flake ".#$1" $2
+    fi
+  '';
+
   nix-rebuild = writeShellScriptBin "nix-my-rebuild" ''
     if [ "$#" -eq 0 ]; then
       sudo nixos-rebuild build --flake "."
@@ -45,6 +53,7 @@ in
       nix-switch
       nix-rebuild
       nix-rebuild-vm
+      nix-boot
     ];
 
     shellHook = ''
