@@ -34,6 +34,19 @@ let
     fi
   '';
 
+  nix-clean-result = writeShellScriptBin "nix-my-clean-result" ''
+    if [  "$1" == "-f" ]
+    then
+      echo "Deleting..."
+      nix-store --gc --print-roots | awk '{print $1}' | grep '/result$' | sudo xargs rm
+    else
+      nix-store --gc --print-roots | awk '{print $1}' | grep '/result$' | sudo xargs echo
+      echo
+      echo "To delete run:"
+      echo "nix-my-clean-result -f"
+    fi
+  '';
+
   nix = writeShellScriptBin "nix" ''
     ${pkgs.nixFlakes}/bin/nix --option experimental-features "nix-command flakes ca-references" "$@"
   '';
@@ -54,6 +67,7 @@ in
       nix-rebuild
       nix-rebuild-vm
       nix-boot
+      nix-clean-result
     ];
 
     shellHook = ''

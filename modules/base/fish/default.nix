@@ -67,19 +67,6 @@ in
         };
 
         functions = {
-          "nix-my-clean-result" = {
-            body = ''
-              if string match -q -- "-f" $argv
-                echo "Deleting..."
-                nix-store --gc --print-roots | awk '{print $1}' | grep '/result$' | sudo xargs rm
-              else
-                nix-store --gc --print-roots | awk '{print $1}' | grep '/result$' | sudo xargs echo
-                echo
-                echo "To delete run:"
-                echo "nix-my-clean-result -f"
-              end
-            '';
-          };
           "vifm" = {
             body = ''
               set -l dst (command vifm --choose-dir - $argv)
@@ -123,13 +110,13 @@ in
         ];
 
         interactiveShellInit = ''
+          ${readFile ./config/functions/ssh-agent.fish}
           set -Ux FZF_LEGACY_KEYBINDINGS 0
           set -Ux OPEN_CMD open
           bind \cw backward-kill-word
           fish-tmux
         '';
         loginShellInit = ''
-          curl 'wttr.in?1nq' -m 0.5
           set -x LANG en_US.UTF-8
           # set -x LC_CTYPE "ru_RU.UTF-8"
           set -x LC_NUMERIC "ru_RU.UTF-8"
@@ -165,7 +152,6 @@ in
         xdg.configFile = mkMerge [
           {
             "fish/conf.d/my_git_abbr.fish".source = ./config/conf.d/my_git_abbr.fish;
-            "fish/functions/ssh-agent.fish".source = ./config/functions/ssh-agent.fish;
           }
           (optionalAttrs (dev.k8s.enable) {
             "fish/functions/fish_right_prompt.fish".source = ./config/functions/fish_right_prompt.fish;

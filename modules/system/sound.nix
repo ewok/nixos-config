@@ -16,6 +16,7 @@ in
       users.users.${username}.extraGroups = [ "audio" ];
     })
     (mkIf cfg.pulse.enable {
+      users.users.${username}.extraGroups = [ "pulse" ];
       hardware.pulseaudio = {
         enable = true;
         support32Bit = true;
