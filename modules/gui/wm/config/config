@@ -77,7 +77,7 @@ bindsym $mod+Shift+q kill
 bindsym $mod_a+Shift+q --release exec --no-startup-id xkill
 
 # start program launcher
-bindsym $mod+d exec --no-startup-id albert, exec albert toggle, exec xkb-switch -s us
+bindsym $mod+d exec --no-startup-id albert toggle || albert, exec xkb-switch -s us
 # bindsym $mod+d exec --no-startup-id dmenu_recency
 
 # launch categorized menu
@@ -377,6 +377,8 @@ bindsym $mod+m bar mode toggle
 # exec_always --no-startup-id deadd
 # exec_always --no-startup-id pgrep pcloud || pcloud
 # exec_always --no-startup-id pgrep insync || insync start
+exec_always --no-startup-id pgrep caffeine || caffeine
+exec_always --no-startup-id pgrep goldendict || goldendict
 exec_always --no-startup-id pgrep cryptomator || cryptomator
 exec_always --no-startup-id pgrep Enpass || Enpass
 exec_always --no-startup-id pgrep telegram-deskto || telegram-desktop

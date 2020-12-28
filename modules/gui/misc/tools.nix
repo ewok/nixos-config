@@ -11,6 +11,7 @@ in
           caffeine-ng
           xclip
           xsel
+          goldendict
         ];
       };
     };

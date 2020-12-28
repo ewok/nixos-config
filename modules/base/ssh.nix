@@ -14,7 +14,7 @@ in
 
   config = mkIf base.enable {
     home-manager.users."${username}" = {
-      home.packages = [ pkgs.sshuttle ];
+      home.packages = [ pkgs.sshuttle pkgs.sshpass ];
 
       programs.ssh = {
         enable = true;
