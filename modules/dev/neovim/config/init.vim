@@ -1503,9 +1503,16 @@ nnoremap <silent> <localleader> :<c-u>WhichKey  ','<CR>
 vnoremap <silent> <localleader> :<c-u>WhichKeyVisual ','<CR>
 " }}}
 " Xkb {{{
-" call minpac#add('lyokha/vim-xkbswitch', {'type': 'start', 'name': 'xkbswitch'})
-" let g:XkbSwitchEnabled = 1
-" let g:XkbSwitchSkipFt = [ 'nerdtree' ]
+call minpac#add('lyokha/vim-xkbswitch', {'type': 'start', 'name': 'xkbswitch'})
+
+if executable('nix-store')
+  let cmd = 'nix-store -r $(which xkb-switch) 2>/dev/null'
+  let result = substitute(system(cmd), '[\]\|[[:cntrl:]]', '', 'g')
+  let g:XkbSwitchLib = result . '/lib/libxkbswitch.so'
+endif
+
+let g:XkbSwitchEnabled = 1
+let g:XkbSwitchSkipFt = [ 'nerdtree' ]
 " }}}
 " Zoom {{{
 call minpac#add('dhruvasagar/vim-zoom', {'type': 'start', 'name': 'vim-zoom'})
