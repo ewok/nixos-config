@@ -21,7 +21,7 @@ in
         enable = true;
         support32Bit = true;
         package = pkgs.pulseaudioFull;
-        systemWide = true;
+        # systemWide = true;
         daemon.config = { flat-volumes = "no"; };
         extraConfig = ''
           load-module module-native-protocol-tcp auth-ip-acl=127.0.0.1
