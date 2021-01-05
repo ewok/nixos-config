@@ -72,7 +72,8 @@ in
       enableWebUI = true;
       httpLogin = cfg.httpLogin;
       httpPass = cfg.httpPass;
-      directoryRoot = "${homeDirectory}";
+      directoryRoot = "/";
+      # directoryRoot = "${homeDirectory}";
     };
 
   };
