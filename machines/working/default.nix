@@ -12,6 +12,9 @@ in
     "${inputs.nixos-hardware}/lenovo/thinkpad/p53"
   ];
 
+  services.xserver.libinput.naturalScrolling = true;
+  services.xserver.libinput.enable = true;
+
   time.timeZone = properties.timezone;
 
   # Enabled by default
