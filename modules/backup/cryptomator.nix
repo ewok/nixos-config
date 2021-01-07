@@ -8,18 +8,12 @@ let
     config = config.nixpkgs.config;
     localSystem = { system = "x86_64-linux"; };
   });
-  desktop = pkgs.makeDesktopItem {
-    name = "Cryptomator";
-    desktopName = "Cryptomator";
-    exec = "${mypkgs.cryptomator}/bin/cryptomator";
-  };
 in
 {
   config = mkIf gui.enable {
     home-manager.users.${username} = {
       home.packages = with mypkgs; [
         cryptomator
-        desktop
       ];
     };
   };
