@@ -4,6 +4,7 @@
   inputs = rec {
     stable.url = "github:NixOS/nixpkgs/nixos-20.09";
     unstable.url = "github:nixos/nixpkgs/nixos-unstable";
+    master.url = "github:nixos/nixpkgs/master";
     nixos-hardware.url = "github:NixOS/nixos-hardware";
     neovim-nightly-overlay.url = "github:mjlbach/neovim-nightly-overlay";
     home-manager = {

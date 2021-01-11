@@ -3,7 +3,7 @@ with lib;
 let
   gui = config.modules.gui;
   username = config.properties.user.name;
-  mypkgs = import inputs.my-nixpkgs ({
+  master = import inputs.master ({
     config = config.nixpkgs.config;
     localSystem = { system = "x86_64-linux"; };
   });
@@ -75,7 +75,7 @@ in
 
           blurlock
           i3exit
-        ] ++ [ mypkgs.xkb-switch-i3 ];
+        ] ++ [ master.xkb-switch-i3 ];
 
         xdg.configFile."i3/config".source = ./config/config;
 
