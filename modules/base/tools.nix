@@ -29,6 +29,9 @@ in
 
       git
       git-crypt
+
+      zip
+      unzip
     ];
 
   };
