@@ -15,11 +15,23 @@ in
           enable = true;
         };
         binds = [
+
           {
-            map = "index";
-            key = "" ;
-            action = "";
+            key = "_" ;
+            action = "collapse-all";
           }
+
+          {
+            key = "-" ;
+            action = "collapse-thread";
+          }
+
+          {
+            map = "attach";
+            key = "<return>" ;
+            action = "view-mailcap";
+          }
+
         ];
       };
 
