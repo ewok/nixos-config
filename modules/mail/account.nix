@@ -3,6 +3,7 @@ with lib;
 let
   mail = config.modules.mail;
   username = config.properties.user.name;
+  homeDirectory = config.home-manager.users.${username}.home.homeDirectory;
 in
 {
   options.modules.mail = {
@@ -15,7 +16,7 @@ in
   config = mkIf mail.enable {
     home-manager.users."${username}" = {
       accounts.email = {
-        maildirBasePath = "${config.home.homeDirectory}/mail";
+        maildirBasePath = "${homeDirectory}/mail";
         accounts = mail.accounts;
       };
     };
