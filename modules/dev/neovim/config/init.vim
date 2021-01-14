@@ -226,6 +226,7 @@ let g:lmap.q = { 'name': '+QFix' }
 let g:lmap.r = { 'name': '+Run' }
 let g:lmap.s = { 'name': '+Session-Sort' }
 let g:lmap.t = { 'name': '+Tags-To-Text' }
+let g:lmap.y = { 'name': '+Yank' }
 let g:lmap.w = { 'name': '+Wiki' }
 let g:lmap.z = { 'name': '+Zoom' }
 " }}}
@@ -349,8 +350,10 @@ vmap <expr>  MY  ':Yankitute/\(' . @/ . '\)/\1/g<LEFT><LEFT>'
 vnoremap p :<C-U>let @p = @+<CR>gvp:let @+ = @p<CR>
 
 " Permanent buffer
+let g:lmap.y.y = 'Yank'
 vmap <leader>yy :w! ~/.vbuf<CR>
 nmap <leader>yy :.w! ~/.vbuf<CR>
+let g:lmap.y.p = 'Paste'
 nmap <leader>yp :r ~/.vbuf<CR>
 " }}}
 " Some vim tunings {{{
@@ -1267,10 +1270,10 @@ let g:SignatureMap = {
   \ 'PurgeMarkers'       :  "m<BS>",
   \ 'GotoNextLineAlpha'  :  "",
   \ 'GotoPrevLineAlpha'  :  "",
-  \ 'GotoNextSpotAlpha'  :  "",
-  \ 'GotoPrevSpotAlpha'  :  "",
-  \ 'GotoNextLineByPos'  :  "]'",
-  \ 'GotoPrevLineByPos'  :  "['",
+  \ 'GotoNextSpotAlpha'  :  "]'",
+  \ 'GotoPrevSpotAlpha'  :  "['",
+  \ 'GotoNextLineByPos'  :  "",
+  \ 'GotoPrevLineByPos'  :  "",
   \ 'GotoNextSpotByPos'  :  "",
   \ 'GotoPrevSpotByPos'  :  "",
   \ 'GotoNextMarker'     :  "",
@@ -1710,6 +1713,19 @@ call minpac#add('andrewradev/splitjoin.vim', {'type': 'opt', 'name': 'splitjoin'
 let g:splitjoin_split_mapping = 'gs'
 let g:splitjoin_join_mapping  = 'gj'
 
+" }}}
+" Zeavim {{{
+call minpac#add('KabbAmine/zeavim.vim', {'type': 'start', 'name': 'zeavim'})
+let g:zv_disable_mapping = 1
+let g:zv_file_types = {
+                \    '\v^(G|g)runt\.'           : 'gulp,javascript,nodejs',
+                \    '\v^(G|g)ulpfile\.'        : 'grunt',
+                \    '\v^(md|mdown|mkd|mkdn)$'  : 'markdown',
+                \ }
+nmap gzz <Plug>Zeavim
+vmap gzz <Plug>ZVVisSelection
+nmap gZ <Plug>ZVKeyDocset<CR>
+nmap gz <Plug>ZVOperator
 " }}}
 " }}}
 
