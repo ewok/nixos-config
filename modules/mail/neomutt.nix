@@ -141,6 +141,7 @@ in
           sidebar_next_new_wrap = "yes";
 
           delete = "yes";
+          auto_tag = "yes";
           use_from = "yes";
           envelope_from = "yes";
         };

@@ -384,6 +384,7 @@ exec_always --no-startup-id pgrep Enpass || Enpass
 exec_always --no-startup-id pgrep telegram-deskto || telegram-desktop
 exec_always --no-startup-id pgrep zeal || zeal
 exec_always --no-startup-id pgrep cawbird || cawbird
+exec_always --no-startup-id pgrep -f davmail || davmail
 exec_always --no-startup-id sparkleshare
 
 exec_always --no-startup-id pgrep clipit || clipit
