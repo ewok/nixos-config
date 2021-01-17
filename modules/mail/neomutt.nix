@@ -6,7 +6,7 @@ let
   homeDirectory = config.home-manager.users.${username}.home.homeDirectory;
 
   davmail-start = pkgs.writeShellScriptBin "davmail-start" ''
-    if [ "$(${pkgs.procps}/bin/pgrep -f '^java .*davmail\.jar')" == "" ]
+    if [ "$(${pkgs.procps}/bin/pgrep -f 'java .*davmail\.jar')" == "" ]
     then
     ${pkgs.jdk}/bin/java -jar ${pkgs.davmail}/share/davmail/davmail.jar 2>&1 || echo "Error running DAVmail" &
     # Give a time to DAVmail
@@ -15,7 +15,7 @@ let
     '';
 
   davmail-stop = pkgs.writeShellScriptBin "davmail-stop" ''
-    DAVMAIL_PID="$(${pkgs.procps}/bin/pgrep -f '^java .*davmail\.jar')"
+    DAVMAIL_PID="$(${pkgs.procps}/bin/pgrep -f 'java .*davmail\.jar')"
     if [ "$DAVMAIL_PID" != "" ]
     then
       ${pkgs.util-linux}/bin/kill $DAVMAIL_PID
