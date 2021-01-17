@@ -5,7 +5,8 @@ let
   username = config.properties.user.name;
   keyb-layout = pkgs.writeScriptBin "keyb-layout" ''
     #!${pkgs.bash}/bin/bash
-    if [ $1 -eq 1 ]; then
+    LAYOUT=''${1:-0}
+    if [ $LAYOUT -eq 1 ]; then
       setxkbmap -rules "evdev" -model "pc105" -layout "us,ru" -option "ctrl:swapcaps"
     else
       setxkbmap -rules "evdev" -model "pc105" -layout "us,ru" -option
