@@ -3,17 +3,60 @@ with lib;
 let
   mail = config.modules.mail;
   username = config.properties.user.name;
+  homeDirectory = config.home-manager.users.${username}.home.homeDirectory;
+
+  davmail-start = pkgs.writeShellScriptBin "davmail-start" ''
+    if [ "$(${pkgs.procps}/bin/pgrep -f '^java .*davmail\.jar')" == "" ]
+    then
+    ${pkgs.jdk}/bin/java -jar ${pkgs.davmail}/share/davmail/davmail.jar 2>&1 || echo "Error running DAVmail" &
+    # Give a time to DAVmail
+    ${pkgs.coreutils}/bin/sleep 2
+    fi
+    '';
+
+  davmail-stop = pkgs.writeShellScriptBin "davmail-stop" ''
+    DAVMAIL_PID="$(${pkgs.procps}/bin/pgrep -f '^java .*davmail\.jar')"
+    if [ "$DAVMAIL_PID" != "" ]
+    then
+      ${pkgs.util-linux}/bin/kill $DAVMAIL_PID
+    fi
+    '';
 in
 {
   config = mkIf mail.enable {
     home-manager.users.${username} = {
 
-      home.packages = [ pkgs.pandoc pkgs.davmail ];
+      home.packages = [
+        pkgs.pandoc
+        pkgs.davmail
+        pkgs.gsasl
+        pkgs.cyrus_sasl
+        davmail-start
+        davmail-stop
+      ];
 
-      programs.password-store.enable = true;
+      programs.password-store = {
+        enable = true;
+        settings = {
+          PASSWORD_STORE_DIR = "${homeDirectory}/.password-store";
+        };
+      };
       programs.gpg.enable = true;
-      services.gpg-agent.enable = true;
+      services.gpg-agent = {
+        enable = true;
+        defaultCacheTtl = 7200;
+        maxCacheTtl = 86400;
+      };
+
       programs.mbsync.enable = true;
+      services.mbsync = {
+        enable = true;
+        frequency = "*:0/15";
+        preExec = "${davmail-start}/bin/davmail-start";
+        # postExec = "${davmail-stop}/bin/davmail-stop";
+      };
+
+      programs.msmtp.enable = true;
 
       programs.neomutt = {
         enable = true;
