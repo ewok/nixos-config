@@ -26,15 +26,10 @@ with lib;
     # deadd-notification-center
       # ./deadd
       # ./nitrogen
-      # xkb-switch-i3
 
     # Books:
       # calibre
       # fbreader
-      # zathura
-      #   zathura-cb
-      #   zathura-djvu
-      #   zathura-mupdf
 
     # Communication:
 
@@ -47,8 +42,6 @@ with lib;
     # - "~/.local/share/albert/org.albert.extension.python/modules/"
     # - "~/.config/albert"
     # - "~/Pictures/Screenshots"
-
-    # wallpaper
 
 # - name: Set wallpaper from unsplash
 #   get_url:

@@ -16,9 +16,9 @@ in
 
     config = mkIf gui.enable {
 
-      services.geoclue2 = {
-        enable = true;
-      };
+      # services.geoclue2 = {
+      #   enable = true;
+      # };
 
       home-manager.users.${username} = {
         services.redshift = {
