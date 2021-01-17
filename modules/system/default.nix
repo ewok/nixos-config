@@ -6,5 +6,6 @@
     ./printing.nix
     ./sound.nix
     ./sudo.nix
+    ./misc.nix
   ];
 }
