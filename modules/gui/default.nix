@@ -15,6 +15,7 @@ with lib;
     ./display.nix
     ./video.nix
     ./office.nix
+    ./notification.nix
 
     ./misc/enpass.nix
     ./misc/albert.nix

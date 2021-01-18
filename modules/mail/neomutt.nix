@@ -2,6 +2,7 @@
 with lib;
 let
   mail = config.modules.mail;
+  gui = config.modules.gui;
   username = config.properties.user.name;
   homeDirectory = config.home-manager.users.${username}.home.homeDirectory;
 
@@ -33,6 +34,8 @@ in
         pkgs.cyrus_sasl
         davmail-start
         davmail-stop
+      ] ++ optionals (gui.enable) [
+        pkgs.libnotify
       ];
 
       programs.password-store = {
@@ -83,14 +86,14 @@ in
           { key = "k"; action = "previous-entry"; }
           { key = "S"; action = "save-message"; }
           { key = "s"; action = "sort-mailbox"; }
-          { key = "R"; action = "group-reply"; }
+          # { key = "R"; action = "group-reply"; }
           { key = "N"; action = "mail"; }
           { key = "m"; action = "noop"; }
           { key = "\\Ct"; action = "noop"; }
           { key = "\\Ctt"; action = "tag-thread"; }
           { key = "\\Ctp"; action = "tag-pattern"; }
           { key = "\\Ctu"; action = "untag-pattern"; }
-          { key = "F"; action = "imap-fetch-mail"; }
+          # { key = "F"; action = "imap-fetch-mail"; }
           { key = "o"; action = "sidebar-open"; }
           { key = "\\Co"; action = "sidebar-open"; }
           { key = "\\Co"; action = "sidebar-open"; }
@@ -109,7 +112,7 @@ in
           { map = "pager"; key = "j"; action = "next-line"; }
           { map = "pager"; key = "k"; action = "previous-line"; }
           { map = "pager"; key = "S"; action = "save-message"; }
-          { map = "pager"; key = "R"; action = "group-reply"; }
+          # { map = "pager"; key = "R"; action = "group-reply"; }
           { map = "pager"; key = "\\Cp"; action = "previous-undeleted"; }
           { map = "pager"; key = "\\Cn"; action = "next-undeleted"; }
           { map = "pager"; key = "N"; action = "mail"; }
@@ -120,6 +123,56 @@ in
 
           # attach
           { map = "attach"; key = "<return>"; action = "view-mailcap"; }
+
+          # unbind
+          {
+            map = "index";
+            key = "r";
+            action = "noop";
+          }
+          {
+            map = "pager";
+            key = "r";
+            action = "noop";
+          }
+          {
+            map = "attach";
+            key = "r";
+            action = "noop";
+          }
+
+          {
+            map = "index";
+            key = "R";
+            action = "noop";
+          }
+          {
+            map = "pager";
+            key = "R";
+            action = "noop";
+          }
+          {
+            map = "attach";
+            key = "R";
+            action = "noop";
+          }
+
+          {
+            map = "index";
+            key = "L";
+            action = "noop";
+          }
+          {
+            map = "pager";
+            key = "L";
+            action = "noop";
+          }
+          {
+            map = "attach";
+            key = "L";
+            action = "noop";
+          }
+
         ];
 
         macros = [
@@ -127,6 +180,98 @@ in
           {
             key = "S";
             action = "<save-entry><kill-line>~/Downloads/";
+          }
+
+          {
+            key = "F";
+            action = "<shell-escape>systemctl --user start mbsync.service<enter>";
+          }
+
+          {
+            key = "rm";
+            action = "<enter-command>set mailcap_path=~/.config/neomutt/mailcap_reply<enter><reply>";
+          }
+          {
+            key = "rp";
+            action = "<enter-command>set mailcap_path=~/.config/neomutt/mailcap<enter><reply>";
+          }
+          {
+            key = "RM";
+            action = "<enter-command>set mailcap_path=~/.config/neomutt/mailcap_reply<enter><group-reply>";
+          }
+          {
+            key = "RP";
+            action = "<enter-command>set mailcap_path=~/.config/neomutt/mailcap<enter><group-reply>";
+          }
+          {
+            key = "LM";
+            action = "<enter-command>set mailcap_path=~/.config/neomutt/mailcap_reply<enter><list-reply>";
+          }
+          {
+            key = "LP";
+            action = "<enter-command>set mailcap_path=~/.config/neomutt/mailcap<enter><list-reply>";
+          }
+
+          {
+            map = "pager";
+            key = "rm";
+            action = "<enter-command>set mailcap_path=~/.config/neomutt/mailcap_reply<enter><reply>";
+          }
+          {
+            map = "pager";
+            key = "rp";
+            action = "<enter-command>set mailcap_path=~/.config/neomutt/mailcap<enter><reply>";
+          }
+          {
+            map = "pager";
+            key = "RM";
+            action = "<enter-command>set mailcap_path=~/.config/neomutt/mailcap_reply<enter><group-reply>";
+          }
+          {
+            map = "pager";
+            key = "RP";
+            action = "<enter-command>set mailcap_path=~/.config/neomutt/mailcap<enter><group-reply>";
+          }
+          {
+            map = "pager";
+            key = "LM";
+            action = "<enter-command>set mailcap_path=~/.config/neomutt/mailcap_reply<enter><list-reply>";
+          }
+          {
+            map = "pager";
+            key = "LP";
+            action = "<enter-command>set mailcap_path=~/.config/neomutt/mailcap<enter><list-reply>";
+          }
+
+          {
+            map = "attach";
+            key = "rm";
+            action = "<enter-command>set mailcap_path=~/.config/neomutt/mailcap_reply<enter><reply>";
+          }
+          {
+            map = "attach";
+            key = "rp";
+            action = "<enter-command>set mailcap_path=~/.config/neomutt/mailcap<enter><reply>";
+          }
+          {
+            map = "attach";
+            key = "RM";
+            action = "<enter-command>set mailcap_path=~/.config/neomutt/mailcap_reply<enter><group-reply>";
+          }
+          {
+            map = "attach";
+            key = "RP";
+            action = "<enter-command>set mailcap_path=~/.config/neomutt/mailcap<enter><group-reply>";
+          }
+          {
+            map = "attach";
+            key = "LM";
+            action = "<enter-command>set mailcap_path=~/.config/neomutt/mailcap_reply<enter><list-reply>";
+          }
+          {
+            map = "attach";
+            key = "LP";
+            action = "<enter-command>set mailcap_path=~/.config/neomutt/mailcap<enter><list-reply>";
           }
 
           {
@@ -190,26 +335,28 @@ in
         };
 
         extraConfig = ''
-          source ~/.config/neomutt/colors
-          unset collapse_unread
-          send2-hook . 'set mailcap_path=~/.config/neomutt/mailcap'
-          set fast_reply           # skip to compose when replying
-          set fcc_attach           # save attachments with the body
-          unset mime_forward       # forward attachments as part of body
-          set forward_format = "Fwd: %s"       # format of subject when forwarding
-          set forward_decode                   # decode when forwarding
-          set forward_quote                    # include message in forwards
-          set reverse_name                     # reply as whomever it was to
-          set include                          # include message in replies
+            source ~/.config/neomutt/colors
+            unset collapse_unread
+            send2-hook . 'set mailcap_path=~/.config/neomutt/mailcap'
+            set fast_reply           # skip to compose when replying
+            set fcc_attach           # save attachments with the body
+            unset mime_forward       # forward attachments as part of body
+            set forward_format = "Fwd: %s"       # format of subject when forwarding
+            set forward_decode                   # decode when forwarding
+            set forward_quote                    # include message in forwards
+            set reverse_name                     # reply as whomever it was to
+            set include                          # include message in replies
 
-          auto_view text/html application/text application/pdf
-          alternative_order text/enriched text/html text/plain text
+            auto_view text/html application/text application/pdf
+            alternative_order text/enriched text/html text/plain text
 
-          set mail_check_stats
-          set sidebar_delim_chars="/"
-          set sidebar_new_mail_only = no
-          set sidebar_non_empty_mailbox_only = no
-          set sidebar_sort_method = 'name'
+            set mail_check_stats
+            set sidebar_delim_chars="/"
+            set sidebar_new_mail_only = no
+            set sidebar_non_empty_mailbox_only = no
+            set sidebar_sort_method = 'name'
+        '' + optionalString (gui.enable) ''
+            set new_mail_command = "notify-send 'New Email' '%n new messages, %u unread.' &"
         '';
       };
 
