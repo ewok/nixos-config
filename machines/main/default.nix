@@ -51,7 +51,7 @@ in
 
   modules.base.ssh.config = properties.ssh.config;
 
-  modules.system.sudo.askPass = false;
+  # modules.system.sudo.askPass = false;
 
   modules.system.sound.enable = true;
   modules.system.sound.pulse.enable = true;
