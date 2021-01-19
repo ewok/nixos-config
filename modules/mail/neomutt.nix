@@ -72,6 +72,24 @@ in
 
       programs.notmuch = {
         enable = true;
+        new.ignore = [
+          "[Gmail]/All Mail"
+          "[Gmail]/Spam"
+          "[Gmail]/Trash"
+          "Arch"
+          "Archive"
+          "Conversation History"
+          "Drafts"
+          "DevOps"
+          "Junk"
+          "junk"
+          "Trash"
+          "trash"
+          "LowPriority"
+          "NN"
+          "Service"
+          "Unsent Messages"
+        ];
       };
 
       programs.neomutt = {
