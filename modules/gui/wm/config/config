@@ -377,7 +377,7 @@ bindsym $mod+m bar mode toggle
 # exec_always --no-startup-id deadd
 # exec_always --no-startup-id pgrep pcloud || pcloud
 # exec_always --no-startup-id pgrep insync || insync start
-exec_always --no-startup-id pgrep caffeine || caffeine
+exec_always --no-startup-id caffeine -k
 exec_always --no-startup-id pgrep goldendict || goldendict
 exec_always --no-startup-id pgrep cryptomator || cryptomator
 exec_always --no-startup-id pgrep Enpass || Enpass
