@@ -36,8 +36,10 @@ command! code code %a
 
 command! zip bash -c 'for f in %f; do zip -r "$f.zip" "$f"; done'
 command! zipto zip -r %a.zip %f
-command! targz bax 'for f in %f; do unset CMD; CMD="tar -zcvf \"$f.tar.gz\" $f"; case "$f" in; *.tar.gz) CMD="tar -zxvf \"$f\"";;; esac; sh -c $CMD;done'
-command! tarbz bax 'for f in %f; do unset CMD; CMD="tar -ycvf \"$f.tar.bz2\" $f"; case "$f" in; *.tar.bz2) CMD="tar -yxvf \"$f\"";;; esac; sh -c $CMD;done'
+command! targz targz %f
+command! tarbz tarbz %f
+command! targz sh -c 'for f in %f; do tar -zcvf "$f.tar.gz" "$f";done'
+command! tarbz sh -c 'for f in %f; do tar -jcvf "$f.tar.bz2" "$f";done'
 
 command! gz unset DECOMP; case %f in; *.gz) DECOMP=-d;;; *.[zZ]) DECOMP=-d;;; esac; gzip $DECOMP -v %f
 command! bzip unset DECOMP; case %f in; *.bz2) DECOMP=-d;;; esac; bzip2 $DECOMP -v %f

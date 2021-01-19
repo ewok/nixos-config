@@ -18,6 +18,7 @@ in
             curlftpfs
             ts
             archivemount
+            dpkg
           ];
 
           xdg.configFile."vifm/colors".source = ./config/colors;

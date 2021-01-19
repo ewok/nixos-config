@@ -168,7 +168,7 @@ fileviewer Vagrantfile,*.rb highlight -O xterm256 -s dante --syntax ruby %c
 " FUSE
 
 " ArchiveMount
-filetype *.tar,*.tar.bz2,*.tbz2,*.tgz,*.tar.gz,*.tar.xz,*.txz,*.rpm,*.zip,*.jar,*.war,*.rar,*.7z
+filetype *.tar,*.tar.bz2,*.tbz2,*.tgz,*.tar.gz,*.tar.xz,*.txz,*.rpm,*.zip,*.jar,*.war,*.rar,*.7z,*.deb
        \ {Mount with archivemount}
        \ FUSE_MOUNT|archivemount %SOURCE_FILE %DESTINATION_DIR,
 fileviewer *.tgz,*.tar.gz tar -tzf %c
