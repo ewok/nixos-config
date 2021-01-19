@@ -55,6 +55,13 @@ let
     git-crypt status | grep -v not
   '';
 
+  nix-clean-store = writeShellScriptBin "nix-my-clean-store" ''
+    nix-collect-garbage -d
+    sudo nix-collect-garbage -d
+    nix-store --gc
+    sudo nix-store --gc
+  '';
+
 in
   pkgs.mkShell {
     nativeBuildInputs = with pkgs; [
@@ -68,6 +75,7 @@ in
       nix-rebuild-vm
       nix-boot
       nix-clean-result
+      nix-clean-store
     ];
 
     shellHook = ''

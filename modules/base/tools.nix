@@ -32,6 +32,8 @@ in
 
       zip
       unzip
+
+      nix-tree
     ];
 
   };
