@@ -4,6 +4,7 @@ let
   mail = config.modules.mail;
   gui = config.modules.gui;
   username = config.properties.user.name;
+  hm = config.home-manager.users.${username};
   homeDirectory = config.home-manager.users.${username}.home.homeDirectory;
 
   davmail-start = pkgs.writeShellScriptBin "davmail-start" ''
@@ -22,6 +23,13 @@ let
       ${pkgs.util-linux}/bin/kill $DAVMAIL_PID
     fi
     '';
+
+    notmuch-update = pkgs.writeShellScriptBin "notmuch-update" ''
+      export PATH="${pkgs.notmuch}/bin''${PATH:+:}$PATH"
+      export NOTMUCH_CONFIG="${hm.xdg.configHome}/notmuch/notmuchrc"
+      export NMBGIT="${hm.xdg.dataHome}/notmuch/nmbug"
+      ${pkgs.notmuch}/bin/notmuch new
+    '';
 in
 {
   config = mkIf mail.enable {
@@ -34,6 +42,7 @@ in
         pkgs.cyrus_sasl
         davmail-start
         davmail-stop
+        notmuch-update
       ] ++ optionals (gui.enable) [
         pkgs.libnotify
       ];
@@ -56,10 +65,14 @@ in
         enable = true;
         frequency = "*:0/15";
         preExec = "${davmail-start}/bin/davmail-start";
-        # postExec = "${davmail-stop}/bin/davmail-stop";
+        postExec = "${notmuch-update}/bin/notmuch-update";
       };
 
       programs.msmtp.enable = true;
+
+      programs.notmuch = {
+        enable = true;
+      };
 
       programs.neomutt = {
         enable = true;
