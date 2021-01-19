@@ -360,8 +360,10 @@ in
             set reverse_name                     # reply as whomever it was to
             set include                          # include message in replies
 
-            auto_view text/html application/text application/pdf
+            unalternative_order *
             alternative_order text/enriched text/html text/plain text
+            unauto_view *
+            auto_view text/* application/* image/* audio/* video/*
 
             set mail_check_stats
             set sidebar_delim_chars="/"
