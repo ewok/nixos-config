@@ -123,6 +123,10 @@ in
           set -Ux FZF_LEGACY_KEYBINDINGS 0
           set -Ux OPEN_CMD open
           bind \cw backward-kill-word
+
+          # Warn if something failed
+          systemctl --user --state=failed --no-legend 
+
           fish-tmux
         '';
         loginShellInit = ''
