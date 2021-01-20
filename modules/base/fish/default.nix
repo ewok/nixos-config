@@ -22,25 +22,13 @@ let
         exit 1
     fi
   '';
-  fish-tmux = pkgs.writeShellScriptBin "fish-tmux" ''
-    if [[ -z "$TMUX" ]]
-    then
-      SESS=$(tmux list-sessions | grep -v attached | cut -d: -f1 | head -n 1)
-      if [[ -n "$SESS" ]]
-      then
-        tmux attach -t $SESS
-      else
-        tmux new
-      fi
-    fi
-  '';
 in
 {
   config = mkIf base.enable {
 
     home-manager.users."${username}" = {
 
-      home.packages = [ open fish-tmux ];
+      home.packages = [ open ];
 
       programs.fish = {
         enable = true;
@@ -118,17 +106,30 @@ in
           }
         ];
 
-        interactiveShellInit = ''
+        interactiveShellInit = let
+          startup-script = pkgs.writeShellScript "startup-script.sh" ''
+            if [[ ! -z "$TMUX" ]]
+            then
+              systemctl --user --state=failed --no-legend
+            else
+              SESS=$(tmux list-sessions | grep -v attached | cut -d: -f1 | head -n 1)
+              if [[ -n "$SESS" ]]
+              then
+                tmux attach -t $SESS
+              else
+                tmux new
+              fi
+            fi
+          '';
+        in ''
           ${readFile ./config/functions/ssh-agent.fish}
           set -Ux FZF_LEGACY_KEYBINDINGS 0
           set -Ux OPEN_CMD open
           bind \cw backward-kill-word
 
-          # Warn if something failed
-          systemctl --user --state=failed --no-legend 
-
-          fish-tmux
+          ${startup-script}
         '';
+
         loginShellInit = ''
           set -x LANG en_US.UTF-8
           # set -x LC_CTYPE "ru_RU.UTF-8"
