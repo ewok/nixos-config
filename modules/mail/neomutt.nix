@@ -24,11 +24,23 @@ let
     fi
     '';
 
-    notmuch-update = pkgs.writeShellScriptBin "notmuch-update" ''
-      export PATH="${pkgs.notmuch}/bin''${PATH:+:}$PATH"
-      export NOTMUCH_CONFIG="${hm.xdg.configHome}/notmuch/notmuchrc"
-      export NMBGIT="${hm.xdg.dataHome}/notmuch/nmbug"
-      ${pkgs.notmuch}/bin/notmuch new
+    # notmuch-clear-deleted = pkgs.writeShellScriptBin "notmuch-clear-deleted" ''
+    #   export PATH="${pkgs.notmuch}/bin''${PATH:+:}$PATH"
+    #   export NOTMUCH_CONFIG="${hm.xdg.configHome}/notmuch/notmuchrc"
+    #   export NMBGIT="${hm.xdg.dataHome}/notmuch/nmbug"
+    #   ${pkgs.notmuch}/bin/notmuch search --output=files --format=text0 tag:deleted | ${pkgs.findutils}/bin/xargs -0 ${pkgs.coreutils}/bin/rm
+    #   ${pkgs.notmuch}/bin/notmuch reindex tag:deleted
+    # '';
+
+    # notmuch-update = pkgs.writeShellScriptBin "notmuch-update" ''
+    #   export PATH="${pkgs.notmuch}/bin''${PATH:+:}$PATH"
+    #   export NOTMUCH_CONFIG="${hm.xdg.configHome}/notmuch/notmuchrc"
+    #   export NMBGIT="${hm.xdg.dataHome}/notmuch/nmbug"
+    #   ${pkgs.notmuch}/bin/notmuch new
+    # '';
+
+    mbsync-preexec = pkgs.writeShellScriptBin "mbsync-preexec" ''
+      ${davmail-start}/bin/davmail-start
     '';
 in
 {
@@ -42,7 +54,6 @@ in
         pkgs.cyrus_sasl
         davmail-start
         davmail-stop
-        notmuch-update
       ] ++ optionals (gui.enable) [
         pkgs.libnotify
       ];
@@ -64,33 +75,10 @@ in
       services.mbsync = {
         enable = true;
         frequency = "*:0/15";
-        preExec = "${davmail-start}/bin/davmail-start";
-        postExec = "${notmuch-update}/bin/notmuch-update";
+        preExec = "${mbsync-preexec}/bin/mbsync-preexec";
       };
 
       programs.msmtp.enable = true;
-
-      programs.notmuch = {
-        enable = true;
-        new.ignore = [
-          "[Gmail]/All Mail"
-          "[Gmail]/Spam"
-          "[Gmail]/Trash"
-          "Arch"
-          "Archive"
-          "Conversation History"
-          "Drafts"
-          "DevOps"
-          "Junk"
-          "junk"
-          "Trash"
-          "trash"
-          "LowPriority"
-          "NN"
-          "Service"
-          "Unsent Messages"
-        ];
-      };
 
       programs.neomutt = {
         enable = true;
