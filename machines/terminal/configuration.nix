@@ -18,6 +18,7 @@ in
 
   networking.useDHCP = false;
   networking.interfaces.enp1s0.useDHCP = true;
+  networking.enableIPv6 = false;
 
   i18n.defaultLocale = "en_US.UTF-8";
 

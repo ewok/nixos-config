@@ -18,6 +18,7 @@ in
   networking.useDHCP = false;
   networking.interfaces.enp0s31f6.useDHCP = true;
   networking.interfaces.wlp0s20f3.useDHCP = true;
+  networking.enableIPv6 = false;
 
   hardware.bluetooth.enable = true;
   services.blueman.enable = true;

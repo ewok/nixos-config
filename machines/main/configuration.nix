@@ -13,6 +13,7 @@ in
 
   networking.hostName = "${deviceName}";
   networking.networkmanager.enable = true;
+  networking.enableIPv6 = false;
 
   # networking.useDHCP = false;
   # networking.interfaces.enp0s31f6.useDHCP = true;
