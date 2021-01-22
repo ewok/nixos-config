@@ -31,6 +31,7 @@ in
       xdg.configFile."git/gitexcludes".text = ''
         .direnv
         .out
+        .tmp
       '';
 
       programs.git = {

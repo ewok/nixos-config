@@ -735,20 +735,20 @@ augroup ft_python
       return
     endif
 
-    PackAdd jedi
-    let g:jedi#goto_command = ""
-    let g:jedi#goto_assignments_command = "gA"
-    let g:jedi#goto_definitions_command = "gd"
-    let g:jedi#documentation_command = "K"
-    let g:jedi#usages_command = "gr"
     let g:jedi#completions_command = ""
-    let g:jedi#rename_command = "<leader>rR"
     let g:jedi#completions_enabled = 0
+    let g:jedi#documentation_command = "K"
+    let g:jedi#goto_assignments_command = "gA"
+    let g:jedi#goto_command = "gd"
+    let g:jedi#goto_definitions_command = "gD"
+    let g:jedi#goto_stubs_command = "gS"
+    let g:jedi#rename_command = "<leader>rR"
+    let g:jedi#usages_command = "gr"
     let g:jedi#use_splits_not_buffers = "right"
-    let g:jedi#goto_stubs_command = ""
+    PackAdd jedi 1
 
-    PackAdd vim-virtualenv
     let g:virtualenv_directory = $PWD
+    PackAdd vim-virtualenv
 
     PackAdd pep8-ind
 
@@ -767,7 +767,7 @@ augroup ft_python
     nmap <silent> <buffer> <leader>rb <Plug>(python_breakpoint)
 
     PackAdd ale
-    let b:ale_linters = ['flake8', 'mypy', 'pylint', 'bandit', 'pydocstyle']
+    let b:ale_linters = ['flake8', 'mypy', 'pylint', 'bandit', 'pydocstyle', 'jedils', 'pyls']
     let b:ale_fixers = {'python': ['remove_trailing_lines', 'trim_whitespace', 'autopep8']}
     let b:ale_python_flake8_executable = 'flake8'
     let b:ale_python_flake8_options = '--ignore E501'
@@ -1365,6 +1365,9 @@ let g:rooter_resolve_links = 1
 call minpac#add('preservim/tagbar', {'type': 'start', 'name': 'tagbar'})
 noremap <leader>tb :TagbarToggle<CR>
 noremap <leader>pt :TagbarToggle<CR>
+
+let g:lmap.f.t = 'Tag'
+nmap <leader>ft :TagbarOpenAutoClose<CR>
 " }}}
 " Texting {{{
 call minpac#add('junegunn/goyo.vim', {'type': 'opt', 'name': 'goyo'})
