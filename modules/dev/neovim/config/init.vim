@@ -1311,13 +1311,11 @@ nnoremap <leader>pn :call NERDTreeToggleCWD()<CR>
 nnoremap <Plug>(find_Path) :call FindPathOrShowNERDTree()<CR>
 
 function! NERDTreeToggleCWD()
+  NERDTreeToggle
   let currentfile = expand('%')
   if (currentfile == "") || !(currentfile !~? 'NERD')
-    NERDTreeToggle
-    wincmd p
-  else
-    NERDTreeToggle
     NERDTreeCWD
+    wincmd p
   endif
 endfunction
 
