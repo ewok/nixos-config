@@ -43,4 +43,6 @@
     intelBusId = "PCI:0:2:0";
   };
   swapDevices = [ ];
+
+  hardware.opengl.driSupport32Bit = true;
 }
