@@ -1733,8 +1733,11 @@ nmap gz <Plug>ZVOperator
 " Motion {{{
 " AnyJump {{{
 call minpac#add('pechorin/any-jump.vim', {'type': 'opt', 'name': 'anyjump'})
-PackAdd anyjump
 let g:any_jump_search_prefered_engine = 'rg'
+let g:any_jump_disable_default_keybindings = 1
+nnoremap <leader>j :AnyJump<CR>
+xnoremap <leader>j :AnyJumpVisual<CR>
+PackAdd anyjump
 " }}}
 " Text objects {{{
 call minpac#add('kana/vim-textobj-user', {'type': 'start', 'name': 'textobj'})
