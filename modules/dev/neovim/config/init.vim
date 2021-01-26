@@ -65,10 +65,6 @@ set undofile
 set visualbell
 scriptencoding utf-8
 
-" Mark 80-th character
-highlight ColorColumn ctermbg=red
-call matchadd('ColorColumn', '\%81v', 100)
-
 filetype plugin indent on
 
 syntax on
@@ -1181,6 +1177,13 @@ call minpac#add('KeitaNakamura/neodark.vim', {'type': 'opt', 'name': 'neodark'})
 PackAdd neodark
 let g:neodark#background = '#282c34'
 colorscheme neodark
+
+" Mark 80-th character
+hi OverLength ctermbg=168 guibg=#DC657D ctermfg=250 guifg=#b2b7c1
+call matchadd('OverLength', '\%81v', 100)
+
+" Change cursor color to make it more visible
+hi Cursor ctermbg=140 guibg=#B888E2
 " }}}
 " Fuzzy {{{
 call minpac#add('junegunn/fzf', {'type': 'opt', 'name': 'fzf'})
@@ -2219,7 +2222,7 @@ vnoremap <leader>th :TOhtml<CR>
 " }}}
 " Small plugins {{{
 call minpac#add('ntpeters/vim-better-whitespace', {'type': 'start', 'name': 'better-whitespace'})
-let g:better_whitespace_filetypes_blacklist=['gitcommit', 'unite', 'qf', 'help','dotooagenda','dotoo']
+let g:better_whitespace_filetypes_blacklist=['gitcommit', 'unite', 'qf', 'help', 'dotooagenda', 'dotoo']
 
 call minpac#add('jiangmiao/auto-pairs', {'type': 'start', 'name': 'auto-pairs'})
 
