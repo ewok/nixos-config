@@ -646,8 +646,8 @@ augroup ft_markdown
     command! -bang -nargs=? EvalBlock call medieval#eval(<bang>0, <f-args>)
     nmap <buffer> <leader>rb "":EvalBlock<CR>
 
-    PackAdd ale
-    let b:ale_linters = ['vale', 'markdownlint']
+    " PackAdd ale
+    " let b:ale_linters = ['vale', 'markdownlint']
 
     PackAdd speeddating
     PackAdd rooter
@@ -720,8 +720,8 @@ augroup END
 " Python {{{
 call minpac#add('jmcantrell/vim-virtualenv', {'type': 'opt', 'name': 'vim-virtualenv'})
 call minpac#add('Vimjas/vim-python-pep8-indent', {'type': 'opt', 'name': 'pep8-ind'})
-call minpac#add('davidhalter/jedi-vim', {'type': 'opt', 'name': 'jedi'})
-call minpac#add('deoplete-plugins/deoplete-jedi', {'type': 'opt'})
+" call minpac#add('davidhalter/jedi-vim', {'type': 'opt', 'name': 'jedi'})
+" call minpac#add('deoplete-plugins/deoplete-jedi', {'type': 'opt'})
 augroup ft_python
   au!
 
@@ -732,18 +732,17 @@ augroup ft_python
       return
     endif
 
-    let g:jedi#completions_command = ""
-    let g:jedi#completions_enabled = 0
-    let g:jedi#documentation_command = "K"
-    let g:jedi#goto_assignments_command = "gA"
-    let g:jedi#goto_command = "gd"
-    let g:jedi#goto_definitions_command = "gD"
-    let g:jedi#goto_stubs_command = "gS"
-    let g:jedi#rename_command = "<leader>rR"
-    let g:jedi#usages_command = "gr"
-    let g:jedi#use_splits_not_buffers = "right"
-    PackAdd jedi 1
-    PackAdd deoplete-jedi
+    " let g:jedi#completions_command = ""
+    " let g:jedi#completions_enabled = 0
+    " let g:jedi#documentation_command = "K"
+    " let g:jedi#goto_assignments_command = "gA"
+    " let g:jedi#goto_command = "gd"
+    " let g:jedi#goto_definitions_command = "gD"
+    " let g:jedi#goto_stubs_command = "gS"
+    " let g:jedi#rename_command = "<leader>rR"
+    " let g:jedi#usages_command = "gr"
+    " let g:jedi#use_splits_not_buffers = "right"
+    " PackAdd jedi 1
 
     let g:virtualenv_directory = $PWD
     PackAdd vim-virtualenv
@@ -765,7 +764,7 @@ augroup ft_python
     nmap <silent> <buffer> <leader>rb <Plug>(python_breakpoint)
 
     PackAdd ale
-    let b:ale_linters = ['flake8', 'mypy', 'pylint', 'bandit', 'pydocstyle', 'jedils', 'pyls']
+    let b:ale_linters = ['flake8', 'mypy', 'pylint', 'bandit', 'pydocstyle']
     let b:ale_fixers = {'python': ['remove_trailing_lines', 'trim_whitespace', 'autopep8']}
     let b:ale_python_flake8_executable = 'flake8'
     let b:ale_python_flake8_options = '--ignore E501'
@@ -825,7 +824,7 @@ augroup END
 " }}}
 " Rust {{{
 call minpac#add('rust-lang/rust.vim', {'type': 'opt', 'name': 'rust'})
-call minpac#add('racer-rust/vim-racer', {'type': 'opt', 'name': 'rust-racer'})
+" call minpac#add('racer-rust/vim-racer', {'type': 'opt', 'name': 'rust-racer'})
 augroup ft_rust
   au!
 
@@ -839,13 +838,13 @@ augroup ft_rust
     imap <buffer> <C-Enter> <ESC>:call SmartCR()<CR>
 
     PackAdd rust 1
-    PackAdd rust-racer
+    " PackAdd rust-racer
     " let g:racer_experimental_completer = 1
 
-    nmap <buffer> gd <Plug>(rust-def)
-    nmap <buffer> gs <Plug>(rust-def-split)
-    nmap <buffer> gx <Plug>(rust-def-vertical)
-    nmap <buffer> K <Plug>(rust-doc)
+    " nmap <buffer> gd <Plug>(rust-def)
+    " nmap <buffer> gs <Plug>(rust-def-split)
+    " nmap <buffer> gx <Plug>(rust-def-vertical)
+    " nmap <buffer> K <Plug>(rust-doc)
     nmap <buffer> <silent> <leader>rr :RustRun<CR>
     nmap <buffer> <silent> <leader>rt :RustTest<CR>
     nmap <buffer> <silent> <leader>rf :RustFmt<CR>
@@ -853,7 +852,7 @@ augroup ft_rust
     PackAdd rooter
     PackAdd splitjoin
 
-    PackAdd ale
+    " PackAdd ale
 
     let b:rust_ft = 1
 
@@ -958,8 +957,8 @@ augroup ft_sh
 
     nmap <buffer> <leader>rr :w\|call RunCmd("bash " . bufname("%"))<CR>
 
-    PackAdd ale
-    let b:ale_linters = ['shellcheck', 'language_server']
+    " PackAdd ale
+    " let b:ale_linters = ['shellcheck', 'language_server']
 
     PackAdd speeddating
     PackAdd splitjoin
@@ -1585,26 +1584,93 @@ call minpac#add('tpope/vim-commentary', {'type': 'start', 'name': 'commentary'})
 set commentstring=#\ %s
 " }}}
 " Completor {{{
-" call minpac#add('maralla/completor.vim', {'type': 'opt', 'name': 'completor'})
+call minpac#add('neoclide/coc.nvim', {'type': 'opt', 'name': 'coc', 'rev': 'release'})
+PackAdd coc
+let g:coc_global_extensions = [
+                  \ 'coc-json',
+                  \ 'coc-jedi',
+                  \ 'coc-snippets',
+                  \ 'coc-rust-analyzer',
+                  \ 'coc-yaml',
+                  \ 'coc-markdownlint',
+                  \ 'coc-sh',
+                  \ 'coc-vimlsp' ]
 
-" inoremap <expr> <Tab>   pumvisible() ? "\<C-n>" : "\<Tab>"
-" inoremap <expr> <S-Tab> pumvisible() ? "\<C-p>" : "\<S-Tab>"
-" inoremap <expr> <cr>    pumvisible() ? "\<C-y>" : "\<cr>"
+set shortmess+=c
 
-" if has('nvim')
-  call minpac#add('Shougo/deoplete.nvim', {'type': 'opt', 'name': 'deoplete', 'do': 'UpdateRemotePlugins'})
-  let g:racer_insert_paren = 1
-" else
-"   Plug 'Shougo/deoplete.nvim'
-"   Plug 'roxma/nvim-yarp'
-"   Plug 'roxma/vim-hug-neovim-rpc'
-" endif
-let g:deoplete#enable_at_startup = 1
+inoremap <silent><expr> <TAB>
+      \ pumvisible() ? "\<C-n>" :
+      \ <SID>check_back_space() ? "\<TAB>" :
+      \ coc#refresh()
+inoremap <expr><S-TAB> pumvisible() ? "\<C-p>" : "\<C-h>"
 
-PackAdd deoplete
+if has('nvim')
+  inoremap <silent><expr> <c-space> coc#refresh()
+else
+  inoremap <silent><expr> <c-@> coc#refresh()
+endif
 
-" let g:asyncomplete_auto_completeopt = 0
-" set completeopt=menuone,noinsert,noselect,preview
+inoremap <silent><expr> <cr> pumvisible() ? coc#_select_confirm()
+                              \: "\<C-g>u\<CR>\<c-r>=coc#on_enter()\<CR>"
+
+" GoTo code navigation.
+nmap <silent> gd <Plug>(coc-definition)
+nmap <silent> gD :call CocAction('jumpDefinition', 'vsplit')<CR>
+nmap <silent> gy <Plug>(coc-type-definition)
+nmap <silent> gi <Plug>(coc-implementation)
+nmap <silent> gr <Plug>(coc-references)
+nmap <leader>rn <Plug>(coc-rename)
+
+nnoremap <silent> K :call <SID>show_documentation()<CR>
+
+function! s:show_documentation()
+  if (index(['vim','help'], &filetype) >= 0)
+    execute 'h '.expand('<cword>')
+  elseif (coc#rpc#ready())
+    call CocActionAsync('doHover')
+  else
+    execute '!' . &keywordprg . " " . expand('<cword>')
+  endif
+endfunction
+
+" Highlight the symbol and its references when holding the cursor.
+autocmd CursorHold * silent call CocActionAsync('highlight')
+
+" " Formatting selected code.
+" xmap <leader>f  <Plug>(coc-format-selected)
+" nmap <leader>f  <Plug>(coc-format-selected)
+
+ " augroup mygroup
+ "  autocmd!
+ "  " Setup formatexpr specified filetype(s).
+ "  autocmd FileType typescript,json setl formatexpr=CocAction('formatSelected')
+ "  " Update signature help on jump placeholder.
+ "  autocmd User CocJumpPlaceholder call CocActionAsync('showSignatureHelp')
+" augroup end
+
+" Applying codeAction to the selected region.
+" Example: `<leader>aap` for current paragraph
+xmap <leader>aa  <Plug>(coc-codeaction-selected)
+nmap <leader>aa  <Plug>(coc-codeaction-selected)
+
+" Remap keys for applying codeAction to the current buffer.
+nmap <leader>ac  <Plug>(coc-codeaction)
+" Apply AutoFix to problem on the current line.
+nmap <leader>af  <Plug>(coc-fix-current)
+
+" Map function and class text objects
+" NOTE: Requires 'textDocument.documentSymbol' support from the language server.
+xmap if <Plug>(coc-funcobj-i)
+omap if <Plug>(coc-funcobj-i)
+xmap af <Plug>(coc-funcobj-a)
+omap af <Plug>(coc-funcobj-a)
+xmap ic <Plug>(coc-classobj-i)
+omap ic <Plug>(coc-classobj-i)
+xmap ac <Plug>(coc-classobj-a)
+omap ac <Plug>(coc-classobj-a)
+
+" let g:coc_user_config = {}
+" let g:coc_user_config['coc.preferences.jumpCommand'] = 'vsp'
 " }}}
 " Easyalign {{{
 call minpac#add('junegunn/vim-easy-align', {'type': 'start', 'name': 'easy-align'})

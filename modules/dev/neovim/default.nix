@@ -43,6 +43,7 @@ in
           nodePackages.livedown
           python3Packages.pynvim
           python3Packages.msgpack
+          python3Packages.jedi
         ] ++ [
           jrnl
         ];
