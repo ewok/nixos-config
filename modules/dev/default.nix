@@ -4,6 +4,7 @@ with lib;
   imports = [
     # Development
     ./ctags.nix
+    ./db.nix
     ./direnv.nix
     ./docker.nix
     ./fzf.nix
