@@ -55,7 +55,4 @@ in
   modules.communication.enable = true;
   modules.system.powermanagement.enable = true;
   modules.system.powermanagement.powertop.enable = true;
-
-  modules.mail.enable = true;
-  modules.mail.accounts = properties.email.accounts;
 }
