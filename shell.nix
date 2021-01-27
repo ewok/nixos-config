@@ -47,6 +47,13 @@ let
     fi
   '';
 
+  nix-update-flakes = writeShellScriptBin "nix-my-update-flakes" ''
+    for flake in unstable master nixos-hardware neovim-nightly-overlay home-manager my-nixpkgs;
+    do
+      nix flake update --update-input $flake
+    done
+  '';
+
   nix = writeShellScriptBin "nix" ''
     ${pkgs.nixFlakes}/bin/nix --option experimental-features "nix-command flakes ca-references" "$@"
   '';
@@ -76,6 +83,7 @@ in
       nix-boot
       nix-clean-result
       nix-clean-store
+      nix-update-flakes
     ];
 
     shellHook = ''
