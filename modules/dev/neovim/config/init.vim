@@ -274,6 +274,18 @@ function PackAddId(packname, ...)
 endfunction
 
 command! -nargs=* PackAdd call PackAddId(<f-args>)
+
+function SmartCR()
+  let line = getline('.')
+  if line =~# ';$'
+    execute "normal o\<Space>\<BS>\<Esc>"
+    startinsert!
+  else
+    call setline('.', line . ';')
+    normal l
+    startinsert
+  endif
+endfunction
 " }}}
 
 " Keymaps {{{
@@ -683,18 +695,6 @@ augroup ft_nix
       \]
   \}
 
-  function NixFTSmartCR()
-    let line = getline('.')
-    if line =~# ';$'
-      execute "normal o\<Space>\<BS>\<Esc>"
-      startinsert!
-      else
-      call setline('.', line . ';')
-      normal l
-      startinsert
-    endif
-  endfunction
-
   au FileType nix call LoadNixFT()
   function! LoadNixFT()
 
@@ -704,7 +704,7 @@ augroup ft_nix
 
     set expandtab
 
-    imap <buffer> <C-Enter> <ESC>:call NixFTSmartCR()<CR>
+    imap <buffer> <C-Enter> <ESC>:call SmartCR()<CR>
 
     PackAdd ale
     PackAdd rooter
@@ -721,6 +721,7 @@ augroup END
 call minpac#add('jmcantrell/vim-virtualenv', {'type': 'opt', 'name': 'vim-virtualenv'})
 call minpac#add('Vimjas/vim-python-pep8-indent', {'type': 'opt', 'name': 'pep8-ind'})
 call minpac#add('davidhalter/jedi-vim', {'type': 'opt', 'name': 'jedi'})
+call minpac#add('deoplete-plugins/deoplete-jedi', {'type': 'opt'})
 augroup ft_python
   au!
 
@@ -742,6 +743,7 @@ augroup ft_python
     let g:jedi#usages_command = "gr"
     let g:jedi#use_splits_not_buffers = "right"
     PackAdd jedi 1
+    PackAdd deoplete-jedi
 
     let g:virtualenv_directory = $PWD
     PackAdd vim-virtualenv
@@ -834,9 +836,11 @@ augroup ft_rust
       return
     endif
 
+    imap <buffer> <C-Enter> <ESC>:call SmartCR()<CR>
+
     PackAdd rust 1
     PackAdd rust-racer
-    let g:racer_experimental_completer = 1
+    " let g:racer_experimental_completer = 1
 
     nmap <buffer> gd <Plug>(rust-def)
     nmap <buffer> gs <Plug>(rust-def-split)
@@ -848,6 +852,8 @@ augroup ft_rust
 
     PackAdd rooter
     PackAdd splitjoin
+
+    PackAdd ale
 
     let b:rust_ft = 1
 
@@ -1579,12 +1585,23 @@ call minpac#add('tpope/vim-commentary', {'type': 'start', 'name': 'commentary'})
 set commentstring=#\ %s
 " }}}
 " Completor {{{
-call minpac#add('maralla/completor.vim', {'type': 'opt', 'name': 'completor'})
-PackAdd completor
+" call minpac#add('maralla/completor.vim', {'type': 'opt', 'name': 'completor'})
 
-inoremap <expr> <Tab>   pumvisible() ? "\<C-n>" : "\<Tab>"
-inoremap <expr> <S-Tab> pumvisible() ? "\<C-p>" : "\<S-Tab>"
-inoremap <expr> <cr>    pumvisible() ? "\<C-y>" : "\<cr>"
+" inoremap <expr> <Tab>   pumvisible() ? "\<C-n>" : "\<Tab>"
+" inoremap <expr> <S-Tab> pumvisible() ? "\<C-p>" : "\<S-Tab>"
+" inoremap <expr> <cr>    pumvisible() ? "\<C-y>" : "\<cr>"
+
+" if has('nvim')
+  call minpac#add('Shougo/deoplete.nvim', {'type': 'opt', 'name': 'deoplete', 'do': 'UpdateRemotePlugins'})
+  let g:racer_insert_paren = 1
+" else
+"   Plug 'Shougo/deoplete.nvim'
+"   Plug 'roxma/nvim-yarp'
+"   Plug 'roxma/vim-hug-neovim-rpc'
+" endif
+let g:deoplete#enable_at_startup = 1
+
+PackAdd deoplete
 
 " let g:asyncomplete_auto_completeopt = 0
 " set completeopt=menuone,noinsert,noselect,preview
@@ -1613,6 +1630,8 @@ call minpac#add('shumphrey/fugitive-gitlab.vim', {'type': 'opt', 'name': 'gitlab
 PackAdd fugitive
 PackAdd rhubarb
 PackAdd gitlab
+
+" let g:fugitive_gitlab_domains = ['https://my.gitlab.com']
 
 " Helper
 function! GitShowBlockHistory()
