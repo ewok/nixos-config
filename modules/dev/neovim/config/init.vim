@@ -1312,52 +1312,52 @@ function! MarksPurgeGlobaly()
 endfunction
 " }}}
 " NERTree {{{
-call minpac#add('preservim/nerdtree', {'type': 'start', 'name': 'nerdtree'})
-call minpac#add('Xuyuanp/nerdtree-git-plugin', {'type': 'start', 'name': 'nerdtree-git'})
+" call minpac#add('preservim/nerdtree', {'type': 'start', 'name': 'nerdtree'})
+" call minpac#add('Xuyuanp/nerdtree-git-plugin', {'type': 'start', 'name': 'nerdtree-git'})
 
-nnoremap <leader>pn :call NERDTreeToggleCWD()<CR>
-nnoremap <Plug>(find_Path) :call FindPathOrShowNERDTree()<CR>
+" nnoremap <leader>pn :call NERDTreeToggleCWD()<CR>
+" nnoremap <Plug>(find_Path) :call FindPathOrShowNERDTree()<CR>
 
-function! NERDTreeToggleCWD()
-  NERDTreeToggle
-  let currentfile = expand('%')
-  if (currentfile == "") || !(currentfile !~? 'NERD')
-    NERDTreeCWD
-    wincmd p
-  endif
-endfunction
+" function! NERDTreeToggleCWD()
+"   NERDTreeToggle
+"   let currentfile = expand('%')
+"   if (currentfile == "") || !(currentfile !~? 'NERD')
+"     NERDTreeCWD
+"     wincmd p
+"   endif
+" endfunction
 
-function! FindPathOrShowNERDTree()
-  let currentfile = expand('%')
-  if (currentfile == "") || !(currentfile !~? 'NERD')
-    NERDTreeToggle
-  else
-    NERDTreeFind
-    NERDTreeCWD
-  endif
-endfunction
+" function! FindPathOrShowNERDTree()
+"   let currentfile = expand('%')
+"   if (currentfile == "") || !(currentfile !~? 'NERD')
+"     NERDTreeToggle
+"   else
+"     NERDTreeFind
+"     NERDTreeCWD
+"   endif
+" endfunction
 
-let g:lmap.f.p = 'Path'
-nmap <leader>fp <Plug>(find_Path)
+" let g:lmap.f.p = 'Path'
+" nmap <leader>fp <Plug>(find_Path)
 
-let NERDTreeShowBookmarks=0
-let NERDTreeChDirMode=2
-let NERDTreeMouseMode=2
-let g:nerdtree_tabs_focus_on_files=1
-let g:nerdtree_tabs_open_on_gui_startup=0
+" let NERDTreeShowBookmarks=0
+" let NERDTreeChDirMode=2
+" let NERDTreeMouseMode=2
+" let g:nerdtree_tabs_focus_on_files=1
+" let g:nerdtree_tabs_open_on_gui_startup=0
 
-" make nerdtree look nice
-let NERDTreeMinimalUI=1
-let NERDTreeDirArrows=1
-let g:NERDTreeWinSize=30
-let NERDTreeIgnore=['\.pyc$']
+" " make nerdtree look nice
+" let NERDTreeMinimalUI=1
+" let NERDTreeDirArrows=1
+" let g:NERDTreeWinSize=30
+" let NERDTreeIgnore=['\.pyc$']
 
-" ReMaps
-let NERDTreeMapOpenVSplit='v'
-let NERDTreeMapOpenSplit='s'
-let NERDTreeMapJumpNextSibling=''
-let NERDTreeMapJumpPrevSibling=''
-let g:NERDTreeMapMenu='M'
+" " ReMaps
+" let NERDTreeMapOpenVSplit='v'
+" let NERDTreeMapOpenSplit='s'
+" let NERDTreeMapJumpNextSibling=''
+" let NERDTreeMapJumpPrevSibling=''
+" let g:NERDTreeMapMenu='M'
 
 " Close vim if the only NERDTree window left
 " autocmd bufenter * if (winnr("$") == 1 && exists("b:NERDTree") && b:NERDTree.isTabTree()) | q | endif
@@ -1524,7 +1524,7 @@ if executable('nix-store')
 endif
 
 let g:XkbSwitchEnabled = 1
-let g:XkbSwitchSkipFt = [ 'nerdtree' ]
+let g:XkbSwitchSkipFt = [ 'nerdtree', 'coc-explorer' ]
 " }}}
 " Zoom {{{
 call minpac#add('dhruvasagar/vim-zoom', {'type': 'start', 'name': 'vim-zoom'})
@@ -1543,6 +1543,11 @@ function! ZoomToggle()
     let zoom_tag = 1
   endif
 
+  if (exists("t:coc_explorer_tab_id") && bufwinnr('coc-explorer') != -1)
+    execute bufwinnr('coc-explorer') 'wincmd q'
+    let zoom_explorer = 1
+  endif
+
   call zoom#toggle()
 
   if (exists("zoom_nerd") && (zoom_nerd == 1))
@@ -1555,6 +1560,12 @@ function! ZoomToggle()
     exe ':TagbarOpen'
     unlet zoom_tag
   endif
+
+  if (exists("zoom_explorer") && (zoom_explorer == 1))
+    exe ':CocCommand explorer --no-toggle --no-focus'
+    unlet zoom_explorer
+  endif
+
 endfunction
 " }}}
 " Buffers {{{
@@ -1594,7 +1605,8 @@ let g:coc_global_extensions = [
                   \ 'coc-yaml',
                   \ 'coc-markdownlint',
                   \ 'coc-sh',
-                  \ 'coc-vimlsp' ]
+                  \ 'coc-vimlsp',
+                  \ 'coc-explorer']
 
 set shortmess+=c
 
@@ -1669,8 +1681,22 @@ omap ic <Plug>(coc-classobj-i)
 xmap ac <Plug>(coc-classobj-a)
 omap ac <Plug>(coc-classobj-a)
 
-" let g:coc_user_config = {}
+let g:coc_user_config = {}
 " let g:coc_user_config['coc.preferences.jumpCommand'] = 'vsp'
+let g:coc_user_config['explorer.keyMappings.global.<tab>'] = v:false
+let g:coc_user_config['explorer.keyMappings.global.<space>'] = 'actionMenu'
+let g:coc_user_config['explorer.keyMappings.global.v'] = 'open:vsplit'
+let g:coc_user_config['explorer.keyMappings.global.m'] = 'rename'
+let g:coc_user_config['explorer.keyMappings.global.il'] = 'previewOnHover:toggle:labeling'
+let g:coc_user_config['explorer.keyMappings.global.ic'] = 'previewOnHover:toggle:content'
+let g:coc_user_config['explorer.keyMappings.global.ii'] = 'previewOnHover:disable'
+let g:coc_user_config['explorer.keyMappings.global.I'] = 'toggleHidden'
+let g:coc_user_config['explorer.keyMappings.global.Ic'] = v:false
+let g:coc_user_config['explorer.keyMappings.global.Il'] = v:false
+let g:coc_user_config['explorer.keyMappings.global.II'] = v:false
+
+nnoremap <leader>fp :CocCommand explorer --no-toggle<CR>
+nnoremap <leader>pn :CocCommand explorer --toggle<CR>
 " }}}
 " Easyalign {{{
 call minpac#add('junegunn/vim-easy-align', {'type': 'start', 'name': 'easy-align'})
@@ -1934,6 +1960,11 @@ function! MakeSession(file)
   if (exists("t:tagbar_buf_name") && bufwinnr(t:tagbar_buf_name) != -1)
     exe ':tabdo TagbarClose'
   endif
+
+  if (exists("t:coc_explorer_tab_id") && bufwinnr('coc-explorer') != -1)
+    exe ':tabdo exe bufwinnr("coc-explorer") "wincmd q"'
+  endif
+
 
   exe ':lclose|cclose'
 
