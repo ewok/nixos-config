@@ -1596,6 +1596,8 @@ set commentstring=#\ %s
 " Completor {{{
 call minpac#add('neoclide/coc.nvim', {'type': 'opt', 'name': 'coc', 'rev': 'release'})
 PackAdd coc
+let g:coc_user_config = {}
+
 let g:coc_global_extensions = [
                   \ 'coc-json',
                   \ 'coc-jedi',
@@ -1680,7 +1682,7 @@ omap ic <Plug>(coc-classobj-i)
 xmap ac <Plug>(coc-classobj-a)
 omap ac <Plug>(coc-classobj-a)
 
-let g:coc_user_config = {}
+" coc-explorer
 " let g:coc_user_config['coc.preferences.jumpCommand'] = 'vsp'
 let g:coc_user_config['explorer.keyMappings.global.<tab>'] = v:false
 let g:coc_user_config['explorer.keyMappings.global.<space>'] = 'actionMenu'
@@ -1694,12 +1696,38 @@ let g:coc_user_config['explorer.keyMappings.global.Ic'] = v:false
 let g:coc_user_config['explorer.keyMappings.global.Il'] = v:false
 let g:coc_user_config['explorer.keyMappings.global.II'] = v:false
 let g:coc_user_config['explorer.keyMappings.global.dd'] = 'delete'
+let g:coc_user_config['explorer.keyMappings.global.u'] = ["wait", "gotoParent"]
 
-nnoremap <leader>fp :CocCommand explorer --no-toggle --sources=file+ --quit-on-open<CR>
-nnoremap <leader>pn :CocCommand explorer --toggle --sources=file+<CR>
+let g:coc_user_config['explorer.diagnostic.displayMax'] = 0
 
-nnoremap <leader>fb :CocCommand explorer --no-toggle --sources=buffer+ --quit-on-open<CR>
-nnoremap <leader>pb :CocCommand explorer --toggle --sources=buffer+<CR>
+let g:coc_user_config['explorer.icon.enableNerdfont'] = v:true
+let g:coc_user_config['explorer.file.showHiddenFiles'] = v:true
+
+let g:coc_user_config['explorer.file.showHiddenFiles'] = v:true
+
+let g:coc_explorer_global_presets = {
+\   'buffer': {
+\     'sources': [{'name': 'buffer', 'expand': v:true}],
+\     'quit-on-open': v:true,
+\   },
+\ }
+
+function ExplorerFP()
+  exe ':CocCommand explorer --no-toggle --quit-on-open'
+  call CocAction('runCommand', 'explorer.doAction', 'closest', ['reveal:select'], [['relative', 0, 'file']])
+endfunction
+
+nnoremap <leader>fp :call ExplorerFP()<CR>
+nnoremap <leader>pn :CocCommand explorer --toggle --no-focus --sources=file+<CR>
+
+function ExplorerFB()
+  exe ':CocCommand explorer --no-toggle --preset buffer --quit-on-open'
+  " Not working
+  call CocAction('runCommand', 'explorer.doAction', 'closest', ['reveal:select'], [['relative', 0, 'buffer']])
+endfunction
+
+nnoremap <leader>fb :call ExplorerFB()<CR>
+nnoremap <leader>pb :CocCommand explorer --toggle --no-focus --preset buffer<CR>
 " }}}
 " Easyalign {{{
 call minpac#add('junegunn/vim-easy-align', {'type': 'start', 'name': 'easy-align'})
