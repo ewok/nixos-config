@@ -1206,7 +1206,6 @@ let g:fzf_tags_command = 'ctags -R --exclude=.git --exclude=.idea --exclude=log'
 nnoremap <silent> <leader>pp :Files<CR>
 " TODO: To remove
 nnoremap <silent> <leader>pm :call MarksOnList()<CR>
-nnoremap <silent> <leader>pb :Buffers<CR>
 nnoremap <silent> <leader>pf :Filetypes<CR>
 
 let g:lmap.g.h.f = '+File'
@@ -1694,9 +1693,13 @@ let g:coc_user_config['explorer.keyMappings.global.I'] = 'toggleHidden'
 let g:coc_user_config['explorer.keyMappings.global.Ic'] = v:false
 let g:coc_user_config['explorer.keyMappings.global.Il'] = v:false
 let g:coc_user_config['explorer.keyMappings.global.II'] = v:false
+let g:coc_user_config['explorer.keyMappings.global.dd'] = 'delete'
 
-nnoremap <leader>fp :CocCommand explorer --no-toggle<CR>
-nnoremap <leader>pn :CocCommand explorer --toggle<CR>
+nnoremap <leader>fp :CocCommand explorer --no-toggle --sources=file+ --quit-on-open<CR>
+nnoremap <leader>pn :CocCommand explorer --toggle --sources=file+<CR>
+
+nnoremap <leader>fb :CocCommand explorer --no-toggle --sources=buffer+ --quit-on-open<CR>
+nnoremap <leader>pb :CocCommand explorer --toggle --sources=buffer+<CR>
 " }}}
 " Easyalign {{{
 call minpac#add('junegunn/vim-easy-align', {'type': 'start', 'name': 'easy-align'})
