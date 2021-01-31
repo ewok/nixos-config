@@ -1184,7 +1184,7 @@ let g:neodark#background = '#282c34'
 colorscheme neodark
 
 " Mark 80-th character
-hi OverLength ctermbg=168 guibg=#DC657D ctermfg=250 guifg=#b2b7c1
+hi OverLength ctermbg=168 guibg=#ebabb8 ctermfg=250 guifg=#3c3e42
 call matchadd('OverLength', '\%81v', 100)
 
 " Change cursor color to make it more visible
@@ -1632,6 +1632,8 @@ nmap <silent> gD :call CocAction('jumpDefinition', 'vsplit')<CR>
 nmap <silent> gy <Plug>(coc-type-definition)
 nmap <silent> gi <Plug>(coc-implementation)
 nmap <silent> gr <Plug>(coc-references)
+
+let g:lmap.r.n = 'Rename(coc)'
 nmap <leader>rn <Plug>(coc-rename)
 
 nnoremap <silent> K :call <SID>show_documentation()<CR>
@@ -1650,8 +1652,9 @@ endfunction
 autocmd CursorHold * silent call CocActionAsync('highlight')
 
 " " Formatting selected code.
-" xmap <leader>f  <Plug>(coc-format-selected)
-" nmap <leader>f  <Plug>(coc-format-selected)
+let g:lmap.r.f = 'Format(coc)'
+xmap <leader>rf  <Plug>(coc-format-selected)
+nmap <leader>rf  <Plug>(coc-format-selected)
 
  " augroup mygroup
  "  autocmd!
@@ -1663,13 +1666,17 @@ autocmd CursorHold * silent call CocActionAsync('highlight')
 
 " Applying codeAction to the selected region.
 " Example: `<leader>aap` for current paragraph
-xmap <leader>aa  <Plug>(coc-codeaction-selected)
-nmap <leader>aa  <Plug>(coc-codeaction-selected)
+let g:lmap.r.a = { 'name': '+Action' }
+let g:lmap.r.a.a = 'Code action(selected)(coc)'
+xmap <leader>raa  <Plug>(coc-codeaction-selected)
+nmap <leader>raa  <Plug>(coc-codeaction-selected)
 
 " Remap keys for applying codeAction to the current buffer.
-nmap <leader>ac  <Plug>(coc-codeaction)
+let g:lmap.r.a.c = 'Code action(coc)'
+nmap <leader>rac  <Plug>(coc-codeaction)
 " Apply AutoFix to problem on the current line.
-nmap <leader>af  <Plug>(coc-fix-current)
+let g:lmap.r.a.f = 'Fix code(coc)'
+nmap <leader>raf  <Plug>(coc-fix-current)
 
 " Map function and class text objects
 " NOTE: Requires 'textDocument.documentSymbol' support from the language server.
@@ -1717,6 +1724,7 @@ function ExplorerFP()
   call CocAction('runCommand', 'explorer.doAction', 'closest', ['reveal:select'], [['relative', 0, 'file']])
 endfunction
 
+let g:lmap.f.p = 'Path(coc)'
 nnoremap <leader>fp :call ExplorerFP()<CR>
 nnoremap <leader>pn :CocCommand explorer --toggle --no-focus --sources=file+<CR>
 
@@ -1726,6 +1734,7 @@ function ExplorerFB()
   call CocAction('runCommand', 'explorer.doAction', 'closest', ['reveal:select'], [['relative', 0, 'buffer']])
 endfunction
 
+let g:lmap.f.b = 'Buffer(coc)'
 nnoremap <leader>fb :call ExplorerFB()<CR>
 nnoremap <leader>pb :CocCommand explorer --toggle --no-focus --preset buffer<CR>
 " }}}
