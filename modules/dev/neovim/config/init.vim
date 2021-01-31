@@ -1600,7 +1600,7 @@ let g:coc_user_config = {}
 
 let g:coc_global_extensions = [
                   \ 'coc-json',
-                  \ 'coc-jedi',
+                  \ 'coc-pyright',
                   \ 'coc-snippets',
                   \ 'coc-rust-analyzer',
                   \ 'coc-yaml',
@@ -1625,6 +1625,11 @@ endif
 
 inoremap <silent><expr> <cr> pumvisible() ? coc#_select_confirm()
                               \: "\<C-g>u\<CR>\<c-r>=coc#on_enter()\<CR>"
+
+nnoremap <silent><nowait><expr> <C-f> coc#float#has_scroll() ? coc#float#scroll(1, 1) : "\<C-f>"
+nnoremap <silent><nowait><expr> <C-b> coc#float#has_scroll() ? coc#float#scroll(0, 1) : "\<C-b>"
+inoremap <silent><nowait><expr> <C-f> coc#float#has_scroll() ? "\<c-r>=coc#float#scroll(1, 1)\<cr>" : "\<Right>"
+inoremap <silent><nowait><expr> <C-b> coc#float#has_scroll() ? "\<c-r>=coc#float#scroll(0, 1)\<cr>" : "\<Left>"
 
 " GoTo code navigation.
 nmap <silent> gd <Plug>(coc-definition)
