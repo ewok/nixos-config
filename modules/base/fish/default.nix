@@ -110,6 +110,7 @@ in
           startup-script = pkgs.writeShellScript "startup-script.sh" ''
             if [[ ! -z "$TMUX" ]]
             then
+              systemctl --state=failed --no-legend
               systemctl --user --state=failed --no-legend
             else
               SESS=$(tmux list-sessions | grep -v attached | cut -d: -f1 | head -n 1)
