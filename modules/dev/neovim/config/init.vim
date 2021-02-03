@@ -1698,7 +1698,9 @@ omap ac <Plug>(coc-classobj-a)
 " let g:coc_user_config['coc.preferences.jumpCommand'] = 'vsp'
 let g:coc_user_config['explorer.keyMappings.global.<tab>'] = v:false
 let g:coc_user_config['explorer.keyMappings.global.<space>'] = 'actionMenu'
+" let g:coc_user_config['explorer.keyMappings.global.s'] = 'open:split'
 let g:coc_user_config['explorer.keyMappings.global.v'] = 'open:vsplit'
+let g:coc_user_config['explorer.keyMappings.global.<cr>'] = ["wait", "expandable?", "cd", "open:sourceWindow"]
 let g:coc_user_config['explorer.keyMappings.global.m'] = 'rename'
 let g:coc_user_config['explorer.keyMappings.global.il'] = 'previewOnHover:toggle:labeling'
 let g:coc_user_config['explorer.keyMappings.global.ic'] = 'previewOnHover:toggle:content'
@@ -1717,6 +1719,8 @@ let g:coc_user_config['explorer.file.showHiddenFiles'] = v:true
 
 let g:coc_user_config['explorer.file.showHiddenFiles'] = v:true
 
+let g:coc_user_config['explorer.trash.command'] = 'trash-put %l --trash-dir ~/.local/share/Trash'
+
 let g:coc_explorer_global_presets = {
 \   'buffer': {
 \     'sources': [{'name': 'buffer', 'expand': v:true}],
@@ -1726,7 +1730,7 @@ let g:coc_explorer_global_presets = {
 
 function ExplorerFP()
   exe ':CocCommand explorer --no-toggle --quit-on-open'
-  call CocAction('runCommand', 'explorer.doAction', 'closest', ['reveal:select'], [['relative', 0, 'file']])
+  call CocAction('runCommand', 'explorer.doAction', 'closest', ['reveal'], [['relative', 0, 'file']])
 endfunction
 
 let g:lmap.f.p = 'Path(coc)'
@@ -1735,8 +1739,7 @@ nnoremap <leader>pn :CocCommand explorer --toggle --no-focus --sources=file+<CR>
 
 function ExplorerFB()
   exe ':CocCommand explorer --no-toggle --preset buffer --quit-on-open'
-  " Not working
-  call CocAction('runCommand', 'explorer.doAction', 'closest', ['reveal:select'], [['relative', 0, 'buffer']])
+  call CocAction('runCommand', 'explorer.doAction', 'closest', ['reveal'], [['relative', 0, 'buffer']])
 endfunction
 
 let g:lmap.f.b = 'Buffer(coc)'
