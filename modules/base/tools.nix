@@ -18,6 +18,9 @@ in
       openssl
       ntfs3g
 
+      exa
+      bat
+
       curl
       wget
       telnet

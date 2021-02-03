@@ -50,8 +50,12 @@ in
 
         shellAliases = {
           exit = "sync;sync;sync;clear;builtin exit";
-          ll = "ls -la --color";
-          ls = "ls -a --color";
+          # ll = "ls -la --color";
+          # ls = "ls -a --color";
+          ll = "exa -la --git";
+          ls = "exa -a --git";
+          cat = "bat";
+          rm = "trash-put";
         };
 
         functions = {

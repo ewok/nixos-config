@@ -55,6 +55,7 @@ let
   '';
 
   nix = writeShellScriptBin "nix" ''
+    # ${pkgs.nixFlakes}/bin/nix "nix-command flakes ca-references" "$@"
     ${pkgs.nixFlakes}/bin/nix --option experimental-features "nix-command flakes ca-references" "$@"
   '';
 
