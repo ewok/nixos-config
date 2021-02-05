@@ -12,6 +12,7 @@ in
       dfc
       htop
       reptyr
+      file
 
       binutils
       pciutils

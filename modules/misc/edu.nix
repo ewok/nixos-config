@@ -8,12 +8,12 @@ in
     config = mkIf gui.enable {
       home-manager.users.${username} = {
         home.packages = with pkgs; [
-          caffeine-ng
-          xclip
-          xsel
+          anki
+          goldendict
         ];
       };
     };
   }
+
 
 
