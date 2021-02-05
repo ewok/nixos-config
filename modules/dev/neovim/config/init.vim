@@ -214,17 +214,19 @@ let g:lmap =  {}
 let g:lmap.f = { 'name': '+Find' }
 let g:lmap.g = { 'name': '+Git'}
 let g:lmap.g.h = { 'name': 'History' }
+let g:lmap.i = { 'name': '+Insert' }
 let g:lmap.l = { 'name': '+Location' }
 let g:lmap.m = { 'name': '+Marks' }
 let g:lmap.o = { 'name': '+Open'}
-let g:lmap.p = { 'name': '+CtrlP'}
+" let g:lmap.p = { 'name': '+CtrlP'}
 let g:lmap.q = { 'name': '+QFix' }
 let g:lmap.r = { 'name': '+Run' }
 let g:lmap.s = { 'name': '+Session-Sort' }
 let g:lmap.t = { 'name': '+Tags-To-Text' }
 let g:lmap.y = { 'name': '+Yank' }
 let g:lmap.w = { 'name': '+Wiki' }
-let g:lmap.z = { 'name': '+Zoom/Zettel' }
+let g:lmap.z = { 'name': '+Zettel' }
+let g:lmap.Z = { 'name': 'Zoom' }
 " }}}
 
 " Helpers {{{
@@ -480,7 +482,7 @@ augroup ft_yaml
 
     PackAdd speeddating
     PackAdd rooter
-    PackAdd splitjoin
+    " PackAdd splitjoin
 
     let b:yaml_ft = 1
 
@@ -548,7 +550,7 @@ augroup ft_go
 
     PackAdd rooter
 
-    PackAdd splitjoin
+    " PackAdd splitjoin
 
     let b:go_ft = 1
 
@@ -663,34 +665,28 @@ augroup ft_markdown
     xmap <buffer> z<CR> <Plug>ZettelNewSelectedMap
 
     let g:lmap.w.b = 'BackLinks'
-    nnoremap <leader>wb :VimwikiBacklinks<cr>
-
-    function! UpdateBacklinks()
-      let s:backlinksline = search("# Backlinks", 'wnb')
-      if s:backlinksline != 0
-        execute s:backlinksline . ",$delete"
-        d
-      endif
-      ZettelBackLinks
-    endfunction
+    nnoremap <buffer><leader>wb :VimwikiBacklinks<cr>
 
     let g:lmap.z.b = 'BackLinks'
-    nnoremap <leader>zb :call UpdateBacklinks()<CR>
+    nnoremap <buffer><leader>zb :call UpdateBacklinks()<CR>
+
+    let g:lmap.z.z = 'Open'
+    nnoremap <buffer><leader>zz :ZettelOpen<CR>
 
     let g:lmap.z.y = 'Yank'
-    nnoremap <leader>zy <Plug>ZettelYankNameMap
+    nnoremap <buffer><leader>zy :ZettelYankName<CR>
 
     let g:lmap.z.n = 'New'
-    nnoremap <leader>zn :ZettelNew<space>
+    nnoremap <buffer><leader>zn :ZettelNew<space>
 
     let g:lmap.z.i = 'Insert Note'
-    nnoremap <leader>zi :ZettelInsertNote<CR>
+    nnoremap <buffer><leader>zi :ZettelInsertNote<CR>
 
     let g:lmap.z.C = 'Capture'
-    nnoremap <leader>zC :ZettelCapture<CR>
+    nnoremap <buffer><leader>zC :ZettelCapture<CR>
 
     let g:lmap.w.T = 'reTag'
-    nnoremap <leader>wT :VimwikiRebuildTags!<cr>:VimwikiGenerateTagLinks<cr><c-l>
+    nnoremap <buffer><leader>wT :VimwikiRebuildTags!<cr>:VimwikiGenerateTagLinks<cr><c-l>
 
     let b:markdown_ft = 1
 
@@ -714,7 +710,7 @@ augroup ft_mustache
     let g:mustache_abbreviations = 1
 
     PackAdd rooter
-    PackAdd splitjoin
+    " PackAdd splitjoin
 
     let b:mustache_ft = 1
 
@@ -822,7 +818,7 @@ augroup ft_python
 
     PackAdd textobj-python
     PackAdd rooter
-    PackAdd splitjoin
+    " PackAdd splitjoin
 
     let b:python_ft = 1
 
@@ -890,7 +886,7 @@ augroup ft_rust
     nmap <buffer> <silent> <leader>rf :RustFmt<CR>
 
     PackAdd rooter
-    PackAdd splitjoin
+    " PackAdd splitjoin
 
     " PackAdd ale
 
@@ -970,7 +966,7 @@ augroup ft_vim
     vnoremap <buffer> <leader>rS y:@"<CR>
     nnoremap <buffer> <leader>rS ^vg_y:execute @@<cr>:echo 'Sourced line.'<cr>
 
-    PackAdd splitjoin
+    " PackAdd splitjoin
 
     let b:vim_ft = 1
 
@@ -1001,7 +997,7 @@ augroup ft_sh
     " let b:ale_linters = ['shellcheck', 'language_server']
 
     PackAdd speeddating
-    PackAdd splitjoin
+    " PackAdd splitjoin
 
     let b:shell_ft = 1
 
@@ -1182,7 +1178,7 @@ augroup ft_lua
           \   'project_root': getcwd(),
           \})
 
-    PackAdd splitjoin
+    " PackAdd splitjoin
 
     let b:lua_ft = 1
 
@@ -1243,10 +1239,10 @@ tnoremap <expr> <Esc> (&filetype == "fzf") ? "<Esc>" : "<c-\><c-n>"
 
 let g:fzf_tags_command = 'ctags -R --exclude=.git --exclude=.idea --exclude=log'
 
-nnoremap <silent> <leader>pp :Files<CR>
+nnoremap <silent> <leader>oo :Files<CR>
 " TODO: To remove
-nnoremap <silent> <leader>pm :call MarksOnList()<CR>
-nnoremap <silent> <leader>pf :Filetypes<CR>
+nnoremap <silent> <leader>om :call MarksOnList()<CR>
+nnoremap <silent> <leader>of :Filetypes<CR>
 
 let g:lmap.g.h.f = '+File'
 nmap <silent> <leader>ghf :BCommits<CR>
@@ -1254,8 +1250,8 @@ nmap <silent> <leader>ghf :BCommits<CR>
 let g:lmap.f.f = 'in-File'
 nmap <silent> <leader>ff :Rg<CR>
 
-let g:lmap.p.b = 'Buffer'
-nnoremap <leader>pb :Buffers<CR>
+let g:lmap.o.b = 'Buffer'
+nnoremap <leader>ob :Buffers<CR>
 
 function! s:build_quickfix_list(lines)
   call setqflist(map(copy(a:lines), '{ "filename": v:val }'))
@@ -1411,8 +1407,8 @@ let g:rooter_resolve_links = 1
 " }}}
 " Tagbar {{{
 call minpac#add('preservim/tagbar', {'type': 'start', 'name': 'tagbar'})
-noremap <leader>tb :TagbarToggle<CR>
-noremap <leader>pt :TagbarToggle<CR>
+noremap <leader>tt :TagbarToggle<CR>
+noremap <leader>ot :TagbarOpen<CR>
 
 let g:lmap.f.t = 'Tag'
 nmap <leader>ft :TagbarOpenAutoClose<CR>
@@ -1495,8 +1491,8 @@ function! StartGoyo()
 
 endfunction
 
-let g:lmap.t.t = 'Text-only(Goyo)'
-nnoremap <silent> <leader>tt :call StartGoyo()<CR>
+let g:lmap.t.T = 'Text-only(Goyo)'
+nnoremap <silent> <leader>tT :call StartGoyo()<CR>
 " }}}
 " Tmux {{{
 call minpac#add('christoomey/vim-tmux-navigator', {'type': 'start', 'name': 'tmux-navigator'})
@@ -1571,8 +1567,8 @@ let g:XkbSwitchSkipFt = [ 'nerdtree', 'coc-explorer' ]
 " Zoom {{{
 call minpac#add('dhruvasagar/vim-zoom', {'type': 'start', 'name': 'vim-zoom'})
 
-let g:lmap.z.z = 'Zoom'
-nmap <leader>zz :call ZoomToggle()<CR>
+" let g:lmap.z.z = 'Zoom'
+nmap <leader>Z :call ZoomToggle()<CR>
 
 function! ZoomToggle()
   if (exists("t:NERDTreeBufName") && bufwinnr(t:NERDTreeBufName) != -1)
@@ -1779,8 +1775,8 @@ endfunction
 let g:lmap.f.p = 'Path(coc)'
 nnoremap <leader>fp :call ExplorerFP()<CR>
 
-let g:lmap.p.e = 'Explorer(coc)'
-nnoremap <leader>pe :CocCommand explorer --toggle --no-focus --sources=file+<CR>
+let g:lmap.o.e = 'Explorer(coc)'
+nnoremap <leader>oe :CocCommand explorer --toggle --no-focus --sources=file+<CR>
 
 function ExplorerFB()
   exe ':CocCommand explorer --no-toggle --preset buffer --quit-on-open'
@@ -1916,9 +1912,11 @@ let g:surround_{char2nr("%")} = "{% \r %}"
 
 " }}}
 " Split/Join {{{
-call minpac#add('andrewradev/splitjoin.vim', {'type': 'opt', 'name': 'splitjoin'})
-let g:splitjoin_split_mapping = 'gs'
-let g:splitjoin_join_mapping  = 'gj'
+call minpac#add('andrewradev/splitjoin.vim', {'type': 'start', 'name': 'splitjoin'})
+" let g:splitjoin_split_mapping = 'gs'
+" let g:splitjoin_join_mapping  = 'gj'
+nmap gs :SplitjoinSplit<cr>
+nmap gj :SplitjoinJoin<cr>
 
 " }}}
 " Zeavim {{{
@@ -2068,6 +2066,16 @@ PackAdd vimwiki
 
 let g:zettel_format = "%y%m%d-%H%M-%title"
 let g:zettel_default_mappings = 0
+
+function! UpdateBacklinks()
+  let s:backlinksline = search("# Backlinks", 'wnb')
+  if s:backlinksline != 0
+    execute s:backlinksline . ",$delete"
+    d
+  endif
+  ZettelBackLinks
+endfunction
+
 PackAdd zettel
 " }}}
 " Sessions {{{
@@ -2420,18 +2428,18 @@ let g:lmap.l.p = 'Previous'
 nmap <leader>lp <Plug>(qfix_LPrev)
 " }}}
 " TODOs {{{
-inoremap \td <C-R>=split(&commentstring, '%s')[0] . 'TODO: '<CR><CR><C-R>=expand("%:h") . '/' . expand("%:t") . ':' . line(".")<CR><C-G><C-K><C-O>A
-inoremap \dts <C-R>=strftime("%Y-%m-%d %H:%M:%S")<CR>
-inoremap \dtm <C-R>=strftime("%Y-%m-%d %H:%M")<CR>
-inoremap \dtd <C-R>=strftime("%Y-%m-%d")<CR>
-inoremap \fl <C-R>=expand("%:h") . '/' . expand("%:t") . ':' . line(".")<CR>
-inoremap \fp <C-R>=expand("%:h") . '/' . expand("%:t")<CR>
+let g:lmap.i.t = 'To-do'
+nnoremap <leader>it O<C-R>=split(&commentstring, '%s')[0] . 'TODO: '<CR><CR><C-R>=expand("%:h") . '/' . expand("%:t") . ':' . line(".")<CR><C-G><C-K><C-O>A
+let g:lmap.i.d = {'name': '+DateTime'}
+let g:lmap.i.d.s = 'date Time(seconds)'
+nnoremap <leader>ids O<C-R>=strftime("%Y-%m-%d %H:%M:%S")<CR>
+let g:lmap.i.d.m = 'date Time(Minutes)'
+nnoremap <leader>idm O<C-R>=strftime("%Y-%m-%d %H:%M")<CR>
+let g:lmap.i.d.d = 'date Time(Day)'
+nnoremap <leader>idd O<C-R>=strftime("%Y-%m-%d")<CR>
 
-let g:lmap.t.d = 'to-Do'
-nnoremap <leader>td O<C-R>=split(&commentstring, '%s')[0] . 'TODO: '<CR><CR><C-R>=expand("%:h") . '/' . expand("%:t") . ':' . line(".")<CR><C-G><C-K><C-O>A
-
-let g:lmap.o.t = 'To-do'
-nnoremap <leader>ot :call OpenToDo()<CR>
+let g:lmap.o.d = 'to-Do'
+nnoremap <leader>od :call OpenToDo()<CR>
 function! OpenToDo()
   vsplit TODO.md
   nnoremap <buffer> q :x<CR>
