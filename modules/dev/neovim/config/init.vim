@@ -1926,6 +1926,7 @@ let g:zv_file_types = {
                 \    '\v^(G|g)runt\.'           : 'gulp,javascript,nodejs',
                 \    '\v^(G|g)ulpfile\.'        : 'grunt',
                 \    '\v^(md|mdown|mkd|mkdn)$'  : 'markdown',
+                \    'yaml.ansible'             : 'ansible',
                 \ }
 nmap gzz <Plug>Zeavim
 vmap gzz <Plug>ZVVisSelection
