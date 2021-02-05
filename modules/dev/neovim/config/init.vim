@@ -224,7 +224,7 @@ let g:lmap.s = { 'name': '+Session-Sort' }
 let g:lmap.t = { 'name': '+Tags-To-Text' }
 let g:lmap.y = { 'name': '+Yank' }
 let g:lmap.w = { 'name': '+Wiki' }
-let g:lmap.z = { 'name': '+Zoom' }
+let g:lmap.z = { 'name': '+Zoom/Zettel' }
 " }}}
 
 " Helpers {{{
@@ -651,6 +651,46 @@ augroup ft_markdown
 
     PackAdd speeddating
     PackAdd rooter
+
+    inoremap <buffer><expr> ]] fzf#vim#complete({
+          \ 'source':  'rg --no-heading --smart-case  .',
+          \ 'reducer': function('<sid>make_note_link'),
+          \ 'options': '--multi --reverse --margin 15%,0',
+          \ 'window': { 'width': 0.9, 'height': 0.6 }})
+
+    " Zettel
+    imap <buffer><silent> [[ qq<esc><Plug>ZettelSearchMap
+    xmap <buffer> z<CR> <Plug>ZettelNewSelectedMap
+
+    let g:lmap.w.b = 'BackLinks'
+    nnoremap <leader>wb :VimwikiBacklinks<cr>
+
+    function! UpdateBacklinks()
+      let s:backlinksline = search("# Backlinks", 'wnb')
+      if s:backlinksline != 0
+        execute s:backlinksline . ",$delete"
+        d
+      endif
+      ZettelBackLinks
+    endfunction
+
+    let g:lmap.z.b = 'BackLinks'
+    nnoremap <leader>zb :call UpdateBacklinks()<CR>
+
+    let g:lmap.z.y = 'Yank'
+    nnoremap <leader>zy <Plug>ZettelYankNameMap
+
+    let g:lmap.z.n = 'New'
+    nnoremap <leader>zn :ZettelNew<space>
+
+    let g:lmap.z.i = 'Insert Note'
+    nnoremap <leader>zi :ZettelInsertNote<CR>
+
+    let g:lmap.z.C = 'Capture'
+    nnoremap <leader>zC :ZettelCapture<CR>
+
+    let g:lmap.w.T = 'reTag'
+    nnoremap <leader>wT :VimwikiRebuildTags!<cr>:VimwikiGenerateTagLinks<cr><c-l>
 
     let b:markdown_ft = 1
 
@@ -1198,8 +1238,8 @@ PackAdd fzf
 PackAdd fzf.vim
 
 tnoremap <expr> <Esc> (&filetype == "fzf") ? "<Esc>" : "<c-\><c-n>"
-command! -bang -nargs=* Ag call fzf#vim#ag(<q-args>, {'options': '--delimiter : --nth 4..',
-      \ 'source': 'ag --hidden --ignore .git -U -p ~/.gitexcludes --nogroup --column --color "^(?=.)"'}, <bang>0)
+" command! -bang -nargs=* Ag call fzf#vim#ag(<q-args>, {'options': '--delimiter : --nth 4.. --preview',
+"       \ 'source': 'ag --hidden --ignore .git -U -p ~/.gitexcludes --nogroup --column --color "^(?=.)"'}, <bang>0)
 
 let g:fzf_tags_command = 'ctags -R --exclude=.git --exclude=.idea --exclude=log'
 
@@ -1212,7 +1252,10 @@ let g:lmap.g.h.f = '+File'
 nmap <silent> <leader>ghf :BCommits<CR>
 
 let g:lmap.f.f = 'in-File'
-nmap <silent> <leader>ff :Ag<CR>
+nmap <silent> <leader>ff :Rg<CR>
+
+let g:lmap.p.b = 'Buffer'
+nnoremap <leader>pb :Buffers<CR>
 
 function! s:build_quickfix_list(lines)
   call setqflist(map(copy(a:lines), '{ "filename": v:val }'))
@@ -1227,7 +1270,7 @@ let g:fzf_action = {
       \ 'ctrl-v': 'vsplit' }
 
 let $FZF_DEFAULT_OPTS = '--bind=ctrl-a:toggle-all,ctrl-space:toggle+down,ctrl-alt-a:deselect-all'
-let $FZF_DEFAULT_COMMAND = 'ag --hidden --ignore .git -g "" -U -p ~/.gitexcludes'
+let $FZF_DEFAULT_COMMAND = 'rg --iglob !.git --files --hidden --ignore-vcs --ignore-file ~/.config/git/gitexcludes'
 " }}}
 " Indent-guides {{{
 call minpac#add('nathanaelkane/vim-indent-guides', {'type': 'opt', 'name': 'indent-guides'})
@@ -1528,8 +1571,8 @@ let g:XkbSwitchSkipFt = [ 'nerdtree', 'coc-explorer' ]
 " Zoom {{{
 call minpac#add('dhruvasagar/vim-zoom', {'type': 'start', 'name': 'vim-zoom'})
 
-let g:lmap.z = 'Zoom'
-nmap <leader>z :call ZoomToggle()<CR>
+let g:lmap.z.z = 'Zoom'
+nmap <leader>zz :call ZoomToggle()<CR>
 
 function! ZoomToggle()
   if (exists("t:NERDTreeBufName") && bufwinnr(t:NERDTreeBufName) != -1)
@@ -1735,7 +1778,9 @@ endfunction
 
 let g:lmap.f.p = 'Path(coc)'
 nnoremap <leader>fp :call ExplorerFP()<CR>
-nnoremap <leader>pn :CocCommand explorer --toggle --no-focus --sources=file+<CR>
+
+let g:lmap.p.e = 'Explorer(coc)'
+nnoremap <leader>pe :CocCommand explorer --toggle --no-focus --sources=file+<CR>
 
 function ExplorerFB()
   exe ':CocCommand explorer --no-toggle --preset buffer --quit-on-open'
@@ -1744,7 +1789,6 @@ endfunction
 
 let g:lmap.f.b = 'Buffer(coc)'
 nnoremap <leader>fb :call ExplorerFB()<CR>
-nnoremap <leader>pb :CocCommand explorer --toggle --no-focus --preset buffer<CR>
 " }}}
 " Easyalign {{{
 call minpac#add('junegunn/vim-easy-align', {'type': 'start', 'name': 'easy-align'})
@@ -1929,6 +1973,7 @@ let g:qs_buftype_blacklist = ['terminal', 'nofile', 'nerdtree']
 " Additional {{{
 " VimWiki {{{
 call minpac#add('vimwiki/vimwiki', {'type': 'opt', 'name': 'vimwiki', 'branch': 'dev'})
+call minpac#add('michal-h21/vim-zettel', {'type': 'opt', 'name': 'zettel'})
 function! LoadVimwiki()
 
   let g:lmap.w.w = 'Index'
@@ -1936,6 +1981,9 @@ function! LoadVimwiki()
   noremap <Leader>ww :call VimwikiIndexCd()<CR>
   noremap <Leader>wj :VimwikiDiaryNextDay<CR>
   noremap <Leader>wk :VimwikiDiaryPrevDay<CR>
+  noremap <Leader>wk :VimwikiDiaryPrevDay<CR>
+  noremap <Leader>wmc :VimwikiCheckLinks<CR>
+  noremap <leader>wmt :VimwikiRebuildTags<CR>
 
   nunmap <Leader>w<Space>i
   nunmap <Leader>w<Space>t
@@ -1950,7 +1998,10 @@ function! LoadVimwiki()
   " m tommorow
 
   map <leader>wt :call VimwikiMakeDiaryNoteNew()<CR>
+
+  let g:lmap.w.m = { 'name' :'+Maintanence'}
   let g:lmap.w.s = 'Select-wiki'
+  let g:lmap.w.c = 'Colorize'
   let g:lmap.w.t = 'Today'
   let g:lmap.w.i = 'Diary'
 endfunction
@@ -1981,6 +2032,7 @@ let g:vimwiki_list = [{'path': '~/Notes/',
       \ 'auto_diary_index': 1,
       \ 'list_margin': 0,
       \ 'custom_wiki2html': 'vimwiki-godown',
+      \ 'links_space_char': '_',
       \ 'auto_tags': 1}]
 
 let g:vimwiki_ext2syntax = {'.md': 'markdown',
@@ -1994,7 +2046,29 @@ let g:vimwiki_markdown_link_ext = 1
 let g:vimwiki_commentstring = '<!--%s-->'
 let g:vimwiki_auto_header = 1
 
+" make_note_link: List -> Str
+" returned string: [Title](YYYYMMDDHH.md)
+function! s:make_note_link(l)
+  " fzf#vim#complete returns a list with all info in index 0
+  let line = split(a:l[0], ':')
+  let ztk_id = l:line[0]
+
+  try
+    let ztk_title = substitute(l:line[2], '\#\+\s\+', '', 'g')
+  catch
+    let ztk_title = substitute(l:line[1], '\#\+\s\+', '', 'g')
+  endtry
+
+  let mdlink = "[" . ztk_title ."](". ztk_id .")"
+
+  return mdlink
+endfunction
+
 PackAdd vimwiki
+
+let g:zettel_format = "%y%m%d-%H%M-%title"
+let g:zettel_default_mappings = 0
+PackAdd zettel
 " }}}
 " Sessions {{{
 let g:sessiondir = $HOME . "/.vim_sessions"
