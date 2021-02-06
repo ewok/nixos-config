@@ -211,6 +211,7 @@ endfunction
 " Leader Initialisation {{{
 " Define prefix dictionary
 let g:lmap =  {}
+let g:lmap.b = { 'name': '+Buffer'}
 let g:lmap.f = { 'name': '+Find' }
 let g:lmap.g = { 'name': '+Git'}
 let g:lmap.g.h = { 'name': 'History' }
@@ -218,7 +219,6 @@ let g:lmap.i = { 'name': '+Insert' }
 let g:lmap.l = { 'name': '+Location' }
 let g:lmap.m = { 'name': '+Marks' }
 let g:lmap.o = { 'name': '+Open'}
-" let g:lmap.p = { 'name': '+CtrlP'}
 let g:lmap.q = { 'name': '+QFix' }
 let g:lmap.r = { 'name': '+Run' }
 let g:lmap.s = { 'name': '+Session-Sort' }
@@ -1252,6 +1252,7 @@ nmap <silent> <leader>ff :Rg<CR>
 
 let g:lmap.o.b = 'Buffer'
 nnoremap <leader>ob :Buffers<CR>
+nnoremap <leader>bb :Buffers<CR>
 
 function! s:build_quickfix_list(lines)
   call setqflist(map(copy(a:lines), '{ "filename": v:val }'))
@@ -1350,52 +1351,53 @@ function! MarksPurgeGlobaly()
 endfunction
 " }}}
 " NERTree {{{
-" call minpac#add('preservim/nerdtree', {'type': 'start', 'name': 'nerdtree'})
-" call minpac#add('Xuyuanp/nerdtree-git-plugin', {'type': 'start', 'name': 'nerdtree-git'})
+call minpac#add('preservim/nerdtree', {'type': 'start', 'name': 'nerdtree'})
+call minpac#add('Xuyuanp/nerdtree-git-plugin', {'type': 'start', 'name': 'nerdtree-git'})
+call minpac#add('ryanoasis/vim-devicons', {'type': 'start', 'name': 'devicons'})
 
-" nnoremap <leader>pn :call NERDTreeToggleCWD()<CR>
-" nnoremap <Plug>(find_Path) :call FindPathOrShowNERDTree()<CR>
+nnoremap <leader>oe :call NERDTreeToggleCWD()<CR>
+nnoremap <Plug>(find_Path) :call FindPathOrShowNERDTree()<CR>
 
-" function! NERDTreeToggleCWD()
-"   NERDTreeToggle
-"   let currentfile = expand('%')
-"   if (currentfile == "") || !(currentfile !~? 'NERD')
-"     NERDTreeCWD
-"     wincmd p
-"   endif
-" endfunction
+function! NERDTreeToggleCWD()
+  NERDTreeToggle
+  let currentfile = expand('%')
+  if (currentfile == "") || !(currentfile !~? 'NERD')
+    NERDTreeCWD
+    wincmd p
+  endif
+endfunction
 
-" function! FindPathOrShowNERDTree()
-"   let currentfile = expand('%')
-"   if (currentfile == "") || !(currentfile !~? 'NERD')
-"     NERDTreeToggle
-"   else
-"     NERDTreeFind
-"     NERDTreeCWD
-"   endif
-" endfunction
+function! FindPathOrShowNERDTree()
+  let currentfile = expand('%')
+  if (currentfile == "") || !(currentfile !~? 'NERD')
+    NERDTreeToggle
+  else
+    NERDTreeFind
+    NERDTreeCWD
+  endif
+endfunction
 
-" let g:lmap.f.p = 'Path'
-" nmap <leader>fp <Plug>(find_Path)
+let g:lmap.f.p = 'Path'
+nmap <leader>fp <Plug>(find_Path)
 
-" let NERDTreeShowBookmarks=0
-" let NERDTreeChDirMode=2
-" let NERDTreeMouseMode=2
-" let g:nerdtree_tabs_focus_on_files=1
-" let g:nerdtree_tabs_open_on_gui_startup=0
+let NERDTreeShowBookmarks=0
+let NERDTreeChDirMode=2
+let NERDTreeMouseMode=2
+let g:nerdtree_tabs_focus_on_files=1
+let g:nerdtree_tabs_open_on_gui_startup=0
 
-" " make nerdtree look nice
-" let NERDTreeMinimalUI=1
-" let NERDTreeDirArrows=1
-" let g:NERDTreeWinSize=30
-" let NERDTreeIgnore=['\.pyc$']
+" make nerdtree look nice
+let NERDTreeMinimalUI=1
+let NERDTreeDirArrows=1
+let g:NERDTreeWinSize=30
+let NERDTreeIgnore=['\.pyc$']
 
-" " ReMaps
-" let NERDTreeMapOpenVSplit='v'
-" let NERDTreeMapOpenSplit='s'
-" let NERDTreeMapJumpNextSibling=''
-" let NERDTreeMapJumpPrevSibling=''
-" let g:NERDTreeMapMenu='M'
+" ReMaps
+let NERDTreeMapOpenVSplit='v'
+let NERDTreeMapOpenSplit='s'
+let NERDTreeMapJumpNextSibling=''
+let NERDTreeMapJumpPrevSibling=''
+let g:NERDTreeMapMenu='<leader>'
 
 " Close vim if the only NERDTree window left
 " autocmd bufenter * if (winnr("$") == 1 && exists("b:NERDTree") && b:NERDTree.isTabTree()) | q | endif
@@ -1609,8 +1611,8 @@ endfunction
 " Buffers {{{
 call minpac#add('schickling/vim-bufonly', {'type': 'start', 'name': 'bufonly'})
 
-nmap <silent><C-W>Q :Bonly<CR>
-nmap <silent><C-W>C :Bonly<CR>
+let g:lmap.b.q = 'Quit All'
+nmap <silent><leader>bq :Bonly<CR>
 
 " }}}
 " }}}
@@ -1646,15 +1648,10 @@ let g:coc_global_extensions = [
                   \ 'coc-markdownlint',
                   \ 'coc-sh',
                   \ 'coc-vimlsp',
-                  \ 'coc-explorer']
+                  \ 'coc-spell-checker',
+                  \]
 
 set shortmess+=c
-
-" inoremap <silent><expr> <TAB>
-"       \ pumvisible() ? "\<C-n>" :
-"       \ <SID>check_back_space() ? "\<TAB>" :
-"       \ coc#refresh()
-" inoremap <expr><S-TAB> pumvisible() ? "\<C-p>" : "\<C-h>"
 
 if has('nvim')
   inoremap <silent><expr> <c-space> coc#refresh()
@@ -1700,27 +1697,17 @@ let g:lmap.r.f = 'Format(coc)'
 xmap <leader>rf  <Plug>(coc-format-selected)
 nmap <leader>rf  <Plug>(coc-format-selected)
 
- " augroup mygroup
- "  autocmd!
- "  " Setup formatexpr specified filetype(s).
- "  autocmd FileType typescript,json setl formatexpr=CocAction('formatSelected')
- "  " Update signature help on jump placeholder.
- "  autocmd User CocJumpPlaceholder call CocActionAsync('showSignatureHelp')
-" augroup end
-
-" Applying codeAction to the selected region.
-" Example: `<leader>aap` for current paragraph
-let g:lmap.r.a = { 'name': '+Action' }
-let g:lmap.r.a.a = 'Code action(selected)(coc)'
-xmap <leader>raa  <Plug>(coc-codeaction-selected)
-nmap <leader>raa  <Plug>(coc-codeaction-selected)
+let g:lmap.a = { 'name': '+Action' }
+let g:lmap.a.a = 'Code action(selected)(coc)'
+vmap <leader>aa  <Plug>(coc-codeaction-selected)
+nmap <leader>aa  <Plug>(coc-codeaction-selected)
 
 " Remap keys for applying codeAction to the current buffer.
-let g:lmap.r.a.c = 'Code action(coc)'
-nmap <leader>rac  <Plug>(coc-codeaction)
+let g:lmap.a.c = 'Code action(coc)'
+nmap <leader>ac  <Plug>(coc-codeaction)
 " Apply AutoFix to problem on the current line.
-let g:lmap.r.a.f = 'Fix code(coc)'
-nmap <leader>raf  <Plug>(coc-fix-current)
+let g:lmap.a.f = 'Fix code(coc)'
+nmap <leader>af  <Plug>(coc-fix-current)
 
 " Map function and class text objects
 " NOTE: Requires 'textDocument.documentSymbol' support from the language server.
@@ -1733,58 +1720,58 @@ omap ic <Plug>(coc-classobj-i)
 xmap ac <Plug>(coc-classobj-a)
 omap ac <Plug>(coc-classobj-a)
 
-" coc-explorer
-" let g:coc_user_config['coc.preferences.jumpCommand'] = 'vsp'
-let g:coc_user_config['explorer.keyMappings.global.<tab>'] = v:false
-let g:coc_user_config['explorer.keyMappings.global.<space>'] = 'actionMenu'
-" let g:coc_user_config['explorer.keyMappings.global.s'] = 'open:split'
-let g:coc_user_config['explorer.keyMappings.global.v'] = 'open:vsplit'
-let g:coc_user_config['explorer.keyMappings.global.<cr>'] = ["wait", "expandable?", "cd", "open:sourceWindow"]
-let g:coc_user_config['explorer.keyMappings.global.m'] = 'rename'
-let g:coc_user_config['explorer.keyMappings.global.il'] = 'previewOnHover:toggle:labeling'
-let g:coc_user_config['explorer.keyMappings.global.ic'] = 'previewOnHover:toggle:content'
-let g:coc_user_config['explorer.keyMappings.global.ii'] = 'previewOnHover:disable'
-let g:coc_user_config['explorer.keyMappings.global.I'] = 'toggleHidden'
-let g:coc_user_config['explorer.keyMappings.global.Ic'] = v:false
-let g:coc_user_config['explorer.keyMappings.global.Il'] = v:false
-let g:coc_user_config['explorer.keyMappings.global.II'] = v:false
-let g:coc_user_config['explorer.keyMappings.global.dd'] = 'delete'
-let g:coc_user_config['explorer.keyMappings.global.u'] = ["wait", "gotoParent"]
+" " coc-explorer
+" " let g:coc_user_config['coc.preferences.jumpCommand'] = 'vsp'
+" let g:coc_user_config['explorer.keyMappings.global.<tab>'] = v:false
+" let g:coc_user_config['explorer.keyMappings.global.<space>'] = 'actionMenu'
+" " let g:coc_user_config['explorer.keyMappings.global.s'] = 'open:split'
+" let g:coc_user_config['explorer.keyMappings.global.v'] = 'open:vsplit'
+" let g:coc_user_config['explorer.keyMappings.global.<cr>'] = ["wait", "expandable?", "cd", "open:sourceWindow"]
+" let g:coc_user_config['explorer.keyMappings.global.m'] = 'rename'
+" let g:coc_user_config['explorer.keyMappings.global.il'] = 'previewOnHover:toggle:labeling'
+" let g:coc_user_config['explorer.keyMappings.global.ic'] = 'previewOnHover:toggle:content'
+" let g:coc_user_config['explorer.keyMappings.global.ii'] = 'previewOnHover:disable'
+" let g:coc_user_config['explorer.keyMappings.global.I'] = 'toggleHidden'
+" let g:coc_user_config['explorer.keyMappings.global.Ic'] = v:false
+" let g:coc_user_config['explorer.keyMappings.global.Il'] = v:false
+" let g:coc_user_config['explorer.keyMappings.global.II'] = v:false
+" let g:coc_user_config['explorer.keyMappings.global.dd'] = 'delete'
+" let g:coc_user_config['explorer.keyMappings.global.u'] = ["wait", "gotoParent"]
 
-let g:coc_user_config['explorer.diagnostic.displayMax'] = 0
+" let g:coc_user_config['explorer.diagnostic.displayMax'] = 0
 
-let g:coc_user_config['explorer.icon.enableNerdfont'] = v:true
-let g:coc_user_config['explorer.file.showHiddenFiles'] = v:true
+" let g:coc_user_config['explorer.icon.enableNerdfont'] = v:true
+" let g:coc_user_config['explorer.file.showHiddenFiles'] = v:true
 
-let g:coc_user_config['explorer.file.showHiddenFiles'] = v:true
+" let g:coc_user_config['explorer.file.showHiddenFiles'] = v:true
 
-let g:coc_user_config['explorer.trash.command'] = 'trash-put %l --trash-dir ~/.local/share/Trash'
+" let g:coc_user_config['explorer.trash.command'] = 'trash-put %l --trash-dir ~/.local/share/Trash'
 
-let g:coc_explorer_global_presets = {
-\   'buffer': {
-\     'sources': [{'name': 'buffer', 'expand': v:true}],
-\     'quit-on-open': v:true,
-\   },
-\ }
+" let g:coc_explorer_global_presets = {
+" \   'buffer': {
+" \     'sources': [{'name': 'buffer', 'expand': v:true}],
+" \     'quit-on-open': v:true,
+" \   },
+" \ }
 
-function ExplorerFP()
-  exe ':CocCommand explorer --no-toggle --quit-on-open'
-  call CocAction('runCommand', 'explorer.doAction', 'closest', ['reveal'], [['relative', 0, 'file']])
-endfunction
+" function ExplorerFP()
+"   exe ':CocCommand explorer --no-toggle --quit-on-open'
+"   call CocAction('runCommand', 'explorer.doAction', 'closest', ['reveal'], [['relative', 0, 'file']])
+" endfunction
 
-let g:lmap.f.p = 'Path(coc)'
-nnoremap <leader>fp :call ExplorerFP()<CR>
+" let g:lmap.f.p = 'Path(coc)'
+" nnoremap <leader>fp :call ExplorerFP()<CR>
 
-let g:lmap.o.e = 'Explorer(coc)'
-nnoremap <leader>oe :CocCommand explorer --toggle --no-focus --sources=file+<CR>
+" let g:lmap.o.e = 'Explorer(coc)'
+" nnoremap <leader>oe :CocCommand explorer --toggle --no-focus --sources=file+<CR>
 
-function ExplorerFB()
-  exe ':CocCommand explorer --no-toggle --preset buffer --quit-on-open'
-  call CocAction('runCommand', 'explorer.doAction', 'closest', ['reveal'], [['relative', 0, 'buffer']])
-endfunction
+" function ExplorerFB()
+"   exe ':CocCommand explorer --no-toggle --preset buffer --quit-on-open'
+"   call CocAction('runCommand', 'explorer.doAction', 'closest', ['reveal'], [['relative', 0, 'buffer']])
+" endfunction
 
-let g:lmap.f.b = 'Buffer(coc)'
-nnoremap <leader>fb :call ExplorerFB()<CR>
+" let g:lmap.f.b = 'Buffer(coc)'
+" nnoremap <leader>fb :call ExplorerFB()<CR>
 " }}}
 " Easyalign {{{
 call minpac#add('junegunn/vim-easy-align', {'type': 'start', 'name': 'easy-align'})
@@ -1928,6 +1915,7 @@ let g:zv_file_types = {
                 \    '\v^(md|mdown|mkd|mkdn)$'  : 'markdown',
                 \    'yaml.ansible'             : 'ansible',
                 \ }
+nmap <F1> <Plug>Zeavim
 nmap gzz <Plug>Zeavim
 vmap gzz <Plug>ZVVisSelection
 nmap gZ <Plug>ZVKeyDocset<CR>
