@@ -2458,6 +2458,9 @@ vnoremap <leader>th :TOhtml<CR>
 " Small plugins {{{
 call minpac#add('ntpeters/vim-better-whitespace', {'type': 'start', 'name': 'better-whitespace'})
 let g:better_whitespace_filetypes_blacklist=['gitcommit', 'unite', 'qf', 'help', 'dotooagenda', 'dotoo']
+let g:lmap.t.f = {'name': '+Fix'}
+let g:lmap.t.f.w = 'Whitespace'
+nmap <leader>tfw :StripWhitespace<CR>
 
 call minpac#add('jiangmiao/auto-pairs', {'type': 'start', 'name': 'auto-pairs'})
 
