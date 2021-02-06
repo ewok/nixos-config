@@ -208,7 +208,7 @@ endfunction
 " }}}
 " }}}
 
-" Leader Initialisation {{{
+" Leader Initializations {{{
 " Define prefix dictionary
 let g:lmap =  {}
 let g:lmap.b = { 'name': '+Buffer'}
@@ -219,6 +219,7 @@ let g:lmap.i = { 'name': '+Insert' }
 let g:lmap.l = { 'name': '+Location' }
 let g:lmap.m = { 'name': '+Marks' }
 let g:lmap.o = { 'name': '+Open'}
+let g:lmap.p = { 'name': '+Plugins' }
 let g:lmap.q = { 'name': '+QFix' }
 let g:lmap.r = { 'name': '+Run' }
 let g:lmap.s = { 'name': '+Session-Sort' }
@@ -247,6 +248,9 @@ call minpac#init()
 command! PackUpdate call minpac#update()
 command! PackClean  call minpac#clean()
 command! PackStatus call minpac#status()
+
+let g:lmap.p.u = "Pack Update"
+nmap <leader>pu :PackUpdate<CR>
 
 " Idempotent packs loading
 function PackAddId(packname, ...)
@@ -534,19 +538,20 @@ augroup ft_go
     nmap <buffer> <silent> <leader>rb :GoBuild<CR>
     nmap <buffer> <silent> <leader>rc :GoCoverageToggle<CR>
 
-    let g:lmap.r.d = { 'name': '+Definition' }
-    let g:lmap.r.d.s = 'Split'
-    nmap <buffer> <Leader>rds <Plug>(go-def-split)
+    " FIXME: Adjust to coc accordingly
+    " let g:lmap.r.d = { 'name': '+Definition' }
+    " let g:lmap.r.d.s = 'Split'
+    " nmap <buffer> <Leader>rds <Plug>(go-def-split)
 
-    let g:lmap.r.d.v = 'Vertical'
-    nmap <buffer> <Leader>rdv <Plug>(go-def-vertical)
+    " let g:lmap.r.d.v = 'Vertical'
+    " nmap <buffer> <Leader>rdv <Plug>(go-def-vertical)
 
-    let g:lmap.r.d.t = 'Tab'
-    nmap <buffer> <Leader>rdt <Plug>(go-def-tab)
-    " au FileType go nmap <buffer> K <Plug>(go-doc)
+    " let g:lmap.r.d.t = 'Tab'
+    " nmap <buffer> <Leader>rdt <Plug>(go-def-tab)
+    " " au FileType go nmap <buffer> K <Plug>(go-doc)
 
-    let g:lmap.r.d.i = 'Info'
-    nmap <buffer> <Leader>rdi <Plug>(go-info)
+    " let g:lmap.r.d.i = 'Info'
+    " nmap <buffer> <Leader>rdi <Plug>(go-info)
 
     PackAdd rooter
 
@@ -1331,24 +1336,8 @@ let g:SignatureMap = {
   \ 'ListBufferMarkers'  :  ""
   \ }
 
-nnoremap m/ :call MarksOnList()<CR>
-nnoremap <leader>mm :call MarksOnList()<CR>
-function! MarksOnList()
-  call signature#sign#Refresh(1)
-  call signature#mark#List(0)
-  nnoremap <buffer> q :x<CR>
-endfunction
-
-nnoremap <leader>md :call MarksPurgeGlobaly()<CR>
-nnoremap m<Space> :call MarksPurgeGlobaly()<CR>
-function! MarksPurgeGlobaly()
-  call signature#mark#Purge('all')
-  call signature#marker#Purge()
-  call signature#mark#List(0)
-  call signature#sign#Refresh(1)
-  wincmd q
-  wshada!
-endfunction
+nnoremap m/ :Marks<CR>
+nnoremap <leader>mm :Marks<CR>
 " }}}
 " NERTree {{{
 call minpac#add('preservim/nerdtree', {'type': 'start', 'name': 'nerdtree'})
@@ -1638,21 +1627,30 @@ set commentstring=#\ %s
 call minpac#add('neoclide/coc.nvim', {'type': 'opt', 'name': 'coc', 'rev': 'release'})
 PackAdd coc
 let g:coc_user_config = {}
-
-let g:coc_global_extensions = [
-                  \ 'coc-json',
-                  \ 'coc-pyright',
-                  \ 'coc-snippets',
-                  \ 'coc-rust-analyzer',
-                  \ 'coc-yaml',
-                  \ 'coc-markdownlint',
-                  \ 'coc-sh',
-                  \ 'coc-vimlsp',
-                  \ 'coc-spell-checker',
-                  \]
-
 set shortmess+=c
-
+"  Plugin list {{{
+let g:coc_global_extensions = [
+      \ 'coc-marketplace',
+      \ 'coc-pyright',
+      \ 'coc-rust-analyzer',
+      \ 'coc-sh',
+      \ 'coc-vimlsp',
+      \ 'coc-markdownlint',
+      \ 'coc-yaml',
+      \ 'coc-json',
+      \ 'coc-snippets',
+      \ 'coc-spell-checker'
+      \]
+" }}}
+"  Mappings {{{
+"    General {{{
+let g:lmap.p.c = {'name': '+Coc'}
+let g:lmap.p.c.m = 'Marketplace'
+nmap <leader>pcm :CocList marketplace<CR>
+let g:lmap.p.c.u = 'Update'
+nmap <leader>pcu :CocUpdate<CR>
+"    }}}
+"    Code completion {{{
 if has('nvim')
   inoremap <silent><expr> <c-space> coc#refresh()
 else
@@ -1666,17 +1664,15 @@ nnoremap <silent><nowait><expr> <C-f> coc#float#has_scroll() ? coc#float#scroll(
 nnoremap <silent><nowait><expr> <C-b> coc#float#has_scroll() ? coc#float#scroll(0, 2) : "\<C-b>"
 inoremap <silent><nowait><expr> <C-f> coc#float#has_scroll() ? "\<c-r>=coc#float#scroll(1, 2)\<cr>" : "\<Right>"
 inoremap <silent><nowait><expr> <C-b> coc#float#has_scroll() ? "\<c-r>=coc#float#scroll(0, 2)\<cr>" : "\<Left>"
-
-" GoTo code navigation.
+" }}}
+"    GoTo code navigation {{{
 nmap <silent> gd <Plug>(coc-definition)
 nmap <silent> gD :call CocAction('jumpDefinition', 'vsplit')<CR>
 nmap <silent> gy <Plug>(coc-type-definition)
 nmap <silent> gi <Plug>(coc-implementation)
 nmap <silent> gr <Plug>(coc-references)
-
-let g:lmap.r.n = 'Rename(coc)'
-nmap <leader>rn <Plug>(coc-rename)
-
+" }}}
+"    Documentation {{{
 nnoremap <silent> K :call <SID>show_documentation()<CR>
 
 function! s:show_documentation()
@@ -1688,10 +1684,12 @@ function! s:show_documentation()
     execute '!' . &keywordprg . " " . expand('<cword>')
   endif
 endfunction
-
 " Highlight the symbol and its references when holding the cursor.
 autocmd CursorHold * silent call CocActionAsync('highlight')
-
+"    }}}
+"    Refactoring and formatting {{{
+let g:lmap.r.n = 'Rename(coc)'
+nmap <leader>rn <Plug>(coc-rename)
 " " Formatting selected code.
 let g:lmap.r.f = 'Format(coc)'
 xmap <leader>rf  <Plug>(coc-format-selected)
@@ -1709,7 +1707,12 @@ nmap <leader>ac  <Plug>(coc-codeaction)
 let g:lmap.a.f = 'Fix code(coc)'
 nmap <leader>af  <Plug>(coc-fix-current)
 
-" Map function and class text objects
+nmap ]d :CocNext<CR>
+nmap [d :CocPrev<CR>
+let g:lmap.r.d = 'Diagnostics(coc)'
+nmap <leader>rd  :CocList diagnostics<CR>
+"    }}}
+"    Map function and class text objects {{{
 " NOTE: Requires 'textDocument.documentSymbol' support from the language server.
 xmap if <Plug>(coc-funcobj-i)
 omap if <Plug>(coc-funcobj-i)
@@ -1719,8 +1722,9 @@ xmap ic <Plug>(coc-classobj-i)
 omap ic <Plug>(coc-classobj-i)
 xmap ac <Plug>(coc-classobj-a)
 omap ac <Plug>(coc-classobj-a)
-
-" " coc-explorer
+" }}}
+" }}}
+" " coc-explorer {{{
 " " let g:coc_user_config['coc.preferences.jumpCommand'] = 'vsp'
 " let g:coc_user_config['explorer.keyMappings.global.<tab>'] = v:false
 " let g:coc_user_config['explorer.keyMappings.global.<space>'] = 'actionMenu'
@@ -1772,6 +1776,7 @@ omap ac <Plug>(coc-classobj-a)
 
 " let g:lmap.f.b = 'Buffer(coc)'
 " nnoremap <leader>fb :call ExplorerFB()<CR>
+" }}}
 " }}}
 " Easyalign {{{
 call minpac#add('junegunn/vim-easy-align', {'type': 'start', 'name': 'easy-align'})
@@ -1874,11 +1879,7 @@ let g:git_messenger_always_into_popup = v:true
 nmap <Leader>gbb <Plug>(git-messenger)
 " }}}
 " Snippets {{{
-call minpac#add('Shougo/neosnippet.vim', {'type': 'start', 'name': 'neosnippet'})
-call minpac#add('Shougo/neosnippet-snippets', {'type': 'start', 'name': 'neosnippet-snippets'})
-imap <C-k>     <Plug>(neosnippet_expand_or_jump)
-smap <C-k>     <Plug>(neosnippet_expand_or_jump)
-xmap <C-k>     <Plug>(neosnippet_expand_target)
+call minpac#add('honza/vim-snippets', {'type': 'start', 'name': 'snippets'})
 " }}}
 " SpeedDating {{{
 call minpac#add('tpope/vim-speeddating', {'type': 'opt', 'name': 'speeddating'})
@@ -1956,7 +1957,6 @@ let g:qs_buftype_blacklist = ['terminal', 'nofile', 'nerdtree']
 " let g:qs_lazy_highlight = 1
 " }}}
 " }}}
-
 " Additional {{{
 " VimWiki {{{
 call minpac#add('vimwiki/vimwiki', {'type': 'opt', 'name': 'vimwiki', 'branch': 'dev'})
