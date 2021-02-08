@@ -1,4 +1,5 @@
 " vim: ts=2 sts=2 sw=2
+"
 " Basic options {{{
 set shell=bash
 let g:mapleader = "\<Space>"
@@ -667,31 +668,41 @@ augroup ft_markdown
 
     " Zettel
     imap <buffer><silent> [[ qq<esc><Plug>ZettelSearchMap
-    xmap <buffer> z<CR> <Plug>ZettelNewSelectedMap
+    xmap <buffer><silent> <CR> <Plug>ZettelNewSelectedMap
 
     let g:lmap.w.b = 'BackLinks'
-    nnoremap <buffer><leader>wb :VimwikiBacklinks<cr>
+    nnoremap <buffer><silent> <leader>wb :VimwikiBacklinks<cr>
+
+    " Links mapping
+    nnoremap <buffer><silent> <CR> :VimwikiFollowLink<CR>
+
+    nnoremap <buffer><silent> <Backspace> :VimwikiGoBackLink<CR>
+    nnoremap <buffer><silent> <leader>wd :VimwikiDeleteFile<CR>
+    nnoremap <buffer><silent> <leader>wr :VimwikiRenameFile<CR>
+
+    nnoremap <buffer><silent> ]w :VimwikiNextLink<CR>
+    nnoremap <buffer><silent> [w :VimwikiPrevLink<CR>
 
     let g:lmap.z.b = 'BackLinks'
-    nnoremap <buffer><leader>zb :call UpdateBacklinks()<CR>
+    nnoremap <buffer><silent> <leader>zb :call UpdateBacklinks()<CR>
 
     let g:lmap.z.z = 'Open'
-    nnoremap <buffer><leader>zz :ZettelOpen<CR>
+    nnoremap <buffer><silent> <leader>zz :ZettelOpen<CR>
 
     let g:lmap.z.y = 'Yank'
-    nnoremap <buffer><leader>zy :ZettelYankName<CR>
+    nnoremap <buffer><silent> <leader>zy :ZettelYankName<CR>
 
     let g:lmap.z.n = 'New'
-    nnoremap <buffer><leader>zn :ZettelNew<space>
+    nnoremap <buffer><silent> <leader>zn :ZettelNew<space>
 
     let g:lmap.z.i = 'Insert Note'
-    nnoremap <buffer><leader>zi :ZettelInsertNote<CR>
+    nnoremap <buffer><silent> <leader>zi :ZettelInsertNote<CR>
 
     let g:lmap.z.C = 'Capture'
-    nnoremap <buffer><leader>zC :ZettelCapture<CR>
+    nnoremap <buffer><silent> <leader>zC :ZettelCapture<CR>
 
     let g:lmap.w.T = 'reTag'
-    nnoremap <buffer><leader>wT :VimwikiRebuildTags!<cr>:VimwikiGenerateTagLinks<cr><c-l>
+    nnoremap <buffer><silent> <leader>wT :VimwikiRebuildTags!<cr>:VimwikiGenerateTagLinks<cr><c-l>
 
     let b:markdown_ft = 1
 
@@ -1957,37 +1968,29 @@ let g:qs_buftype_blacklist = ['terminal', 'nofile', 'nerdtree']
 " let g:qs_lazy_highlight = 1
 " }}}
 " }}}
+
 " Additional {{{
 " VimWiki {{{
 call minpac#add('vimwiki/vimwiki', {'type': 'opt', 'name': 'vimwiki', 'branch': 'dev'})
 call minpac#add('michal-h21/vim-zettel', {'type': 'opt', 'name': 'zettel'})
 function! LoadVimwiki()
 
+  " Global mapping
   let g:lmap.w.w = 'Index'
-  nunmap <Leader>ww
-  noremap <Leader>ww :call VimwikiIndexCd()<CR>
-  noremap <Leader>wj :VimwikiDiaryNextDay<CR>
-  noremap <Leader>wk :VimwikiDiaryPrevDay<CR>
-  noremap <Leader>wk :VimwikiDiaryPrevDay<CR>
-  noremap <Leader>wmc :VimwikiCheckLinks<CR>
-  noremap <leader>wmt :VimwikiRebuildTags<CR>
+  nnoremap <Leader>ww :call VimwikiIndexCd()<CR>
+  nnoremap <Leader>wi :VimwikiDiaryIndex<CR>
+  nnoremap <Leader>wj :VimwikiDiaryNextDay<CR>
+  nnoremap <Leader>wk :VimwikiDiaryPrevDay<CR>
+  nnoremap <Leader>wk :VimwikiDiaryPrevDay<CR>
+  nnoremap <Leader>wmc :VimwikiCheckLinks<CR>
+  nnoremap <leader>wmt :VimwikiRebuildTags<CR>
+  nnoremap <leader>wt :call VimwikiMakeDiaryNoteNew()<CR>
 
-  nunmap <Leader>w<Space>i
-  nunmap <Leader>w<Space>t
-  nunmap <Leader>w<Space>w
-  nunmap <Leader>w<Space>y
-  nunmap <Leader>w<Space>m
-  nunmap <Leader>wt
-  " i - generate
-  " t tab make diary
-  " w make diary
-  " y yesterday
-  " m tommorow
 
-  map <leader>wt :call VimwikiMakeDiaryNoteNew()<CR>
+  " Links mapping
+  " see in vimwiki file type
 
   let g:lmap.w.m = { 'name' :'+Maintanence'}
-  let g:lmap.w.s = 'Select-wiki'
   let g:lmap.w.c = 'Colorize'
   let g:lmap.w.t = 'Today'
   let g:lmap.w.i = 'Diary'
@@ -2032,6 +2035,12 @@ let g:vimwiki_hl_cb_checked = 2
 let g:vimwiki_markdown_link_ext = 1
 let g:vimwiki_commentstring = '<!--%s-->'
 let g:vimwiki_auto_header = 1
+let g:vimwiki_create_link = 0
+let g:vimwiki_key_mappings =
+  \ {
+  \ 'global': 0,
+  \ 'links': 0
+  \ }
 
 " make_note_link: List -> Str
 " returned string: [Title](YYYYMMDDHH.md)
@@ -2397,8 +2406,10 @@ let g:lmap.q.c = 'Close'
 nmap <leader>qc <Plug>(qfix_Close)
 let g:lmap.q.n = 'Next'
 nmap <leader>qn <Plug>(qfix_QNext)
+nmap ]q <Plug>(qfix_QNext)
 let g:lmap.q.p = 'Previous'
 nmap <leader>qp <Plug>(qfix_QPrev)
+nmap [q <Plug>(qfix_QPrev)
 
 nnoremap <Plug>(qfix_LToggle) :call ToggleList("Location List", 'l')<CR>
 nnoremap <Plug>(qfix_LOpen) :lopen<CR>
@@ -2413,8 +2424,10 @@ let g:lmap.l.c = 'Close'
 nmap <leader>lc <Plug>(qfix_LClose)
 let g:lmap.l.n = 'Next'
 nmap <leader>ln <Plug>(qfix_LNext)
+nmap ]l <Plug>(qfix_LNext)
 let g:lmap.l.p = 'Previous'
 nmap <leader>lp <Plug>(qfix_LPrev)
+nmap [l <Plug>(qfix_LPrev)
 " }}}
 " TODOs {{{
 let g:lmap.i.t = 'To-do'
