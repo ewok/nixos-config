@@ -58,18 +58,18 @@ in
         pkgs.libnotify
       ];
 
-      programs.password-store = {
-        enable = true;
-        settings = {
-          PASSWORD_STORE_DIR = "${homeDirectory}/.password-store";
-        };
-      };
-      programs.gpg.enable = true;
-      services.gpg-agent = {
-        enable = true;
-        defaultCacheTtl = 7200;
-        maxCacheTtl = 86400;
-      };
+      # programs.password-store = {
+      #   enable = true;
+      #   settings = {
+      #     PASSWORD_STORE_DIR = "${homeDirectory}/.password-store";
+      #   };
+      # };
+      # programs.gpg.enable = true;
+      # services.gpg-agent = {
+      #   enable = true;
+      #   defaultCacheTtl = 7200;
+      #   maxCacheTtl = 86400;
+      # };
 
       programs.mbsync.enable = true;
       services.mbsync = {

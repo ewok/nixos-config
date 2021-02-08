@@ -65,13 +65,18 @@ in
 
       services.dbus.packages = [ pkgs.gnome3.dconf ];
 
-      home-manager.users.${username} = {
+      services.gnome3.gnome-keyring.enable = true;
+      programs.seahorse.enable = true;
+      security.pam.services.lightdm.enableGnomeKeyring = true;
 
+      home-manager.users.${username} = {
         home.packages = with pkgs; [
           imagemagick
           xdotool
           xorg.xrandr
           xorg.xwininfo
+
+          gnome3.libsecret
 
           blurlock
           i3exit
