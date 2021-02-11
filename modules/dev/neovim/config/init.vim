@@ -3,7 +3,7 @@
 " Basic options {{{
 set shell=bash
 let g:mapleader = "\<Space>"
-let g:maplocalleader = ","
+let g:maplocalleader = "\\"
 
 " -> A big mess, should be reviewed {{{
 set backspace=2
@@ -212,23 +212,98 @@ endfunction
 " Leader Initializations {{{
 " Define prefix dictionary
 let g:lmap =  {}
+let g:lmap.a = { 'name': '+Action' }
+let g:lmap.a.a = 'Code action(selected)(coc)'
+let g:lmap.a.c = 'Code action(coc)'
+let g:lmap.a.f = 'Fix code(coc)'
 let g:lmap.b = { 'name': '+Buffer'}
+let g:lmap.b.q = 'Quit All'
 let g:lmap.f = { 'name': '+Find' }
+let g:lmap.f.f = 'in-File'
+let g:lmap.f.p = 'Path'
+let g:lmap.f.r = 'Replace'
+let g:lmap.f.t = 'Tag'
 let g:lmap.g = { 'name': '+Git'}
+let g:lmap.g.b = { 'name': '+Blame' }
+let g:lmap.g.b.l = 'bLame'
+let g:lmap.g.C = 'Commit'
+let g:lmap.g.d = 'Diff'
+let g:lmap.g.g = 'Browse'
 let g:lmap.g.h = { 'name': 'History' }
+let g:lmap.g.h.f = '+File'
+let g:lmap.g.h.h = '+All'
+let g:lmap.g.h.p = 'Hunk-Preview'
+let g:lmap.g.h.r = 'Hunk-Revert'
+let g:lmap.g.h.s = 'Hunk-Stage'
+let g:lmap.g.h.v = 'Visual'
+let g:lmap.g.p = { 'name': '+Push-pull' }
+let g:lmap.g.p.l = { 'name': '+Pull' }
+let g:lmap.g.p.l.m = 'Merge'
+let g:lmap.g.p.l.r = 'Rebase'
+let g:lmap.g.p.s = 'Push'
+let g:lmap.g.R = 'Read'
+let g:lmap.g.s = 'Status'
+let g:lmap.g.W = 'Write'
 let g:lmap.i = { 'name': '+Insert' }
+let g:lmap.i.t = 'To-do'
+let g:lmap.i.d = {'name': '+DateTime'}
+let g:lmap.i.d.m = 'date Time(Minutes)'
+let g:lmap.i.d.d = 'date Time(Day)'
+let g:lmap.i.d.s = 'date Time(seconds)'
 let g:lmap.l = { 'name': '+Location' }
+let g:lmap.l.c = 'Close'
+let g:lmap.l.l = 'toggle'
+let g:lmap.l.n = 'Next'
+let g:lmap.l.o = 'Open'
+let g:lmap.l.p = 'Previous'
 let g:lmap.m = { 'name': '+Marks' }
-let g:lmap.o = { 'name': '+Open'}
+let g:lmap.o = { 'name': '+Open/+Option'}
+let g:lmap.o.e = 'Explorer'
+let g:lmap.o.s = { 'name': '+Option-Set'}
+let g:lmap.o.s.f = { 'name': '+File'}
+let g:lmap.o.s.f.f = { 'name': '+Format='}
+let g:lmap.o.u = { 'name': '+Option-Unset'}
 let g:lmap.p = { 'name': '+Plugins' }
+let g:lmap.p.c = {'name': '+Coc'}
+let g:lmap.p.c.m = 'Marketplace'
+let g:lmap.p.c.u = 'Update'
 let g:lmap.q = { 'name': '+QFix' }
+let g:lmap.q.c = 'Close'
+let g:lmap.q.n = 'Next'
+let g:lmap.q.o = 'Open'
+let g:lmap.q.p = 'Previous'
+let g:lmap.q.q = 'toggle'
 let g:lmap.r = { 'name': '+Run' }
-let g:lmap.s = { 'name': '+Session-Sort' }
-let g:lmap.t = { 'name': '+Tags-To-Text' }
-let g:lmap.y = { 'name': '+Yank' }
+let g:lmap.r.d = 'Diagnostics(coc)'
+let g:lmap.r.f = 'Format(coc)'
+let g:lmap.r.n = 'Rename(coc)'
+let g:lmap.s = { 'name': '+Session/Sort' }
+let g:lmap.s.c = 'Close'
+let g:lmap.s.d = 'Delete'
+let g:lmap.s.o = 'Open'
+let g:lmap.s.q = 'Quit'
+let g:lmap.s.s = 'Save'
+let g:lmap.s.u = 'open-cUrrent'
+let g:lmap.t = { 'name': '+Tags/To/Text' }
+let g:lmap.t.f = {'name': '+Fix'}
+let g:lmap.t.s = 'Syntax'
+let g:lmap.t.T = 'Text-only(Goyo)'
 let g:lmap.w = { 'name': '+Wiki' }
+let g:lmap.w.w = 'Index'
+let g:lmap.w.m = { 'name' :'+Maintanence'}
+let g:lmap.w.c = 'Colorize'
+let g:lmap.w.t = 'Today'
+let g:lmap.w.T = 'Tag Rebuild+Insert'
+let g:lmap.w.i = 'Diary'
+let g:lmap.w.r = 'Rename-link'
+let g:lmap.w.d = 'Delete-link'
+let g:lmap.w.n = 'goto'
+let g:lmap.y = { 'name': '+Yank' }
 let g:lmap.z = { 'name': '+Zettel' }
-let g:lmap.Z = { 'name': 'Zoom' }
+let g:lmap.Z = 'Zoom'
+
+let g:which_key_use_floating_win = 1
+let g:which_key_flatten = 0
 " }}}
 
 " Helpers {{{
@@ -250,7 +325,6 @@ command! PackUpdate call minpac#update()
 command! PackClean  call minpac#clean()
 command! PackStatus call minpac#status()
 
-let g:lmap.p.u = "Pack Update"
 nmap <leader>pu :PackUpdate<CR>
 
 " Idempotent packs loading
@@ -296,14 +370,14 @@ endfunction
 " }}}
 
 " Keymaps {{{
-" Tabs {{{
+"   Tabs {{{
 " map gr gT
 nnoremap <C-W>t :tabnew<CR>
 noremap <Tab> :tabnext<CR>
 noremap <S-Tab> :tabprev<CR>
 
 " }}}
-" Windows {{{
+"   Windows {{{
 
 " Tmux?
 if exists('$TMUX')
@@ -336,10 +410,10 @@ endif
 nmap <silent><C-W>q :close<CR>
 
 " }}}
-" Folding {{{
+"   Folding {{{
 " Space to toggle folds.
 nnoremap <silent> <leader><leader> za"{{{
-nnoremap <silent> z<leader> mzzMzvzz15<c-e>`z
+nnoremap <silent> z. mzzMzvzz15<c-e>`z
 vnoremap <silent> <leader><leader> zf"}}}
 
 " Make zO recursively open whatever fold we're in, even if it's partially open.
@@ -348,13 +422,11 @@ nnoremap zO zczO
 " Close recursively
 nnoremap zC zcV:foldc!<CR>
 
-nnoremap <c-z> mzzMzvzz15<c-e>`z
-
 nmap zj zjmzzMzvzz15<c-e>`z
 nmap zk zkmzzMzvzz15<c-e>`z
 
 " " }}}
-" Yank {{{
+"   Yank {{{
 nmap <expr>  MR  ':%s/\(' . @/ . '\)/\1/g<LEFT><LEFT>'
 vmap <expr>  MR  ':s/\(' . @/ . '\)/\1/g<LEFT><LEFT>'
 
@@ -365,13 +437,16 @@ vmap <expr>  MY  ':Yankitute/\(' . @/ . '\)/\1/g<LEFT><LEFT>'
 vnoremap p :<C-U>let @p = @+<CR>gvp:let @+ = @p<CR>
 
 " Permanent buffer
-let g:lmap.y.y = 'Yank'
-vmap <leader>yy :w! ~/.vbuf<CR>
-nmap <leader>yy :.w! ~/.vbuf<CR>
-let g:lmap.y.p = 'Paste'
-nmap <leader>yp :r ~/.vbuf<CR>
+command! YankYank :.w! ~/.vbuf
+nmap <leader>yy :YankYank<CR>
+
+command! YankVYank :w! ~/.vbuf
+vmap <leader>yy :YankVYank<CR>
+
+command! YankPaste :r ~/.vbuf
+nmap <leader>yp :YankPaste<CR>
 " }}}
-" Some vim tunings {{{
+"   Some vim tunings {{{
 nnoremap Y y$
 
 " Don't yank to default register when changing something
@@ -401,6 +476,22 @@ nnoremap L $
 vnoremap H ^
 vnoremap L $
 " }}}
+"   Settings {{{
+nmap <leader>osw :set wrap<CR>
+nmap <leader>ouw :set nowrap<CR>
+
+nmap <leader>osffu :set ff=unix<CR>
+nmap <leader>osffd :set ff=dos<CR>
+
+nmap <leader>osts2 :set tabstop=2\|set softtabstop=2<CR>
+nmap <leader>osts4 :set tabstop=4\|set softtabstop=4<CR>
+"   }}}
+"   Insert data {{{
+nnoremap <leader>it O<C-R>=split(&commentstring, '%s')[0] . 'TODO: '<CR><CR><C-R>=expand("%:h") . '/' . expand("%:t") . ':' . line(".")<CR><C-G><C-K><C-O>A
+nnoremap <leader>ids a<C-R>=strftime("%Y-%m-%d %H:%M:%S")<CR><ESC>
+nnoremap <leader>idm a<C-R>=strftime("%Y-%m-%d %H:%M")<CR><ESC>
+nnoremap <leader>idd a<C-R>=strftime("%Y-%m-%d")<CR><ESC>
+"   }}}
 " }}}
 
 " Filetypes {{{
@@ -670,7 +761,6 @@ augroup ft_markdown
     imap <buffer><silent> [[ qq<esc><Plug>ZettelSearchMap
     xmap <buffer><silent> <CR> <Plug>ZettelNewSelectedMap
 
-    let g:lmap.w.b = 'BackLinks'
     nnoremap <buffer><silent> <leader>wb :VimwikiBacklinks<cr>
 
     " Links mapping
@@ -683,25 +773,19 @@ augroup ft_markdown
     nnoremap <buffer><silent> ]w :VimwikiNextLink<CR>
     nnoremap <buffer><silent> [w :VimwikiPrevLink<CR>
 
-    let g:lmap.z.b = 'BackLinks'
-    nnoremap <buffer><silent> <leader>zb :call UpdateBacklinks()<CR>
+    command! ZettelUpdateBackLinks :call UpdateBacklinks()
+    nnoremap <buffer><silent> <leader>zb :ZettelUpdateBackLinks<CR>
 
-    let g:lmap.z.z = 'Open'
     nnoremap <buffer><silent> <leader>zz :ZettelOpen<CR>
 
-    let g:lmap.z.y = 'Yank'
     nnoremap <buffer><silent> <leader>zy :ZettelYankName<CR>
 
-    let g:lmap.z.n = 'New'
     nnoremap <buffer><silent> <leader>zn :ZettelNew<space>
 
-    let g:lmap.z.i = 'Insert Note'
     nnoremap <buffer><silent> <leader>zi :ZettelInsertNote<CR>
 
-    let g:lmap.z.C = 'Capture'
     nnoremap <buffer><silent> <leader>zC :ZettelCapture<CR>
 
-    let g:lmap.w.T = 'reTag'
     nnoremap <buffer><silent> <leader>wT :VimwikiRebuildTags!<cr>:VimwikiGenerateTagLinks<cr><c-l>
 
     let b:markdown_ft = 1
@@ -921,35 +1005,50 @@ augroup ft_todo
   au FileType todo call LoadTODOFT()
   function! LoadTODOFT()
 
+    hi TODO guifg=Yellow ctermfg=Yellow term=Bold
+    hi FIXME guifg=Red ctermfg=Red term=Bold
+    syn match TODO "TODO\|@todo\|@today"
+    syn match FIXME "FIXME\|@fixme\|@error"
+
     hi TASK guifg=Yellow ctermfg=Yellow term=Bold
     syn match TASK "\s\w\{1,10}-\d\{1,6}[ :]"
 
-    hi P1 guifg=Red ctermfg=Red term=Bold
-    hi P2 guifg=LightRed ctermfg=LightRed term=Bold
-    hi P3 guifg=LightYellow ctermfg=LightYellow term=Bold
-    syn match P1 " !!! "
-    syn match P2 " !! "
-    syn match P3 " ! "
+    " hi P1 guifg=Red ctermfg=Red term=Bold
+    " hi P2 guifg=LightRed ctermfg=LightRed term=Bold
+    " hi P3 guifg=LightYellow ctermfg=LightYellow term=Bold
+    " syn match P1 " !!! "
+    " syn match P2 " !! "
+    " syn match P3 " ! "
 
     hi DT guifg=DarkMagenta ctermfg=DarkMagenta term=Bold
     syn match DT "\d\{4}-\d\{2}-\d\{2}"
 
-    hi H1 guifg=LightGreen ctermfg=Grey term=Bold
-    hi H2 guifg=DarkGreen ctermfg=DarkGreen term=Bold
-    hi H3 guifg=Magenta ctermfg=Magenta term=Bold
-    syn match H1 "^[#] .*$"
-    syn match H2 "^[#]\{2} .*$"
-    syn match H3 "^[#]\{3} .*$"
+    " hi H1 guifg=LightGreen ctermfg=Grey term=Bold
+    " hi H2 guifg=DarkGreen ctermfg=DarkGreen term=Bold
+    " hi H3 guifg=Magenta ctermfg=Magenta term=Bold
+    " syn match H1 "^[#] .*$"
+    " syn match H2 "^[#]\{2} .*$"
+    " syn match H3 "^[#]\{3} .*$"
 
-    hi DONE guifg=Grey ctermfg=Grey term=Italic
-    syn match DONE ".*\[[X]\]\s.*$"
+    hi P1 guifg=Red ctermfg=Red term=Bold
+    hi P2 guifg=LightRed ctermfg=LightRed term=Bold
+    hi P3 guifg=LightYellow ctermfg=LightYellow term=Bold
+    hi P4 guifg=LightGrey ctermfg=Grey term=Italic
 
-    hi TEXT guifg=LightGrey ctermfg=LightGrey
-    syn match TEXT "^\s*[-*] .*$" contains=TASK,P1,P2,P3,DONE,DT
+    syn match P1 ".*\[[^X]\]\s\+[pP]1.*$" contains=TODO,FIXME,TASK,DT
+    syn match P2 ".*\[[^X]\]\s\+[pP]2.*$" contains=TODO,FIXME,TASK,DT
+    syn match P3 ".*\[[^X]\]\s\+[pP]3.*$" contains=TODO,FIXME,TASK,DT
+    syn match P4 ".*\[[^X]\]\s\+[pP]4.*$" contains=TODO,FIXME,TASK,DT
 
-    hi Block guifg=Black ctermbg=Black
-    syn region Block start="```" end="```" contains=TEXT,DONE,H1,H2,H3
-    syn region Block start="<" end=">" contains=TEXT,DONE,H1,H2,H3
+    hi DONE guifg=DarkGreen ctermfg=Grey term=Italic
+    syn match DONE ".*\[[X]\]\s.*$" contains=NONE
+
+    " hi TEXT guifg=LightGrey ctermfg=LightGrey
+    " syn match TEXT "^\s*[-*] .*$" contains=TASK,P1,P2,P3,DONE,DT
+
+    " hi Block guifg=Black ctermbg=Black
+    " syn region Block start="```" end="```" contains=TEXT,DONE,H1,H2,H3
+    " syn region Block start="<" end=">" contains=TEXT,DONE,H1,H2,H3
 
     PackAdd speeddating
 
@@ -971,16 +1070,18 @@ augroup ft_vim
       return
     endif
 
-    let g:lmap.r.S = 'Source-line'
     setlocal foldmethod=marker keywordprg=:help
     setlocal commentstring=\"\ %s
 
     inoremap <c-n> <c-x><c-n>
 
-    let g:lmap.r.r = 'Source'
-    nmap <buffer> <leader>rr :source %<CR>:echon "script reloaded!"<CR>
+    nmap <Plug>(vim_source_file) :source %<CR>:echon "script reloaded!"<CR>
+    nmap <buffer> <leader>rr <Plug>(vim_source_file)
+
     vnoremap <buffer> <leader>rS y:@"<CR>
-    nnoremap <buffer> <leader>rS ^vg_y:execute @@<cr>:echo 'Sourced line.'<cr>
+
+    nnoremap <Plug>(vim_source_line) ^vg_y:execute @@<cr>:echo 'Sourced line.'<cr>
+    nnoremap <buffer> <leader>rS <Plug>(vim_source_line)
 
     " PackAdd splitjoin
 
@@ -1071,7 +1172,7 @@ augroup ft_mail
       return
     endif
 
-    map <buffer> <leader>ry :%!pandoc -f markdown_mmd -t html<CR>
+    nmap <buffer> <leader>ry :%!pandoc -f markdown_mmd -t html<CR>
 
     PackAdd livedown
 
@@ -1110,7 +1211,8 @@ augroup ft_helm
 
     PackAdd helm 1
 
-    nmap <buffer> <silent> <leader>rr :call RenderHelm()<CR>
+    command! RenderHelm :call RenderHelm()
+    nmap <buffer> <silent> <leader>rr :RenderHelm<CR>
 
     PackAdd rooter
 
@@ -1256,18 +1358,11 @@ tnoremap <expr> <Esc> (&filetype == "fzf") ? "<Esc>" : "<c-\><c-n>"
 let g:fzf_tags_command = 'ctags -R --exclude=.git --exclude=.idea --exclude=log'
 
 nnoremap <silent> <leader>oo :Files<CR>
-" TODO: To remove
-nnoremap <silent> <leader>om :call MarksOnList()<CR>
-nnoremap <silent> <leader>of :Filetypes<CR>
+nnoremap <silent> <leader>osft :Filetypes<CR>
 
-let g:lmap.g.h.f = '+File'
 nmap <silent> <leader>ghf :BCommits<CR>
-
-let g:lmap.f.f = 'in-File'
 nmap <silent> <leader>ff :Rg<CR>
 
-let g:lmap.o.b = 'Buffer'
-nnoremap <leader>ob :Buffers<CR>
 nnoremap <leader>bb :Buffers<CR>
 
 function! s:build_quickfix_list(lines)
@@ -1377,7 +1472,6 @@ function! FindPathOrShowNERDTree()
   endif
 endfunction
 
-let g:lmap.f.p = 'Path'
 nmap <leader>fp <Plug>(find_Path)
 
 let NERDTreeShowBookmarks=0
@@ -1410,9 +1504,7 @@ let g:rooter_resolve_links = 1
 " Tagbar {{{
 call minpac#add('preservim/tagbar', {'type': 'start', 'name': 'tagbar'})
 noremap <leader>tt :TagbarToggle<CR>
-noremap <leader>ot :TagbarOpen<CR>
 
-let g:lmap.f.t = 'Tag'
 nmap <leader>ft :TagbarOpenAutoClose<CR>
 " }}}
 " Texting {{{
@@ -1444,7 +1536,6 @@ endfunction
 
 nnoremap <silent> <F7> :call ToggleSpell()<CR>
 
-let g:lmap.t.s = 'Syntax'
 nnoremap <silent> <leader>ts :call ToggleSpell()<CR>
 imap <silent> <F7> <ESC>:call ToggleSpell()<CR>a
 
@@ -1493,7 +1584,6 @@ function! StartGoyo()
 
 endfunction
 
-let g:lmap.t.T = 'Text-only(Goyo)'
 nnoremap <silent> <leader>tT :call StartGoyo()<CR>
 " }}}
 " Tmux {{{
@@ -1551,8 +1641,8 @@ PackAdd which-key
 nnoremap <silent> <leader> :WhichKey '<Space>'<CR>
 vnoremap <silent> <leader> :<c-u>WhichKeyVisual '<Space>'<CR>
 
-nnoremap <silent> <localleader> :<c-u>WhichKey  ','<CR>
-vnoremap <silent> <localleader> :<c-u>WhichKeyVisual ','<CR>
+nnoremap <silent> <localleader> :<c-u>WhichKey  '\'<CR>
+vnoremap <silent> <localleader> :<c-u>WhichKeyVisual '\'<CR>
 " }}}
 " Xkb {{{
 call minpac#add('lyokha/vim-xkbswitch', {'type': 'start', 'name': 'xkbswitch'})
@@ -1569,7 +1659,6 @@ let g:XkbSwitchSkipFt = [ 'nerdtree', 'coc-explorer' ]
 " Zoom {{{
 call minpac#add('dhruvasagar/vim-zoom', {'type': 'start', 'name': 'vim-zoom'})
 
-" let g:lmap.z.z = 'Zoom'
 nmap <leader>Z :call ZoomToggle()<CR>
 
 function! ZoomToggle()
@@ -1611,7 +1700,6 @@ endfunction
 " Buffers {{{
 call minpac#add('schickling/vim-bufonly', {'type': 'start', 'name': 'bufonly'})
 
-let g:lmap.b.q = 'Quit All'
 nmap <silent><leader>bq :Bonly<CR>
 
 " }}}
@@ -1655,10 +1743,7 @@ let g:coc_global_extensions = [
 " }}}
 "  Mappings {{{
 "    General {{{
-let g:lmap.p.c = {'name': '+Coc'}
-let g:lmap.p.c.m = 'Marketplace'
 nmap <leader>pcm :CocList marketplace<CR>
-let g:lmap.p.c.u = 'Update'
 nmap <leader>pcu :CocUpdate<CR>
 "    }}}
 "    Code completion {{{
@@ -1699,28 +1784,21 @@ endfunction
 autocmd CursorHold * silent call CocActionAsync('highlight')
 "    }}}
 "    Refactoring and formatting {{{
-let g:lmap.r.n = 'Rename(coc)'
 nmap <leader>rn <Plug>(coc-rename)
 " " Formatting selected code.
-let g:lmap.r.f = 'Format(coc)'
 xmap <leader>rf  <Plug>(coc-format-selected)
 nmap <leader>rf  <Plug>(coc-format-selected)
 
-let g:lmap.a = { 'name': '+Action' }
-let g:lmap.a.a = 'Code action(selected)(coc)'
 vmap <leader>aa  <Plug>(coc-codeaction-selected)
 nmap <leader>aa  <Plug>(coc-codeaction-selected)
 
 " Remap keys for applying codeAction to the current buffer.
-let g:lmap.a.c = 'Code action(coc)'
 nmap <leader>ac  <Plug>(coc-codeaction)
 " Apply AutoFix to problem on the current line.
-let g:lmap.a.f = 'Fix code(coc)'
 nmap <leader>af  <Plug>(coc-fix-current)
 
 nmap ]d :CocNext<CR>
 nmap [d :CocPrev<CR>
-let g:lmap.r.d = 'Diagnostics(coc)'
 nmap <leader>rd  :CocList diagnostics<CR>
 "    }}}
 "    Map function and class text objects {{{
@@ -1800,7 +1878,6 @@ call minpac#add('brooth/far.vim', {'type': 'start', 'name': 'far'})
 let g:far#source = 'agnvim'
 let g:far#file_mask_favorites = ['%', '.*', '\.py$', '\.go$']
 
-let g:lmap.f.r = 'Replace'
 nnoremap <leader>fr :Far<space>
 vnoremap <leader>fr :Far<space>
 
@@ -1827,33 +1904,19 @@ au BufEnter */.git/index nnoremap <buffer> <silent> d :WhichKey 'd'<CR>
 au BufEnter */.git/index nnoremap <buffer> <silent> r :WhichKey 'r'<CR>
 "
 " shortcuts mapping
-let g:lmap.g.s = 'Status'
 nmap <silent> <leader>gs :Gstatus<CR>
-let g:lmap.g.d = 'Diff'
 nmap <silent> <leader>gd :Gdiff<CR>
-let g:lmap.g.C = 'Commit'
 nmap <silent> <leader>gC :Gcommit<CR>
-let g:lmap.g.W = 'Write'
 nmap <silent> <leader>gW :Gwrite<CR>
-let g:lmap.g.R = 'Read'
 nmap <silent> <leader>gR :Gread<CR>
 
-let g:lmap.g.b = { 'name': '+Blame' }
-let g:lmap.g.b.l = 'bLame'
 nmap <silent> <leader>gbl :Gblame<CR>
 
-let g:lmap.g.p = { 'name': '+Push-pull' }
-let g:lmap.g.p.s = 'Push'
 nmap <silent> <leader>gps :G push<CR>
-let g:lmap.g.p.l = { 'name': '+Pull' }
-let g:lmap.g.p.l.r = 'Rebase'
 nmap <silent> <leader>gplr :G pull --rebase<CR>
-let g:lmap.g.p.l.m = 'Merge'
 nmap <silent> <leader>gplm :G pull<CR>
-let g:lmap.g.g = 'Browse'
 nmap <silent> <leader>gg :.Gbrowse %<CR>
 vmap <silent> <leader>gg :'<,'>Gbrowse %<CR>
-let g:lmap.g.h.v = { 'name': '+Visual' }
 vmap <silent> <leader>ghv :<C-U>call GitShowBlockHistory()<CR>
 
 " Gitgutter options
@@ -1866,18 +1929,14 @@ nmap ]g <Plug>(GitGutterNextHunk)
 
 let g:gitgutter_override_sign_column_highlight = 0
 
-let g:lmap.g.h.s = 'Hunk-Stage'
 nmap <leader>ghs :GitGutterStageHunk<CR>
-let g:lmap.g.h.r = 'Hunk-Revert'
 nmap <leader>ghr :GitGutterUndoHunk<CR>
-let g:lmap.g.h.p = 'Hunk-Preview'
 nmap <leader>ghp :GitGutterPreviewHunk<CR>
 
 " Gitv options
 call minpac#add('junegunn/gv.vim', {'type': 'opt', 'name': 'gv'})
 PackAdd gv
 
-let g:lmap.g.h.h = '+All'
 let g:Gitv_DoNotMapCtrlKey = 1
 nmap <silent> <leader>ghh :GV<CR>
 
@@ -1970,13 +2029,15 @@ let g:qs_buftype_blacklist = ['terminal', 'nofile', 'nerdtree']
 " }}}
 
 " Additional {{{
+" DraIt {{{
+call minpac#add('ewok/DrawIt', {'type': 'start', 'name': 'drawit'})
+" }}}
 " VimWiki {{{
 call minpac#add('vimwiki/vimwiki', {'type': 'opt', 'name': 'vimwiki', 'branch': 'dev'})
 call minpac#add('michal-h21/vim-zettel', {'type': 'opt', 'name': 'zettel'})
 function! LoadVimwiki()
 
   " Global mapping
-  let g:lmap.w.w = 'Index'
   nnoremap <Leader>ww :call VimwikiIndexCd()<CR>
   nnoremap <Leader>wi :VimwikiDiaryIndex<CR>
   nnoremap <Leader>wj :VimwikiDiaryNextDay<CR>
@@ -1990,30 +2051,16 @@ function! LoadVimwiki()
   " Links mapping
   " see in vimwiki file type
 
-  let g:lmap.w.m = { 'name' :'+Maintanence'}
-  let g:lmap.w.c = 'Colorize'
-  let g:lmap.w.t = 'Today'
-  let g:lmap.w.i = 'Diary'
-endfunction
-
-function! VimWikiHelpers()
-  let g:lmap.w.r = 'Rename-link'
-  let g:lmap.w.d = 'Delete-link'
-  let g:lmap.w.h = 'to-Html'
-  let g:lmap.w.hh = 'toHtml-browse'
-  let g:lmap.w.n = 'goto'
 endfunction
 
 function! VimwikiIndexCd()
   VimwikiIndex
   cd %:h
-  call VimWikiHelpers()
 endfunction
 
 function! VimwikiMakeDiaryNoteNew()
   VimwikiMakeDiaryNote
   cd %:h:h
-  call VimWikiHelpers()
 endfunction
 
 let g:vimwiki_list = [{'path': '~/Notes/',
@@ -2204,17 +2251,11 @@ nnoremap <Plug>(session_Exit) :CloseSessionAndExit<CR>
 nnoremap <Plug>(session_Close) :CloseSession<CR>
 nnoremap <Plug>(session_Delete) :DeleteSessionCurrent<CR>
 
-let g:lmap.s.o = 'Open'
 nmap <leader>so <Plug>(session_Load)
-let g:lmap.s.u = 'open-cUrrent'
 nmap <leader>su <Plug>(session_Load-Current)
-let g:lmap.s.s = 'Save'
 nmap <leader>ss <Plug>(session_Make)
-let g:lmap.s.q = 'Quit'
 nmap <leader>sq <Plug>(session_Exit)
-let g:lmap.s.c = 'Close'
 nmap <leader>sc <Plug>(session_Close)
-let g:lmap.s.d = 'Delete'
 nmap <leader>sd <Plug>(session_Delete)
 " }}}
 " Folding {{{
@@ -2398,16 +2439,11 @@ nnoremap <Plug>(qfix_Open) :copen<CR>
 nnoremap <Plug>(qfix_Close) :cclose<CR>
 nnoremap <Plug>(qfix_QNext) :call QFixSwitch('next')<CR>
 nnoremap <Plug>(qfix_QPrev) :call QFixSwitch('prev')<CR>
-let g:lmap.q.q = 'toggle'
 nmap <leader>qq  <Plug>(qfix_Toggle)
-let g:lmap.q.o = 'Open'
 nmap <leader>qo <Plug>(qfix_Open)
-let g:lmap.q.c = 'Close'
 nmap <leader>qc <Plug>(qfix_Close)
-let g:lmap.q.n = 'Next'
 nmap <leader>qn <Plug>(qfix_QNext)
 nmap ]q <Plug>(qfix_QNext)
-let g:lmap.q.p = 'Previous'
 nmap <leader>qp <Plug>(qfix_QPrev)
 nmap [q <Plug>(qfix_QPrev)
 
@@ -2416,63 +2452,29 @@ nnoremap <Plug>(qfix_LOpen) :lopen<CR>
 nnoremap <Plug>(qfix_LClose) :lclose<CR>
 nnoremap <Plug>(qfix_LNext) :lnext<CR>
 nnoremap <Plug>(qfix_LPrev) :lprev<CR>
-let g:lmap.l.l = 'toggle'
 nmap <leader>ll  <Plug>(qfix_LToggle)
-let g:lmap.l.o = 'Open'
 nmap <leader>lo <Plug>(qfix_LOpen)
-let g:lmap.l.c = 'Close'
 nmap <leader>lc <Plug>(qfix_LClose)
-let g:lmap.l.n = 'Next'
 nmap <leader>ln <Plug>(qfix_LNext)
 nmap ]l <Plug>(qfix_LNext)
-let g:lmap.l.p = 'Previous'
 nmap <leader>lp <Plug>(qfix_LPrev)
 nmap [l <Plug>(qfix_LPrev)
 " }}}
 " TODOs {{{
-let g:lmap.i.t = 'To-do'
-nnoremap <leader>it O<C-R>=split(&commentstring, '%s')[0] . 'TODO: '<CR><CR><C-R>=expand("%:h") . '/' . expand("%:t") . ':' . line(".")<CR><C-G><C-K><C-O>A
-let g:lmap.i.d = {'name': '+DateTime'}
-let g:lmap.i.d.s = 'date Time(seconds)'
-nnoremap <leader>ids O<C-R>=strftime("%Y-%m-%d %H:%M:%S")<CR>
-let g:lmap.i.d.m = 'date Time(Minutes)'
-nnoremap <leader>idm O<C-R>=strftime("%Y-%m-%d %H:%M")<CR>
-let g:lmap.i.d.d = 'date Time(Day)'
-nnoremap <leader>idd O<C-R>=strftime("%Y-%m-%d")<CR>
-
-let g:lmap.o.d = 'to-Do'
-nnoremap <leader>od :call OpenToDo()<CR>
+nnoremap <leader>ot :call OpenToDo()<CR>
 function! OpenToDo()
   vsplit TODO.md
   nnoremap <buffer> q :x<CR>
-  hi TODO guifg=Yellow ctermfg=Yellow term=Bold
-  hi FIXME guifg=Red ctermfg=Red term=Bold
-  hi P1 guifg=Red ctermfg=Red term=Bold
-  hi P2 guifg=LightRed ctermfg=LightRed term=Bold
-  hi P3 guifg=LightYellow ctermfg=LightYellow term=Bold
-  hi P4 guifg=LightGrey ctermfg=Grey term=Italic
-  hi DONE guifg=DarkGreen ctermfg=Grey term=Italic
 
-  call matchadd('TODO', 'TODO')
-  call matchadd('TODO', '@todo')
-  call matchadd('FIXME', 'FIXME')
-  call matchadd('FIXME', '@fixme')
-  syn match P1 ".*\[[^X]\]\s\+[pP]1.*$"
-  syn match P2 ".*\[[^X]\]\s\+[pP]2.*$"
-  syn match P3 ".*\[[^X]\]\s\+[pP]3.*$"
-  syn match P4 ".*\[[^X]\]\s\+[pP]4.*$"
-  syn match DONE ".*\[[X]\]\s.*$"
+  call LoadTODOFT()
 endfunction
 
-let g:lmap.t.h = 'To-Html'
 nnoremap <leader>th :TOhtml<CR>
 vnoremap <leader>th :TOhtml<CR>
 " }}}
 " Small plugins {{{
 call minpac#add('ntpeters/vim-better-whitespace', {'type': 'start', 'name': 'better-whitespace'})
 let g:better_whitespace_filetypes_blacklist=['gitcommit', 'unite', 'qf', 'help', 'dotooagenda', 'dotoo']
-let g:lmap.t.f = {'name': '+Fix'}
-let g:lmap.t.f.w = 'Whitespace'
 nmap <leader>tfw :StripWhitespace<CR>
 
 call minpac#add('jiangmiao/auto-pairs', {'type': 'start', 'name': 'auto-pairs'})
