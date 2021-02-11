@@ -1,4 +1,4 @@
-{ config, lib, pkgs, ... }:
+{ config, lib, pkgs, inputs,... }:
 with lib;
 let
   mail = config.modules.mail;
@@ -42,6 +42,11 @@ let
     mbsync-preexec = pkgs.writeShellScriptBin "mbsync-preexec" ''
       ${davmail-start}/bin/davmail-start
     '';
+
+    stable = import inputs.stable ({
+      config = config.nixpkgs.config;
+      localSystem = { system = "x86_64-linux"; };
+    });
 in
 {
   config = mkIf mail.enable {
@@ -71,7 +76,10 @@ in
       #   maxCacheTtl = 86400;
       # };
 
-      programs.mbsync.enable = true;
+      programs.mbsync = {
+        enable = true;
+        package = stable.isync;
+      };
       services.mbsync = {
         enable = true;
         frequency = "*:0/15";
