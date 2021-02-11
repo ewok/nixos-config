@@ -212,12 +212,17 @@ endfunction
 " Leader Initializations {{{
 " Define prefix dictionary
 let g:lmap =  {}
-let g:lmap.a = { 'name': '+Action' }
-let g:lmap.a.a = 'Code action(selected)(coc)'
-let g:lmap.a.c = 'Code action(coc)'
-let g:lmap.a.f = 'Fix code(coc)'
 let g:lmap.b = { 'name': '+Buffer'}
 let g:lmap.b.q = 'Quit All'
+let g:lmap.c = { 'name': '+Code'}
+let g:lmap.c.a = 'Code action(file)'
+let g:lmap.c.c = 'Code action(line)'
+let g:lmap.c.d = 'Diagnostics'
+let g:lmap.c.r = { 'name': '+Refactor'}
+let g:lmap.c.r.n = 'Rename'
+let g:lmap.c.r.r = 'Menu'
+let g:lmap.c.f = 'Format'
+let g:lmap.c.F = 'Fix code(coc)'
 let g:lmap.f = { 'name': '+Find' }
 let g:lmap.f.f = 'in-File'
 let g:lmap.f.p = 'Path'
@@ -225,11 +230,12 @@ let g:lmap.f.r = 'Replace'
 let g:lmap.f.t = 'Tag'
 let g:lmap.g = { 'name': '+Git'}
 let g:lmap.g.b = { 'name': '+Blame' }
+let g:lmap.g.b.b = 'Messanger'
 let g:lmap.g.b.l = 'bLame'
 let g:lmap.g.C = 'Commit'
 let g:lmap.g.d = 'Diff'
 let g:lmap.g.g = 'Browse'
-let g:lmap.g.h = { 'name': 'History' }
+let g:lmap.g.h = { 'name': '+History' }
 let g:lmap.g.h.f = '+File'
 let g:lmap.g.h.h = '+All'
 let g:lmap.g.h.p = 'Hunk-Preview'
@@ -250,9 +256,10 @@ let g:lmap.i.d = {'name': '+DateTime'}
 let g:lmap.i.d.m = 'date Time(Minutes)'
 let g:lmap.i.d.d = 'date Time(Day)'
 let g:lmap.i.d.s = 'date Time(seconds)'
+let g:lmap.j = 'Jump'
 let g:lmap.l = { 'name': '+Location' }
 let g:lmap.l.c = 'Close'
-let g:lmap.l.l = 'toggle'
+let g:lmap.l.l = 'Toggle'
 let g:lmap.l.n = 'Next'
 let g:lmap.l.o = 'Open'
 let g:lmap.l.p = 'Previous'
@@ -263,6 +270,7 @@ let g:lmap.o.s = { 'name': '+Option-Set'}
 let g:lmap.o.s.f = { 'name': '+File'}
 let g:lmap.o.s.f.f = { 'name': '+Format='}
 let g:lmap.o.u = { 'name': '+Option-Unset'}
+let g:lmap.o.t = 'To-Do'
 let g:lmap.p = { 'name': '+Plugins' }
 let g:lmap.p.c = {'name': '+Coc'}
 let g:lmap.p.c.m = 'Marketplace'
@@ -272,34 +280,46 @@ let g:lmap.q.c = 'Close'
 let g:lmap.q.n = 'Next'
 let g:lmap.q.o = 'Open'
 let g:lmap.q.p = 'Previous'
-let g:lmap.q.q = 'toggle'
+let g:lmap.q.q = 'Toggle'
 let g:lmap.r = { 'name': '+Run' }
-let g:lmap.r.d = 'Diagnostics(coc)'
-let g:lmap.r.f = 'Format(coc)'
-let g:lmap.r.n = 'Rename(coc)'
-let g:lmap.s = { 'name': '+Session/Sort' }
+let g:lmap.r.b = 'Breakpoint'
+let g:lmap.r.R = { 'name': '+Runner' }
+let g:lmap.r.R.q = 'Close Runner'
+let g:lmap.r.R.x = 'Interrupt'
+let g:lmap.s = { 'name': '+Session' }
 let g:lmap.s.c = 'Close'
 let g:lmap.s.d = 'Delete'
 let g:lmap.s.o = 'Open'
 let g:lmap.s.q = 'Quit'
 let g:lmap.s.s = 'Save'
 let g:lmap.s.u = 'open-cUrrent'
-let g:lmap.t = { 'name': '+Tags/To/Text' }
+let g:lmap.t = { 'name': '+Tags/Text' }
 let g:lmap.t.f = {'name': '+Fix'}
 let g:lmap.t.s = 'Syntax'
 let g:lmap.t.T = 'Text-only(Goyo)'
+let g:lmap.u = 'Undo'
 let g:lmap.w = { 'name': '+Wiki' }
 let g:lmap.w.w = 'Index'
 let g:lmap.w.m = { 'name' :'+Maintanence'}
+let g:lmap.w.m.c = 'Check Links'
+let g:lmap.w.m.t = 'Rebuild Tags'
 let g:lmap.w.c = 'Colorize'
 let g:lmap.w.t = 'Today'
 let g:lmap.w.T = 'Tag Rebuild+Insert'
 let g:lmap.w.i = 'Diary'
-let g:lmap.w.r = 'Rename-link'
-let g:lmap.w.d = 'Delete-link'
+let g:lmap.w.r = 'Rename link'
+let g:lmap.w.d = 'Delete link'
 let g:lmap.w.n = 'goto'
+let g:lmap.w.j = 'Next Day'
+let g:lmap.w.k = 'Prev Day'
 let g:lmap.y = { 'name': '+Yank' }
 let g:lmap.z = { 'name': '+Zettel' }
+let g:lmap.z.b = 'Update Backlinks'
+let g:lmap.z.z = 'Open'
+let g:lmap.z.y = 'Yank Page'
+let g:lmap.z.n = 'New'
+let g:lmap.z.i = 'Insert Note'
+let g:lmap.z.C = 'Capture As Note'
 let g:lmap.Z = 'Zoom'
 
 let g:which_key_use_floating_win = 1
@@ -895,7 +915,6 @@ augroup ft_python
     nmap <buffer> <leader>rT :w\|call RunCmd("python -m unittest")<CR>
     nmap <buffer> <leader>rL :!pip install flake8 mypy pylint bandit pydocstyle pudb jedi<CR>:ALEInfo<CR>
 
-    let g:lmap.r.b = 'Breakpoint'
     nmap <Plug>(python_breakpoint) oimport pudb; pudb.set_trace()<esc>
     nmap <silent> <buffer> <leader>rb <Plug>(python_breakpoint)
 
@@ -983,7 +1002,7 @@ augroup ft_rust
     " nmap <buffer> K <Plug>(rust-doc)
     nmap <buffer> <silent> <leader>rr :RustRun<CR>
     nmap <buffer> <silent> <leader>rt :RustTest<CR>
-    nmap <buffer> <silent> <leader>rf :RustFmt<CR>
+    nmap <buffer> <silent> <leader>cf :RustFmt<CR>
 
     PackAdd rooter
     " PackAdd splitjoin
@@ -1357,8 +1376,11 @@ tnoremap <expr> <Esc> (&filetype == "fzf") ? "<Esc>" : "<c-\><c-n>"
 
 let g:fzf_tags_command = 'ctags -R --exclude=.git --exclude=.idea --exclude=log'
 
-nnoremap <silent> <leader>oo :Files<CR>
+nnoremap <silent> <leader>of :Files<CR>
+nnoremap <silent> <leader>om :Maps<CR>
+nnoremap <silent> <leader>oh :History<CR>
 nnoremap <silent> <leader>osft :Filetypes<CR>
+nnoremap <silent> <leader>osc :Colors<CR>
 
 nmap <silent> <leader>ghf :BCommits<CR>
 nmap <silent> <leader>ff :Rg<CR>
@@ -1382,7 +1404,6 @@ let $FZF_DEFAULT_COMMAND = 'rg --iglob !.git --files --hidden --ignore-vcs --ign
 " }}}
 " Indent-guides {{{
 call minpac#add('nathanaelkane/vim-indent-guides', {'type': 'opt', 'name': 'indent-guides'})
-PackAdd indent-guides
 
 let g:indent_guides_auto_colors = 0
 hi IndentGuidesOdd  ctermbg=237
@@ -1391,6 +1412,8 @@ hi IndentGuidesEven ctermbg=236
 let g:indent_guides_start_level = 2
 let g:indent_guides_guide_size = 1
 let g:indent_guides_default_mapping = 0
+
+PackAdd indent-guides
 " }}}
 " Lightline {{{
 call minpac#add('itchyny/lightline.vim', {'type': 'start', 'name': 'lightline'})
@@ -1458,7 +1481,6 @@ function! NERDTreeToggleCWD()
   let currentfile = expand('%')
   if (currentfile == "") || !(currentfile !~? 'NERD')
     NERDTreeCWD
-    wincmd p
   endif
 endfunction
 
@@ -1621,11 +1643,8 @@ if exists('$TMUX')
     endif
   endfunction
 
-  let g:lmap.r.q = 'Close Runner'
-  nmap <leader>rq :call CloseRunner()<CR>
-
-  let g:lmap.r.x = 'Interrupt'
-  nmap <leader>rx :VimuxInterruptRunner<CR>
+  nmap <leader>rRq :call CloseRunner()<CR>
+  nmap <leader>rRx :VimuxInterruptRunner<CR>
   let g:VimuxHeight = "20"
   let g:VimuxUseNearest = 0
 endif
@@ -1784,22 +1803,23 @@ endfunction
 autocmd CursorHold * silent call CocActionAsync('highlight')
 "    }}}
 "    Refactoring and formatting {{{
-nmap <leader>rn <Plug>(coc-rename)
+nmap <leader>crn <Plug>(coc-rename)
+nmap <leader>crr <Plug>(coc-refactor)
 " " Formatting selected code.
-xmap <leader>rf  <Plug>(coc-format-selected)
-nmap <leader>rf  <Plug>(coc-format-selected)
+xmap <leader>cf  <Plug>(coc-format-selected)
+nmap <leader>cf  <Plug>(coc-format-selected)
 
-vmap <leader>aa  <Plug>(coc-codeaction-selected)
-nmap <leader>aa  <Plug>(coc-codeaction-selected)
+nmap <leader>cc  <Plug>(coc-codeaction-line)
+vmap <leader>cc  <Plug>(coc-codeaction-selected)
 
 " Remap keys for applying codeAction to the current buffer.
-nmap <leader>ac  <Plug>(coc-codeaction)
+nmap <leader>ca  <Plug>(coc-codeaction)
 " Apply AutoFix to problem on the current line.
-nmap <leader>af  <Plug>(coc-fix-current)
+nmap <leader>cF  <Plug>(coc-fix-current)
 
 nmap ]d :CocNext<CR>
 nmap [d :CocPrev<CR>
-nmap <leader>rd  :CocList diagnostics<CR>
+nmap <leader>cd  :CocList diagnostics<CR>
 "    }}}
 "    Map function and class text objects {{{
 " NOTE: Requires 'textDocument.documentSymbol' support from the language server.
@@ -1943,9 +1963,9 @@ nmap <silent> <leader>ghh :GV<CR>
 " Git messages in popup
 call minpac#add('rhysd/git-messenger.vim', {'type': 'opt', 'name': 'git-messenger'})
 PackAdd git-messenger
-
 let g:git_messenger_no_default_mappings = v:true
-let g:git_messenger_always_into_popup = v:true
+nunmap <leader>gm
+let g:git_messenger_always_into_popup = v:false
 nmap <Leader>gbb <Plug>(git-messenger)
 " }}}
 " Snippets {{{
@@ -2468,9 +2488,6 @@ function! OpenToDo()
 
   call LoadTODOFT()
 endfunction
-
-nnoremap <leader>th :TOhtml<CR>
-vnoremap <leader>th :TOhtml<CR>
 " }}}
 " Small plugins {{{
 call minpac#add('ntpeters/vim-better-whitespace', {'type': 'start', 'name': 'better-whitespace'})
