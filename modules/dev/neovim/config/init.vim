@@ -161,7 +161,7 @@ if !exists("my_auto_commands_loaded")
   " buftype=nowrite (file is read-only)
   " undolevels=-1 (no undo possible)
   "
-  let g:LargeFile = 1024 * 1024 * 3
+  let g:LargeFile = 1024 * 1024 * 20
   augroup LargeFile
     au BufReadPre *
           \ let f=expand("<afile>")
@@ -275,6 +275,7 @@ let g:lmap.p = { 'name': '+Plugins' }
 let g:lmap.p.c = {'name': '+Coc'}
 let g:lmap.p.c.m = 'Marketplace'
 let g:lmap.p.c.u = 'Update'
+let g:lmap.p.c.l = 'List'
 let g:lmap.q = { 'name': '+QFix' }
 let g:lmap.q.c = 'Close'
 let g:lmap.q.n = 'Next'
@@ -1764,6 +1765,7 @@ let g:coc_global_extensions = [
 "    General {{{
 nmap <leader>pcm :CocList marketplace<CR>
 nmap <leader>pcu :CocUpdate<CR>
+nmap <leader>pcl :CocList extensions<CR>
 "    }}}
 "    Code completion {{{
 if has('nvim')
@@ -2050,6 +2052,7 @@ let g:qs_buftype_blacklist = ['terminal', 'nofile', 'nerdtree']
 
 " Additional {{{
 " DraIt {{{
+" TODO: Update keys
 call minpac#add('ewok/DrawIt', {'type': 'start', 'name': 'drawit'})
 " }}}
 " VimWiki {{{
