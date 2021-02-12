@@ -1515,6 +1515,8 @@ let NERDTreeMapOpenSplit='s'
 let NERDTreeMapJumpNextSibling=''
 let NERDTreeMapJumpPrevSibling=''
 let g:NERDTreeMapMenu='<leader>'
+let NERDTreeQuitOnOpen=1
+let NERDTreeCustomOpenArgs={'file': {'reuse':'all', 'where':'p', 'keepopen':0, 'stay':1}}
 
 " Close vim if the only NERDTree window left
 " autocmd bufenter * if (winnr("$") == 1 && exists("b:NERDTree") && b:NERDTree.isTabTree()) | q | endif
