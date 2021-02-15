@@ -68,4 +68,6 @@ in
     powertop.enable = true;
     governor = "powersave";
   };
+
+  modules.mail.mailspring.enable = true;
 }

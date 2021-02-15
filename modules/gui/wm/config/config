@@ -151,13 +151,13 @@ bindsym --release F12 exec --no-startup-id kill -s USR1 $(pidof deadd-notificati
 
 # Start Applications
 bindsym $mod_a+o mode "$mode_apps"
-set $mode_apps  (i)M e(d)ucation (b)rowser (c)ryptomator (e)xplorer (p)avu
+set $mode_apps  (m)essanger e(d)ucation (b)rowser (c)ryptomator (e)xplorer (p)avu
 mode "$mode_apps" {
         bindsym b exec firefox, mode "default"
         bindsym c exec cryptomator, mode "default"
         bindsym d mode "$edu_apps"
         bindsym e exec pcmanfm, mode "default"
-        bindsym i mode "$im_apps"
+        bindsym m mode "$im_apps"
         bindsym p exec pavucontrol-qt, mode "default"
 
         # exit resize mode: Enter or Escape
@@ -166,12 +166,13 @@ mode "$mode_apps" {
         bindsym Ctrl+m mode "default"
 }
 
-set $im_apps  (s)slack (t)elegram (d)iscord (e)lement
+set $im_apps  (s)slack (t)elegram (d)iscord (e)lement (m)ailspring
 mode "$im_apps" {
         bindsym d exec Discord, mode "default"
         bindsym e exec element-desktop, mode "default"
         bindsym s exec slack, mode "default"
         bindsym t exec telegram-desktop, mode "default"
+        bindsym m exec mailspring, mode "default"
 
         # exit resize mode: Enter or Escape
         bindsym Return mode "default"
