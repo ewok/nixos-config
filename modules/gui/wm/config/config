@@ -151,7 +151,7 @@ bindsym --release F12 exec --no-startup-id kill -s USR1 $(pidof deadd-notificati
 
 # Start Applications
 bindsym $mod_a+o mode "$mode_apps"
-set $mode_apps  (i)M (b)rowser (e)xplorer e(d)ucation (p)avu (c)ryptomator
+set $mode_apps  (i)M e(d)ucation (b)rowser (c)ryptomator (e)xplorer (p)avu
 mode "$mode_apps" {
         bindsym b exec firefox, mode "default"
         bindsym c exec cryptomator, mode "default"
