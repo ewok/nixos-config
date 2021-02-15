@@ -83,6 +83,7 @@ in
         ] ++ [ master.xkb-switch-i3 ];
 
         xdg.configFile."i3/config".source = ./config/config;
+        xdg.configFile."i3/rotate.sh".source = ./config/rotate.sh;
 
         programs.i3status-rust = {
           enable = true;

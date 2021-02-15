@@ -16,6 +16,7 @@ in
   services.xserver.libinput.enable = true;
   services.xserver.libinput.touchpad.naturalScrolling = true;
   # hardware.video.hidpi.enable = true;
+  # hardware.sensor.iio.enable = true;
 
   time.timeZone = properties.timezone;
 
