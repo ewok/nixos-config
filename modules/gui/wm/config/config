@@ -151,15 +151,38 @@ bindsym --release F12 exec --no-startup-id kill -s USR1 $(pidof deadd-notificati
 
 # Start Applications
 bindsym $mod_a+o mode "$mode_apps"
-set $mode_apps  (l)ldoce, (s)slack, (b)rowser, (p)avu, (t)ticktick, (d)telegram, (e)xplorer
+set $mode_apps  (i)M (b)rowser (e)xplorer e(d)ucation (p)avu (c)ryptomator
 mode "$mode_apps" {
         bindsym b exec firefox, mode "default"
-        bindsym d exec telegram-desktop, mode "default"
-        bindsym l exec ldoce5viewer, mode "default"
+        bindsym c exec cryptomator, mode "default"
+        bindsym d mode "$edu_apps"
         bindsym e exec pcmanfm, mode "default"
+        bindsym i mode "$im_apps"
         bindsym p exec pavucontrol-qt, mode "default"
+
+        # exit resize mode: Enter or Escape
+        bindsym Return mode "default"
+        bindsym Escape mode "default"
+        bindsym Ctrl+m mode "default"
+}
+
+set $im_apps  (s)slack (t)elegram (d)iscord (e)lement
+mode "$im_apps" {
+        bindsym d exec Discord, mode "default"
+        bindsym e exec element-desktop, mode "default"
         bindsym s exec slack, mode "default"
-        bindsym t exec ticktick, mode "default"
+        bindsym t exec telegram-desktop, mode "default"
+
+        # exit resize mode: Enter or Escape
+        bindsym Return mode "default"
+        bindsym Escape mode "default"
+        bindsym Ctrl+m mode "default"
+}
+
+set $edu_apps  (l)doce (g)oldendict
+mode "$edu_apps" {
+        bindsym l exec ldoce5viewer, mode "default"
+        bindsym g exec goldendict, mode "default"
 
         # exit resize mode: Enter or Escape
         bindsym Return mode "default"
@@ -374,20 +397,19 @@ bindsym $mod+m bar mode toggle
 # Autostart applications
 ################################################################################################
 # exec --no-startup-id /usr/lib/polkit-gnome/polkit-gnome-authentication-agent-1
-# exec_always --no-startup-id deadd
-# exec_always --no-startup-id pgrep pcloud || pcloud
-# exec_always --no-startup-id pgrep insync || insync start
 exec_always --no-startup-id caffeine -k
-exec_always --no-startup-id pgrep goldendict || goldendict
-exec_always --no-startup-id pgrep cryptomator || cryptomator
 exec_always --no-startup-id pgrep Enpass || Enpass
-exec_always --no-startup-id pgrep zeal || zeal
 exec_always --no-startup-id pgrep cawbird || cawbird
-# exec_always --no-startup-id pgrep -f davmail || davmail
 exec_always --no-startup-id sparkleshare
-exec_always --no-startup-id pgrep telegram-deskto || telegram-desktop
-exec_always --no-startup-id Discord
-exec_always --no-startup-id pgrep -f element-desktop || element-desktop
-
 exec_always --no-startup-id pgrep clipit || clipit
 exec_always --no-startup-id pgrep xkb-switch || xkb-switch --i3
+# exec_always --no-startup-id deadd
+# exec_always --no-startup-id Discord
+# exec_always --no-startup-id pgrep cryptomator || cryptomator
+# exec_always --no-startup-id pgrep -f davmail || davmail
+# exec_always --no-startup-id pgrep -f element-desktop || element-desktop
+# exec_always --no-startup-id pgrep goldendict || goldendict
+# exec_always --no-startup-id pgrep insync || insync start
+# exec_always --no-startup-id pgrep pcloud || pcloud
+# exec_always --no-startup-id pgrep telegram-deskto || telegram-desktop
+# exec_always --no-startup-id pgrep zeal || zeal
