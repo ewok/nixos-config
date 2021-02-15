@@ -9,13 +9,12 @@ in
     ../../modules
     ./configuration.nix
     "${inputs.nixos-hardware}/common/pc/ssd"
-    # "${inputs.nixos-hardware}/lenovo/thinkpad/p53"
   ];
 
-  # services.xserver.libinput.naturalScrolling = true;
   # services.xserver.libinput.middleEmulation = true;
   # services.xserver.libinput.tapping = true;
   services.xserver.libinput.enable = true;
+  services.xserver.libinput.naturalScrolling = true;
 
   time.timeZone = properties.timezone;
 
@@ -32,9 +31,9 @@ in
 
   modules.dev = {
     enable = true;
-    docker.enable = true;
-    docker.autoPrune = true;
-    k8s.enable = true;
+    # docker.enable = true;
+    # docker.autoPrune = true;
+    # k8s.enable = true;
   };
 
   modules.gui = {
@@ -51,14 +50,14 @@ in
 
   modules.base.ssh.config = properties.ssh.config;
 
-  # modules.system.sudo.askPass = false;
-
   modules.system.sound.enable = true;
   modules.system.sound.pulse.enable = true;
-  modules.system.printing.enable = true;
+  # modules.system.printing.enable = true;
 
   modules.communication.enable = true;
-  modules.system.powermanagement.enable = true;
-
-  modules.mail.enable = true;
+  modules.system.powermanagement = {
+    enable = true;
+    powertop.enable = true;
+    governor = "powersave";
+  };
 }

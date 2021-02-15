@@ -2,11 +2,15 @@
 with lib;
 let
   gui = config.modules.gui;
-  sound = config.modules.system.sound;
+  gaming = config.modules.gaming;
   username = config.properties.user.name;
 in
 {
-  config = mkIf (gui.enable && sound.enable) {
+  options.modules.gaming = {
+    enable = mkEnableOption "Enable gaming soft.";
+  };
+
+  config = mkIf (gui.enable && gaming.enable) {
     home-manager.users.${username} = {
       home.packages = with pkgs; [
         steam
