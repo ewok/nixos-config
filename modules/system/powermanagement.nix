@@ -27,7 +27,6 @@ in
       cpuFreqGovernor = lib.mkDefault cfg.governor;
     };
     services.tlp.enable = true;
-    services.illum.enable = true;
     services.logind = {
       lidSwitchDocked = "ignore";
       lidSwitchExternalPower = "ignore";
@@ -43,6 +42,17 @@ in
     home-manager.users.${username} = {
       home.packages = [ powertop ];
     };
+
+    # Backlight
+    programs.light.enable = true;
+    services.actkbd = {
+      enable = true;
+      bindings = [
+        { keys = [ 224 ]; events = [ "key" ]; command = "/run/current-system/sw/bin/light -A 10"; }
+        { keys = [ 225 ]; events = [ "key" ]; command = "/run/current-system/sw/bin/light -U 10"; }
+      ];
+    };
+    users.users.${username}.extraGroups = [ "video" ];
     # TODO: Experimental
     # hardware.nvidia.powerManagement.enable = true;
   };
