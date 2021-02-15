@@ -14,7 +14,7 @@ in
   # services.xserver.libinput.middleEmulation = true;
   # services.xserver.libinput.tapping = true;
   services.xserver.libinput.enable = true;
-  services.xserver.libinput.naturalScrolling = true;
+  services.xserver.libinput.touchpad.naturalScrolling = true;
 
   time.timeZone = properties.timezone;
 
@@ -22,7 +22,7 @@ in
   modules.base.enable = true;
 
   modules.backup.enable = true;
-  modules.backup.rslsync.enable = true;
+  # modules.backup.rslsync.enable = true;
   modules.backup.restic = {
     repo = properties.backup.repo;
     excludePaths = properties.backup.excludePaths;
