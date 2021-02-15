@@ -3,6 +3,10 @@ with lib;
 let
   cfg = config.modules.system.powermanagement;
   username = config.properties.user.name;
+
+  powertop = pkgs.writeShellScriptBin "powertop" ''
+    sudo ${pkgs.powertop}/bin/powertop
+  '';
 in
 {
   options.modules.system.powermanagement = {
@@ -35,6 +39,10 @@ in
       HandleSuspendKey=suspend
       HandleHibernateKey=ignore
     '';
+
+    home-manager.users.${username} = {
+      home.packages = [ powertop ];
+    };
     # TODO: Experimental
     # hardware.nvidia.powerManagement.enable = true;
   };
