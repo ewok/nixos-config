@@ -19,10 +19,10 @@ in
       xdg.configFile."Zeal/Zeal.conf".text = ''
         [General]
         check_for_update=true
-        hide_on_close=true
-        minimize_to_systray=true
-        show_systray_icon=true
-        start_minimized=true
+        hide_on_close=false
+        minimize_to_systray=false
+        show_systray_icon=false
+        start_minimized=false
 
         [content]
         custom_css_file=
