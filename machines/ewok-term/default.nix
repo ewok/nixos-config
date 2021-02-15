@@ -15,6 +15,7 @@ in
   # services.xserver.libinput.tapping = true;
   services.xserver.libinput.enable = true;
   services.xserver.libinput.touchpad.naturalScrolling = true;
+  # hardware.video.hidpi.enable = true;
 
   time.timeZone = properties.timezone;
 
@@ -36,10 +37,17 @@ in
     # k8s.enable = true;
   };
 
+  environment.variables = {
+    GDK_SCALE = "1.1";
+    GDK_DPI_SCALE = "1.1";
+    _JAVA_OPTIONS = "-Dsun.java2d.uiScale=1.1";
+  };
+  services.xserver.dpi = 118;
+
   modules.gui = {
     enable = true;
     fonts = {
-      dpi = 102;
+      dpi = 118;
     };
     displayProfiles = properties.displayProfiles;
     longitude = properties.longitude;
