@@ -1,5 +1,7 @@
 " vim: filetype=vim :
 " ------------------------------------------------------------------------------
+"
+nnoremap g. :set dotfiles<cr>
 
 " Start shell in current directory
 nnoremap s :!tmux-sp-s<cr>
