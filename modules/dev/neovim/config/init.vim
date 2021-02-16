@@ -256,7 +256,6 @@ let g:lmap.i.d = {'name': '+DateTime'}
 let g:lmap.i.d.m = 'date Time(Minutes)'
 let g:lmap.i.d.d = 'date Time(Day)'
 let g:lmap.i.d.s = 'date Time(seconds)'
-let g:lmap.j = 'Jump'
 let g:lmap.l = { 'name': '+Location' }
 let g:lmap.l.c = 'Close'
 let g:lmap.l.l = 'Toggle'
@@ -2019,14 +2018,6 @@ nmap gz <Plug>ZVOperator
 " }}}
 
 " Motion {{{
-" AnyJump {{{
-call minpac#add('pechorin/any-jump.vim', {'type': 'opt', 'name': 'anyjump'})
-let g:any_jump_search_prefered_engine = 'rg'
-let g:any_jump_disable_default_keybindings = 1
-nnoremap <leader>j :AnyJump<CR>
-xnoremap <leader>j :AnyJumpVisual<CR>
-PackAdd anyjump
-" }}}
 " Text objects {{{
 call minpac#add('kana/vim-textobj-user', {'type': 'start', 'name': 'textobj'})
 
