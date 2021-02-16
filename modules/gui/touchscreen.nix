@@ -101,6 +101,9 @@ in
     };
 
     config = mkIf ( gui.enable && gui.touchscreen.enable ) {
+
+      environment.variables.MOZ_USE_XINPUT2 = "1";
+
       home-manager.users.${username} = {
         home.packages = with pkgs; [ onboard ];
         systemd.user.services.auto-rotate = {

@@ -31,6 +31,8 @@ in
                 "browser.urlbar.suggest.searches" = false;
                 "extensions.pocket.enabled" = false;
                 "toolkit.legacyUserProfileCustomizations.stylesheets" = true;
+              } // optionalAttrs (gui.touchscreen.enable) {
+                "dom.w3c_touch_events.enabled" = true;
               };
               userChrome = ''
                   #TabsToolbar {
