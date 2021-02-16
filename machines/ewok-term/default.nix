@@ -55,12 +55,14 @@ in
     latitude = properties.latitude;
 
     office.enable = true;
+    touchscreen.enable = true;
   };
 
   modules.base.ssh.config = properties.ssh.config;
 
   modules.system.sound.enable = true;
   modules.system.sound.pulse.enable = true;
+  modules.system.sound.sof.enable = true;
   # modules.system.printing.enable = true;
 
   modules.communication.enable = true;
@@ -68,6 +70,7 @@ in
     enable = true;
     powertop.enable = true;
     governor = "powersave";
+    # suspendHibernate.enable = true;
   };
 
   modules.mail.mailspring.enable = true;
