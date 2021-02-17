@@ -8,8 +8,13 @@
   boot.initrd.availableKernelModules = [ "xhci_pci" "thunderbolt" "vmd" "nvme" "usb_storage" "sd_mod" "rtsx_pci_sdmmc" ];
   boot.initrd.kernelModules = [ ];
   boot.kernelModules = [ "kvm-intel" "vmd" ];
-  boot.kernelPackages = pkgs.linuxPackages_latest;
+  # boot.kernelPackages = pkgs.linuxPackages_latest;
+  boot.kernelPackages = pkgs.linuxPackagesFor pkgs.linux_latest;
   boot.extraModulePackages = [ ];
+  # boot.blacklistedKernelModules = [ "snd_hda_intel" "snd_soc_skl" ];
+  # boot.extraModprobeConfig = ''
+  #   options snd-hda-intel dmic_detect=0
+  # '';
 
   fileSystems."/" =
     { device = "/dev/mapper/nixos";

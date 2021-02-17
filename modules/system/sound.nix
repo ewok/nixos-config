@@ -48,12 +48,15 @@ in
         daemon.config = { flat-volumes = "no"; };
         extraConfig = ''
           load-module module-native-protocol-tcp auth-ip-acl=127.0.0.1
+          load-module module-alsa-sink   device=hw:0,0 channels=4
+          load-module module-alsa-source device=hw:0,6 channels=4
         '';
       }; };
 
       environment.systemPackages = with pkgs; [
         ponymix
         lxqt.pavucontrol-qt
+        sof-firmware
       ] ++ optionals(cfg.sof.enable) [
         sof-firmware
       ];
