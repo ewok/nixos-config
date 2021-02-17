@@ -39,6 +39,7 @@
               nixpkgs.overlays = [
                 unstable
                 inputs.neovim-nightly-overlay.overlay
+                (import ./overlays)
               ];
             }
             (import (./. + "/machines/${name}"))
