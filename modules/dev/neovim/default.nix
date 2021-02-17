@@ -30,7 +30,8 @@ in
 
         home.packages = with pkgs; [
           global
-          hadolint
+          # TODO: Return when fixed
+          # hadolint
           shellcheck
           silver-searcher
           terraform-lsp
