@@ -4,7 +4,11 @@ let
   cfg = config.modules.system.powermanagement;
   username = config.properties.user.name;
 
-  powertop = pkgs.writeShellScriptBin "powertop" ''
+  powertune = pkgs.writeShellScriptBin "powertune" ''
+    sudo ${pkgs.powertop}/bin/powertop --auto-tune
+  '';
+
+  ptop = pkgs.writeShellScriptBin "ptop" ''
     sudo ${pkgs.powertop}/bin/powertop
   '';
 
@@ -28,12 +32,29 @@ in
 
   config = mkMerge [
     (mkIf cfg.enable {
+
       powerManagement = {
         enable = true;
         powertop.enable = cfg.powertop.enable;
         cpuFreqGovernor = lib.mkDefault cfg.governor;
       };
-      services.tlp.enable = true;
+
+      services.tlp = {
+        enable = true;
+        settings = {
+          CPU_MIN_PERF_ON_AC = 0;
+          CPU_MAX_PERF_ON_AC = 100;
+          CPU_MIN_PERF_ON_BAT = 0;
+          CPU_MAX_PERF_ON_BAT = 10;
+          CPU_BOOST_ON_AC = 1;
+          CPU_BOOST_ON_BAT = 0;
+          DEVICES_TO_DISABLE_ON_STARTUP = "bluetooth";
+          DEVICES_TO_DISABLE_ON_BAT_NOT_IN_USE="bluetooth wifi wwan";
+          DEVICES_TO_DISABLE_ON_LAN_CONNECT="wifi wwan";
+          DEVICES_TO_ENABLE_ON_LAN_DISCONNECT="wifi wwan";
+        };
+      };
+
       services.logind = {
         lidSwitchDocked = "ignore";
         lidSwitchExternalPower = "ignore";
@@ -47,7 +68,7 @@ in
       '';
 
       home-manager.users.${username} = {
-        home.packages = [ powertop ];
+        home.packages = [ ptop powertune pkgs.powertop ];
       };
 
       # Backlight
