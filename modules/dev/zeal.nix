@@ -1,20 +1,16 @@
-{ config, lib, inputs, ... }:
+{ config, lib, pkgs, ... }:
 with lib;
 let
   dev = config.modules.dev;
   gui = config.modules.gui;
   username = config.properties.user.name;
   dataHome = config.home-manager.users.${username}.xdg.dataHome;
-  mypkgs = import inputs.my-nixpkgs ({
-    config = config.nixpkgs.config;
-    localSystem = { system = "x86_64-linux"; };
-  });
 in
 {
   config = mkIf (dev.enable && gui.enable) {
 
     home-manager.users."${username}" = {
-      home.packages = [ mypkgs.zeal ];
+      home.packages = [ pkgs.zeal ];
 
       xdg.configFile."Zeal/Zeal.conf".text = ''
         [General]

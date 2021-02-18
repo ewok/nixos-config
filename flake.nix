@@ -11,7 +11,6 @@
       url = "github:rycee/home-manager";
       inputs.nixpkgs.follows = "unstable";
     };
-    my-nixpkgs.url = "github:ewok/nixpkgs";
 
   };
 

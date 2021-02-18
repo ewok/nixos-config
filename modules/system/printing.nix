@@ -3,7 +3,7 @@ with lib;
 let
   cfg = config.modules.system.printing;
   username = config.properties.user.name;
-  mypkgs = import inputs.my-nixpkgs ({
+  master = import inputs.master ({
     config = config.nixpkgs.config;
     localSystem = { system = "x86_64-linux"; };
   });
@@ -16,7 +16,7 @@ in
     config = mkIf cfg.enable {
       services.printing = {
         enable = true;
-        drivers = with mypkgs; [ carps-cups ];
+        drivers = with master; [ carps-cups ];
       };
       home-manager.users.${username} = {
         home.packages = with pkgs; [
