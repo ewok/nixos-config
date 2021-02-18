@@ -313,6 +313,10 @@ let g:lmap.w.n = 'goto'
 let g:lmap.w.j = 'Next Day'
 let g:lmap.w.k = 'Prev Day'
 let g:lmap.y = { 'name': '+Yank' }
+let g:lmap.y.f = { 'name': '+File' }
+let g:lmap.y.f.n = 'Name'
+let g:lmap.y.f.p = 'Path'
+let g:lmap.y.f.l = 'File:Line'
 let g:lmap.z = { 'name': '+Zettel' }
 let g:lmap.z.b = 'Update Backlinks'
 let g:lmap.z.z = 'Open'
@@ -465,6 +469,11 @@ vmap <leader>yy :YankVYank<CR>
 
 command! YankPaste :r ~/.vbuf
 nmap <leader>yp :YankPaste<CR>
+
+nnoremap <leader>yfl :let @+=expand("%") . ':' . line(".")<CR>
+nnoremap <leader>yfn :let @+=expand("%")<CR>
+nnoremap <leader>yfp :let @+=expand("%:p")<CR>
+
 " }}}
 "   Some vim tunings {{{
 nnoremap Y y$
