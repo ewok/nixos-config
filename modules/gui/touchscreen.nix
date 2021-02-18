@@ -98,29 +98,33 @@ in
   {
     options.modules.gui.touchscreen = {
       enable = mkEnableOption "Support touchscreen laptop.";
+      autoRotate = mkEnableOption "Enable auto-rotate.";
     };
 
-    config = mkIf ( gui.enable && gui.touchscreen.enable ) {
+    config = mkMerge [
+      (mkIf ( gui.enable && gui.touchscreen.enable ) {
+        environment.variables.MOZ_USE_XINPUT2 = "1";
+      })
 
-      environment.variables.MOZ_USE_XINPUT2 = "1";
+      (mkIf ( gui.enable && gui.touchscreen.enable && gui.touchscreen.autoRotate ) {
+        home-manager.users.${username} = {
+          home.packages = with pkgs; [ onboard ];
+          systemd.user.services.auto-rotate = {
+            Unit = {
+              Description = "auto rotate display";
+              After = [ "graphical-session-pre.target" ];
+              PartOf = [ "graphical-session.target" ];
+            };
 
-      home-manager.users.${username} = {
-        home.packages = with pkgs; [ onboard ];
-        systemd.user.services.auto-rotate = {
-          Unit = {
-            Description = "auto rotate display";
-            After = [ "graphical-session-pre.target" ];
-            PartOf = [ "graphical-session.target" ];
+            Service = {
+              Type = "simple";
+              ExecStart = "${rotate}";
+              Restart = "on-failure";
+            };
+
+            Install = { WantedBy = [ "graphical-session.target" ]; };
           };
-
-          Service = {
-            Type = "simple";
-            ExecStart = "${rotate}";
-            Restart = "on-failure";
-          };
-
-          Install = { WantedBy = [ "graphical-session.target" ]; };
         };
-      };
-    };
+      })
+    ];
   }
