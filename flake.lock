@@ -69,31 +69,16 @@
     },
     "master": {
       "locked": {
-        "lastModified": 1613562829,
-        "narHash": "sha256-Ynv+WYVVvsusrhsJwb2BxQSwnS0ZTuPcRxVypBM0Dms=",
+        "lastModified": 1613634607,
+        "narHash": "sha256-vAe8pGnMo/YcYyFPJqWKyzunQ7vUN1sUOZmsDKjbZqs=",
         "owner": "nixos",
         "repo": "nixpkgs",
-        "rev": "894829379c5bb7458491a5c9bec019cad79a155f",
+        "rev": "2a78ea9435521b839794c55ea3562cc5f8ef5a4c",
         "type": "github"
       },
       "original": {
         "owner": "nixos",
         "ref": "master",
-        "repo": "nixpkgs",
-        "type": "github"
-      }
-    },
-    "my-nixpkgs": {
-      "locked": {
-        "lastModified": 1613046880,
-        "narHash": "sha256-y+ZEbe/OmzHbdzqG/fhu4hAb9h/r2AyBfs9LDarPFOw=",
-        "owner": "ewok",
-        "repo": "nixpkgs",
-        "rev": "68ace9d277d24d408191a2714d9c11b5d2f944f9",
-        "type": "github"
-      },
-      "original": {
-        "owner": "ewok",
         "repo": "nixpkgs",
         "type": "github"
       }
@@ -188,7 +173,6 @@
       "inputs": {
         "home-manager": "home-manager",
         "master": "master",
-        "my-nixpkgs": "my-nixpkgs",
         "neovim-nightly-overlay": "neovim-nightly-overlay",
         "nixos-hardware": "nixos-hardware",
         "stable": "stable",
