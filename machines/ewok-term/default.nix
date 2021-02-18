@@ -53,6 +53,8 @@ in
     displayProfiles = properties.displayProfiles;
     longitude = properties.longitude;
     latitude = properties.latitude;
+    day = 4500;
+    night = 3500;
 
     office.enable = true;
     touchscreen.enable = true;

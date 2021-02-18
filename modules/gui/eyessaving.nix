@@ -12,6 +12,14 @@ in
       longitude = mkOption {
         type = types.str;
       };
+      day = mkOption {
+        type = types.int;
+        default = 5500;
+      };
+      night = mkOption {
+        type = types.int;
+        default = 3900;
+      };
     };
 
     config = mkIf gui.enable {
@@ -27,8 +35,8 @@ in
           longitude = gui.longitude;
           tray = true;
           temperature = {
-            day = 5500;
-            night = 3900;
+            day = gui.day;
+            night = gui.night;
           };
         };
       };
