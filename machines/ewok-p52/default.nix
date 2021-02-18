@@ -45,6 +45,8 @@ in
     displayProfiles = properties.displayProfiles;
     longitude = properties.longitude;
     latitude = properties.latitude;
+    day = 5000;
+    night = 3500;
 
     office.enable = true;
   };
