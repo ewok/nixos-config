@@ -166,8 +166,9 @@ mode "$mode_apps" {
         bindsym Ctrl+m mode "default"
 }
 
-set $im_apps  (s)slack (t)elegram (d)iscord (e)lement (m)ailspring
+set $im_apps (c)awbird (s)slack (t)elegram (d)iscord (e)lement (m)ailspring
 mode "$im_apps" {
+        bindsym c exec cawbird, mode "default"
         bindsym d exec Discord, mode "default"
         bindsym e exec element-desktop, mode "default"
         bindsym s exec slack, mode "default"
@@ -408,7 +409,7 @@ exec_always --no-startup-id pgrep Enpass || Enpass
 exec_always --no-startup-id pgrep clipit || clipit
 exec_always --no-startup-id pgrep xkb-switch || xkb-switch --i3
 exec_always --no-startup-id pgrep blueman-applet || blueman-applet
-exec_always --no-startup-id sparkleshare &
+# exec_always --no-startup-id sparkleshare &
 # exec_always --no-startup-id pgrep cawbird || cawbird
 # exec_always --no-startup-id deadd
 # exec_always --no-startup-id Discord
