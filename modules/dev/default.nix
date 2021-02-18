@@ -12,7 +12,7 @@ with lib;
     ./k8s.nix
     # meld
     ./neovim
-    ./notes.nix
+    # ./notes.nix
     # npm
     ./python.nix
     ./typora.nix

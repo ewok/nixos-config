@@ -2060,6 +2060,8 @@ call minpac#add('ewok/DrawIt', {'type': 'start', 'name': 'drawit'})
 " VimWiki {{{
 call minpac#add('vimwiki/vimwiki', {'type': 'opt', 'name': 'vimwiki', 'branch': 'dev'})
 call minpac#add('michal-h21/vim-zettel', {'type': 'opt', 'name': 'zettel'})
+call minpac#add('ewok/vimwiki-sync', {'type': 'opt', 'name': 'vimwiki-sync'})
+
 function! LoadVimwiki()
 
   " Global mapping
@@ -2133,6 +2135,7 @@ function! s:make_note_link(l)
 endfunction
 
 PackAdd vimwiki
+PackAdd vimwiki-sync
 
 let g:zettel_format = "%y%m%d-%H%M-%title"
 let g:zettel_default_mappings = 0
