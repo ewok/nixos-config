@@ -1,21 +1,25 @@
 # TODO
 
-- [ ] General configuration and hardware-configuration
-- [X] direnv
-- [ ] deadd
-- [ ] wallpapers
-- [ ] Mail
-    - [ ] neomutt
-    - [ ] send email
-    - [ ] mbsync
-- [ ] printer
-- [ ] autofs
-- [X] powermanagement
-- [X] .[z]?profiles
-- [X] .(zsh|bash)rc
-- [ ] xprofile - touchpad
-- [ ] add config to rclone modules/backup/rclone.nix
-- [ ] add config to ctags modules/dev/ctags.nix
-- [X] add homePath to common lib or find existing
+- [O] General:
+    - [ ] qutebrowser
+    - [ ] wallpapers
+    - [ ] autofs
+    - [ ] add config to ctags modules/dev/ctags.nix
+    - [X] xprofile - touchpad
+    - [X] General configuration and hardware-configuration
+    - [X] direnv
+    - [X] deadd
+    - [X] Mail
+        - [X] neomutt
+        - [X] send email
+        - [X] mbsync
+    - [X] printer
+    - [X] powermanagement
+    - [X] .[z]?profiles
+    - [X] .(zsh|bash)rc
+    - [X] add config to rclone modules/backup/rclone.nix
+    - [X] add homePath to common lib or find existing
     - [X] add to zeal modules/dev/zeal.nix
-- [ ] sth
+- [ ] hp spectre:
+    - [ ] hibernate after suspend
+    - [ ] sound card
