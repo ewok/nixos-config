@@ -202,12 +202,16 @@ in
             };
             window.title_format = "{private}{perc}{current_title}{title_sep}qutebrowser | {current_url}";
           };
-          keyMappings = {
-            "пп" = "gg";
-          };
+          # keyMappings = {
+          #   "<space>пп" = "<space>gg";
+          # };
           keyBindings = {
             normal = {
-              "gg" = "open https://google.com";
+              "<space>gg" = "open https://google.com";
+              "<space>t" = "config-cycle tabs.show multiple never";
+              "<space>bb" = "bookmark-list";
+              "<space>bn" = "bookmark-add";
+              "<space>bd" = "bookmark-del";
             };
             insert = {
               "<Ctrl-y>" = "insert-text -- {clipboard}";
