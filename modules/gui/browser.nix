@@ -195,27 +195,61 @@ in
               };
             };
             url = {
-              auto_search = "never";
+              auto_search = "dns";
               default_page = "about:blank";
               incdec_segments = [ "path" "query" ];
               yank_ignored_parameters = [ "ref" "utm_source" "utm_medium" "utm_campaign" "utm_term" "utm_content" ];
             };
             window.title_format = "{private}{perc}{current_title}{title_sep}qutebrowser | {current_url}";
           };
+          searchEngines = {
+            DEFAULT =  "https://www.google.com/search?q={}";
+            d =  "https://duckduckgo.com/?q={}";
+            n = "https://search.nixos.org/packages?channel=unstable&from=0&size=50&sort=relevance&query={}";
+          };
           # keyMappings = {
           #   "<space>пп" = "<space>gg";
           # };
           keyBindings = {
             normal = {
+              "<space>tt" = "config-cycle tabs.show multiple never";
+              "<space>tc" = "tab-clone";
+              "<space>bb" = "quickmark-save";
+              "<space>bl" = "bookmark-list";
+              "<space>bd" = "quickmark-del";
+              "<space>C" = "clear-messages";
+              "<space>dd" = "download";
+              "<space>dc" = "download-cancel";
+              "<space>dC" = "download-clear";
+              "<space>dr" = "download-retry";
+              "<space>gm" = "open https://mail.google.com";
+              "<space>gy" = "open https://youtube.com";
               "<space>gg" = "open https://google.com";
-              "<space>t" = "config-cycle tabs.show multiple never";
-              "<space>bb" = "bookmark-list";
-              "<space>bn" = "bookmark-add";
-              "<space>bd" = "bookmark-del";
+              "<Ctrl-e>" = "scroll-px 0 20";
+              "<Ctrl-y>" = "scroll-px 0 -20";
+              "<space>ss" = "set-cmd-text -s :session-save";
+              "<space>so" = "set-cmd-text -s :session-load ";
+              "<space>sd" = "set-cmd-text -s :session-delete ";
+              "<Ctrl-1>" = "tab-focus 1";
+              "<Ctrl-2>" = "tab-focus 2";
+              "<Ctrl-3>" = "tab-focus 3";
+              "<Ctrl-4>" = "tab-focus 4";
+              "<Ctrl-5>" = "tab-focus 5";
+              "<Ctrl-6>" = "tab-focus 6";
+              "<Ctrl-7>" = "tab-focus 7";
+              "<Ctrl-8>" = "tab-focus 8";
+              "<Ctrl-9>" = "tab-focus 9";
+              "<Ctrl-m>" = "tab-mute";
+              "wc" = "close";
+              "wq" = "close";
             };
             insert = {
               "<Ctrl-y>" = "insert-text -- {clipboard}";
               "<Shift-y>" = "insert-text -- {primary}";
+            };
+            command = {
+              "<Ctrl-j>" = "completion-item-focus --history next";
+              "<Ctrl-k>" = "completion-item-focus --history prev";
             };
           };
           extraConfig = ''
