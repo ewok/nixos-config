@@ -6,11 +6,20 @@ let
 in
   {
     config = mkIf gui.enable {
-      environment.sessionVariables = { BROWSER = "firefox"; };
+      environment.sessionVariables = { BROWSER = "qutebrowser"; };
 
       home-manager.users.${username} = {
         home.packages = with pkgs; [
           xsel
+
+          (makeDesktopItem {
+            name = "org.custom.qutebrowser.windowed";
+            type = "Application";
+            exec = "qutebrowser --target window %U";
+            comment = "Qutebrowser that opens links preferably in new windows";
+            desktopName = "QuteBrowser";
+            categories = stdenv.lib.concatStringsSep ";" [ "Network" "WebBrowser" ];
+          })
         ];
 
         programs.firefox = {
@@ -44,6 +53,187 @@ in
             };
           };
         };
+
+        programs.qutebrowser = {
+          enable = true;
+          aliases = {
+            jsd = "set content.javascript.enabled false";
+            jse = "set content.javascript.enabled true";
+          };
+          settings = {
+            auto_save = {
+              interval = 15000;
+              session = true;
+            };
+            # editor.command = [
+            #   "${config.ide.emacs.core.package}/bin/emacsclient"
+            #   "-c"
+            #   "-s /run/user/${builtins.toString config.users.extraUsers."${user}".uid}/emacs/server"
+            #   "+{line}:{column}"
+            #   "{}"
+            # ];
+            zoom.levels = [
+              "25%"
+              "33%"
+              "50%"
+              "67%"
+              "75%"
+              "90%"
+              "100%"
+              "110%"
+              "125%"
+              "150%"
+              "175%"
+              "200%"
+              "250%"
+              "300%"
+              "400%"
+              "500%"
+            ];
+            colors = {
+              statusbar.url.success.https.fg = "white";
+              tabs = rec {
+                even.bg = "silver";
+                even.fg = "#666666";
+                odd.bg = "gainsboro";
+                odd.fg = even.fg;
+              };
+              webpage.prefers_color_scheme_dark = true;
+            };
+            completion = {
+              height = "20%";
+              quick = false;
+              show = "auto";
+              shrink = true;
+              timestamp_format = "%d-%m-%Y";
+              use_best_match = false;
+            };
+            confirm_quit = [ "downloads" ];
+            content = {
+              autoplay = false;
+              cache = {
+                appcache = true;
+                size = 5242880;
+              };
+              canvas_reading = true;
+              cookies.store = true;
+              geolocation = "ask";
+              javascript.enabled = true;
+              mute = true;
+              notifications = true;
+              pdfjs = true;
+              plugins = true;
+              proxy = "none";
+              register_protocol_handler = true;
+              ssl_strict = true;
+              webgl = true;
+            };
+            downloads = {
+              location = {
+                directory = "~/Downloads";
+                prompt = false;
+                remember = true;
+                suggestion = "both";
+              };
+            };
+            # hints = {
+            #   hide_unmatched_rapid_hints = true;
+            #   leave_on_load = true;
+            #   min_chars = 1;
+            #   mode = "number";
+            #   next_regexes = [
+            #     "\\\\bnext\\\\b"
+            #     "\\\\bmore\\\\b"
+            #     "\\\\bnewer\\\\b"
+            #     "\\\\b[>→≫]\\\\b"
+            #     "\\\\b(>>|»)\\\\b"
+            #     "\\\\bcontinue\\\\b"
+            #   ];
+            #   prev_regexes =
+            #     [ "\\\\bprev(ious)?\\\\b" "\\\\bback\\\\b" "\\\\bolder\\\\b" "\\\\b[<←≪]\\\\b" "\\\\b(<<|«)\\\\b" ];
+            #     scatter = false;
+            #     uppercase = false;
+            #   };
+              history_gap_interval = 30;
+              input = {
+                insert_mode = {
+                  auto_leave = true;
+                  auto_load = false;
+                  plugins = false;
+                };
+                links_included_in_focus_chain = true;
+                partial_timeout = 2000;
+                spatial_navigation = true;
+              };
+              keyhint.delay = 20;
+              new_instance_open_target = "tab";
+              new_instance_open_target_window = "last-focused";
+              prompt.filebrowser = true;
+              scrolling = {
+                bar = "always";
+                smooth = true;
+              };
+              search.ignore_case = "smart";
+              session.lazy_restore = false;
+              statusbar = {
+              widgets = [ "keypress" "url" "history" "tabs" "progress" ];
+            };
+            tabs = {
+              background = true;
+              last_close = "close";
+              new_position = {
+                related = "next";
+                unrelated = "last";
+              };
+              position = "left";
+              select_on_remove = "next";
+              show = "multiple";
+              tabs_are_windows = false;
+              title = {
+                format = "{audio}{current_title}";
+                format_pinned = "{audio}";
+              };
+            };
+            url = {
+              auto_search = "never";
+              default_page = "about:blank";
+              incdec_segments = [ "path" "query" ];
+              yank_ignored_parameters = [ "ref" "utm_source" "utm_medium" "utm_campaign" "utm_term" "utm_content" ];
+            };
+            window.title_format = "{private}{perc}{current_title}{title_sep}qutebrowser | {current_url}";
+          };
+          keyMappings = {
+            "пп" = "gg";
+          };
+          keyBindings = {
+            normal = {
+              "gg" = "open https://google.com";
+            };
+            insert = {
+              "<Ctrl-y>" = "insert-text -- {clipboard}";
+              "<Shift-y>" = "insert-text -- {primary}";
+            };
+          };
+          extraConfig = ''
+            config.set('content.javascript.enabled', True, 'chrome://*/*')
+            config.set('content.javascript.enabled', True, 'file://*')
+            config.set('content.javascript.enabled', True, 'qute://*/*')
+            config.load_autoconfig(False)
+          '';
+        };
+
+        xdg.mimeApps.defaultApplications = lib.genAttrs [
+          "text/html"
+          "x-scheme-handler/http"
+          "x-scheme-handler/https"
+          "application/x-extension-htm"
+          "application/x-extension-html"
+          "application/x-extension-shtml"
+          "application/xhtml+xml"
+          "application/x-extension-xht"
+          "x-scheme-handler/about"
+          "x-scheme-handler/unknown"] (_: [ "org.custom.qutebrowser.windowed.desktop" ]);
+
+        };
       };
-    };
-  }
+    }

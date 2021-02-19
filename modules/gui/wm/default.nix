@@ -45,7 +45,6 @@ let
 in
   {
     config = mkIf gui.enable {
-
       services.xserver = {
         enable = true;
         windowManager = {
@@ -70,6 +69,9 @@ in
       security.pam.services.lightdm.enableGnomeKeyring = true;
 
       home-manager.users.${username} = {
+
+        xdg.mimeApps.enable = true;
+
         home.packages = with pkgs; [
           imagemagick
           xdotool

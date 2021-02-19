@@ -35,6 +35,20 @@ in
       (mkIf (base.enable && gui.enable) {
         home-manager.users."${username}" = {
           programs.zathura.enable = true;
+
+          xdg.mimeApps.defaultApplications = lib.genAttrs [
+            "application/pdf"
+            "application/cbz"
+            "application/cbr"
+            "image/vnd.djvu"
+          ] (_: [ "org.pwmt.zathura.desktop" ]) //
+
+          lib.genAttrs [
+            "image/png"
+            "image/jpg"
+            "image/jpeg"
+          ] (_: [ "viewnior.desktop" ]);
+
           home.packages = with pkgs; [
             ffmpeg
             imagemagick

@@ -5,13 +5,17 @@ let
   comm = config.modules.communication;
   username = config.properties.user.name;
 in
-{
-  config = mkIf (gui.enable && comm.enable) {
-    home-manager.users.${username} = {
-      home.packages = with pkgs; [
-        tdesktop
-      ];
+  {
+    config = mkIf (gui.enable && comm.enable) {
+      home-manager.users.${username} = {
+        home.packages = with pkgs; [
+          tdesktop
+        ];
+
+        xdg.mimeApps.defaultApplications = lib.genAttrs [
+          "x-scheme-handler/tg"
+        ] (_: [ "telegramdesktop.desktop" ]);
+      };
     };
-  };
-}
+  }
 

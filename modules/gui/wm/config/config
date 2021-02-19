@@ -61,6 +61,7 @@ for_window [title="Cryptomator"] floating enable
 for_window [title="DavMail Gateway Settings"] floating enable
 for_window [title="File Transfer*"] floating enable
 for_window [title="Unlock Vault"] floating enable
+for_window [title=".*Mozilla Firefox$"] floating disable
 # switch to workspace with urgent window automatically
 # for_window [urgent=latest] focus
 
@@ -153,7 +154,8 @@ bindsym --release F12 exec --no-startup-id kill -s USR1 $(pidof deadd-notificati
 bindsym $mod_a+o mode "$mode_apps"
 set $mode_apps  (m)essanger e(d)ucation (b)rowser (c)ryptomator (e)xplorer (p)avu
 mode "$mode_apps" {
-        bindsym b exec firefox, mode "default"
+        bindsym b exec qutebrowser, mode "default"
+        bindsym f exec firefox, mode "default"
         bindsym c exec cryptomator, mode "default"
         bindsym d mode "$edu_apps"
         bindsym e exec pcmanfm, mode "default"
