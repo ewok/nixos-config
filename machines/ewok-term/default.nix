@@ -72,7 +72,7 @@ in
     enable = true;
     powertop.enable = true;
     governor = "powersave";
-    # suspendHibernate.enable = true;
+    suspendHibernate.enable = true;
   };
 
   modules.mail.mailspring.enable = true;

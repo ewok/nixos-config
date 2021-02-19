@@ -42,6 +42,12 @@ in
       services.tlp = {
         enable = true;
         settings = {
+          CPU_MIN_PERF_ON_AC = 0;
+          CPU_MAX_PERF_ON_AC = 100;
+          CPU_MIN_PERF_ON_BAT = 0;
+          CPU_MAX_PERF_ON_BAT = 20;
+          CPU_ENERGY_PERF_POLICY_ON_AC = "balance_performance";
+          CPU_ENERGY_PERF_POLICY_ON_BAT = "power";
           CPU_BOOST_ON_AC = 1;
           CPU_BOOST_ON_BAT = 0;
           DEVICES_TO_DISABLE_ON_STARTUP = "bluetooth";
@@ -72,8 +78,8 @@ in
       services.actkbd = {
         enable = true;
         bindings = [
-          { keys = [ 225 ]; events = [ "key" ]; command = "/run/current-system/sw/bin/light -A 1"; }
-          { keys = [ 224 ]; events = [ "key" ]; command = "/run/current-system/sw/bin/light -U 1"; }
+          { keys = [ 225 ]; events = [ "key" ]; command = "/run/current-system/sw/bin/light -A 5"; }
+          { keys = [ 224 ]; events = [ "key" ]; command = "/run/current-system/sw/bin/light -U 5"; }
         ];
       };
       users.users.${username}.extraGroups = [ "video" ];
