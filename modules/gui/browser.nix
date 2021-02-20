@@ -3,6 +3,13 @@ with lib;
 let
   gui = config.modules.gui;
   username = config.properties.user.name;
+  mitmproxy-local-stop = pkgs.writeShellScriptBin "mitmproxy-local-stop" ''
+    /run/current-system/sw/bin/pkill -f '.*.mitmdump-wrapped -p 8080 --listen-host 127.0.0.1 -k.*'
+  '';
+
+  mitmproxy-local = pkgs.writeShellScriptBin "mitmproxy-local" ''
+    ${pkgs.mitmproxy}/bin/mitmdump -p 8080 --listen-host 127.0.0.1 -k > /dev/null
+  '';
 in
   {
     config = mkIf gui.enable {
@@ -11,6 +18,8 @@ in
       home-manager.users.${username} = {
         home.packages = with pkgs; [
           xsel
+          mitmproxy-local
+          mitmproxy-local-stop
 
           (makeDesktopItem {
             name = "org.custom.qutebrowser.windowed";
@@ -59,37 +68,35 @@ in
           aliases = {
             jsd = "set content.javascript.enabled false";
             jse = "set content.javascript.enabled true";
+            proxym = "set content.proxy http://127.0.0.1:8080/";
+            noproxym = "set content.proxy system";
           };
           settings = {
             auto_save = {
               interval = 15000;
               session = true;
             };
-            # editor.command = [
-            #   "${config.ide.emacs.core.package}/bin/emacsclient"
-            #   "-c"
-            #   "-s /run/user/${builtins.toString config.users.extraUsers."${user}".uid}/emacs/server"
-            #   "+{line}:{column}"
-            #   "{}"
-            # ];
-            zoom.levels = [
-              "25%"
-              "33%"
-              "50%"
-              "67%"
-              "75%"
-              "90%"
-              "100%"
-              "110%"
-              "125%"
-              "150%"
-              "175%"
-              "200%"
-              "250%"
-              "300%"
-              "400%"
-              "500%"
-            ];
+            zoom = {
+              default = "120%";
+              levels = [
+                "25%"
+                "33%"
+                "50%"
+                "67%"
+                "75%"
+                "90%"
+                "100%"
+                "110%"
+                "125%"
+                "150%"
+                "175%"
+                "200%"
+                "250%"
+                "300%"
+                "400%"
+                "500%"
+              ];
+            };
             colors = {
               statusbar.url.success.https.fg = "white";
               tabs = rec {
@@ -142,24 +149,6 @@ in
                 suggestion = "both";
               };
             };
-            # hints = {
-            #   hide_unmatched_rapid_hints = true;
-            #   leave_on_load = true;
-            #   min_chars = 1;
-            #   mode = "number";
-            #   next_regexes = [
-            #     "\\\\bnext\\\\b"
-            #     "\\\\bmore\\\\b"
-            #     "\\\\bnewer\\\\b"
-            #     "\\\\b[>→≫]\\\\b"
-            #     "\\\\b(>>|»)\\\\b"
-            #     "\\\\bcontinue\\\\b"
-            #   ];
-            #   prev_regexes =
-            #     [ "\\\\bprev(ious)?\\\\b" "\\\\bback\\\\b" "\\\\bolder\\\\b" "\\\\b[<←≪]\\\\b" "\\\\b(<<|«)\\\\b" ];
-            #     scatter = false;
-            #     uppercase = false;
-            #   };
               history_gap_interval = 30;
               input = {
                 insert_mode = {
@@ -214,9 +203,6 @@ in
             d =  "https://duckduckgo.com/?q={}";
             n = "https://search.nixos.org/packages?channel=unstable&from=0&size=50&sort=relevance&query={}";
           };
-          # keyMappings = {
-          #   "<space>пп" = "<space>gg";
-          # };
           keyBindings = {
             normal = {
               "<space>tt" = "config-cycle tabs.show multiple never";
@@ -249,6 +235,11 @@ in
               "<Ctrl-m>" = "tab-mute";
               "wc" = "close";
               "wq" = "close";
+              "sp" = "proxym";
+              "SP" = "noproxym";
+              "Sp" = "noproxym";
+              "sm" = "spawn mitmproxy-local";
+              "SM" = "spawn mitmproxy-local-stop";
             };
             insert = {
               "<Ctrl-y>" = "insert-text -- {clipboard}";
