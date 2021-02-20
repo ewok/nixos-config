@@ -18,7 +18,7 @@ in
             exec = "qutebrowser --target window %U";
             comment = "Qutebrowser that opens links preferably in new windows";
             desktopName = "QuteBrowser";
-            categories = stdenv.lib.concatStringsSep ";" [ "Network" "WebBrowser" ];
+            categories = lib.concatStringsSep ";" [ "Network" "WebBrowser" ];
           })
         ];
 
@@ -93,12 +93,18 @@ in
             colors = {
               statusbar.url.success.https.fg = "white";
               tabs = rec {
-                even.bg = "silver";
-                even.fg = "#666666";
-                odd.bg = "gainsboro";
+                even.bg = "#49505E";
+                even.fg = "#639EE4";
+                odd.bg = "#35383F";
                 odd.fg = even.fg;
+                bar.bg = "#282C34";
               };
-              webpage.prefers_color_scheme_dark = true;
+              webpage = {
+                prefers_color_scheme_dark = true;
+                bg = "#282C34";
+                darkmode.enabled = true;
+                darkmode.policy.images = "never";
+              };
             };
             completion = {
               height = "20%";
@@ -199,6 +205,7 @@ in
               default_page = "about:blank";
               incdec_segments = [ "path" "query" ];
               yank_ignored_parameters = [ "ref" "utm_source" "utm_medium" "utm_campaign" "utm_term" "utm_content" ];
+              start_pages = [ "https://google.com" ];
             };
             window.title_format = "{private}{perc}{current_title}{title_sep}qutebrowser | {current_url}";
           };
