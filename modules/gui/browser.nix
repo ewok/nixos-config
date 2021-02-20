@@ -234,8 +234,8 @@ in
               "<space>gg" = "open https://google.com";
               "<Ctrl-e>" = "scroll-px 0 20";
               "<Ctrl-y>" = "scroll-px 0 -20";
-              "<space>ss" = "set-cmd-text -s :session-save";
-              "<space>so" = "set-cmd-text -s :session-load ";
+              "<space>ss" = "set-cmd-text -s :session-save -o ";
+              "<space>so" = "set-cmd-text -s :session-load -t";
               "<space>sd" = "set-cmd-text -s :session-delete ";
               "<Ctrl-1>" = "tab-focus 1";
               "<Ctrl-2>" = "tab-focus 2";
