@@ -7,7 +7,7 @@ let
     /run/current-system/sw/bin/pkill -f '.*.mitmdump-wrapped -p 8080 --listen-host 127.0.0.1 -k.*'
   '';
 
-  mitmproxy-local = pkgs.writeShellScriptBin "mitmproxy-local" ''
+  mitmproxy-local-start = pkgs.writeShellScriptBin "mitmproxy-local-start" ''
     ${pkgs.mitmproxy}/bin/mitmdump -p 8080 --listen-host 127.0.0.1 -k > /dev/null
   '';
 in
@@ -18,7 +18,7 @@ in
       home-manager.users.${username} = {
         home.packages = with pkgs; [
           xsel
-          mitmproxy-local
+          mitmproxy-local-start
           mitmproxy-local-stop
 
           (makeDesktopItem {
@@ -207,8 +207,11 @@ in
             normal = {
               "<space>tt" = "config-cycle tabs.show multiple never";
               "<space>tc" = "tab-clone";
+              "<space>td" = "tab-give";
+              "<space>tg" = "set-cmd-text -s :tab-take";
               "<space>bb" = "quickmark-save";
               "<space>bl" = "bookmark-list";
+              "<space>bn" = "set-cmd-text -s :quickmark-add {url}";
               "<space>bd" = "quickmark-del";
               "<space>C" = "clear-messages";
               "<space>dd" = "download";
@@ -235,11 +238,10 @@ in
               "<Ctrl-m>" = "tab-mute";
               "wc" = "close";
               "wq" = "close";
-              "sp" = "proxym";
-              "SP" = "noproxym";
-              "Sp" = "noproxym";
-              "sm" = "spawn mitmproxy-local";
-              "SM" = "spawn mitmproxy-local-stop";
+              "<space>pr" = "proxym";
+              "<space>ps" = "noproxym";
+              "<space>pm" = "spawn mitmproxy-local-start";
+              "<space>pM" = "spawn mitmproxy-local-stop";
             };
             insert = {
               "<Ctrl-y>" = "insert-text -- {clipboard}";
