@@ -9,6 +9,10 @@ set $mod_c Control
 # Settings
 ################################################################################################
 
+gaps inner 2
+gaps outer 5
+smart_gaps on
+
 # Configure border style <normal|1pixel|pixel xx|none|pixel>
 default_border pixel 2
 default_floating_border pixel
