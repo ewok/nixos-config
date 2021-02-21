@@ -42,7 +42,7 @@ assign [class="Cawbird"] $ws3
 for_window [class="albert"] move position center
 for_window [class="Blueman-manager"] floating enable
 for_window [class="Cawbird"] move right,move right,move right, resize set 20 ppt
-for_window [title=".* - TickTick - qutebrowser .*"] move container to workspace 3, floating disable,  move left,move left,move left, resize set 80 ppt
+for_window [title=".* https://calendar.google.com/calendar/.*"] move container to workspace 3, floating disable,  move left,move left,move left, resize set 80 ppt
 for_window [title="Enpass Assistant"] floating enable, move position mouse
 for_window [class="GParted"] floating enable border normal, move position center
 for_window [class="Insync"] floating enable, move position center
@@ -156,7 +156,7 @@ bindsym --release F12 exec --no-startup-id kill -s USR1 $(pidof deadd-notificati
 
 # Start Applications
 bindsym $mod_a+o mode "$mode_apps"
-set $mode_apps  (m)essanger e(d)ucation (b)rowser (c)ryptomator (e)xplorer (p)avu (t)icktick (f)irefox
+set $mode_apps  (m)essanger e(d)ucation (b)rowser (c)ryptomator (e)xplorer (p)avu (t)asks&calendar (f)irefox
 mode "$mode_apps" {
         bindsym b exec qutebrowser, mode "default"
         bindsym c exec cryptomator, mode "default"
@@ -165,7 +165,7 @@ mode "$mode_apps" {
         bindsym f exec firefox, mode "default"
         bindsym m mode "$im_apps"
         bindsym p exec pavucontrol-qt, mode "default"
-        bindsym t exec qutebrowser --target window "https://ticktick.com/webapp", mode "default"
+        bindsym t exec qutebrowser --target window "https://calendar.google.com", mode "default"
 
         # exit resize mode: Enter or Escape
         bindsym Return mode "default"
