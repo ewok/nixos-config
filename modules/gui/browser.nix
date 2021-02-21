@@ -158,7 +158,7 @@ in
                   plugins = false;
                 };
                 links_included_in_focus_chain = true;
-                partial_timeout = 2000;
+                partial_timeout = 10000;
                 spatial_navigation = true;
               };
               keyhint.delay = 20;
