@@ -24,7 +24,7 @@ in
   modules.base.enable = true;
 
   modules.backup.enable = true;
-  # modules.backup.rslsync.enable = true;
+  modules.backup.rslsync.enable = true;
   modules.backup.restic = {
     repo = properties.backup.repo;
     excludePaths = properties.backup.excludePaths;

@@ -60,6 +60,11 @@ in
   };
 
   config = mkIf (cfg.enable && backup.enable) {
+
+    users.users.rslsync = {
+      extraGroups = [ "users" ];
+    };
+
     services.resilio = {
       enable = true;
       deviceName = cfg.deviceName;

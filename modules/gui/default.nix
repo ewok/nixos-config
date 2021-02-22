@@ -17,8 +17,9 @@ with lib;
     ./office.nix
     ./notification.nix
     ./touchscreen.nix
+    ./passwords.nix
 
-    ./misc/enpass.nix
+    # ./misc/enpass.nix
     ./misc/albert.nix
     ./misc/clipit.nix
     ./misc/tools.nix

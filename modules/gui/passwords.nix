@@ -11,8 +11,9 @@ in
   {
     config = mkIf gui.enable {
       home-manager.users.${username} = {
-        home.packages = with master; [
+        home.packages = with master; with pkgs; [
           enpass
+          keepassxc
         ];
       };
     };

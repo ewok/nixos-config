@@ -159,7 +159,7 @@ in
                 };
                 links_included_in_focus_chain = true;
                 partial_timeout = 10000;
-                spatial_navigation = true;
+                spatial_navigation = false;
               };
               keyhint.delay = 20;
               new_instance_open_target = "tab";
