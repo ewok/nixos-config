@@ -1024,6 +1024,22 @@ augroup ft_rust
 
 augroup END
 " }}}
+" SQL {{{
+augroup ft_sql
+  au!
+  au FileType sql call LoadSQLFT()
+  function! LoadSQLFT()
+    if exists('b:sql_ft')
+      return
+    endif
+
+    setlocal commentstring=/*\ %s\ */
+
+    let b:sql_ft = 1
+
+  endfunction
+augroup END
+" }}}
 " TODO {{{
 augroup ft_todo
   au!
@@ -1772,7 +1788,8 @@ let g:coc_global_extensions = [
       \ 'coc-yaml',
       \ 'coc-json',
       \ 'coc-snippets',
-      \ 'coc-spell-checker'
+      \ 'coc-spell-checker',
+      \ 'coc-sql'
       \]
 " }}}
 "  Mappings {{{
