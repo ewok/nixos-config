@@ -207,11 +207,7 @@ in
           keyBindings = {
             normal = {
               "<space>tt" = "config-cycle tabs.show multiple never";
-              "<space>tc" = "tab-clone";
-              "<space>td" = "tab-give";
-              "<space>tg" = "set-cmd-text -s :tab-take";
-              "<space>bb" = "quickmark-save";
-              "<space>bl" = "bookmark-list";
+              "<space>bb" = "bookmark-list";
               "<space>bn" = "set-cmd-text -s :quickmark-add {url}";
               "<space>bd" = "quickmark-del";
               "<space>C" = "clear-messages";
@@ -220,6 +216,7 @@ in
               "<space>dC" = "download-clear";
               "<space>dr" = "download-retry";
               "<space>gm" = "open https://mail.google.com";
+              "<space>gc" = "open https://calendar.google.com";
               "<space>gy" = "open https://youtube.com";
               "<space>gg" = "open https://google.com";
               "<Ctrl-e>" = "scroll-px 0 20";
@@ -239,6 +236,10 @@ in
               "<Ctrl-m>" = "tab-mute";
               "wc" = "close";
               "wq" = "close";
+              "to" = "tab-only";
+              "gt" = "set-cmd-text -s :tab-take";
+              "si" = "set -u *://{url:host}/* content.ssl_strict false";
+              "sI" = "set -u *://{url:host}/* content.ssl_strict true";
               "<space>pr" = "proxym";
               "<space>ps" = "noproxym";
               "<space>pm" = "spawn mitmproxy-local-start";
