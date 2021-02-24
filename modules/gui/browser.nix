@@ -244,14 +244,16 @@ in
               "<space>ps" = "noproxym";
               "<space>pm" = "spawn mitmproxy-local-start";
               "<space>pM" = "spawn mitmproxy-local-stop";
+              "yd" = "yank inline {url:host}";
+              "yD" = "yank inline {url:host} -s";
             };
             insert = {
               "<Ctrl-y>" = "insert-text -- {clipboard}";
-              "<Shift-y>" = "insert-text -- {primary}";
             };
             command = {
               "<Ctrl-j>" = "completion-item-focus --history next";
               "<Ctrl-k>" = "completion-item-focus --history prev";
+              "<Ctrl-m>" = "command-accept";
             };
           };
           extraConfig = ''
