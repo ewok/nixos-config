@@ -105,11 +105,11 @@ in
                 even.fg = "#639EE4";
                 odd.bg = "#35383F";
                 odd.fg = even.fg;
-                bar.bg = "#282C34";
+                bar.bg = "#303030";
               };
               webpage = {
                 prefers_color_scheme_dark = true;
-                bg = "#282C34";
+                bg = "#303030";
                 darkmode.enabled = true;
                 darkmode.policy.images = "never";
               };

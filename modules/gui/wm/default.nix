@@ -62,6 +62,15 @@ in
 
       };
       environment.sessionVariables.CURRENT_WM = [ "i3" ];
+      environment.variables = {
+        GTK_THEME = "Adwaita:dark";
+      };
+
+      qt5 = {
+        enable = true;
+        platformTheme = "gnome";
+        style = "adwaita-dark";
+      };
 
       services.dbus.packages = [ pkgs.gnome3.dconf ];
 
@@ -190,12 +199,18 @@ in
              package = pkgs.papirus-icon-theme;
            };
            theme = {
-             name = "Adapta";
-             package = pkgs.adapta-gtk-theme;
+             name = "Adwaita-dark";
+             package = pkgs.adwaita-qt;
            };
            gtk3.extraConfig = {
              gtk-application-prefer-dark-theme = true;
+             gtk-theme-name = "Adwaita-dark";
            };
+         };
+
+         qt = {
+           enable = true;
+           platformTheme = "gnome";
          };
 
          services.screen-locker = {
