@@ -30,6 +30,11 @@ in
 
       home.packages = [ open ];
 
+      programs.autojump = {
+        enable = true;
+        enableFishIntegration = true;
+      };
+
       programs.fish = {
         enable = true;
 
@@ -43,7 +48,7 @@ in
           h = "helm";
           mproc = "smem -t -k -c pss -P";
           egrep = "egrep --color=always";
-          j = "jrnl";
+          jrnl = "jrnl";
           kgpof = ''kubectl get pod --field-selector="status.phase==Failed"'';
           krmpof = ''kubectl delete pod --field-selector="status.phase==Failed"'';
         };
