@@ -6,7 +6,7 @@ with lib;
     # Development
     ./cawbird.nix
     ./element.nix
-    ./skype.nix
+    # ./skype.nix
     ./slack.nix
     ./telegram.nix
     ./zoom.nix
