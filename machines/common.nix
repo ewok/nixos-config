@@ -33,6 +33,7 @@ in
   users.users."${username}" = {
     isNormalUser = true;
     extraGroups = [ "wheel" ];
+    createHome = false;
   };
 
   users.defaultUserShell = pkgs.fish;
