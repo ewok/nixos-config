@@ -265,6 +265,7 @@ let g:lmap.l.p = 'Previous'
 let g:lmap.m = { 'name': '+Marks' }
 let g:lmap.o = { 'name': '+Open/+Option'}
 let g:lmap.o.e = 'Explorer'
+let g:lmap.o.r = 'Root(project)'
 let g:lmap.o.s = { 'name': '+Option-Set'}
 let g:lmap.o.s.f = { 'name': '+File'}
 let g:lmap.o.s.f.f = { 'name': '+Format='}
@@ -554,7 +555,6 @@ augroup ft_ansible
           \})
 
     PackAdd ansible 1
-    PackAdd rooter
 
     let g:ansible_template_syntaxes = { '*.rb.j2': 'ruby', '*.py.j2': 'python' }
     let g:ansible_unindent_after_newline = 1
@@ -606,7 +606,6 @@ augroup ft_yaml
     let b:ale_linters = ['yamllint']
 
     PackAdd speeddating
-    PackAdd rooter
     " PackAdd splitjoin
 
     let b:yaml_ft = 1
@@ -673,8 +672,6 @@ augroup ft_go
 
     " let g:lmap.r.d.i = 'Info'
     " nmap <buffer> <Leader>rdi <Plug>(go-info)
-
-    PackAdd rooter
 
     " PackAdd splitjoin
 
@@ -778,7 +775,6 @@ augroup ft_markdown
     " let b:ale_linters = ['vale', 'markdownlint']
 
     PackAdd speeddating
-    PackAdd rooter
 
     inoremap <buffer><expr> ]] fzf#vim#complete({
           \ 'source':  'rg --no-heading --smart-case  .',
@@ -838,7 +834,6 @@ augroup ft_mustache
     PackAdd mustache 1
     let g:mustache_abbreviations = 1
 
-    PackAdd rooter
     " PackAdd splitjoin
 
     let b:mustache_ft = 1
@@ -872,7 +867,6 @@ augroup ft_nix
     imap <buffer> <C-Enter> <ESC>:call SmartCR()<CR>
 
     PackAdd ale
-    PackAdd rooter
 
     PackAdd nix 1
 
@@ -945,7 +939,6 @@ augroup ft_python
     let b:ale_python_vulture_executable = 'vulture'
 
     PackAdd textobj-python
-    PackAdd rooter
     " PackAdd splitjoin
 
     let b:python_ft = 1
@@ -977,8 +970,6 @@ augroup ft_puppet
     let g:puppet_align_hashes = 0
 
     " let b:ale_linters = ['puppet', 'puppetlint']
-
-    PackAdd rooter
 
     let b:puppet_ft = 1
 
@@ -1013,7 +1004,6 @@ augroup ft_rust
     nmap <buffer> <silent> <leader>rt :RustTest<CR>
     nmap <buffer> <silent> <leader>cf :RustFmt<CR>
 
-    PackAdd rooter
     " PackAdd splitjoin
 
     " PackAdd ale
@@ -1258,8 +1248,6 @@ augroup ft_helm
     command! RenderHelm :call RenderHelm()
     nmap <buffer> <silent> <leader>rr :RenderHelm<CR>
 
-    PackAdd rooter
-
     let b:helm_ft = 1
 
   endfunction
@@ -1311,8 +1299,6 @@ augroup ft_terraform
           \   'command': '%e',
           \   'project_root': getcwd(),
           \})
-
-    PackAdd rooter
 
     let b:terraform_ft = 1
 
@@ -1553,6 +1539,16 @@ let NERDTreeCustomOpenArgs={'file': {'reuse':'', 'where':'p', 'keepopen':0, 'sta
 call minpac#add('airblade/vim-rooter', {'type': 'opt', 'name': 'rooter'})
 let g:rooter_silent_chdir = 1
 let g:rooter_resolve_links = 1
+let g:rooter_manual_only = 1
+PackAdd rooter
+
+function RooterWithCWD()
+  Rooter
+  NERDTreeCWD
+endfunction
+
+nmap <leader>or :call RooterWithCWD()<CR>
+
 " }}}
 " Tagbar {{{
 call minpac#add('preservim/tagbar', {'type': 'start', 'name': 'tagbar'})
