@@ -2,6 +2,14 @@
 
 with pkgs;
 let
+  nix-test = writeShellScriptBin "nix-my-test" ''
+    if [ "$#" -eq 0 ]; then
+      sudo nixos-rebuild test --fast --verbose --flake "."
+    else
+      sudo nixos-rebuild test --fast --verbose --flake ".#$1" $2
+    fi
+  '';
+
   nix-switch = writeShellScriptBin "nix-my-switch" ''
     if [ "$#" -eq 0 ]; then
       sudo nixos-rebuild switch --flake "."
@@ -85,6 +93,7 @@ in
       nix-clean-result
       nix-clean-store
       nix-update-flakes
+      nix-test
     ];
 
     shellHook = ''
