@@ -237,7 +237,7 @@ in
               "wc" = "close";
               "wq" = "close";
               "to" = "tab-only";
-              "gt" = "set-cmd-text -s :tab-take";
+              "gT" = "set-cmd-text -s :tab-take";
               "si" = "set -u *://{url:host}/* content.ssl_strict false";
               "sI" = "set -u *://{url:host}/* content.ssl_strict true";
               "<space>pr" = "proxym";
