@@ -2177,13 +2177,13 @@ let g:sessiondir = $HOME . "/.vim_sessions"
 
 function! MakeSession(file)
 
-  if (exists("t:NERDTreeBufName") && bufwinnr(t:NERDTreeBufName) != -1)
-    exe ':tabdo NERDTreeClose'
-  endif
+  " if (exists("t:NERDTreeBufName") && bufwinnr(t:NERDTreeBufName) != -1)
+  exe ':tabdo NERDTreeClose'
+  " endif
 
-  if (exists("t:tagbar_buf_name") && bufwinnr(t:tagbar_buf_name) != -1)
-    exe ':tabdo TagbarClose'
-  endif
+  " if (exists("t:tagbar_buf_name") && bufwinnr(t:tagbar_buf_name) != -1)
+  exe ':tabdo TagbarClose'
+  " endif
 
   if (exists("t:coc_explorer_tab_id") && bufwinnr('coc-explorer') != -1)
     exe ':tabdo exe bufwinnr("coc-explorer") "wincmd q"'
