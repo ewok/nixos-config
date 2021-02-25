@@ -23,8 +23,6 @@ with lib;
     ./misc/albert.nix
     ./misc/clipit.nix
     ./misc/tools.nix
-    ./misc/network.nix
-    ./misc/gparted.nix
     ./misc/pcmanfm.nix
     # deadd-notification-center
       # ./deadd
