@@ -15,6 +15,7 @@ let
   #     ${pkgs.i3lock}/bin/i3lock -c 121212
   # '';
   blurlock = pkgs.writeShellScriptBin "blurlock" ''
+      ${pkgs.xkb-switch}/bin/xkb-switch -s us
       ${pkgs.i3lock}/bin/i3lock -c 121212
   '';
   i3exit = pkgs.writeShellScriptBin "i3exit" ''
