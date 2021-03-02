@@ -9,7 +9,7 @@ in
       home-manager.users.${username} = {
         home.packages = with pkgs; [
           anki
-          goldendict
+          # goldendict
         ];
       };
     };
