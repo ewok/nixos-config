@@ -44,12 +44,14 @@ in
           enable = true;
           support32Bit = true;
           package = pkgs.pulseaudioFull;
+          extraModules = [ pkgs.pulseaudio-modules-bt ];
         # systemWide = true;
         daemon.config = { flat-volumes = "no"; };
         extraConfig = ''
           load-module module-native-protocol-tcp auth-ip-acl=127.0.0.1
           load-module module-alsa-sink   device=hw:0,0 channels=4
           load-module module-alsa-source device=hw:0,6 channels=4
+          load-module module-switch-on-connect
         '';
       }; };
 
