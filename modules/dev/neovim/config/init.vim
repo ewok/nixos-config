@@ -1947,6 +1947,10 @@ function! GitShowBlockHistory()
   exe ":G log -L " . string(getpos("'<'")[1]) . "," . string(getpos("'>'")[1]) . ":%"
 endfunction
 
+function! GitShowLineHistory()
+  exe ":G log -U1 -L " . string(getpos('.')[1]) . ",+1:%"
+endfunction
+
 " Fugitive options
 au BufEnter */.git/index nnoremap <buffer> <silent> c :WhichKey 'c'<CR>
 au BufEnter */.git/index nnoremap <buffer> <silent> d :WhichKey 'd'<CR>
@@ -1967,6 +1971,7 @@ nmap <silent> <leader>gplm :G pull<CR>
 nmap <silent> <leader>gg :.Gbrowse %<CR>
 vmap <silent> <leader>gg :'<,'>Gbrowse %<CR>
 vmap <silent> <leader>ghv :<C-U>call GitShowBlockHistory()<CR>
+nmap <silent> <leader>ghl :call GitShowLineHistory()<CR>
 
 " Gitgutter options
 call minpac#add('airblade/vim-gitgutter', {'type': 'opt', 'name': 'gitgutter'})
@@ -1988,14 +1993,6 @@ PackAdd gv
 
 let g:Gitv_DoNotMapCtrlKey = 1
 nmap <silent> <leader>ghh :GV<CR>
-
-" Git messages in popup
-call minpac#add('rhysd/git-messenger.vim', {'type': 'opt', 'name': 'git-messenger'})
-PackAdd git-messenger
-let g:git_messenger_no_default_mappings = v:true
-nunmap <leader>gm
-let g:git_messenger_always_into_popup = v:false
-nmap <Leader>gbb <Plug>(git-messenger)
 " }}}
 " Snippets {{{
 call minpac#add('honza/vim-snippets', {'type': 'start', 'name': 'snippets'})
