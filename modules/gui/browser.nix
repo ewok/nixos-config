@@ -195,7 +195,7 @@ in
               default_page = "about:blank";
               incdec_segments = [ "path" "query" ];
               yank_ignored_parameters = [ "ref" "utm_source" "utm_medium" "utm_campaign" "utm_term" "utm_content" ];
-              start_pages = [ "https://google.com" ];
+              start_pages = [ "about:blank" ];
             };
             window.title_format = "{private}{perc}{current_title}{title_sep}qutebrowser | {current_url}";
           };
@@ -203,6 +203,7 @@ in
             DEFAULT =  "https://www.google.com/search?q={}";
             d =  "https://duckduckgo.com/?q={}";
             n = "https://search.nixos.org/packages?channel=unstable&from=0&size=50&sort=relevance&query={}";
+            y = "https://www.youtube.com/results?search_query={}";
           };
           keyBindings = {
             normal = {
