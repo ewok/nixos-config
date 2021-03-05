@@ -204,6 +204,7 @@ in
             d =  "https://duckduckgo.com/?q={}";
             n = "https://search.nixos.org/packages?channel=unstable&from=0&size=50&sort=relevance&query={}";
             y = "https://www.youtube.com/results?search_query={}";
+            w = "https://www.merriam-webster.com/dictionary/{}";
           };
           keyBindings = {
             normal = {
