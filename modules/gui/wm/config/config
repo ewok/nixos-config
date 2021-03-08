@@ -9,12 +9,12 @@ set $mod_c Control
 # Settings
 ################################################################################################
 
-gaps inner 5
-gaps outer 5
-smart_gaps on
+gaps inner 7
+gaps outer 7
+smart_gaps inverse_outer
 
 # Configure border style <normal|1pixel|pixel xx|none|pixel>
-default_border pixel 2
+default_border pixel 3
 default_floating_border pixel
 
 # Hide borders
