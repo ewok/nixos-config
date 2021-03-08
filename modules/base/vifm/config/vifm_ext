@@ -49,6 +49,10 @@ filextype *.cbr,*.cbz
         \ {View in zathura}
         \ zathura %f &>/dev/null &,
 
+filetype *.fb2,*.epub,*.awz,*.mobi
+        \ {View in epr}
+        \ epr %f,
+
 filetype *.wav,*.mp3,*.flac,*.ogg,*.m4a,*.wma,*.ape,*.ac3
        \ {Play using mocp}
        \ mocp -l %c %i &,
