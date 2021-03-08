@@ -80,6 +80,25 @@ let
     sleep 1
     $CMD kubectl get po | grep $NAME && echo "ERROR: Pod was not deleted!"
   '';
+
+  k8s-alpine  = pkgs.writeScriptBin "k8s-alpine" ''
+    #!${pkgs.bash}/bin/bash
+    set -e
+    if [ $# -gt 2 ];then
+    echo "Usage: $(basename $0) [pod name] [cmd]"
+    exit 1
+    fi
+    NAME="debug-alpine"
+    test "$1" != "" && NAME="$1"
+    if ! which kubectl &>/dev/null;then
+    echo "kubectl not found, please run the command below:"
+    echo
+    CMD="echo"
+    fi
+    $CMD kubectl run $NAME --image=alpine -it --rm --restart='Never'
+    sleep 1
+    $CMD kubectl get po | grep $NAME && echo "ERROR: Pod was not deleted!"
+  '';
 in
   {
     options.modules.dev.k8s = {
@@ -103,6 +122,7 @@ in
           k8s-busybox
           k8s-kafka-client
           k8s-jmxterm
+          k8s-alpine
         ];
       };
     };
