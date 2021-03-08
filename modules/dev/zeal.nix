@@ -38,20 +38,20 @@ in
         [docsets]
         path=${dataHome}/Zeal/Zeal/docsets
 
+        [internal]
+        install_id=aab172e7-f1ab-468c-8a41-b3f92a5cd578
+        version=0.6.999
+
         [global_shortcuts]
         show=Alt+Shift+Z
-
-        # [internal]
-        # install_id=3740b2fd-af47-4d79-aee3-4794de17fcc6
-        # version=0.6.1
 
         [search]
         fuzzy_search_enabled=true
 
-        # [state]
-        # splitter_geometry=@ByteArray(\0\0\0\xff\0\0\0\x1\0\0\0\x2\0\0\x1\0\0\0\x4\xb0\0\xff\xff\xff\xff\x1\0\0\0\x1\0)
-        # toc_splitter_state=@ByteArray()
-        # window_geometry=@ByteArray(\x1\xd9\xd0\xcb\0\x3\0\0\0\0\0\0\0\0\x2\xc6\0\0\t\xff\0\0\x4\x1d\0\0\0\x2\0\0\x2\xc8\0\0\t\xfd\0\0\x4\x1b\0\0\0\x1\0\0\0\0\n\0\0\0\0\x2\0\0\x2\xc8\0\0\t\xfd\0\0\x4\x1b)
+        [state]
+        splitter_geometry=@ByteArray(\0\0\0\xff\0\0\0\x1\0\0\0\x2\0\0\x1\x8b\0\0\x2\xe0\0\xff\xff\xff\xff\x1\0\0\0\x1\0)
+        toc_splitter_state=@ByteArray()
+        window_geometry=@ByteArray(\x1\xd9\xd0\xcb\0\x3\0\0\0\0\b\xf6\0\0\0 \0\0\rh\0\0\x5\x98\0\0\b\xf8\0\0\0\"\0\0\rf\0\0\x5\x96\0\0\0\0\0\0\0\0\rp\0\0\b\xf8\0\0\0\"\0\0\rf\0\0\x5\x96)
 
         [tabs]
         open_new_tab_after_active=false
