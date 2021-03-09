@@ -56,7 +56,11 @@ in
         home.file.".ctags".source = ./config/ctags;
         home.file.".vale.ini".source = ./config/vale.ini;
         home.file.".ideavimrc".source = ./config/ideavimrc;
-        home.sessionVariables.EDITOR = "nvim";
+        home.sessionVariables = {
+          EDITOR = "nvim";
+          VISUAL = "nvim";
+          GUI_EDITOR = "/usr/bin/nvim";
+        };
       };
     };
   }

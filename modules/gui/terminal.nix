@@ -62,6 +62,7 @@ in
             # ];
           # };
         # };
+        home.sessionVariables.TERMINAL = "/usr/bin/kitty";
         programs.kitty = {
           enable = true;
           settings = {

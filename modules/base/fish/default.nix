@@ -35,6 +35,30 @@ in
         enableFishIntegration = true;
       };
 
+      home.sessionVariables = {
+        LANG = "en_US.UTF-8";
+        # LC_CTYPE "ru_RU.UTF-8"
+        LC_NUMERIC = "ru_RU.UTF-8";
+        LC_TIME = "ru_RU.UTF-8";
+        LC_COLLATE = "ru_RU.UTF-8";
+        LC_MONETARY = "ru_RU.UTF-8";
+        # LC_MESSAGES "ru_RU.UTF-8"
+        LC_PAPER = "ru_RU.UTF-8";
+        LC_NAME = "ru_RU.UTF-8";
+        LC_ADDRESS = "ru_RU.UTF-8";
+        LC_TELEPHONE = "ru_RU.UTF-8";
+        LC_MEASUREMENT = "ru_RU.UTF-8";
+        LC_IDENTIFICATION = "ru_RU.UTF-8";
+        LC_ALL = "";
+
+        TERM = "screen-256color";
+
+        PATH = "$HOME/bin:$HOME/.local/bin:$PATH";
+        TZ = tz;
+
+        XDG_CONFIG_HOME = "$HOME/.config";
+      };
+
       programs.fish = {
         enable = true;
 
@@ -141,33 +165,6 @@ in
         '';
 
         loginShellInit = ''
-          set -x LANG en_US.UTF-8
-          # set -x LC_CTYPE "ru_RU.UTF-8"
-          set -x LC_NUMERIC "ru_RU.UTF-8"
-          set -x LC_TIME "ru_RU.UTF-8"
-          set -x LC_COLLATE "ru_RU.UTF-8"
-          set -x LC_MONETARY "ru_RU.UTF-8"
-          # set -x LC_MESSAGES "ru_RU.UTF-8"
-          set -x LC_PAPER "ru_RU.UTF-8"
-          set -x LC_NAME "ru_RU.UTF-8"
-          set -x LC_ADDRESS "ru_RU.UTF-8"
-          set -x LC_TELEPHONE "ru_RU.UTF-8"
-          set -x LC_MEASUREMENT "ru_RU.UTF-8"
-          set -x LC_IDENTIFICATION "ru_RU.UTF-8"
-          set -x LC_ALL
-
-          set -gx TERM screen-256color;
-
-          set -gx PATH $HOME/bin $HOME/.local/bin $PATH
-          set -gx TZ '' + tz + ''
-
-            set -gx BROWSER /usr/bin/firefox
-            set -gx EDITOR 'nvim'
-            set -gx GUI_EDITOR /usr/bin/nvim
-            set -gx TERMINAL /usr/bin/kitty
-            set -gx VISUAL 'nvim'
-            set -gx XDG_CONFIG_HOME "$HOME/.config"
-
             set fish_greeting
             __git.reset
           '';
