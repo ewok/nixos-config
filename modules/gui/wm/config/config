@@ -82,7 +82,7 @@ bindsym $mod+Shift+q kill
 bindsym $mod_a+Shift+q --release exec --no-startup-id xkill
 
 # start program launcher
-bindsym $mod+d exec --no-startup-id "rofi_run -show combi -combi-modi drun,ssh,run"
+bindsym $mod+d exec --no-startup-id "xkb-switch -s us; rofi_run -show combi -combi-modi drun,ssh,run"
 # bindsym $mod+d exec --no-startup-id dmenu_recency
 
 # launch categorized menu
