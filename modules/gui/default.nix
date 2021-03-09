@@ -20,7 +20,8 @@ with lib;
     ./passwords.nix
 
     # ./misc/enpass.nix
-    ./misc/albert.nix
+    # ./misc/albert.nix
+    ./misc/dmenu.nix
     ./misc/clipit.nix
     ./misc/tools.nix
     ./misc/pcmanfm.nix

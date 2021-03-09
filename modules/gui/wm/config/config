@@ -82,7 +82,7 @@ bindsym $mod+Shift+q kill
 bindsym $mod_a+Shift+q --release exec --no-startup-id xkill
 
 # start program launcher
-bindsym $mod+d exec --no-startup-id albert toggle || albert, exec xkb-switch -s us
+bindsym $mod+d exec --no-startup-id "rofi_run -show combi -combi-modi drun,ssh,run"
 # bindsym $mod+d exec --no-startup-id dmenu_recency
 
 # launch categorized menu
@@ -156,13 +156,12 @@ bindsym --release F12 exec --no-startup-id kill -s USR1 $(pidof deadd-notificati
 
 # Start Applications
 bindsym $mod_a+o mode "$mode_apps"
-set $mode_apps  (m)essanger e(d)ucation (b)rowser (c)ryptomator (e)xplorer (p)avu (t)asks&calendar (f)irefox
+set $mode_apps  (m)essanger e(d)ucation (b)rowser (c)alc (p)avu (t)asks&calendar (k)ill
 mode "$mode_apps" {
         bindsym b exec qutebrowser, mode "default"
-        bindsym c exec cryptomator, mode "default"
+        bindsym c exec calc, mode "default"
+        bindsym k exec dmkill, mode "default"
         bindsym d mode "$edu_apps"
-        bindsym e exec pcmanfm, mode "default"
-        bindsym f exec firefox, mode "default"
         bindsym m mode "$im_apps"
         bindsym p exec pavucontrol-qt, mode "default"
         bindsym t exec qutebrowser --target window "https://calendar.google.com", mode "default"
