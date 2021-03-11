@@ -216,6 +216,11 @@ in
          qt = {
            enable = true;
            platformTheme = "gnome";
+           # style = "adwaita-dark";
+           style = {
+             name = "Adwaita-dark";
+             package = pkgs.adwaita-qt;
+           };
          };
 
          services.screen-locker = {
