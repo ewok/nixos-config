@@ -132,9 +132,6 @@ if has('nvim')
   set shada='50,<1000,s100,"10,:10,n~/.viminfo
   set inccommand=nosplit
 
-  " let g:python_host_prog = $HOME . "/share/venv/neovim2/bin/python2"
-  " let g:python3_host_prog = $HOME . "/share/venv/neovim3/bin/python3"
-
   let $NVIM_TUI_ENABLE_TRUE_COLOR=1
   let $NVIM_TUI_ENABLE_CURSOR_SHAPE=1
 
@@ -215,14 +212,11 @@ let g:lmap =  {}
 let g:lmap.b = { 'name': '+Buffer'}
 let g:lmap.b.q = 'Quit All'
 let g:lmap.c = { 'name': '+Code'}
-let g:lmap.c.a = 'Code action(file)'
 let g:lmap.c.c = 'Code action(line)'
 let g:lmap.c.d = 'Diagnostics'
 let g:lmap.c.r = { 'name': '+Refactor'}
 let g:lmap.c.r.n = 'Rename'
-let g:lmap.c.r.r = 'Menu'
-let g:lmap.c.f = 'Format'
-let g:lmap.c.F = 'Fix code(coc)'
+let g:lmap.c.f = 'Formatting'
 let g:lmap.f = { 'name': '+Find' }
 let g:lmap.f.f = 'in-File'
 let g:lmap.f.p = 'Path'
@@ -272,10 +266,6 @@ let g:lmap.o.s.f.f = { 'name': '+Format='}
 let g:lmap.o.u = { 'name': '+Option-Unset'}
 let g:lmap.o.t = 'To-Do'
 let g:lmap.p = { 'name': '+Plugins' }
-let g:lmap.p.c = {'name': '+Coc'}
-let g:lmap.p.c.m = 'Marketplace'
-let g:lmap.p.c.u = 'Update'
-let g:lmap.p.c.l = 'List'
 let g:lmap.q = { 'name': '+QFix' }
 let g:lmap.q.c = 'Close'
 let g:lmap.q.n = 'Next'
@@ -351,6 +341,8 @@ command! PackClean  call minpac#clean()
 command! PackStatus call minpac#status()
 
 nmap <leader>pu :PackUpdate<CR>
+nmap <leader>pc :PackClean<CR>
+nmap <leader>ps :PackStatus<CR>
 
 " Idempotent packs loading
 function PackAddId(packname, ...)
@@ -505,6 +497,8 @@ nnoremap L $
 
 vnoremap H ^
 vnoremap L $
+
+cmap w!! w !sudo tee %
 " }}}
 "   Settings {{{
 nmap <leader>osw :set wrap<CR>
@@ -539,8 +533,6 @@ augroup ft_ansible
     endif
 
     setlocal commentstring=#\ %s
-
-    PackAdd ale
 
     let b:ale_ansible_ansible_lint_executable = 'ansible_custom'
     let b:ale_ansible_ansible_lint_command = '%e %t'
@@ -601,12 +593,12 @@ augroup ft_yaml
       return
     endif
 
-    PackAdd ale
     let b:ale_yaml_yamllint_executable = 'yamllint_custom'
     let b:ale_linters = ['yamllint']
 
     PackAdd speeddating
-    " PackAdd splitjoin
+
+    lua require'lspconfig'.yamlls.setup{filetypes = { "yaml", "yaml.ansible", "helm" }}
 
     let b:yaml_ft = 1
 
@@ -648,32 +640,12 @@ augroup ft_go
     let g:go_highlight_operators = 1
     let g:go_highlight_build_constraints = 1
 
-    " let g:go_auto_type_info = 1
     let g:go_auto_sameids = 1
-    " let g:go_fmt_autosave = 0
-    " let g:go_fmt_command = "goimports"
 
     nmap <buffer> <silent> <leader>rr :silent GoRun<CR>
     nmap <buffer> <silent> <leader>rt :GoTest<CR>
     nmap <buffer> <silent> <leader>rb :GoBuild<CR>
     nmap <buffer> <silent> <leader>rc :GoCoverageToggle<CR>
-
-    " FIXME: Adjust to coc accordingly
-    " let g:lmap.r.d = { 'name': '+Definition' }
-    " let g:lmap.r.d.s = 'Split'
-    " nmap <buffer> <Leader>rds <Plug>(go-def-split)
-
-    " let g:lmap.r.d.v = 'Vertical'
-    " nmap <buffer> <Leader>rdv <Plug>(go-def-vertical)
-
-    " let g:lmap.r.d.t = 'Tab'
-    " nmap <buffer> <Leader>rdt <Plug>(go-def-tab)
-    " " au FileType go nmap <buffer> K <Plug>(go-doc)
-
-    " let g:lmap.r.d.i = 'Info'
-    " nmap <buffer> <Leader>rdi <Plug>(go-info)
-
-    " PackAdd splitjoin
 
     let b:go_ft = 1
 
@@ -704,7 +676,19 @@ augroup END
 " JSON {{{
 augroup ft_json
   au!
-  au BufNewFile,BufRead *.json set filetype=javascript
+  au BufNewFile,BufRead *.json set filetype=json
+
+  au FileType json call LoadJsonFT()
+  function! LoadJsonFT()
+
+    if exists('b:json_ft')
+      return
+    endif
+
+    lua require'lspconfig'.jsonls.setup{}
+
+    let b:json_ft = 1
+  endfunction
 augroup END
 " }}}
 " Haskell {{{
@@ -771,9 +755,6 @@ augroup ft_markdown
     command! -bang -nargs=? EvalBlock call medieval#eval(<bang>0, <f-args>)
     nmap <buffer> <leader>rb "":EvalBlock<CR>
 
-    " PackAdd ale
-    " let b:ale_linters = ['vale', 'markdownlint']
-
     PackAdd speeddating
 
     inoremap <buffer><expr> ]] fzf#vim#complete({
@@ -800,17 +781,11 @@ augroup ft_markdown
 
     command! ZettelUpdateBackLinks :call UpdateBacklinks()
     nnoremap <buffer><silent> <leader>zb :ZettelUpdateBackLinks<CR>
-
     nnoremap <buffer><silent> <leader>zz :ZettelOpen<CR>
-
     nnoremap <buffer><silent> <leader>zy :ZettelYankName<CR>
-
     nnoremap <buffer><silent> <leader>zn :ZettelNew<space>
-
     nnoremap <buffer><silent> <leader>zi :ZettelInsertNote<CR>
-
     nnoremap <buffer><silent> <leader>zC :ZettelCapture<CR>
-
     nnoremap <buffer><silent> <leader>wT :VimwikiRebuildTags!<cr>:VimwikiGenerateTagLinks<cr><c-l>
 
     let b:markdown_ft = 1
@@ -833,8 +808,6 @@ augroup ft_mustache
 
     PackAdd mustache 1
     let g:mustache_abbreviations = 1
-
-    " PackAdd splitjoin
 
     let b:mustache_ft = 1
 
@@ -866,8 +839,6 @@ augroup ft_nix
 
     imap <buffer> <C-Enter> <ESC>:call SmartCR()<CR>
 
-    PackAdd ale
-
     PackAdd nix 1
 
     let b:nix_ft = 1
@@ -879,8 +850,6 @@ augroup END
 " Python {{{
 call minpac#add('jmcantrell/vim-virtualenv', {'type': 'opt', 'name': 'vim-virtualenv'})
 call minpac#add('Vimjas/vim-python-pep8-indent', {'type': 'opt', 'name': 'pep8-ind'})
-" call minpac#add('davidhalter/jedi-vim', {'type': 'opt', 'name': 'jedi'})
-" call minpac#add('deoplete-plugins/deoplete-jedi', {'type': 'opt'})
 augroup ft_python
   au!
 
@@ -890,18 +859,6 @@ augroup ft_python
     if exists('b:python_ft')
       return
     endif
-
-    " let g:jedi#completions_command = ""
-    " let g:jedi#completions_enabled = 0
-    " let g:jedi#documentation_command = "K"
-    " let g:jedi#goto_assignments_command = "gA"
-    " let g:jedi#goto_command = "gd"
-    " let g:jedi#goto_definitions_command = "gD"
-    " let g:jedi#goto_stubs_command = "gS"
-    " let g:jedi#rename_command = "<leader>rR"
-    " let g:jedi#usages_command = "gr"
-    " let g:jedi#use_splits_not_buffers = "right"
-    " PackAdd jedi 1
 
     let g:virtualenv_directory = $PWD
     PackAdd vim-virtualenv
@@ -921,7 +878,6 @@ augroup ft_python
     nmap <Plug>(python_breakpoint) oimport pudb; pudb.set_trace()<esc>
     nmap <silent> <buffer> <leader>rb <Plug>(python_breakpoint)
 
-    PackAdd ale
     let b:ale_linters = ['flake8', 'mypy', 'pylint', 'bandit', 'pydocstyle']
     let b:ale_fixers = {'python': ['remove_trailing_lines', 'trim_whitespace', 'autopep8']}
     let b:ale_python_flake8_executable = 'flake8'
@@ -939,7 +895,8 @@ augroup ft_python
     let b:ale_python_vulture_executable = 'vulture'
 
     PackAdd textobj-python
-    " PackAdd splitjoin
+
+    lua require'lspconfig'.pyright.setup{}
 
     let b:python_ft = 1
 
@@ -969,8 +926,6 @@ augroup ft_puppet
     PackAdd puppet 1
     let g:puppet_align_hashes = 0
 
-    " let b:ale_linters = ['puppet', 'puppetlint']
-
     let b:puppet_ft = 1
 
   endfunction
@@ -979,7 +934,6 @@ augroup END
 " }}}
 " Rust {{{
 call minpac#add('rust-lang/rust.vim', {'type': 'opt', 'name': 'rust'})
-" call minpac#add('racer-rust/vim-racer', {'type': 'opt', 'name': 'rust-racer'})
 augroup ft_rust
   au!
 
@@ -993,20 +947,14 @@ augroup ft_rust
     imap <buffer> <C-Enter> <ESC>:call SmartCR()<CR>
 
     PackAdd rust 1
-    " PackAdd rust-racer
-    " let g:racer_experimental_completer = 1
 
-    " nmap <buffer> gd <Plug>(rust-def)
-    " nmap <buffer> gs <Plug>(rust-def-split)
-    " nmap <buffer> gx <Plug>(rust-def-vertical)
-    " nmap <buffer> K <Plug>(rust-doc)
     nmap <buffer> <silent> <leader>rr :RustRun<CR>
     nmap <buffer> <silent> <leader>rt :RustTest<CR>
     nmap <buffer> <silent> <leader>cf :RustFmt<CR>
 
-    " PackAdd splitjoin
+    lua require'lspconfig'.rust_analyzer.setup{}
 
-    " PackAdd ale
+    let b:ale_enabled = 0
 
     let b:rust_ft = 1
 
@@ -1024,6 +972,8 @@ augroup ft_sql
     endif
 
     setlocal commentstring=/*\ %s\ */
+
+    lua require'lspconfig'.sqlls.setup{}
 
     let b:sql_ft = 1
 
@@ -1117,8 +1067,6 @@ augroup ft_vim
     nnoremap <Plug>(vim_source_line) ^vg_y:execute @@<cr>:echo 'Sourced line.'<cr>
     nnoremap <buffer> <leader>rS <Plug>(vim_source_line)
 
-    " PackAdd splitjoin
-
     let b:vim_ft = 1
 
   endfunction
@@ -1144,11 +1092,9 @@ augroup ft_sh
 
     nmap <buffer> <leader>rr :w\|call RunCmd("bash " . bufname("%"))<CR>
 
-    " PackAdd ale
-    " let b:ale_linters = ['shellcheck', 'language_server']
-
     PackAdd speeddating
-    " PackAdd splitjoin
+
+    lua require'lspconfig'.bashls.setup{}
 
     let b:shell_ft = 1
 
@@ -1186,8 +1132,9 @@ augroup ft_dockerfile
       return
     endif
 
-    PackAdd ale
     let b:ale_linters = ['hadolint']
+
+    lua require'lspconfig'.dockerls.setup{}
 
     let b:docker_ft = 1
 
@@ -1291,7 +1238,6 @@ augroup ft_terraform
     let g:terraform_align=1
     let g:terraform_fmt_on_save=1
 
-    PackAdd ale
     call ale#linter#Define('terraform', {
           \   'name': 'terraform-lsp',
           \   'lsp': 'stdio',
@@ -1317,16 +1263,14 @@ augroup ft_lua
       return
     endif
 
-    PackAdd ale
-    call ale#linter#Define('lua', {
-          \   'name': 'lua-language-server',
-          \   'lsp': 'stdio',
-          \   'executable': 'lua-language-server',
-          \   'command': '%e',
-          \   'project_root': getcwd(),
-          \})
-
-    " PackAdd splitjoin
+    if executable('nix-store')
+      lua <<EOF
+      local user_home = os.getenv("HOME");
+      require'lspconfig'.sumneko_lua.setup{
+      cmd = {user_home .. "/.nix-profile/bin/lua-language-server"};
+      }
+EOF
+    endif
 
     let b:lua_ft = 1
 
@@ -1708,6 +1652,7 @@ call minpac#add('dhruvasagar/vim-zoom', {'type': 'start', 'name': 'vim-zoom'})
 nmap <leader>Z :call ZoomToggle()<CR>
 
 function! ZoomToggle()
+
   if (exists("t:NERDTreeBufName") && bufwinnr(t:NERDTreeBufName) != -1)
     exe ':NERDTreeClose'
     let zoom_nerd = 1
@@ -1736,11 +1681,6 @@ function! ZoomToggle()
     unlet zoom_tag
   endif
 
-  if (exists("zoom_explorer") && (zoom_explorer == 1))
-    exe ':CocCommand explorer --no-toggle --no-focus'
-    unlet zoom_explorer
-  endif
-
 endfunction
 " }}}
 " Buffers {{{
@@ -1754,12 +1694,14 @@ nmap <silent><leader>bq :Bonly<CR>
 " Code {{{
 " Ale {{{
 call minpac#add('w0rp/ale', {'type': 'opt', 'name': 'ale'})
+PackAdd ale
 " let g:ale_sign_column_always = 1
 let g:ale_sign_error = '!!'
 let g:ale_sign_warning = '..'
 " let g:ale_lint_on_text_changed = 'never'
 " let g:ale_lint_on_insert_leave = 0
 let g:ale_completion_enabled = 0
+let g:ale_disable_lsp = 1
 " }}}
 " AutoIndent {{{
 call minpac#add('tpope/vim-sleuth', {'type': 'start', 'name': 'auto-indent'})
@@ -1769,152 +1711,100 @@ call minpac#add('tpope/vim-commentary', {'type': 'start', 'name': 'commentary'})
 set commentstring=#\ %s
 " }}}
 " Completor {{{
-call minpac#add('neoclide/coc.nvim', {'type': 'opt', 'name': 'coc', 'rev': 'release'})
-PackAdd coc
-let g:coc_user_config = {}
-set shortmess+=c
-"  Plugin list {{{
-let g:coc_global_extensions = [
-      \ 'coc-marketplace',
-      \ 'coc-pyright',
-      \ 'coc-rust-analyzer',
-      \ 'coc-sh',
-      \ 'coc-vimlsp',
-      \ 'coc-markdownlint',
-      \ 'coc-yaml',
-      \ 'coc-json',
-      \ 'coc-snippets',
-      \ 'coc-spell-checker',
-      \ 'coc-sql'
-      \]
-" }}}
-"  Mappings {{{
-"    General {{{
-nmap <leader>pcm :CocList marketplace<CR>
-nmap <leader>pcu :CocUpdate<CR>
-nmap <leader>pcl :CocList extensions<CR>
-"    }}}
-"    Code completion {{{
-if has('nvim')
-  inoremap <silent><expr> <c-space> coc#refresh()
-else
-  inoremap <silent><expr> <c-@> coc#refresh()
-endif
+call minpac#add('neovim/nvim-lspconfig', {'type': 'opt', 'name': 'lspconfig'})
+PackAdd lspconfig
+nnoremap <silent> gd <cmd>lua vim.lsp.buf.definition()<CR>
+nnoremap <silent> gD <cmd>lua vim.lsp.buf.declaration()<CR>
+nnoremap <silent> gr <cmd>lua vim.lsp.buf.references()<CR>
+nnoremap <silent> gi <cmd>lua vim.lsp.buf.implementation()<CR>
+" nnoremap <silent> K <cmd>lua vim.lsp.buf.hover()<CR>
+" nnoremap <silent> <C-k> <cmd>lua vim.lsp.buf.signature_help()<CR>
+nnoremap <silent> <C-n> <cmd>lua vim.lsp.diagnostic.goto_prev()<CR>
+nnoremap <silent> <C-p> <cmd>lua vim.lsp.diagnostic.goto_next()<CR>
 
-inoremap <silent><expr> <cr> pumvisible() ? coc#_select_confirm()
-                              \: "\<C-g>u\<CR>\<c-r>=coc#on_enter()\<CR>"
+nnoremap <silent> <leader>cc <cmd>lua vim.lsp.buf.code_action()<CR>
+nnoremap <silent> <leader>cd <cmd>lua vim.lsp.diagnostic.show_line_diagnostics()<CR>
+nnoremap <silent> <leader>crn <cmd>lua vim.lsp.buf.rename()<CR>
+nnoremap <silent> <leader>crf <cmd>lua vim.lsp.buf.formatting()<CR>
 
-nnoremap <silent><nowait><expr> <C-f> coc#float#has_scroll() ? coc#float#scroll(1, 2) : "\<C-f>"
-nnoremap <silent><nowait><expr> <C-b> coc#float#has_scroll() ? coc#float#scroll(0, 2) : "\<C-b>"
-inoremap <silent><nowait><expr> <C-f> coc#float#has_scroll() ? "\<c-r>=coc#float#scroll(1, 2)\<cr>" : "\<Right>"
-inoremap <silent><nowait><expr> <C-b> coc#float#has_scroll() ? "\<c-r>=coc#float#scroll(0, 2)\<cr>" : "\<Left>"
-" }}}
-"    GoTo code navigation {{{
-nmap <silent> gd <Plug>(coc-definition)
-nmap <silent> gD :call CocAction('jumpDefinition', 'vsplit')<CR>
-nmap <silent> gy <Plug>(coc-type-definition)
-nmap <silent> gi <Plug>(coc-implementation)
-nmap <silent> gr <Plug>(coc-references)
-" }}}
-"    Documentation {{{
-nnoremap <silent> K :call <SID>show_documentation()<CR>
+call minpac#add('hrsh7th/nvim-compe', {'type': 'opt', 'name': 'compe'})
+PackAdd compe
+lua <<EOF
+  vim.cmd [[set shortmess+=c]]
+  vim.o.completeopt = "menuone,noselect"
 
-function! s:show_documentation()
-  if (index(['vim','help'], &filetype) >= 0)
-    execute 'h '.expand('<cword>')
-  elseif (coc#rpc#ready())
-    call CocActionAsync('doHover')
-  else
-    execute '!' . &keywordprg . " " . expand('<cword>')
-  endif
-endfunction
-" Highlight the symbol and its references when holding the cursor.
-autocmd CursorHold * silent call CocActionAsync('highlight')
-"    }}}
-"    Refactoring and formatting {{{
-nmap <leader>crn <Plug>(coc-rename)
-nmap <leader>crr <Plug>(coc-refactor)
-" " Formatting selected code.
-xmap <leader>cf  <Plug>(coc-format-selected)
-nmap <leader>cf  <Plug>(coc-format-selected)
+  require'compe'.setup {
+    enabled = true;
+    autocomplete = true;
+    debug = false;
+    min_length = 1;
+    preselect = 'enable';
+    throttle_time = 80;
+    source_timeout = 200;
+    incomplete_delay = 400;
+    allow_prefix_unmatch = false;
+    max_abbr_width = 1000;
+    max_kind_width = 1000;
+    max_menu_width = 1000000;
+    documentation = true;
 
-nmap <leader>cc  <Plug>(coc-codeaction-line)
-vmap <leader>cc  <Plug>(coc-codeaction-selected)
+    source = {
+      path = true;
+      buffer = true;
+      calc = true;
+      vsnip = true;
+      nvim_lsp = true;
+      nvim_lua = true;
+      spell = true;
+      tags = true;
+      snippets_nvim = true;
+      treesitter = true;
+    };
+  }
 
-" Remap keys for applying codeAction to the current buffer.
-nmap <leader>ca  <Plug>(coc-codeaction)
-" Apply AutoFix to problem on the current line.
-nmap <leader>cF  <Plug>(coc-fix-current)
+  local t = function(str)
+    return vim.api.nvim_replace_termcodes(str, true, true, true)
+  end
+  _G.s_tab_complete = function()
+    if vim.fn.pumvisible() == 1 then
+      return t "<C-p>"
+    elseif vim.fn.call("vsnip#jumpable", {-1}) == 1 then
+      return t "<Plug>(vsnip-jump-prev)"
+    else
+      return t "<S-Tab>"
+    end
+  end
 
-nmap ]d :CocNext<CR>
-nmap [d :CocPrev<CR>
-nmap <leader>cd  :CocList diagnostics<CR>
-"    }}}
-"    Map function and class text objects {{{
-" NOTE: Requires 'textDocument.documentSymbol' support from the language server.
-xmap if <Plug>(coc-funcobj-i)
-omap if <Plug>(coc-funcobj-i)
-xmap af <Plug>(coc-funcobj-a)
-omap af <Plug>(coc-funcobj-a)
-xmap ic <Plug>(coc-classobj-i)
-omap ic <Plug>(coc-classobj-i)
-xmap ac <Plug>(coc-classobj-a)
-omap ac <Plug>(coc-classobj-a)
-" }}}
-" }}}
-" " coc-explorer {{{
-" " let g:coc_user_config['coc.preferences.jumpCommand'] = 'vsp'
-" let g:coc_user_config['explorer.keyMappings.global.<tab>'] = v:false
-" let g:coc_user_config['explorer.keyMappings.global.<space>'] = 'actionMenu'
-" " let g:coc_user_config['explorer.keyMappings.global.s'] = 'open:split'
-" let g:coc_user_config['explorer.keyMappings.global.v'] = 'open:vsplit'
-" let g:coc_user_config['explorer.keyMappings.global.<cr>'] = ["wait", "expandable?", "cd", "open:sourceWindow"]
-" let g:coc_user_config['explorer.keyMappings.global.m'] = 'rename'
-" let g:coc_user_config['explorer.keyMappings.global.il'] = 'previewOnHover:toggle:labeling'
-" let g:coc_user_config['explorer.keyMappings.global.ic'] = 'previewOnHover:toggle:content'
-" let g:coc_user_config['explorer.keyMappings.global.ii'] = 'previewOnHover:disable'
-" let g:coc_user_config['explorer.keyMappings.global.I'] = 'toggleHidden'
-" let g:coc_user_config['explorer.keyMappings.global.Ic'] = v:false
-" let g:coc_user_config['explorer.keyMappings.global.Il'] = v:false
-" let g:coc_user_config['explorer.keyMappings.global.II'] = v:false
-" let g:coc_user_config['explorer.keyMappings.global.dd'] = 'delete'
-" let g:coc_user_config['explorer.keyMappings.global.u'] = ["wait", "gotoParent"]
+  vim.api.nvim_set_keymap("s", "<Tab>", "v:lua.tab_complete()", {expr = true})
+  vim.api.nvim_set_keymap("i", "<S-Tab>", "v:lua.s_tab_complete()", {expr = true})
+  vim.api.nvim_set_keymap("s", "<S-Tab>", "v:lua.s_tab_complete()", {expr = true})
+EOF
 
-" let g:coc_user_config['explorer.diagnostic.displayMax'] = 0
+call minpac#add('nvim-treesitter/nvim-treesitter', {'type': 'opt', 'name': 'treesitter', 'do': 'TSUpdate'})
+PackAdd treesitter
+lua <<EOF
+require'nvim-treesitter.configs'.setup {
+  ensure_installed = "maintained", -- one of "all", "maintained" (parsers with maintainers), or a list of languages
+  highlight = {
+    enable = true,              -- false will disable the whole extension
+  },
+}
+EOF
 
-" let g:coc_user_config['explorer.icon.enableNerdfont'] = v:true
-" let g:coc_user_config['explorer.file.showHiddenFiles'] = v:true
+call minpac#add('kosayoda/nvim-lightbulb', {'type': 'opt', 'name': 'bulb'})
+PackAdd bulb
+autocmd CursorHold,CursorHoldI * lua require'nvim-lightbulb'.update_lightbulb()
 
-" let g:coc_user_config['explorer.file.showHiddenFiles'] = v:true
+call minpac#add('onsails/lspkind-nvim', {'type': 'opt', 'name': 'lspkind'})
+PackAdd lspkind
 
-" let g:coc_user_config['explorer.trash.command'] = 'trash-put %l --trash-dir ~/.local/share/Trash'
+call minpac#add('glepnir/lspsaga.nvim', {'type': 'opt', 'name': 'lspsaga'})
+PackAdd lspsaga
+nnoremap <silent> K <cmd>lua require('lspsaga.hover').render_hover_doc()<CR>
+nnoremap <silent> <C-f> <cmd>lua require('lspsaga.action').smart_scroll_with_saga(1)<CR>
+nnoremap <silent> <C-b> <cmd>lua require('lspsaga.action').smart_scroll_with_saga(-1)<CR>
+nnoremap <silent> gk <cmd>lua require('lspsaga.signaturehelp').signature_help()<CR>
 
-" let g:coc_explorer_global_presets = {
-" \   'buffer': {
-" \     'sources': [{'name': 'buffer', 'expand': v:true}],
-" \     'quit-on-open': v:true,
-" \   },
-" \ }
-
-" function ExplorerFP()
-"   exe ':CocCommand explorer --no-toggle --quit-on-open'
-"   call CocAction('runCommand', 'explorer.doAction', 'closest', ['reveal'], [['relative', 0, 'file']])
-" endfunction
-
-" let g:lmap.f.p = 'Path(coc)'
-" nnoremap <leader>fp :call ExplorerFP()<CR>
-
-" let g:lmap.o.e = 'Explorer(coc)'
-" nnoremap <leader>oe :CocCommand explorer --toggle --no-focus --sources=file+<CR>
-
-" function ExplorerFB()
-"   exe ':CocCommand explorer --no-toggle --preset buffer --quit-on-open'
-"   call CocAction('runCommand', 'explorer.doAction', 'closest', ['reveal'], [['relative', 0, 'buffer']])
-" endfunction
-
-" let g:lmap.f.b = 'Buffer(coc)'
-" nnoremap <leader>fb :call ExplorerFB()<CR>
-" }}}
 " }}}
 " Easyalign {{{
 call minpac#add('junegunn/vim-easy-align', {'type': 'start', 'name': 'easy-align'})
@@ -2013,7 +1903,6 @@ let g:surround_{char2nr("d")} = "<div\1id: \r..*\r id=\"&\"\1>\r</div>"
 let g:surround_{char2nr("x")} = "<\1id: \r..*\r&\1>\r</\1\1>"
 
 let g:surround_{char2nr("%")} = "{% \r %}"
-
 " }}}
 " Split/Join {{{
 call minpac#add('andrewradev/splitjoin.vim', {'type': 'start', 'name': 'splitjoin'})
@@ -2021,7 +1910,6 @@ call minpac#add('andrewradev/splitjoin.vim', {'type': 'start', 'name': 'splitjoi
 " let g:splitjoin_join_mapping  = 'gj'
 nmap gs :SplitjoinSplit<cr>
 nmap gj :SplitjoinJoin<cr>
-
 " }}}
 " Zeavim {{{
 call minpac#add('KabbAmine/zeavim.vim', {'type': 'start', 'name': 'zeavim'})

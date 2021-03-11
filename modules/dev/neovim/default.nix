@@ -34,17 +34,25 @@ in
           # hadolint
           shellcheck
           silver-searcher
-          terraform-lsp
           vale
           yamllint
           par
           nodejs
           nodePackages.markdown-link-check
-          nodePackages.bash-language-server
           nodePackages.livedown
           python3Packages.pynvim
           python3Packages.msgpack
           python3Packages.jedi
+          # language servers
+          rust-analyzer
+          terraform-lsp
+          sumneko-lua-language-server
+          nodePackages.bash-language-server
+          nodePackages.pyright
+          nodePackages.dockerfile-language-server-nodejs
+          nodePackages.vscode-json-languageserver
+          # nodePackages.sql-language-server
+          nodePackages.yaml-language-server
         ] ++ [
           jrnl
         ];
