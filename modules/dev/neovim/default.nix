@@ -37,6 +37,7 @@ in
           vale
           yamllint
           par
+          tree-sitter
           nodejs
           nodePackages.markdown-link-check
           nodePackages.livedown

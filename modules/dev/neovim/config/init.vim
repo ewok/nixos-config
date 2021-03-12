@@ -598,7 +598,7 @@ augroup ft_yaml
 
     PackAdd speeddating
 
-    lua require'lspconfig'.yamlls.setup{filetypes = { "yaml", "yaml.ansible", "helm" }}
+    lua require('lspconfig').yamlls.autostart()
 
     let b:yaml_ft = 1
 
@@ -685,7 +685,7 @@ augroup ft_json
       return
     endif
 
-    lua require'lspconfig'.jsonls.setup{}
+    lua require('lspconfig').jsonls.autostart()
 
     let b:json_ft = 1
   endfunction
@@ -896,7 +896,7 @@ augroup ft_python
 
     PackAdd textobj-python
 
-    lua require'lspconfig'.pyright.setup{}
+    lua require('lspconfig').pyright.autostart()
 
     let b:python_ft = 1
 
@@ -952,9 +952,9 @@ augroup ft_rust
     nmap <buffer> <silent> <leader>rt :RustTest<CR>
     nmap <buffer> <silent> <leader>cf :RustFmt<CR>
 
-    lua require'lspconfig'.rust_analyzer.setup{}
-
     let b:ale_enabled = 0
+
+    lua require('lspconfig').rust_analyzer.autostart()
 
     let b:rust_ft = 1
 
@@ -972,8 +972,6 @@ augroup ft_sql
     endif
 
     setlocal commentstring=/*\ %s\ */
-
-    lua require'lspconfig'.sqlls.setup{}
 
     let b:sql_ft = 1
 
@@ -1094,7 +1092,7 @@ augroup ft_sh
 
     PackAdd speeddating
 
-    lua require'lspconfig'.bashls.setup{}
+    lua require('lspconfig').bashls.autostart()
 
     let b:shell_ft = 1
 
@@ -1134,7 +1132,7 @@ augroup ft_dockerfile
 
     let b:ale_linters = ['hadolint']
 
-    lua require'lspconfig'.dockerls.setup{}
+    lua require('lspconfig').dockerls.autostart()
 
     let b:docker_ft = 1
 
@@ -1711,8 +1709,8 @@ call minpac#add('tpope/vim-commentary', {'type': 'start', 'name': 'commentary'})
 set commentstring=#\ %s
 " }}}
 " Completor {{{
-call minpac#add('neovim/nvim-lspconfig', {'type': 'opt', 'name': 'lspconfig'})
-PackAdd lspconfig
+call minpac#add('neovim/nvim-lspconfig', {'type': 'start', 'name': 'lspconfig'})
+" PackAdd lspconfig
 nnoremap <silent> gd <cmd>lua vim.lsp.buf.definition()<CR>
 nnoremap <silent> gD <cmd>lua vim.lsp.buf.declaration()<CR>
 nnoremap <silent> gr <cmd>lua vim.lsp.buf.references()<CR>
@@ -1727,8 +1725,17 @@ nnoremap <silent> <leader>cd <cmd>lua vim.lsp.diagnostic.show_line_diagnostics()
 nnoremap <silent> <leader>crn <cmd>lua vim.lsp.buf.rename()<CR>
 nnoremap <silent> <leader>crf <cmd>lua vim.lsp.buf.formatting()<CR>
 
-call minpac#add('hrsh7th/nvim-compe', {'type': 'opt', 'name': 'compe'})
-PackAdd compe
+lua <<EOF
+  require'lspconfig'.dockerls.setup{autostart = false}
+  require'lspconfig'.bashls.setup{autostart = false}
+  require'lspconfig'.rust_analyzer.setup{autostart = false}
+  require'lspconfig'.pyright.setup{autostart = false}
+  require'lspconfig'.jsonls.setup{autostart = false}
+  require'lspconfig'.yamlls.setup{filetypes = { "yaml", "yaml.ansible", "helm"}, autostart = false}
+EOF
+
+call minpac#add('hrsh7th/nvim-compe', {'type': 'start', 'name': 'compe'})
+" PackAdd compe
 lua <<EOF
   vim.cmd [[set shortmess+=c]]
   vim.o.completeopt = "menuone,noselect"
@@ -1780,8 +1787,8 @@ lua <<EOF
   vim.api.nvim_set_keymap("s", "<S-Tab>", "v:lua.s_tab_complete()", {expr = true})
 EOF
 
-call minpac#add('nvim-treesitter/nvim-treesitter', {'type': 'opt', 'name': 'treesitter', 'do': 'TSUpdate'})
-PackAdd treesitter
+call minpac#add('nvim-treesitter/nvim-treesitter', {'type': 'start', 'name': 'treesitter'})
+" PackAdd treesitter
 lua <<EOF
 require'nvim-treesitter.configs'.setup {
   ensure_installed = "maintained", -- one of "all", "maintained" (parsers with maintainers), or a list of languages
