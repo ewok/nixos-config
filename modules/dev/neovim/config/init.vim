@@ -492,10 +492,10 @@ nnoremap <silent> * :let stay_star_view = winsaveview()<cr>*:call winrestview(st
 nnoremap n nzzzv
 nnoremap N Nzzzv
 
-nnoremap H ^
+nnoremap H 0
 nnoremap L $
 
-vnoremap H ^
+vnoremap H 0
 vnoremap L $
 
 cmap w!! w !sudo tee %
@@ -1723,7 +1723,7 @@ nnoremap <silent> <C-p> <cmd>lua vim.lsp.diagnostic.goto_next()<CR>
 nnoremap <silent> <leader>cc <cmd>lua vim.lsp.buf.code_action()<CR>
 nnoremap <silent> <leader>cd <cmd>lua vim.lsp.diagnostic.show_line_diagnostics()<CR>
 nnoremap <silent> <leader>crn <cmd>lua vim.lsp.buf.rename()<CR>
-nnoremap <silent> <leader>crf <cmd>lua vim.lsp.buf.formatting()<CR>
+nnoremap <silent> <leader>cf <cmd>lua vim.lsp.buf.formatting()<CR>
 
 lua <<EOF
   require'lspconfig'.dockerls.setup{autostart = false}
