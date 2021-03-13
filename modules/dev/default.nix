@@ -9,6 +9,7 @@ with lib;
     ./docker.nix
     ./fzf.nix
     ./git.nix
+    ./svn.nix
     ./k8s.nix
     # meld
     ./neovim
