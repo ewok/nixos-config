@@ -122,118 +122,10 @@
       linebreak = true;
       numberwidth = 4;
     }
-      -- vim.o.shell = 'bash';
-      -- vim.o.backspace = '2';
-      -- vim.o.backup = false;
-      -- vim.o.clipboard = 'unnamedplus';
-      -- vim.o.cmdheight = 1;
-      -- vim.o.compatible = false;
-      -- vim.o.confirm = true;
-      -- vim.o.encoding = 'utf-8';
-      -- vim.o.enc = 'utf-8';
-      -- vim.o.errorbells = false;
-      -- vim.o.exrc = true;
-      -- vim.o.hidden = true;
-      -- vim.o.history = 1000;
-      -- vim.o.hlsearch = true;
-      -- vim.o.ignorecase = true;
-      -- vim.o.incsearch = true;
-      -- vim.o.laststatus = 2;
-      -- vim.o.linespace = 0;
-      -- vim.o.mouse = '';
-      -- vim.o.ruler = true;
-      -- vim.o.scrolloff = 5;
-      -- vim.o.secure = true;
-      -- vim.o.shortmess = 'aOtT';
-      -- vim.o.showmode = true;
-      -- vim.o.showtabline = 1;
-      -- vim.o.smartcase = true;
-      -- vim.o.smarttab = true;
-      -- vim.o.splitbelow = true;
-      -- vim.o.splitright = true;
-      -- vim.o.startofline = false;
-      -- vim.o.switchbuf = 'useopen';
-      -- vim.o.timeoutlen = 500;
-      -- vim.o.titlestring = '%F';
-      -- vim.o.title = true;
-      -- vim.o.ttimeoutlen = -1;
-      -- vim.o.ttyfast = true;
-      -- vim.o.undodir = '~/.vim_undo';
-      -- vim.o.undolevels = 100;
-      -- vim.o.visualbell = true;
-      -- vim.o.writebackup = false;
-      -- vim.o.guicursor = 'n-v-c:block,i-ci-ve:block,r-cr:hor20,'..
-      -- 'o:hor50,a:blinkwait700-blinkoff400-blinkon250-Cursor/lCursor,'..
-      -- 'sm:block-blinkwait175-blinkoff150-blinkon175';
-      -- vim.o.shada = [['50,<1000,s100,"10,:10,n~/.viminfo]];
-      -- vim.o.inccommand = 'nosplit';
 
-      -- -- Buf opts
-      -- vim.o.bomb = true;
-      -- vim.o.copyindent = true;
-      -- vim.o.expandtab = true;
-      -- vim.o.fenc = 'utf-8';
-      -- vim.o.shiftwidth = 4;
-      -- vim.o.softtabstop = 4;
-      -- vim.o.swapfile = false;
-      -- vim.o.synmaxcol = 1000;
-      -- vim.o.tabstop = 4;
-      -- vim.o.undofile = true;
-
-      -- vim.bo.bomb = true;
-      -- vim.bo.copyindent = true;
-      -- vim.bo.expandtab = true;
-      -- vim.bo.fenc = 'utf-8';
-      -- vim.bo.shiftwidth = 4;
-      -- vim.bo.softtabstop = 4;
-      -- vim.bo.swapfile = false;
-      -- vim.bo.synmaxcol = 1000;
-      -- vim.bo.tabstop = 4;
-      -- vim.bo.undofile = true;
-
-      -- print('vim.o.bomb '..tostring(vim.o.bomb))
-      -- print('vim.o.copyindent '..tostring(vim.o.copyindent))
-      -- print('vim.o.expandtab '..tostring(vim.o.expandtab))
-      -- print('vim.o.fenc '..vim.o.fenc)
-      -- print('vim.o.shiftwidth '..vim.o.shiftwidth)
-      -- print('vim.o.softtabstop '..vim.o.softtabstop)
-      -- print('vim.o.swapfile '..tostring(vim.o.swapfile))
-      -- print('vim.o.synmaxcol '..vim.o.synmaxcol)
-      -- print('vim.o.tabstop '..vim.o.tabstop)
-      -- print('vim.o.undofile '..tostring(vim.o.undofile))
-
-      -- -- Window opts
-      -- vim.o.cursorline = true;
-      -- vim.o.number = true;
-      -- vim.o.foldenable = false;
-      -- vim.o.wrap = false;
-      -- vim.o.list = false;
-      -- vim.o.linebreak = true;
-      -- vim.o.numberwidth = 4;
-
-      -- vim.wo.cursorline = true;
-      -- vim.wo.number = true;
-      -- vim.wo.foldenable = false;
-      -- vim.wo.wrap = false;
-      -- vim.wo.list = false;
-      -- vim.wo.linebreak = true;
-      -- vim.wo.numberwidth = 4;
-
-      -- print('vim.wo.cursorline '..tostring(vim.wo.cursorline))
-      -- print('vim.wo.number '..tostring(vim.wo.number))
-      -- print('vim.wo.foldenable '..tostring(vim.wo.foldenable))
-      -- print('vim.wo.wrap '..tostring(vim.wo.wrap))
-      -- print('vim.wo.list '..tostring(vim.wo.list))
-      -- print('vim.wo.linebreak '..tostring(vim.wo.linebreak))
-      -- print('vim.wo.numberwidth '..vim.wo.numberwidth)
-
-    -- local start_window = api.nvim_get_current_win()
-    -- local start_buf = api.nvim_get_current_buf()
     for opt, val in pairs(set_options) do
       local info = api.nvim_get_option_info(opt)
       local scope = info.scope
-
-      -- print(opt..'('..scope..'): '.. tostring(global_local))
 
       vim.o[opt] = val
       if scope == 'win' then
@@ -1047,6 +939,7 @@
       'itchyny/lightline.vim',
       as = 'lightline',
       after = 'neodark',
+      requires = {{'neodark'}},
       setup = function ()
         local lightline = {
           enable = { tabline = 0 },
