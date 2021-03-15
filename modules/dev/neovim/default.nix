@@ -21,17 +21,19 @@ in
 
       home-manager.users."${username}" = {
 
-        programs.neovim = {
-          enable = true;
-          package =  pkgs.neovim-nightly;
-          viAlias = true;
-          vimAlias = true;
-        };
+        # programs.neovim = {
+        #   enable = true;
+        #   package =  pkgs.neovim-nightly;
+        #   viAlias = true;
+        #   vimAlias = true;
+        # };
 
         home.packages = with pkgs; [
+          neovim-nightly
           global
           # TODO: Return when fixed
           # hadolint
+          gcc
           shellcheck
           silver-searcher
           vale
@@ -58,13 +60,11 @@ in
           jrnl
         ];
 
-        xdg.configFile."nvim/init.vim".source = ./config/init.vim;
+        xdg.configFile."nvim/init.lua".source = ./config/init.lua;
         xdg.configFile."nvim/.gitignore".source = ./config/gitignore;
-        home.file.".vim/vimrc".source = ./config/init.vim;
-        home.file.".vim/.gitignore".source = ./config/gitignore;
+        # home.file.".vim/vimrc".source = ./config/init.vim;
         home.file.".ctags".source = ./config/ctags;
         home.file.".vale.ini".source = ./config/vale.ini;
-        home.file.".ideavimrc".source = ./config/ideavimrc;
         home.sessionVariables = {
           EDITOR = "nvim";
           VISUAL = "nvim";
