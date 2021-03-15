@@ -428,10 +428,10 @@
     augroups({ft_ansible=ft_ansible})
     function ansible_ft()
       vim.bo.commentstring = [[# %s]]
-      vim.b.ale_ansible_ansible_lint_executable = 'ansible_custom'
-      vim.b.ale_ansible_ansible_lint_command = '%e %t'
-      vim.b.ale_ansible_yamllint_executable = 'yamllint_custom'
-      vim.b.ale_linters = { 'yamllint', 'ansible_custom' }
+      -- vim.b.ale_ansible_ansible_lint_executable = 'ansible_custom'
+      -- vim.b.ale_ansible_ansible_lint_command = '%e %t'
+      -- vim.b.ale_ansible_yamllint_executable = 'yamllint_custom'
+      -- vim.b.ale_linters = { 'yamllint', 'ansible_custom' }
     end
   -- }}}
   -- CSV {{{
@@ -570,9 +570,12 @@
     local ft_md = {
       {[[ FileType mail lua md_ft() ]]};
       {[[ FileType vimwiki lua md_ft() ]]};
+      {[[ FileType markdown lua md_ft() ]]};
     }
     augroups({ft_md=ft_md})
     function  md_ft()
+      if vim.b.ft_loaded then return end
+
       vim.wo.foldlevel = 2
       vim.wo.conceallevel = 2
 
@@ -616,6 +619,8 @@
       bmap('n', '<leader>zi',':ZettelInsertNote<CR>', { noremap = true })
       bmap('n', '<leader>zC',':ZettelCapture<CR>', { noremap = true })
       bmap('n', '<leader>wT', ':VimwikiRebuildTags!<cr>:VimwikiGenerateTagLinks<cr><c-l>', { noremap = true })
+
+      vim.b.ft_loaded = true
     end
   -- }}}
   -- Nix {{{
@@ -1740,9 +1745,9 @@
 -- Scripts {{{
   -- TODOs {{{
     vim.api.nvim_exec([[
-      nnoremap <leader>ot :call OpenToDo()<CR>
+      nnoremap <silent> <leader>ot :silent call OpenToDo()<CR>
       function! OpenToDo()
-        vsplit TODO.md
+        silent! vsplit TODO.md
         nnoremap <buffer> q :x<CR>
         setf todo
       endfunction
