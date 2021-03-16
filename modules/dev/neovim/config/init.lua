@@ -336,9 +336,9 @@
 
     function Start_line()
       local cursor = vim.api.nvim_win_get_cursor(vim.api.nvim_get_current_win())
-      if cursor[2] == 0 then
-        vim.api.nvim_exec('normal ^', false)
-      else
+      vim.api.nvim_exec('normal ^', false)
+      local check_cursor = vim.api.nvim_win_get_cursor(vim.api.nvim_get_current_win())
+      if cursor[2] == check_cursor[2] then
         vim.api.nvim_exec('normal 0', false)
       end
     end
