@@ -15,24 +15,26 @@ let
     vim +VimwikiMakeDiaryNote
     fi
   '';
+
+  my-nvim = pkgs.symlinkJoin {
+    name = "my-neovim";
+    paths = [ pkgs.neovim-nightly ];
+    postBuild = ''
+    ln -s $out/bin/nvim $out/bin/vim
+    ln -s $out/bin/nvim $out/bin/vi
+    '';
+    };
+
 in
   {
     config = mkIf dev.enable {
 
       home-manager.users."${username}" = {
 
-        # programs.neovim = {
-        #   enable = true;
-        #   package =  pkgs.neovim-nightly;
-        #   viAlias = true;
-        #   vimAlias = true;
-        # };
-
         home.packages = with pkgs; [
-          neovim-nightly
+          my-nvim
           global
-          # TODO: Return when fixed
-          # hadolint
+          hadolint
           gcc
           shellcheck
           silver-searcher

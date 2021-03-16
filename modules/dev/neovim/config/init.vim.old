@@ -1963,7 +1963,6 @@ let g:qs_buftype_blacklist = ['terminal', 'nofile', 'nerdtree']
 
 " Additional {{{
 " DraIt {{{
-" TODO: Update keys
 call minpac#add('ewok/DrawIt', {'type': 'start', 'name': 'drawit'})
 " }}}
 " VimWiki {{{

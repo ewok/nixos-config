@@ -91,7 +91,7 @@
       title = true;
       ttimeoutlen = -1;
       ttyfast = true;
-      undodir = '~/.vim_undo';
+      undodir = os.getenv('HOME')..'/.vim_undo';
       undolevels = 100;
       visualbell = true;
       writebackup = false;
@@ -197,7 +197,7 @@
   -- }}}
   -- Dealing with largefiles  {{{
     -- Protect large files from sourcing and other overhead.
-    vim.g.large_file_size = 1024*1024*2
+    vim.g.large_file_size = 1024*1024*20
     function adj_if_largefile()
       local fname = vim.fn.expand('<afile>')
       if vim.fn.getfsize(fname) > vim.g.large_file_size then
@@ -1300,7 +1300,7 @@
       setup = function()
         vim.g.vimwiki_list = {
           {
-            path = '~/Notes/',
+            path = os.getenv('HOME')..'/Notes/',
             syntax = 'markdown',
             ext = '.md',
             auto_toc = 1,
