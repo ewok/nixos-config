@@ -1073,7 +1073,7 @@
     packer.use {
       'preservim/tagbar',
       config = function ()
-        map('n', '<leader>tt', ':TagbarToggle<CR>', { noremap = true })
+        map('n', '<leader>ot', ':TagbarToggle<CR>', { noremap = true })
         map('n', '<leader>ft', ':TagbarOpenAutoClose<CR>', { noremap = true })
       end,
     }
@@ -1125,7 +1125,7 @@
     }
     augroups({au_goyo=au_goyo})
 
-    map('n', '<leader>tT', ':Goyo<CR>', { noremap = true })
+    map('n', '<leader>tt', ':Goyo<CR>', { noremap = true })
     -- Spelling
     vim.g.myLangList = { 'nospell', 'en_us', 'ru_ru' }
     local index={}
@@ -1737,7 +1737,7 @@
 -- Scripts {{{
   -- TODOs {{{
     vim.api.nvim_exec([[
-      nnoremap <silent> <leader>ot :call OpenToDo()<CR>
+      nnoremap <silent> <leader>od :call OpenToDo()<CR>
       function! OpenToDo()
         silent! vsplit TODO.md
         nnoremap <buffer> q :x<CR>
@@ -2144,7 +2144,7 @@
   lmap.o.s.f = { name = '+File'}
   lmap.o.s.f.f = { name = '+Format='}
   lmap.o.u = { name = '+Option-Unset'}
-  lmap.o.t = 'To-Do'
+  lmap.o.d = 'To-Do'
   lmap.p = { name = '+Plugins' }
   lmap.q = { name = '+QFix' }
   lmap.q.c = 'Close'
@@ -2167,7 +2167,7 @@
   lmap.t = { name = '+Tags/Text' }
   lmap.t.f = {name = '+Fix'}
   lmap.t.s = 'Syntax'
-  lmap.t.T = 'Text-only(Goyo)'
+  lmap.t.t = 'Text-only(Goyo)'
   lmap.u = 'Undo'
   lmap.w = { name = '+Wiki' }
   lmap.w.w = 'Index'
