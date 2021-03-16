@@ -1568,7 +1568,7 @@
       run = ':TSUpdate',
       config = function ()
         require'nvim-treesitter.configs'.setup {
-          ensure_installed = "maintained",
+          ensure_installed = { 'comment', 'python', 'regex', 'yaml', 'rust', 'bash', 'json', 'lua', 'nix', 'go' },
           highlight = {
             enable = true,
           },
@@ -1635,8 +1635,8 @@
         map('n', '<leader>gplm', ':G pull<CR>', { silent = true })
         map('n', '<leader>gg', ':.Gbrowse %<CR>', { silent = true })
         map('v', '<leader>gg', [[:'<,'>Gbrowse %<CR>]], { silent = true })
-        map('v', '<leader>ghv', ':<C-U>call GitShowBlockHistory()<CR>', { silent = true })
-        map('n', '<leader>ghl', ':call GitShowLineHistory()<CR>', { silent = true })
+        map('v', '<leader>ghv', ':<C-U>lua git_show_block_history()<CR>', { silent = true })
+        map('n', '<leader>ghl', ':lua git_show_line_history()<CR>', { silent = true })
       end,
     }
     -- Gitgutter
