@@ -182,18 +182,18 @@
     'tmp/**')
   -- }}}
   -- cursorline {{{
-    local cline = {
+    local au_cline = {
       {'WinLeave,InsertEnter * set nocursorline'};
       {'WinEnter,InsertLeave * set cursorline'};
     }
-    augroups({cline=cline})
+    augroups({au_cline=au_cline})
   -- }}}
   -- Restore Cursor {{{
-    local line_return = {
+    local au_line_return = {
       {[[BufReadPost * if line("'\"") > 0 && line("'\"") <= line("$") |]]..
       [[execute 'normal! g`"zvzz' | endif]]};
     }
-    augroups({line_return=line_return})
+    augroups({au_line_return=au_line_return})
   -- }}}
   -- Dealing with largefiles  {{{
     -- Protect large files from sourcing and other overhead.
@@ -230,11 +230,11 @@
       end
     end
     vim.wo.rnu = true
-    local rnu = {
+    local au_rnu = {
       {'InsertEnter * lua rnu_off()'};
       {'InsertLeave * lua rnu_on()'};
     }
-    augroups({rnu=rnu})
+    augroups({au_rnu=au_rnu})
   -- }}}
   -- RunCmd {{{
     exec([[
@@ -406,10 +406,10 @@
     }
     local ft_ansible = {
       {[[ BufNewFile,BufRead */\(playbooks\|roles\|tasks\|handlers\|defaults\|vars\)/*.\(yaml\|yml\) set filetype=yaml.ansible ]]};
-      {[[ FileType yaml.ansible lua ansible_ft() ]]}
+      {[[ FileType yaml.ansible lua load_ansible_ft() ]]}
     }
     augroups({ft_ansible=ft_ansible})
-    function ansible_ft()
+    function load_ansible_ft()
       vim.bo.commentstring = [[# %s]]
       -- vim.b.ale_ansible_ansible_lint_executable = 'ansible_custom'
       -- vim.b.ale_ansible_ansible_lint_command = '%e %t'
@@ -462,10 +462,10 @@
     }
 
     local ft_go = {
-      {[[ FileType go lua go_ft() ]]}
+      {[[ FileType go lua load_go_ft() ]]}
     }
     augroups({ft_go=ft_go})
-    function go_ft()
+    function load_go_ft()
       bmap('n', '<leader>rr', ':silent GoRun<CR>', { silent = true })
       bmap('n', '<leader>rt', ':silent GoTest<CR>', { silent = true })
       bmap('n', '<leader>rb', ':silent GoBuild<CR>', { silent = true })
@@ -488,7 +488,7 @@
     }
     local ft_helm = {
       {[[ BufRead,BufNewFile */templates/*.yaml,*/templates/*.tpl,Chart.yaml,values.yaml set ft=helm ]]};
-      {[[ FileType helm lua helm_ft() ]]}
+      {[[ FileType helm lua load_helm_ft() ]]}
     }
     augroups({ft_helm=ft_helm})
 
@@ -497,7 +497,7 @@
       execute '!helm template ./ --output-dir .out'
     end
 
-    function helm_ft()
+    function load_helm_ft()
       bmap('n', '<leader>rr', ':lua render_helm()<CR>', { silent = true })
     end
   -- }}}
@@ -513,16 +513,20 @@
   -- }}}
   -- Lua {{{
     local ft_lua = {
-      {[[ FileType lua lua require'lspconfig'.sumneko_lua.autostart() ]]}
+      {[[ FileType lua lua load_lua_ft() ]]}
     }
     augroups({ft_lua=ft_lua})
+    function load_lua_ft()
+      vim.wo.foldmethod = 'marker'
+      require'lspconfig'.sumneko_lua.autostart()
+    end
   -- }}}
   -- Mail {{{
     local ft_mail = {
-      {[[ FileType mail lua mail_ft() ]]}
+      {[[ FileType mail lua load_mail_ft() ]]}
     }
     augroups({ft_mail=ft_mail})
-    function mail_ft()
+    function load_mail_ft()
       bmap('n', '<leader>ry', ':%!pandoc -f markdown_mmd -t html<CR>', {})
       bmap('n', '<leader>rr', ':LivedownPreview<CR>', { silent = true })
       bmap('n', '<leader>rt', ':LivedownToggle<CR>', { silent = true })
@@ -551,12 +555,12 @@
       end,
     }
     local ft_md = {
-      {[[ FileType mail lua md_ft() ]]};
-      {[[ FileType vimwiki lua md_ft() ]]};
-      {[[ FileType markdown lua md_ft() ]]};
+      {[[ FileType mail lua load_md_ft() ]]};
+      {[[ FileType vimwiki lua load_md_ft() ]]};
+      {[[ FileType markdown lua load_md_ft() ]]};
     }
     augroups({ft_md=ft_md})
-    function  md_ft()
+    function  load_md_ft()
       if vim.b.ft_loaded then return end
 
       vim.wo.foldlevel = 2
@@ -619,10 +623,10 @@
     }
     local ft_nix = {
       {[[ BufRead,BufNewFile *.nix set filetype=nix ]]};
-      {[[ FileType nix lua nix_ft() ]]};
+      {[[ FileType nix lua load_nix_ft() ]]};
     }
     augroups({ft_nix=ft_nix})
-    function nix_ft()
+    function load_nix_ft()
       bmap('i', '<C-Enter>', '<ESC>:call SmartCR()<CR>', {})
     end
   -- }}}
@@ -643,10 +647,10 @@
       end,
     }
     local ft_python = {
-      {[[ FileType python lua python_ft() ]]};
+      {[[ FileType python lua load_python_ft() ]]};
     }
     augroups({ft_python=ft_python})
-    function python_ft()
+    function load_python_ft()
       vim.g.virtualenv_directory = os.getenv('PWD')
       vim.wo.foldmethod = 'indent'
       vim.wo.foldlevel = 0
@@ -680,6 +684,8 @@
       vim.b.ale_python_isort_executable = 'isort'
       vim.b.ale_python_pydocstyle_executable = 'pydocstyle'
       vim.b.ale_python_vulture_executable = 'vulture'
+
+      require'lspconfig'.pyright.autostart()
     end
   -- }}}
   -- Puppet {{{
@@ -692,10 +698,10 @@
     }
     local ft_puppet = {
       {[[ BufNewFile,BufRead *.pp set filetype=puppet ]]};
-      {[[ FileType puppet lua puppet_ft() ]]};
+      {[[ FileType puppet lua load_puppet_ft() ]]};
     }
     augroups({ft_puppet=ft_puppet})
-    function puppet_ft()
+    function load_puppet_ft()
       vim.bo.commentstring = '# %s'
       bmap('n', '<leader>rr', ':w |call RunCmd("puppet " . bufname("%"))<CR>', {})
       bmap('n', '<leader>rt', ':w |call RunCmd("puppet parser validate")<CR>', {})
@@ -711,10 +717,10 @@
       end,
     }
     local ft_rust = {
-      {[[ FileType rust lua rust_ft() ]]};
+      {[[ FileType rust lua load_rust_ft() ]]};
     }
     augroups({ft_rust=ft_rust})
-    function rust_ft()
+    function load_rust_ft()
       bmap('i', '<C-Enter>', '<ESC>:call SmartCR()<CR>', {})
       bmap('n', '<leader>rr', ':RustRun<CR>', {})
       bmap('n', '<leader>rt', ':RustTest<CR>', {})
@@ -724,20 +730,20 @@
   -- }}}
   -- Shell {{{
     local ft_shell = {
-      {[[ FileType sh lua shell_ft() ]]};
+      {[[ FileType sh lua load_shell_ft() ]]};
     }
     augroups({ft_shell=ft_shell})
-    function shell_ft()
+    function load_shell_ft()
       bmap('n', '<leader>rr', ':w |call RunCmd("bash " . bufname("%"))<CR>', {})
       require('lspconfig').bashls.autostart()
     end
   -- }}}
   -- SQL {{{
     local ft_sql = {
-      {[[ FileType sql lua sql_ft() ]]};
+      {[[ FileType sql lua load_sql_ft() ]]};
     }
     augroups({ft_sql=ft_sql})
-    function sql_ft()
+    function load_sql_ft()
       vim.bo.commentstring = '/* %s */'
     end
   -- }}}
@@ -751,10 +757,10 @@
       end,
     }
     local ft_terraform = {
-      {[[ FileType terraform lua terraform_ft() ]]};
+      {[[ FileType terraform lua load_terraform_ft() ]]};
     }
     augroups({ft_terraform=ft_terraform})
-    function terraform_ft()
+    function load_terraform_ft()
     -- call ale#linter#Define('terraform', {
     --       \   'name': 'terraform-lsp',
     --       \   'lsp': 'stdio',
@@ -767,10 +773,10 @@
   -- TODO {{{
     local ft_todo = {
       {[[ BufRead,BufNewFile *.todo,TODO.md setf todo ]]};
-      {[[ FileType todo lua todo_ft() ]]};
+      {[[ FileType todo lua load_todo_ft() ]]};
     }
     augroups({ft_todo=ft_todo})
-    function todo_ft()
+    function load_todo_ft()
       exec([[
         hi TODO guifg=Yellow ctermfg=Yellow term=Bold
         hi FIXME guifg=Red ctermfg=Red term=Bold
@@ -821,10 +827,10 @@
   -- }}}
   -- Vim {{{
     local ft_vim = {
-      {[[ FileType vim lua vim_ft() ]]};
+      {[[ FileType vim lua load_vim_ft() ]]};
     }
     augroups({ft_vim=ft_vim})
-    function vim_ft()
+    function load_vim_ft()
       vim.wo.foldmethod = 'marker'
       vim.bo.keywordprg = ':help'
     end
@@ -837,10 +843,10 @@
   -- }}}
   -- Yaml {{{
     local ft_yaml = {
-      {[[ FileType yaml lua yaml_ft() ]]};
+      {[[ FileType yaml lua load_yaml_ft() ]]};
     }
     augroups({ft_yaml=ft_yaml})
-    function yaml_ft()
+    function load_yaml_ft()
       vim.b.ale_yaml_yamllint_executable = 'yamllint_custom'
       vim.b.ale_linters = { 'yamllint' }
     end
@@ -1899,7 +1905,7 @@
     vim.api.nvim_exec([[
       " Trigger autoread when changing buffers or coming back to vim.
       " au FocusGained,BufEnter,WinEnter * :silent! !
-      au! FileType vim,python,golang,go,yaml.ansible,puppet,json,sh,vimwiki,rust,yaml,nix call DefaultOn()
+      au! FileType vim,python,golang,go,yaml.ansible,puppet,json,sh,vimwiki,rust,yaml,nix,lua call DefaultOn()
 
       function! DefaultOn()
         if !exists("b:auto_save")
