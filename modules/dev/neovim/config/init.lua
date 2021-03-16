@@ -334,7 +334,15 @@
     map('n', 'n', 'nzzzv', { noremap = true })
     map('n', 'N', 'Nzzzv', { noremap = true })
 
-    map('n', 'H', '0', { noremap = true })
+    function Start_line()
+      local cursor = vim.api.nvim_win_get_cursor(vim.api.nvim_get_current_win())
+      if cursor[2] == 0 then
+        vim.api.nvim_exec('normal ^', false)
+      else
+        vim.api.nvim_exec('normal 0', false)
+      end
+    end
+    map('n', 'H', ':lua Start_line()<CR>', { noremap = true, silent = true })
     map('n', 'L', '$', { noremap = true })
     map('v', 'H', '0', { noremap = true })
     map('v', 'L', '$', { noremap = true })
