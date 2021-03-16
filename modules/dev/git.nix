@@ -3,6 +3,16 @@ with lib;
 let
   dev = config.modules.dev;
   user = config.properties.user;
+
+  gitEnv = pkgs.symlinkJoin {
+    name = "git-env";
+    paths = with pkgs; [ gomp gitstats ];
+    postBuild = ''
+      ln -s $out/bin/gomp $out/bin/git-diff-branch
+      ln -s $out/bin/gitstats $out/bin/git-stats
+    '';
+  };
+
 in
 {
   config = mkIf dev.enable {
@@ -19,8 +29,7 @@ in
       gitAndTools.git-trim
       gitAndTools.pass-git-helper
       gitAndTools.gh
-      gitstats
-      gomp
+      gitEnv
     ];
     home-manager.users."${user.name}" = {
 
