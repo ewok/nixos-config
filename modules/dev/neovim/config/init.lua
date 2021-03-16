@@ -887,6 +887,7 @@
 
           " Change cursor color to make it more visible
           hi Cursor ctermbg=140 guibg=#B888E2
+          hi Search ctermfg=236 ctermbg=74 guifg=#282c34 guibg=#639EE4
         ]], true)
       end,
     }
