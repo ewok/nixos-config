@@ -15,6 +15,7 @@ in
         home.packages = [ master.deadd-notification-center ];
 
         xdg.configFile."deadd/deadd.conf".source = ./deadd/deadd.conf;
+        xdg.configFile."deadd/deadd.css".source = ./deadd/deadd.css;
 
         systemd.user.services.deadd-notification-center = {
           Unit = {
