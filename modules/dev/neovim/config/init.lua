@@ -924,11 +924,12 @@
         map('n', '<leader>vv', ':Buffers<CR>', { noremap = true, silent = true })
 
         vim.g.fzf_tags_command = 'ctags -R --exclude=.git --exclude=.idea --exclude=log'
-        vim.g.fzf_action = {}
+        local fzf_action = {}
         -- vim.g.fzf_action['ctrl-q'] = 'tab split'
-        vim.g.fzf_action['ctrl-t'] = 'tab split'
-        vim.g.fzf_action['ctrl-x'] = 'split'
-        vim.g.fzf_action['ctrl-v'] = 'vsplit'
+        fzf_action['ctrl-t'] = 'tab split'
+        fzf_action['ctrl-x'] = 'split'
+        fzf_action['ctrl-v'] = 'vsplit'
+        vim.g.fzf_action = fzf_action
 
         vim.env.FZF_DEFAULT_OPTS = '--bind=ctrl-a:toggle-all,ctrl-space:toggle+down,ctrl-alt-a:deselect-all'
         vim.env.FZF_DEFAULT_COMMAND = 'rg --iglob !.git --files --hidden --ignore-vcs --ignore-file ~/.config/git/gitexcludes'
