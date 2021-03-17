@@ -906,7 +906,7 @@
         ]], true)
       end,
     }
-    cmd [[ packadd neodark ]]
+    vim.cmd [[ packadd neodark ]]
   -- }}}
   -- Fuzzy {{{
     packer.use {
@@ -966,27 +966,27 @@
     packer.use {
       'itchyny/lightline.vim',
       as = 'lightline',
-      after = 'neodark',
-      requires = {{'neodark'}},
+      opt = true,
       setup = function ()
-        local lightline = {
-          enable = { tabline = 0 },
-          colorscheme = 'neodark',
-          active = {
-            left = {
-              { 'mode', 'paste' },
-              { 'gitbranch', 'readonly', 'filename', 'modified' },
-              { 'venv', 'readonly' }
-            },
-            component_function = {
-              gitbranch = 'fugitive#head',
-              venv = 'virtualenv#statusline'
-            }
-          }
-        }
-        vim.g.lightline = lightline
+        vim.cmd [[ packadd neodark ]]
       end,
     }
+    local lightline = {
+      enable = { tabline = 0 },
+      colorscheme = 'neodark',
+      active = {
+        left = {
+          { 'mode', 'paste' },
+          { 'gitbranch', 'readonly', 'filename', 'modified' },
+          { 'venv', 'readonly' }
+        },
+        component_function = {
+          gitbranch = 'fugitive#head',
+          venv = 'virtualenv#statusline'
+        }
+      }
+    }
+    vim.g.lightline = lightline
     cmd [[ packadd lightline ]]
   -- }}}
   -- Marks {{{
