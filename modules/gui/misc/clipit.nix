@@ -16,13 +16,12 @@ let
     cleanup(){
     echo "***Stopping"
     kill -15 $PID1
-    wait $PID1
     kill -15 $PID2
-    wait $PID2
+
+    wait $PID1 $PID2
     }
     trap 'cleanup' 1 2 3 6 15
-    wait $PID1
-    wait $PID2
+    wait $PID1 $PID2
   '';
 in
   {
