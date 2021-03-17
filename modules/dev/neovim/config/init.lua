@@ -334,7 +334,14 @@
     map('n', 'n', 'nzzzv', { noremap = true })
     map('n', 'N', 'Nzzzv', { noremap = true })
 
-    function Start_line()
+    function Start_line(mode)
+      mode = mode or 'n'
+      if mode == 'v' then
+        vim.api.nvim_exec('normal! gv', false)
+      elseif mode == 'n' then
+      else
+        print('Unknown mode, using normal.')
+      end
       local cursor = vim.api.nvim_win_get_cursor(vim.api.nvim_get_current_win())
       vim.api.nvim_exec('normal ^', false)
       local check_cursor = vim.api.nvim_win_get_cursor(vim.api.nvim_get_current_win())
@@ -342,9 +349,9 @@
         vim.api.nvim_exec('normal 0', false)
       end
     end
-    map('n', 'H', ':lua Start_line()<CR>', { noremap = true, silent = true })
+    map('n', 'H', ':lua Start_line()<CR>', { noremap = true })
     map('n', 'L', '$', { noremap = true })
-    map('v', 'H', '0', { noremap = true })
+    map('v', 'H', [[:lua Start_line('v')<CR>]], { noremap = true })
     map('v', 'L', '$', { noremap = true })
     -- Sudo
     map('c', 'w!!', 'w !sudo tee %', {})
