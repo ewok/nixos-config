@@ -1,4 +1,4 @@
-{ config, lib, pkgs, ... }:
+{ config, lib, pkgs, inputs, ... }:
 with lib;
 let
   dev = config.modules.dev;
@@ -25,6 +25,11 @@ let
     '';
     };
 
+  master = import inputs.master ({
+    config = config.nixpkgs.config;
+    localSystem = { system = "x86_64-linux"; };
+  });
+
 in
   {
     config = mkIf dev.enable {
@@ -32,6 +37,7 @@ in
       home-manager.users."${username}" = {
 
         home.packages = with pkgs; [
+          master.tree-sitter
           my-nvim
           global
           hadolint
@@ -41,7 +47,6 @@ in
           vale
           yamllint
           par
-          tree-sitter
           nodejs
           nodePackages.markdown-link-check
           nodePackages.livedown
