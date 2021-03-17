@@ -248,6 +248,9 @@ in
               "<space>pM" = "spawn mitmproxy-local-stop";
               "yd" = "yank inline {url:host}";
               "yD" = "yank inline {url:host} -s";
+              "gK" = "tab-give";
+              "gj" = "tab-move +";
+              "gk" = "tab-move -";
             };
             insert = {
               "<Ctrl-y>" = "insert-text -- {clipboard}";
