@@ -44,7 +44,7 @@
   local packer = require('packer')
   packer.startup(function(use)
     -- Packer can manage itself as an optional plugin
-    use {'wbthomason/packer.nvim', opt = true}
+    use {'wbthomason/packer.nvim', opt = true, branch='master'}
   end)
 -- }}}
 
@@ -706,8 +706,8 @@
 
       vim.b.autohiword = true
 
-      vim.fn.matchadd('OverLength', '\\%81v', 100)
       require'lspconfig'.pyright.autostart()
+      vim.fn.matchadd('OverLength', '\\%81v', 100)
     end
   -- }}}
   -- Puppet {{{
@@ -911,12 +911,12 @@
         vim.cmd [[colorscheme neodark]]
         vim.api.nvim_exec([[
           " Mark 80-th character
-          hi OverLength ctermbg=168 guibg=#ebabb8 ctermfg=250 guifg=#3c3e42
+          hi! OverLength ctermbg=168 guibg=#ebabb8 ctermfg=250 guifg=#3c3e42
           call matchadd('OverLength', '\%81v', 100)
 
           " Change cursor color to make it more visible
-          hi Cursor ctermbg=140 guibg=#B888E2
-          hi Search ctermfg=236 ctermbg=74 guifg=#282c34 guibg=#639EE4
+          hi! Cursor ctermbg=140 guibg=#B888E2
+          hi! Search ctermfg=236 ctermbg=74 guifg=#282c34 guibg=#639EE4
           hi! AutoHiWord cterm=bold gui=underline,bold
         ]], true)
       end,
@@ -966,12 +966,10 @@
         vim.g.indent_guides_start_level = 2
         vim.g.indent_guides_guide_size = 1
         vim.g.indent_guides_default_mapping = 0
-      end,
-      config = function ()
-        vim.cmd[[
-          hi IndentGuidesOdd  ctermbg=237
-          hi IndentGuidesEven ctermbg=236
-        ]]
+        vim.api.nvim_exec([[
+          hi! IndentGuidesOdd  ctermbg=237
+          hi! IndentGuidesEven ctermbg=236
+        ]], true)
       end,
     }
     vim.cmd [[packadd vim-indent]]
