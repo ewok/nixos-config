@@ -1767,6 +1767,14 @@
       end,
     }
   -- }}}
+  -- Codi {{{
+    packer.use{
+      'metakirby5/codi.vim',
+      cmd = {'Codi'},
+    }
+    map('n', '<leader>cP', ':Codi!! python<CR>', {})
+    map('n', '<leader>cL', ':Codi!! lua<CR>', {})
+  -- }}}
 -- Motion
   -- AutoPairs {{{
     packer.use 'jiangmiao/auto-pairs'
