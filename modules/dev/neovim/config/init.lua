@@ -917,7 +917,7 @@
           " Change cursor color to make it more visible
           hi! Cursor ctermbg=140 guibg=#B888E2
           hi! Search ctermfg=236 ctermbg=74 guifg=#282c34 guibg=#639EE4
-          hi! AutoHiWord cterm=bold gui=underline,bold
+          hi! AutoHiWord cterm=underline gui=underline
         ]], true)
       end,
     }
@@ -2111,20 +2111,23 @@
   ]], true)
   -- }}}
   -- AutoHighlight Current Word {{{
-    _G.tmp_update_time = vim.o.updatetime
+    _G.orig_update_time = vim.o.updatetime
 
     function highlight_cword()
       if not vim.b.autohiword then return end
 
       clear_highlights()
-      vim.o.updatetime = _G.tmp_update_time
+      vim.o.updatetime = _G.orig_update_time
 
       local cword = vim.fn.expand('<cword>')
 
       if cword then
         if vim.fn.match(cword, [[\w\+]]) >= 0 then
           local ecword = vim.fn.substitute(cword, [[\(*\)]], [[\\\1]], 'g')
-          table.insert(_G.hi_ids, vim.fn.matchadd('AutoHiWord', [[\<]]..ecword..[[\>]], 0))
+          local m_id = vim.fn.matchadd('AutoHiWord', [[\<]]..ecword..[[\>]], 0)
+          local hi_ids = vim.w.hi_ids
+          table.insert(hi_ids, m_id)
+          vim.w.hi_ids = hi_ids
         end
       end
     end
@@ -2133,15 +2136,15 @@
 
       if updatetime then vim.o.updatetime = 500 end
 
-      if not _G.hi_ids then
-        _G.hi_ids = {}
-      else
-        if _G.hi_ids then
-          if table.getn(_G.hi_ids) > 0 then
-            vim.fn.matchdelete(_G.hi_ids[#_G.hi_ids])
-            table.remove(_G.hi_ids)
-          end
-        end
+      if not vim.w.hi_ids then
+        vim.w.hi_ids = {}
+      end
+
+      if #vim.w.hi_ids > 0 then
+        vim.fn.matchdelete(vim.w.hi_ids[#vim.w.hi_ids])
+        local hi_ids = vim.w.hi_ids
+        table.remove(hi_ids)
+        vim.w.hi_ids = hi_ids
       end
     end
     -- vim.cmd[[hi! AutoHiWord ctermbg=245 ctermfg=NONE guibg=#6b7589 guifg=NONE gui=underline]]
