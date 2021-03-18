@@ -349,9 +349,9 @@
         vim.api.nvim_exec('normal 0', false)
       end
     end
-    map('n', 'H', ':lua Start_line()<CR>', { noremap = true })
+    map('n', 'H', ':lua Start_line()<CR>', { noremap = true, silent = true })
     map('n', 'L', '$', { noremap = true })
-    map('v', 'H', [[:lua Start_line('v')<CR>]], { noremap = true })
+    map('v', 'H', [[:lua Start_line('v')<CR>]], { noremap = true, silent = true })
     map('v', 'L', '$', { noremap = true })
     -- Sudo
     map('c', 'w!!', 'w !sudo tee %', {})
@@ -1641,9 +1641,15 @@
         end
 
         local au_git = {
-          {[[BufEnter */.git/index nnoremap <buffer> <silent> c :WhichKey 'c'<CR>]]};
-          {[[BufEnter */.git/index nnoremap <buffer> <silent> d :WhichKey 'd'<CR>]]};
-          {[[BufEnter */.git/index nnoremap <buffer> <silent> r :WhichKey 'r'<CR>]]};
+          {[[FileType git nnoremap <buffer> <silent> c :WhichKey 'c'<CR>]]};
+          {[[FileType git nnoremap <buffer> <silent> d :WhichKey 'd'<CR>]]};
+          {[[FileType git nnoremap <buffer> <silent> r :WhichKey 'r'<CR>]]};
+          {[[FileType fugitive nnoremap <buffer> <silent> c :WhichKey 'c'<CR>]]};
+          {[[FileType fugitive nnoremap <buffer> <silent> d :WhichKey 'd'<CR>]]};
+          {[[FileType fugitive nnoremap <buffer> <silent> r :WhichKey 'r'<CR>]]};
+          -- {[[BufEnter */.git/index nnoremap <buffer> <silent> c :WhichKey 'c'<CR>]]};
+          -- {[[BufEnter */.git/index nnoremap <buffer> <silent> d :WhichKey 'd'<CR>]]};
+          -- {[[BufEnter */.git/index nnoremap <buffer> <silent> r :WhichKey 'r'<CR>]]};
         }
         augroups({au_git=au_git})
 
@@ -2284,12 +2290,12 @@
   vim.fn['which_key#register']('<Space>', vim.g.lmap)
 -- }}}
 
-
--- Load local config
-vim.api.nvim_exec([[
+-- Load local config {{{
+  vim.api.nvim_exec([[
   try
-    source ~/.vimrc.local
+  source ~/.vimrc.local
   catch
-    " Ignoring
+  " Ignoring
   endtry
-]], true)
+  ]], true)
+-- }}}
