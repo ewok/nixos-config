@@ -935,6 +935,7 @@
       requires = { 'junegunn/fzf', as = 'fzf' },
       as = 'fzf.vim',
       config = function()
+        map('n', '<leader>fb', ':Buffers<CR>', { noremap = true, silent = true })
         map('n', '<leader>of', ':Files<CR>', { noremap = true, silent = true })
         map('n', '<leader>om', ':Maps<CR>', { noremap = true, silent = true })
         map('n', '<leader>oh', ':History<CR>', { noremap = true, silent = true })
@@ -1747,7 +1748,9 @@
     packer.use {
       'hrsh7th/nvim-compe',
       requires = {
-        { 'honza/vim-snippets' },
+        { 'honza/vim-snippets', opt = true },
+      --   { 'hrsh7th/vim-vsnip', opt = true },
+      --   { 'hrsh7th/vim-vsnip-integ', opt = true },
       },
       config = function ()
         vim.cmd [[set shortmess+=c]]
@@ -1771,7 +1774,7 @@
             path = true;
             buffer = true;
             calc = true;
-            vsnip = true;
+            vsnip = false;
             nvim_lsp = true;
             nvim_lua = true;
             spell = true;
@@ -1818,6 +1821,7 @@
           end
         end
 
+        vim.api.nvim_set_keymap("i", "<Tab>", "v:lua.tab_complete()", {expr = true})
         vim.api.nvim_set_keymap("s", "<Tab>", "v:lua.tab_complete()", {expr = true})
         vim.api.nvim_set_keymap("i", "<S-Tab>", "v:lua.s_tab_complete()", {expr = true})
         vim.api.nvim_set_keymap("s", "<S-Tab>", "v:lua.s_tab_complete()", {expr = true})
@@ -2527,6 +2531,7 @@
   lmap.c.r.n = 'Rename'
   lmap.c.f = 'Formatting'
   lmap.f = {name = '+Find' }
+  lmap.f.b = 'Buffer'
   lmap.f.f = 'in-File'
   lmap.f.p = 'Path'
   lmap.f.r = 'Replace'
