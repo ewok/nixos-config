@@ -425,7 +425,7 @@
     augroups({ft_ansible=ft_ansible})
     function load_ansible_ft()
       vim.bo.commentstring = [[# %s]]
-        vim.b.autohiword = true
+      reg_highlight_cword()
       -- vim.b.ale_ansible_ansible_lint_executable = 'ansible_custom'
       -- vim.b.ale_ansible_ansible_lint_command = '%e %t'
       -- vim.b.ale_ansible_yamllint_executable = 'yamllint_custom'
@@ -451,9 +451,13 @@
   -- }}}
   -- Dockerfile {{{
     local ft_dockerfile = {
-      {[[ FileType dockerfile lua require('lspconfig').dockerls.autostart() ]]};
+      {[[ FileType dockerfile lua load_dockerfile_ft() ]]};
     }
     augroups({ft_dockerfile=ft_dockerfile})
+    function load_dockerfile_ft()
+      require('lspconfig').dockerls.autostart() 
+      reg_highlight_cword()
+    end
   -- }}}
   -- Gitignore {{{
     local ft_gitignore = {
@@ -485,14 +489,18 @@
       bmap('n', '<leader>rt', ':silent GoTest<CR>', { silent = true })
       bmap('n', '<leader>rb', ':silent GoBuild<CR>', { silent = true })
       bmap('n', '<leader>rc', ':silent GoCoverageToggle<CR>', { silent = true })
-      vim.b.autohiword = true
+      reg_highlight_cword()
     end
   -- }}}
   -- Json {{{
     local ft_json = {
-      {[[ FileType json lua require('lspconfig').jsonls.autostart() ]]};
+      {[[ FileType json lua load_json_ft() ]]};
     }
     augroups({ft_json=ft_json})
+    function load_json_ft()
+      require('lspconfig').jsonls.autostart() 
+      reg_highlight_cword()
+    end
   -- }}}
   -- Haskell {{{
     -- None yet
@@ -515,6 +523,7 @@
 
     function load_helm_ft()
       bmap('n', '<leader>rr', ':lua render_helm()<CR>', { silent = true })
+      reg_highlight_cword()
     end
   -- }}}
   -- Log {{{
@@ -535,7 +544,6 @@
     function load_lua_ft()
       vim.wo.foldmethod = 'marker'
       require'lspconfig'.sumneko_lua.autostart()
-      vim.b.autohiword = true
     end
   -- }}}
   -- Mail {{{
@@ -624,6 +632,7 @@
       bmap('n', '<leader>zC',':ZettelCapture<CR>', { noremap = true })
       bmap('n', '<leader>wT', ':VimwikiRebuildTags!<cr>:VimwikiGenerateTagLinks<cr><c-l>', { noremap = true })
 
+      reg_highlight_cword()
       vim.b.ft_loaded = true
     end
   -- }}}
@@ -645,7 +654,7 @@
     augroups({ft_nix=ft_nix})
     function load_nix_ft()
       bmap('i', '<C-Enter>', '<ESC>:call SmartCR()<CR>', {})
-      vim.b.autohiword = true
+      reg_highlight_cword()
     end
   -- }}}
   -- Python {{{
@@ -703,8 +712,6 @@
       vim.b.ale_python_pydocstyle_executable = 'pydocstyle'
       vim.b.ale_python_vulture_executable = 'vulture'
 
-      vim.b.autohiword = true
-
       require'lspconfig'.pyright.autostart()
       vim.fn.matchadd('OverLength', '\\%81v', 100)
     end
@@ -728,7 +735,7 @@
       bmap('n', '<leader>rt', ':w |call RunCmd("puppet parser validate")<CR>', {})
       bmap('n', '<leader>rL', ':!gem install puppet puppet-lint r10k yaml-lint<CR>:ALEInfo<CR>', {})
 
-      vim.b.autohiword = true
+      reg_highlight_cword()
     end
   -- }}}
   -- Rust {{{
@@ -749,7 +756,6 @@
       bmap('n', '<leader>rt', ':RustTest<CR>', {})
       bmap('n', '<leader>rL', ':RustFmr<CR>', {})
       vim.b.ale_enabled = 0
-      vim.b.autohiword = true
     end
   -- }}}
   -- Shell {{{
@@ -760,6 +766,7 @@
     function load_shell_ft()
       bmap('n', '<leader>rr', ':w |call RunCmd("bash " . bufname("%"))<CR>', {})
       require('lspconfig').bashls.autostart()
+      reg_highlight_cword()
     end
   -- }}}
   -- SQL {{{
@@ -769,7 +776,7 @@
     augroups({ft_sql=ft_sql})
     function load_sql_ft()
       vim.bo.commentstring = '/* %s */'
-      vim.b.autohiword = true
+      reg_highlight_cword()
     end
   -- }}}
   -- Terraform {{{
@@ -793,7 +800,7 @@
     --       \   'command': '%e',
     --       \   'project_root': getcwd(),
     --       \})
-      vim.b.autohiword = true
+    reg_highlight_cword()
     end
   -- }}}
   -- TODO {{{
@@ -859,7 +866,7 @@
     function load_vim_ft()
       vim.wo.foldmethod = 'marker'
       vim.bo.keywordprg = ':help'
-      vim.b.autohiword = true
+      reg_highlight_cword()
     end
   -- }}}
   -- XML {{{
@@ -876,7 +883,7 @@
     function load_yaml_ft()
       vim.b.ale_yaml_yamllint_executable = 'yamllint_custom'
       vim.b.ale_linters = { 'yamllint' }
-      vim.b.autohiword = true
+      reg_highlight_cword()
     end
   -- }}}
 -- }}}
@@ -916,7 +923,7 @@
           " Change cursor color to make it more visible
           hi! Cursor ctermbg=140 guibg=#B888E2
           hi! Search ctermfg=236 ctermbg=74 guifg=#282c34 guibg=#639EE4
-          hi! AutoHiWord cterm=underline gui=underline
+          hi! AutoHiWord cterm=bold ctermbg=red guibg=#464646
         ]], true)
       end,
     }
@@ -1777,6 +1784,30 @@
         local t = function(str)
           return vim.api.nvim_replace_termcodes(str, true, true, true)
         end
+
+        local check_back_space = function()
+          local col = vim.fn.col('.') - 1
+          if col == 0 or vim.fn.getline('.'):sub(col, col):match('%s') then
+            return true
+          else
+            return false
+          end
+        end
+
+        -- Use (s-)tab to:
+        --- move to prev/next item in completion menuone
+        --- jump to prev/next snippet's placeholder
+        _G.tab_complete = function()
+          if vim.fn.pumvisible() == 1 then
+            return t "<C-n>"
+          elseif vim.fn.call("vsnip#available", {1}) == 1 then
+            return t "<Plug>(vsnip-expand-or-jump)"
+          elseif check_back_space() then
+            return t "<Tab>"
+          else
+            return vim.fn['compe#complete']()
+          end
+        end
         _G.s_tab_complete = function()
           if vim.fn.pumvisible() == 1 then
             return t "<C-p>"
@@ -1808,6 +1839,20 @@
       },
       as = 'lspconfig',
       config = function()
+        local function common_on_attach(client, _)
+          if client.resolved_capabilities.document_highlight then
+            vim.api.nvim_exec([[
+              hi LspReferenceRead cterm=bold ctermbg=red guibg=#464646
+              hi LspReferenceText cterm=bold ctermbg=red guibg=#464646
+              hi LspReferenceWrite cterm=bold ctermbg=red guibg=#464646
+              augroup lsp_document_highlight
+              autocmd! * <buffer>
+              autocmd CursorHold <buffer> lua highlight_doc()
+              autocmd CursorMoved <buffer> lua clear_doc_highlight()
+              augroup END
+            ]], false)
+          end
+        end
         require'lspconfig'.dockerls.setup{
           root_dir = function(fname)
             return require'lspconfig'.util.find_git_ancestor(fname) or require'lspconfig'.util.path.dirname(fname)
@@ -1819,8 +1864,12 @@
             return require'lspconfig'.util.find_git_ancestor(fname) or require'lspconfig'.util.path.dirname(fname)
           end;
         }
-        require'lspconfig'.rust_analyzer.setup{autostart = false}
+        require'lspconfig'.rust_analyzer.setup{
+          on_attach = common_on_attach,
+          autostart = false,
+        }
         require'lspconfig'.pyright.setup{
+          on_attach = common_on_attach,
           autostart = false,
         }
         require'lspconfig'.jsonls.setup{
@@ -1837,6 +1886,7 @@
           end;
         }
         require'lspconfig'.sumneko_lua.setup{
+          on_attach = common_on_attach,
           autostart = false,
           cmd = {os.getenv("HOME") .. "/.nix-profile/bin/lua-language-server"};
           settings = {
@@ -1866,6 +1916,15 @@
         map('n', '<leader>cf', '<cmd>lua vim.lsp.buf.formatting()<CR>', { noremap = true, silent = true })
       end,
     }
+    _G.orig_update_time = vim.o.updatetime
+    function highlight_doc()
+      vim.lsp.buf.document_highlight()
+      vim.o.updatetime = _G.orig_update_time
+    end
+    function clear_doc_highlight()
+      vim.lsp.buf.clear_references()
+      vim.o.updatetime = 300
+    end
   -- }}}
   -- Treesitter {{{
     packer.use {
@@ -2407,9 +2466,7 @@
     _G.orig_update_time = vim.o.updatetime
 
     function highlight_cword()
-      if not vim.b.autohiword then return end
-
-      clear_highlights()
+      clear_cword_highlight()
       vim.o.updatetime = _G.orig_update_time
 
       local cword = vim.fn.expand('<cword>')
@@ -2424,10 +2481,8 @@
         end
       end
     end
-    function clear_highlights(updatetime)
-      if not vim.b.autohiword then return end
-
-      if updatetime then vim.o.updatetime = 500 end
+    function clear_cword_highlight(updatetime)
+      if updatetime then vim.o.updatetime = 300 end
 
       if not vim.w.hi_ids then
         vim.w.hi_ids = {}
@@ -2441,12 +2496,14 @@
       end
     end
     -- vim.cmd[[hi! AutoHiWord ctermbg=245 ctermfg=NONE guibg=#6b7589 guifg=NONE gui=underline]]
-    local au_auto_highlight = {
-      {'CursorHold    * silent! lua highlight_cword()'};
-      {'CursorMoved   * silent! lua clear_highlights(1)'};
-      -- {'Syntax        * call s:SkipDisabledFiletypes()
-    }
-    augroups({au_auto_highlight=au_auto_highlight})
+    function reg_highlight_cword()
+      local au_auto_highlight = {
+        {'CursorHold <buffer> silent! lua highlight_cword()'};
+        {'CursorMoved <buffer> silent! lua clear_cword_highlight(1)'};
+        -- {'Syntax        * call s:SkipDisabledFiletypes()
+      }
+      augroups({au_auto_highlight=au_auto_highlight})
+    end
   -- }}}
 -- }}}
 
