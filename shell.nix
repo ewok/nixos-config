@@ -78,6 +78,10 @@ let
     sudo nix-store --gc
   '';
 
+  nvim-test = writeShellScriptBin "nvim-test" ''
+    nvim -u ./modules/dev/neovim/config/init.lua $@
+  '';
+
 in
   pkgs.mkShell {
     nativeBuildInputs = with pkgs; [
@@ -94,6 +98,8 @@ in
       nix-clean-store
       nix-update-flakes
       nix-test
+
+      nvim-test
     ];
 
     shellHook = ''
