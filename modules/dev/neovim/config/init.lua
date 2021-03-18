@@ -101,7 +101,7 @@
       inccommand = 'nosplit';
 
       -- Buf opts
-      bomb = true;
+      bomb = false;
       copyindent = true;
       expandtab = true;
       fenc = 'utf-8';
