@@ -29,7 +29,6 @@
     api.nvim_buf_set_keymap(api.nvim_get_current_buf(), mode, key, comm, flags)
   end
 -- }}}
---
 
 -- Init Packer Plugin {{{
   local install_path = fn.stdpath('data')..'/site/pack/packer/opt/packer.nvim'
@@ -942,7 +941,7 @@
         local fzf_action = {}
         -- vim.g.fzf_action['ctrl-q'] = 'tab split'
         fzf_action['ctrl-t'] = 'tab split'
-        fzf_action['ctrl-x'] = 'split'
+        fzf_action['ctrl-s'] = 'split'
         fzf_action['ctrl-v'] = 'vsplit'
         vim.g.fzf_action = fzf_action
 
@@ -1419,6 +1418,29 @@
             cd %:h:h
           endfunction
         ]], true)
+      end,
+    }
+  -- }}}
+  -- Better QuickFix {{{
+    packer.use{
+      'kevinhwang91/nvim-bqf',
+      config = function()
+        require('bqf').setup({
+          func_map = {
+            tab = 't',
+            vsplit = 'v',
+            split = 's'
+          },
+          filter = {
+            fzf = {
+              action_for = {
+                ['ctrl-t'] = 'tabedit',
+                ['ctrl-v'] = 'vsplit',
+                ['ctrl-s'] = 'split',
+              }
+            }
+          }
+        })
       end,
     }
   -- }}}
@@ -2063,9 +2085,9 @@
       endif
       let winnr = winnr()
       exec(a:pfx.'open')
-      if winnr() != winnr
-        wincmd p
-      endif
+      " if winnr() != winnr
+      "   wincmd p
+      " endif
     endfunction
 
     function! QFixSwitch(direction)
