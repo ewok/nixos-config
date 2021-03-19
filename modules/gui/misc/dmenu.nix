@@ -58,6 +58,10 @@ let
     ROFI_THEME=android_notification ${pkgs.rofi-bluetooth}/bin/rofi-bluetooth $@
   '';
 
+  todofishCustom = pkgs.writeShellScriptBin "todofi.sh" ''
+    TODOFI_SHORTCUT_NEW="Shift+space" ${pkgs.todofish}/bin/todofi.sh $@
+  '';
+
 in
   {
     config = mkIf gui.enable {
@@ -70,7 +74,7 @@ in
           dmprompt
           rofi
           rofi_run
-          todofish
+          todofishCustom
           rofiBluetoothThemed
         ];
       };
