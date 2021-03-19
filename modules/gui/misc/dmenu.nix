@@ -54,6 +54,10 @@ let
     ${pkgs.rofi}/bin/rofi -icon-theme "Papirus" -show-icons -theme android_notification -terminal ${pkgs.kitty}/bin/kitty $@
   '';
 
+  rofiBluetoothThemed = pkgs.writeShellScriptBin "rofi-bluetooth" ''
+    ROFI_THEME=android_notification ${pkgs.rofi-bluetooth}/bin/rofi-bluetooth $@
+  '';
+
 in
   {
     config = mkIf gui.enable {
@@ -67,7 +71,7 @@ in
           rofi
           rofi_run
           todofish
-          rofi-bluetooth
+          rofiBluetoothThemed
         ];
       };
     };
