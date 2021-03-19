@@ -150,17 +150,29 @@ bindsym $mod_c+Print exec --no-startup-id flameshot gui -p ~/Pictures/Screenshot
 
 # Other
 # bindsym Shift+space exec "szAnswer=$(zenity --entry --text \\"Todoist: Add Task\\" --entry-text \\"\\"); td $szAnswer && dunstify \\"Task added\\" || dunstify -u critical \\"Error\\""
-bindsym Shift+space exec "add_td"
-bindsym Control+period exec --no-startup-id "/opt/enpass/Enpass showassistant"
+bindsym Shift+space exec "todofi.sh"
+# bindsym Control+period exec --no-startup-id "/opt/enpass/Enpass showassistant"
 bindsym --release F12 exec --no-startup-id kill -s USR1 $(pidof deadd-notification-center)
 
 # Start Applications
+bindsym $mod_a+grave mode "$mode_rofi"
+set $mode_rofi  (k)ill (b)luetooth (c)alc
+mode "$mode_rofi" {
+        bindsym b exec rofi-bluetooth, mode "default"
+        bindsym k exec dmkill, mode "default"
+        bindsym c exec calc, mode "default"
+
+        # exit resize mode: Enter or Escape
+        bindsym Return mode "default"
+        bindsym Escape mode "default"
+        bindsym Ctrl+m mode "default"
+}
+
+# Start Applications
 bindsym $mod_a+o mode "$mode_apps"
-set $mode_apps  (m)essanger e(d)ucation (b)rowser (c)alc (p)avu (t)asks&calendar (k)ill
+set $mode_apps  (m)essanger e(d)ucation (b)rowser (p)avu (t)asks&calendar
 mode "$mode_apps" {
         bindsym b exec qutebrowser, mode "default"
-        bindsym c exec calc, mode "default"
-        bindsym k exec dmkill, mode "default"
         bindsym d mode "$edu_apps"
         bindsym m mode "$im_apps"
         bindsym p exec pavucontrol-qt, mode "default"

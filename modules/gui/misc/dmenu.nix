@@ -66,6 +66,8 @@ in
           dmprompt
           rofi
           rofi_run
+          todofish
+          rofi-bluetooth
         ];
       };
     };
