@@ -1419,11 +1419,15 @@
         execute '!tmux set status off'
         execute([[!tmux list-panes -F '\#F' | grep -q Z || tmux resize-pane -Z]])
       end
-      vim.o.showmode = false
-      vim.o.showcmd = false
-      vim.o.scrolloff = 999
-      vim.wo.wrap = true
-      execute('Limelight')
+      require('galaxyline').disable_galaxyline()
+      vim.defer_fn(function()
+        vim.wo.statusline = ''
+        vim.o.showmode = false
+        vim.o.showcmd = false
+        vim.o.scrolloff = 999
+        vim.wo.wrap = true
+        vim.call('indent_guides#disable')
+      end, 1000)
     end
 
     _G.goyo_leave = function()
@@ -1431,11 +1435,15 @@
         execute '!tmux set status on'
         execute [[!tmux list-panes -F '\#F' | grep -q Z && tmux resize-pane -Z]]
       end
-      vim.o.showmode = true
-      vim.o.showcmd = true
-      vim.o.scrolloff = 5
-      vim.wo.wrap = false
-      execute('Limelight!')
+      require('galaxyline').load_galaxyline()
+      require('galaxyline').galaxyline_augroup()
+      vim.defer_fn(function()
+        vim.o.showmode = true
+        vim.o.showcmd = true
+        vim.o.scrolloff = 5
+        vim.wo.wrap = false
+        vim.call('indent_guides#enable')
+      end, 1000)
     end
 
     local au_goyo = {
