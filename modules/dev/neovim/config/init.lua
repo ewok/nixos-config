@@ -359,6 +359,9 @@
     map('v', 'L', '$', { noremap = true })
     -- Sudo
     map('c', 'w!!', 'w !sudo tee %', {})
+    --- Quick escape insert mode
+    -- map('i', 'jj', '<ESC>jj', {noremap = true, silent = true})
+    -- map('i', 'kk', '<ESC>kk', {noremap = true, silent = true})
   -- }}}
   -- Settings options {{{
     map('n', '<leader>osw', ':set wrap<CR>', {})
@@ -380,8 +383,8 @@
   -- }}}
   -- Packer {{{
     map('n', '<leader>pu', ':PackerUpdate<CR>', {})
-    map('n', '<leader>pc', ':PackerClean<CR>', {})
-    map('n', '<leader>pC', ':PackerCompile<CR>', {})
+    map('n', '<leader>pC', ':PackerClean<CR>', {})
+    map('n', '<leader>pc', ':PackerCompile<CR>', {})
     map('n', '<leader>pi', ':PackerInstall<CR>', {})
     map('n', '<leader>ps', ':PackerSync<CR>', {})
   -- }}}
