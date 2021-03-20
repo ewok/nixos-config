@@ -236,15 +236,20 @@
     augroups({au_rnu=au_rnu})
   -- }}}
   -- RunCmd {{{
-    exec([[
-    function! RunCmd(cmd)
-      exe "!" . a:cmd
-    endfunction
-    ]], true)
+    _G.run_cmd = function(command)
+      execute('!'..command)
+    end
   -- }}}
 -- }}}
 
 -- Helpers {{{
+  -- _G.smart_cr = function()
+  --   local line = vim.fn.getline('.')
+  --   -- if string.find(line, ';\n') then
+  --     vim.fn.normal([[o\\<Space>\\<BS>\\<Esc>]])
+  --     vim.fn['startinsert!']()
+  --   -- end
+  -- end
   exec([[
   function SmartCR()
     let line = getline('.')
@@ -1490,15 +1495,11 @@
     }
 
     if fn.exists('$TMUX') == 1 then
-      exec([[
-        " Override RunCmd command
-        function! RunCmd(cmd)
-          mark z
-          exe VimuxRunCommand(a:cmd)
-          exe "normal! g`z"
-          delmark z
-        endfunction
+      _G.run_cmd = function(command)
+        execute('VimuxRunCommand("'..command..'")')
+      end
 
+      exec([[
         function! CloseRunner()
           if exists('g:VimuxRunnerIndex')
             let choice = confirm("Close runner?", "\n&yes\n&no\nor &detach", 2)
