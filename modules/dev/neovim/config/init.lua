@@ -1011,13 +1011,10 @@
         local gl = require('galaxyline')
         local gls = gl.section
         local condition = require('galaxyline.condition')
-        local vcs = require('galaxyline.provider_vcs')
         local buffer = require('galaxyline.provider_buffer')
         local fileinfo = require('galaxyline.provider_fileinfo')
-        local diagnostic = require('galaxyline.provider_diagnostic')
         local lspclient = require('galaxyline.provider_lsp')
         local icons = require('galaxyline.provider_fileinfo').define_file_icon()
-        -- local whitespace = require('galaxyline.provider_whitespace')
 
          local colors = {
           black     = '#35383F',
@@ -1070,14 +1067,14 @@
           },
           {
             GitBranch = {
-              provider = function() return string.format('%s ', vcs.get_git_branch()) end,
+              provider = 'GitBranch',
               condition = function() return condition.check_git_workspace() and condition.checkwidth() end,
               highlight = {colors.bwhite, colors.bblack}
             }
           },
           {
             DiffAdd = {
-              provider = vcs.diff_add,
+              provider = 'DiffAdd',
               icon = '+',
               condition = function() return condition.check_git_workspace() and condition.checkwidth() end,
               highlight = {colors.green, colors.bblack}
@@ -1085,7 +1082,7 @@
           },
           {
             DiffModified = {
-              provider = vcs.diff_modified,
+              provider = 'DiffModified',
               icon = '~',
               condition = function() return condition.check_git_workspace() and condition.checkwidth() end,
               highlight = {colors.yellow, colors.bblack}
@@ -1093,7 +1090,7 @@
           },
           {
             DiffRemove = {
-              provider = vcs.diff_remove,
+              provider = 'DiffRemove',
               icon = '-',
               condition = function() return condition.check_git_workspace() and condition.checkwidth() end,
               highlight = {colors.red, colors.bblack}
@@ -1135,7 +1132,7 @@
         gls.right = {
           {
             DiagnosticError = {
-              provider = diagnostic.get_diagnostic_error,
+              provider = 'DiagnosticError',
               icon = '  ',
               condition = function() return condition.check_active_lsp() and condition.checkwidth() end,
               highlight = {colors.red, colors.black}
@@ -1143,7 +1140,7 @@
           },
           {
             DiagnosticWarn = {
-              provider = diagnostic.get_diagnostic_warn,
+              provider = 'DiagnosticWarn',
               icon = '  ',
               condition = function() return condition.check_active_lsp() and condition.checkwidth() end,
               highlight = {colors.yellow, colors.black}
@@ -1151,7 +1148,7 @@
           },
           {
             DiagnosticHint = {
-              provider = diagnostic.get_diagnostic_hint,
+              provider = 'DiagnosticHint',
               icon = '  ',
               condition = function() return condition.check_active_lsp() and condition.checkwidth() end,
               highlight = {colors.cyan, colors.black}
@@ -1159,7 +1156,7 @@
           },
           {
             DiagnosticInfo = {
-              provider = diagnostic.get_diagnostic_info,
+              provider = 'DiagnosticInfo',
               icon = '  ',
               condition = function() return condition.check_active_lsp() and condition.checkwidth() end,
               highlight = {colors.cyan, colors.black}
@@ -1196,7 +1193,7 @@
           },
           {
             LineInfo = {
-              provider = function() return string.format('   %s ', fileinfo.line_column()) end,
+              provider = function() return string.format(' %s %s ', fileinfo.current_line_percent(),fileinfo.line_column()) end,
               highlight = {colors.black, colors.white}
             }
           },
