@@ -1,7 +1,7 @@
 -- vim: ts=2 sw=2 sts=2
 
 -- Helpers {{{
-  function augroups(definitions)
+  _G.augroups = function(definitions)
     for group_name, definition in pairs(definitions) do
       vim.api.nvim_command('augroup '..group_name)
       vim.api.nvim_command('autocmd!')
@@ -24,7 +24,7 @@
   local oget = api.nvim_get_option
   -- set
   local oset = api.nvim_set_option
-  map = api.nvim_set_keymap
+  _G.map = api.nvim_set_keymap
   local function bmap(mode, key, comm, flags)
     api.nvim_buf_set_keymap(api.nvim_get_current_buf(), mode, key, comm, flags)
   end
@@ -197,7 +197,7 @@
   -- Dealing with largefiles  {{{
     -- Protect large files from sourcing and other overhead.
     vim.g.large_file_size = 1024*1024*20
-    function adj_if_largefile()
+    _G.adj_if_largefile = function()
       local fname = vim.fn.expand('<afile>')
       if vim.fn.getfsize(fname) > vim.g.large_file_size then
         if vim.fn.input('Large file detected, t-off features?(y/n )', 'y') == 'y' then
@@ -218,12 +218,12 @@
     augroups({au_largefile=au_largefile})
   -- }}}
   -- Number Toggle {{{
-    function rnu_on()
+    _G.rnu_on = function()
       if oget('showcmd') then
         vim.wo.rnu = true
       end
     end
-    function rnu_off()
+    _G.rnu_off = function()
       if oget('showcmd') then
         vim.wo.rnu = false
       end
@@ -333,7 +333,7 @@
     map('n', 'n', 'nzzzv', { noremap = true })
     map('n', 'N', 'Nzzzv', { noremap = true })
 
-    function Start_line(mode)
+    _G.start_line = function(mode)
       mode = mode or 'n'
       if mode == 'v' then
         vim.api.nvim_exec('normal! gv', false)
@@ -348,9 +348,9 @@
         vim.api.nvim_exec('normal 0', false)
       end
     end
-    map('n', 'H', ':lua Start_line()<CR>', { noremap = true, silent = true })
+    map('n', 'H', ':lua start_line()<CR>', { noremap = true, silent = true })
     map('n', 'L', '$', { noremap = true })
-    map('v', 'H', [[:lua Start_line('v')<CR>]], { noremap = true, silent = true })
+    map('v', 'H', [[:lua start_line('v')<CR>]], { noremap = true, silent = true })
     map('v', 'L', '$', { noremap = true })
     -- Sudo
     map('c', 'w!!', 'w !sudo tee %', {})
@@ -423,7 +423,7 @@
       {[[ FileType yaml.ansible lua load_ansible_ft() ]]}
     }
     augroups({ft_ansible=ft_ansible})
-    function load_ansible_ft()
+    _G.load_ansible_ft = function()
       vim.bo.commentstring = [[# %s]]
       reg_highlight_cword()
       -- vim.b.ale_ansible_ansible_lint_executable = 'ansible_custom'
@@ -454,8 +454,8 @@
       {[[ FileType dockerfile lua load_dockerfile_ft() ]]};
     }
     augroups({ft_dockerfile=ft_dockerfile})
-    function load_dockerfile_ft()
-      require('lspconfig').dockerls.autostart() 
+    _G.load_dockerfile_ft = function()
+      require('lspconfig').dockerls.autostart()
       reg_highlight_cword()
     end
   -- }}}
@@ -484,7 +484,7 @@
       {[[ FileType go lua load_go_ft() ]]}
     }
     augroups({ft_go=ft_go})
-    function load_go_ft()
+    _G.load_go_ft = function()
       bmap('n', '<leader>rr', ':silent GoRun<CR>', { silent = true })
       bmap('n', '<leader>rt', ':silent GoTest<CR>', { silent = true })
       bmap('n', '<leader>rb', ':silent GoBuild<CR>', { silent = true })
@@ -492,13 +492,25 @@
       reg_highlight_cword()
     end
   -- }}}
+  -- Java {{{
+    packer.use{
+      'mfussenegger/nvim-jdtls',
+      -- config = function()
+      --   require('jdtls').start_or_attach({
+      --     on_attach = require'lsp'.common_on_attach,
+      --     cmd = {JAVA_LS_EXECUTABLE},
+      --     root_dir = require('jdtls.setup').find_root({'gradle.build', 'pom.xml'})
+      --   })
+      -- end,
+    }
+  -- }}}
   -- Json {{{
     local ft_json = {
       {[[ FileType json lua load_json_ft() ]]};
     }
     augroups({ft_json=ft_json})
-    function load_json_ft()
-      require('lspconfig').jsonls.autostart() 
+    _G.load_json_ft = function()
+      require('lspconfig').jsonls.autostart()
       reg_highlight_cword()
     end
   -- }}}
@@ -516,12 +528,12 @@
     }
     augroups({ft_helm=ft_helm})
 
-    function render_helm()
+    _G.render_helm = function()
       cmd [[write]]
       execute '!helm template ./ --output-dir .out'
     end
 
-    function load_helm_ft()
+    _G.load_helm_ft = function()
       bmap('n', '<leader>rr', ':lua render_helm()<CR>', { silent = true })
       reg_highlight_cword()
     end
@@ -541,7 +553,7 @@
       {[[ FileType lua lua load_lua_ft() ]]}
     }
     augroups({ft_lua=ft_lua})
-    function load_lua_ft()
+    _G.load_lua_ft = function()
       vim.wo.foldmethod = 'marker'
       require'lspconfig'.sumneko_lua.autostart()
     end
@@ -551,7 +563,7 @@
       {[[ FileType mail lua load_mail_ft() ]]}
     }
     augroups({ft_mail=ft_mail})
-    function load_mail_ft()
+    _G.load_mail_ft = function()
       bmap('n', '<leader>ry', ':%!pandoc -f markdown_mmd -t html<CR>', {})
       bmap('n', '<leader>rr', ':LivedownPreview<CR>', { silent = true })
       bmap('n', '<leader>rt', ':LivedownToggle<CR>', { silent = true })
@@ -585,7 +597,7 @@
       {[[ FileType markdown lua load_md_ft() ]]};
     }
     augroups({ft_md=ft_md})
-    function  load_md_ft()
+    _G. load_md_ft = function()
       if vim.b.ft_loaded then return end
 
       vim.wo.foldlevel = 2
@@ -652,7 +664,7 @@
       {[[ FileType nix lua load_nix_ft() ]]};
     }
     augroups({ft_nix=ft_nix})
-    function load_nix_ft()
+    _G.load_nix_ft = function()
       bmap('i', '<C-Enter>', '<ESC>:call SmartCR()<CR>', {})
       reg_highlight_cword()
     end
@@ -677,16 +689,20 @@
       {[[ FileType python lua load_python_ft() ]]};
     }
     augroups({ft_python=ft_python})
-    function load_python_ft()
+    _G.load_python_ft = function()
       vim.g.virtualenv_directory = os.getenv('PWD')
       vim.wo.foldmethod = 'indent'
       vim.wo.foldlevel = 0
       vim.wo.foldnestmax = 2
       vim.bo.commentstring = '# %s'
+      vim.bo.tabstop = 4
+      vim.bo.softtabstop = 4
+      vim.bo.expandtab = true
+      vim.bo.shiftwidth = 4
 
-      bmap('n', '<leader>rr', ':w|call RunCmd("python " . bufname("%"))<CR>', {})
-      bmap('n', '<leader>rt', ':w|call RunCmd("python -m unittest " . bufname("%"))<CR>', {})
-      bmap('n', '<leader>rT', ':w|call RunCmd("python -m unittest")<CR>', {})
+      bmap('n', '<leader>rr', ':w|lua run_cmd("python " .. vim.fn.bufname("%"))<CR>', {})
+      bmap('n', '<leader>rt', ':w|lua run_cmd("python -m unittest " .. vim.fn.bufname("%"))<CR>', {})
+      bmap('n', '<leader>rT', ':w|lua run_cmd("python -m unittest")<CR>', {})
       bmap('n', '<leader>rL', ':!pip install flake8 mypy pylint bandit pydocstyle pudb jedi<CR>:ALEInfo<CR>', {})
 
       bmap('n', '<leader>rb', 'ofrom pudb import set_trace; set_trace()<esc>', {})
@@ -729,10 +745,10 @@
       {[[ FileType puppet lua load_puppet_ft() ]]};
     }
     augroups({ft_puppet=ft_puppet})
-    function load_puppet_ft()
+    _G.load_puppet_ft = function()
       vim.bo.commentstring = '# %s'
-      bmap('n', '<leader>rr', ':w |call RunCmd("puppet " . bufname("%"))<CR>', {})
-      bmap('n', '<leader>rt', ':w |call RunCmd("puppet parser validate")<CR>', {})
+      bmap('n', '<leader>rr', ':w |lua run_cmd("puppet " .. vim.fn.bufname("%"))<CR>', {})
+      bmap('n', '<leader>rt', ':w |lua run_cmd("puppet parser validate")<CR>', {})
       bmap('n', '<leader>rL', ':!gem install puppet puppet-lint r10k yaml-lint<CR>:ALEInfo<CR>', {})
 
       reg_highlight_cword()
@@ -750,7 +766,7 @@
       {[[ FileType rust lua load_rust_ft() ]]};
     }
     augroups({ft_rust=ft_rust})
-    function load_rust_ft()
+    _G.load_rust_ft = function()
       bmap('i', '<C-Enter>', '<ESC>:call SmartCR()<CR>', {})
       bmap('n', '<leader>rr', ':RustRun<CR>', {})
       bmap('n', '<leader>rt', ':RustTest<CR>', {})
@@ -763,8 +779,8 @@
       {[[ FileType sh lua load_shell_ft() ]]};
     }
     augroups({ft_shell=ft_shell})
-    function load_shell_ft()
-      bmap('n', '<leader>rr', ':w |call RunCmd("bash " . bufname("%"))<CR>', {})
+    _G.load_shell_ft = function()
+      bmap('n', '<leader>rr', ':w |lua run_cmd("bash " .. vim.fn.bufname("%"))<CR>', {})
       require('lspconfig').bashls.autostart()
       reg_highlight_cword()
     end
@@ -774,7 +790,7 @@
       {[[ FileType sql lua load_sql_ft() ]]};
     }
     augroups({ft_sql=ft_sql})
-    function load_sql_ft()
+    _G.load_sql_ft = function()
       vim.bo.commentstring = '/* %s */'
       reg_highlight_cword()
     end
@@ -792,7 +808,7 @@
       {[[ FileType terraform lua load_terraform_ft() ]]};
     }
     augroups({ft_terraform=ft_terraform})
-    function load_terraform_ft()
+    _G.load_terraform_ft = function()
     -- call ale#linter#Define('terraform', {
     --       \   'name': 'terraform-lsp',
     --       \   'lsp': 'stdio',
@@ -809,7 +825,7 @@
       {[[ FileType todo lua load_todo_ft() ]]};
     }
     augroups({ft_todo=ft_todo})
-    function load_todo_ft()
+    _G.load_todo_ft = function()
       exec([[
         hi TODO guifg=Yellow ctermfg=Yellow term=Bold
         hi FIXME guifg=Red ctermfg=Red term=Bold
@@ -863,7 +879,7 @@
       {[[ FileType vim lua load_vim_ft() ]]};
     }
     augroups({ft_vim=ft_vim})
-    function load_vim_ft()
+    _G.load_vim_ft = function()
       vim.wo.foldmethod = 'marker'
       vim.bo.keywordprg = ':help'
       reg_highlight_cword()
@@ -880,7 +896,7 @@
       {[[ FileType yaml lua load_yaml_ft() ]]};
     }
     augroups({ft_yaml=ft_yaml})
-    function load_yaml_ft()
+    _G.load_yaml_ft = function()
       vim.b.ale_yaml_yamllint_executable = 'yamllint_custom'
       vim.b.ale_linters = { 'yamllint' }
       reg_highlight_cword()
@@ -1393,7 +1409,7 @@
       end,
     }
 
-    function goyo_enter()
+    _G.goyo_enter = function()
       if fn.executable('tmux') == 1 and fn.exists('$TMUX') == 1 then
         execute '!tmux set status off'
         execute([[!tmux list-panes -F '\#F' | grep -q Z || tmux resize-pane -Z]])
@@ -1405,7 +1421,7 @@
       execute('Limelight')
     end
 
-    function goyo_leave()
+    _G.goyo_leave = function()
       if fn.executable('tmux') == 1 and fn.exists('$TMUX') == 1 then
         execute '!tmux set status on'
         execute [[!tmux list-panes -F '\#F' | grep -q Z && tmux resize-pane -Z]]
@@ -1430,7 +1446,7 @@
     for k,v in pairs(vim.g.myLangList) do
       index[v]=k
     end
-    function toggle_spell()
+    _G.toggle_spell = function()
       if not vim.b.myLang then
         if vim.wo.spell then
           vim.b.myLang = index[vim.bo.spelllang]
@@ -1467,8 +1483,6 @@
 
     packer.use {
       'benmills/vimux',
-      -- cmd = { 'RunCmd' },
-      -- opt = true,
       config = function ()
         vim.g.VimuxHeight = "20"
         vim.g.VimuxUseNearest = 0
@@ -1541,7 +1555,7 @@
       'dhruvasagar/vim-zoom'
     }
     map('n', '<leader>Z', ':lua zoom_toggle()<CR>', {})
-    function zoom_toggle()
+    _G.zoom_toggle = function()
 
       local zoom_nerd = false
       local zoom_tag = false
@@ -1639,7 +1653,7 @@
         -- Zettel part
         vim.g.zettel_format = "%y%m%d-%H%M-%title"
         vim.g.zettel_default_mappings = 0
-        function update_back_links()
+        _G.update_back_links = function()
           local bline = vim.fn.search('# Backlinks', 'wnb')
           if bline ~= 0 then
             vim.cmd (bline..[[,$delete]])
@@ -1921,11 +1935,11 @@
       end,
     }
     _G.orig_update_time = vim.o.updatetime
-    function highlight_doc()
+    _G.highlight_doc = function()
       vim.lsp.buf.document_highlight()
       vim.o.updatetime = _G.orig_update_time
     end
-    function clear_doc_highlight()
+    _G.clear_doc_highlight = function()
       vim.lsp.buf.clear_references()
       vim.o.updatetime = 300
     end
@@ -1974,11 +1988,11 @@
         {'shumphrey/fugitive-gitlab.vim'},
       },
       config = function()
-        function git_show_block_history()
+        _G.git_show_block_history = function()
           vim.cmd[[exe ":G log -L " . string(getpos("'<'")[1]) . "," . string(getpos("'>'")[1]) . ":%"]]
         end
 
-        function git_show_line_history()
+        _G.git_show_line_history = function()
           vim.cmd[[exe ":G log -U1 -L " . string(getpos('.')[1]) . ",+1:%"]]
         end
 
@@ -2469,7 +2483,7 @@
   -- AutoHighlight Current Word {{{
     _G.orig_update_time = vim.o.updatetime
 
-    function highlight_cword()
+    _G.highlight_cword = function()
       clear_cword_highlight()
       vim.o.updatetime = _G.orig_update_time
 
@@ -2485,7 +2499,7 @@
         end
       end
     end
-    function clear_cword_highlight(updatetime)
+    _G.clear_cword_highlight = function(updatetime)
       if updatetime then vim.o.updatetime = 300 end
 
       if not vim.w.hi_ids then
@@ -2500,7 +2514,7 @@
       end
     end
     -- vim.cmd[[hi! AutoHiWord ctermbg=245 ctermfg=NONE guibg=#6b7589 guifg=NONE gui=underline]]
-    function reg_highlight_cword()
+    _G.reg_highlight_cword = function()
       local au_auto_highlight = {
         {'CursorHold <buffer> silent! lua highlight_cword()'};
         {'CursorMoved <buffer> silent! lua clear_cword_highlight(1)'};
