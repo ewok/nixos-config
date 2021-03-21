@@ -18,7 +18,7 @@ in
       };
       port = mkOption {
         type = types.int;
-        default = 0;
+        default = 44662;
         description = "Listening port. 0 - random.";
       };
       dirWhitelist = mkOption {
@@ -64,6 +64,8 @@ in
     users.users.rslsync = {
       extraGroups = [ "users" ];
     };
+
+    networking.firewall.extraCommands = "iptables -A nixos-fw -p tcp -m tcp --dport ${toString cfg.port} -j nixos-fw-accept";
 
     services.resilio = {
       enable = true;
