@@ -59,7 +59,9 @@ let
   '';
 
   todofishCustom = pkgs.writeShellScriptBin "todofi.sh" ''
-    TODOFI_SHORTCUT_NEW="Shift+space" ${pkgs.todofish}/bin/todofi.sh $@
+    export TODOFI_SHORTCUT_NEW="Shift+space"
+    # export TODOFI_SHORTCUT_DONE="Ctrl+space"
+    ${pkgs.todofish}/bin/todofi.sh $@
   '';
 
 in

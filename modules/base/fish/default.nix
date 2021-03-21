@@ -141,10 +141,11 @@ in
 
         interactiveShellInit = let
           startup-script = pkgs.writeShellScript "startup-script.sh" ''
-            if [[ ! -z "$TMUX" ]]
+            if [[ -n "$TMUX" ]]
             then
               systemctl --state=failed --no-legend
               systemctl --user --state=failed --no-legend
+              todo ls
             else
               SESS=$(tmux list-sessions | grep -v attached | cut -d: -f1 | head -n 1)
               if [[ -n "$SESS" ]]
