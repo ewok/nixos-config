@@ -5,7 +5,7 @@ let
   username = config.properties.user.name;
 
   todo = pkgs.writeShellScriptBin "todo" ''
-    ROFI_THEME=android_notification todo.sh $@
+    todo.sh $@
   '';
 in
   {
