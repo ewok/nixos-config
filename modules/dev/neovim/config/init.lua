@@ -1404,6 +1404,7 @@
       requires = {
         {
           'junegunn/limelight.vim',
+          opt = true,
           cmd = { 'Limelight' },
         }
       },
@@ -1414,6 +1415,8 @@
         vim.g.goyo_height = "90%"
       end,
     }
+
+    vim.cmd[[packadd limelight.vim]]
 
     _G.goyo_enter = function()
       if fn.executable('tmux') == 1 and fn.exists('$TMUX') == 1 then
@@ -1428,6 +1431,7 @@
         vim.o.scrolloff = 999
         vim.wo.wrap = true
         vim.call('indent_guides#disable')
+        vim.cmd('Limelight')
       end, 1000)
     end
 
@@ -1444,6 +1448,7 @@
         vim.o.scrolloff = 5
         vim.wo.wrap = false
         vim.call('indent_guides#enable')
+        vim.cmd('Limelight!')
       end, 1000)
     end
 
