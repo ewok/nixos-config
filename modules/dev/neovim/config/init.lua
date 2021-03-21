@@ -1392,7 +1392,8 @@
     packer.use {
       'preservim/tagbar',
       config = function ()
-        map('n', '<leader>ot', ':TagbarToggle<CR>', { noremap = true })
+        -- I don't use it yet
+        -- map('n', '<leader>ot', ':TagbarToggle<CR>', { noremap = true })
         map('n', '<leader>ft', ':TagbarOpenAutoClose<CR>', { noremap = true })
       end,
     }
@@ -2190,7 +2191,7 @@
 -- Scripts {{{
   -- TODOs {{{
     vim.api.nvim_exec([[
-      nnoremap <silent> <leader>od :call OpenToDo()<CR>
+      nnoremap <silent> <leader>ot :call OpenToDo()<CR>
       function! OpenToDo()
         silent! vsplit TODO.md
         nnoremap <buffer> q :x<CR>
