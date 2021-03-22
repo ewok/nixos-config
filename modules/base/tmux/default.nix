@@ -4,7 +4,7 @@ let
   base = config.modules.base;
   username = config.properties.user.name;
 
-  t  = pkgs.writeScriptBin "t" ''
+  tm  = pkgs.writeScriptBin "tm" ''
     #!${pkgs.bash}/bin/bash
     if [[ $1 == "" ]];then
       SESSION="main"
@@ -36,7 +36,7 @@ in
     home-manager.users."${username}" = {
 
       home.packages = [
-        t
+        tm
         tssh
       ];
 

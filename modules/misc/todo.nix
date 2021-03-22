@@ -4,7 +4,8 @@ let
   gui = config.modules.gui;
   username = config.properties.user.name;
 
-  todo = pkgs.writeShellScriptBin "todo" ''
+  todo = pkgs.writeShellScriptBin "t" ''
+    export TODOTXT_VERBOSE=0
     todo.sh $@
   '';
 in
