@@ -1025,22 +1025,35 @@
   -- }}}
   -- Indent-guides {{{
     packer.use {
-      'nathanaelkane/vim-indent-guides',
-      opt = true,
-      as = 'vim-indent',
-      setup = function ()
-        vim.g.indent_guides_auto_colors = 0
-        vim.g.indent_guides_start_level = 2
-        vim.g.indent_guides_guide_size = 1
-        vim.g.indent_guides_default_mapping = 0
-        vim.api.nvim_exec([[
-          hi! IndentGuidesOdd  ctermbg=237
-          hi! IndentGuidesEven ctermbg=236
-        ]], true)
+      'glepnir/indent-guides.nvim',
+      -- opt = true,
+      as = 'indent-guides',
+      -- setup = function ()
+      --   vim.g.indent_guides_auto_colors = 0
+      --   vim.g.indent_guides_start_level = 2
+      --   vim.g.indent_guides_guide_size = 1
+      --   vim.g.indent_guides_default_mapping = 0
+      --   vim.api.nvim_exec([[
+      --     hi! IndentGuidesOdd  ctermbg=237
+      --     hi! IndentGuidesEven ctermbg=236
+      --   ]], true)
+      -- end,
+      config = function()
+        require('indent_guides').setup({
+          -- indent_levels = 30;
+          -- indent_guide_size = 1;
+          indent_start_level = 2;
+          indent_space_guides = true;
+          indent_tab_guides = false;
+          indent_soft_pattern = '\\s';
+          exclude_filetypes = {'help','dashboard','dashpreview','nerdtree','vista','sagahover'};
+          even_colors = { fg ='#2a3834',bg='#332b36' };
+          odd_colors = {fg='#332b36',bg='#2a3834'};
+        })
       end,
     }
-    vim.cmd [[packadd vim-indent]]
-    vim.cmd [[ :IndentGuidesEnable ]]
+    -- vim.cmd [[packadd inde]]
+    -- vim.cmd [[ :IndentGuidesEnable ]]
   -- }}}
   -- Lightline {{{
     packer.use {
@@ -1238,7 +1251,7 @@
           },
         }
 
-        gl.short_line_list = {'nerdtree','tagbar'}
+        gl.short_line_list = {'nerdtree','tagbar','vista'}
         gls.short_line_right = {
           {
             FileTypeShort = {
@@ -1274,6 +1287,8 @@
                   if filetype == 'nerdtree' then
                     return ' Explorer '
                   elseif filetype == 'tagbar' then
+                    return ' Tags '
+                  elseif filetype == 'vista' then
                     return ' Tags '
                   end
                 else
@@ -1425,12 +1440,33 @@
     }
   -- }}}
   -- Tagbar {{{
+    -- packer.use {
+    --   'preservim/tagbar',
+    --   config = function ()
+    --     -- I don't use it yet
+    --     -- map('n', '<leader>ot', ':TagbarToggle<CR>', { noremap = true })
+    --     map('n', '<leader>ft', ':TagbarOpenAutoClose<CR>', { noremap = true })
+    --   end,
+    -- }
     packer.use {
-      'preservim/tagbar',
+      'liuchengxu/vista.vim',
       config = function ()
-        -- I don't use it yet
-        -- map('n', '<leader>ot', ':TagbarToggle<CR>', { noremap = true })
-        map('n', '<leader>ft', ':TagbarOpenAutoClose<CR>', { noremap = true })
+        map('n', '<leader>ov', ':Vista show<CR>', { noremap = true })
+        map('n', '<leader>ft', ':Vista finder<CR>', { noremap = true })
+        vim.g.vista_close_on_jump = 1
+        local vista_executive_for = {
+          vimwiki = 'markdown',
+          pandoc = 'markdown',
+          markdown = 'toc',
+          python = 'nvim_lsp',
+          rust = 'nvim_lsp',
+          yaml = 'nvim_lsp',
+          ['ansible.yaml'] = 'nvim_lsp',
+          json = 'nvim_lsp',
+          lua = 'nvim_lsp',
+          sh = 'nvim_lsp'
+        }
+        vim.g.vista_executive_for = vista_executive_for
       end,
     }
   -- }}}
@@ -1616,8 +1652,13 @@
         zoom_nerd = true
       end
 
-      if vim.t.tagbar_buf_name and fn.bufwinnr(vim.t.tagbar_buf_name) ~= -1 then
-        cmd 'TagbarClose'
+      -- if vim.t.tagbar_buf_name and fn.bufwinnr(vim.t.tagbar_buf_name) ~= -1 then
+      --   cmd 'TagbarClose'
+      --   zoom_tag = true
+      -- end
+
+      if fn.bufwinnr('vista') ~= -1 then
+        cmd 'Vista!'
         zoom_tag = true
       end
 
@@ -1629,7 +1670,8 @@
       end
 
       if zoom_tag then
-        cmd 'TagbarOpen'
+        cmd 'Vista'
+        execute ':wincmd p'
       end
 
     end
@@ -2265,6 +2307,10 @@
         exe ':tabdo TagbarClose'
         " endif
 
+        " if bufwinnr('vista') != -1)
+        exe ':tabdo Vista!'
+        " endif
+
         if (exists("t:coc_explorer_tab_id") && bufwinnr('coc-explorer') != -1)
           exe ':tabdo exe bufwinnr("coc-explorer") "wincmd q"'
         endif
@@ -2417,7 +2463,7 @@
 
     _G.auto_save = function ()
       if vim.bo.modified then
-        vim.api.nvim_command('write')
+        vim.api.nvim_command('silent! write')
         if not vim.bo.modified then
           print("(AutoSave) saved at ".. vim.fn.strftime("%H:%M:%S"))
           auto_save_checkpoint = os.time()
@@ -2429,9 +2475,9 @@
       local reg_auto_save = {
         {('CursorHold <buffer> lua auto_save_trigger()')};
         {('CursorHoldI <buffer> lua auto_save_trigger()')};
-        {('BufLeave <buffer> lua auto_save_trigger()')};
-        {('FocusLost <buffer> lua auto_save_trigger()')};
-        {('WinLeave <buffer> lua auto_save_trigger()')};
+        {('BufLeave <buffer> lua auto_save()')};
+        {('FocusLost <buffer> lua auto_save()')};
+        {('WinLeave <buffer> lua auto_save()')};
         {('CursorMoved <buffer> lua auto_save_reset_checkpoint()')};
       }
       augroups_buff({reg_auto_save=reg_auto_save})
@@ -2621,7 +2667,8 @@
   lmap.o.s.f = { name = '+File'}
   lmap.o.s.f.f = { name = '+Format='}
   lmap.o.u = { name = '+Option-Unset'}
-  lmap.o.d = 'To-Do'
+  lmap.o.t = 'To-Do'
+  lmap.o.v = 'Vista'
   lmap.p = { name = '+Plugins' }
   lmap.q = { name = '+QFix' }
   lmap.q.c = 'Close'
@@ -2677,6 +2724,9 @@
   lmap.Z = 'Zoom'
   vim.g.lmap = lmap
   vim.g.which_key_use_floating_win = 1
+  vim.g.which_key_align_by_seperator = 1
+  vim.g.which_key_run_map_on_popup = 1
+  vim.g.which_key_fallback_to_native_key = 1
   vim.g.which_key_flatten = 0
   -- Register which key
   vim.fn['which_key#register']('<Space>', vim.g.lmap)
