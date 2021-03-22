@@ -53,6 +53,18 @@ in
               blinking = "On";
 
             };
+            key_bindings = [
+              {
+                key = "Return";
+                mods = "Control";
+                chars = "\\x1b[13;5u";
+              }
+              {
+                key = "Return";
+                mods = "Shift";
+                chars = "\\x1b[13;2u";
+              }
+            ];
           };
         };
         home.sessionVariables.TERMINAL = "/usr/bin/alacritty";
