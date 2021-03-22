@@ -75,7 +75,7 @@ for_window [title=".*Mozilla Firefox$"] floating disable
 ################################################################################################
 
 # start a terminal
-bindsym $mod+Return exec kitty
+bindsym $mod+Return exec alacritty
 
 # kill focused window
 bindsym $mod+Shift+q kill
@@ -336,7 +336,8 @@ set_from_resource $term_color14    color14
 set_from_resource $term_color15    color15
 
 bar {
-	i3bar_command i3bar
+    i3bar_command i3bar
+    tray_output primary
     font pango:DejaVu Sans Mono, FontAwesome 11
     position top
     status_command i3status-rs ~/.config/i3status-rust/config-default.toml

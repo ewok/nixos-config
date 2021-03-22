@@ -145,7 +145,7 @@ in
             then
               systemctl --state=failed --no-legend
               systemctl --user --state=failed --no-legend
-              todo ls
+              todo lsp
             else
               SESS=$(tmux list-sessions | grep -v attached | cut -d: -f1 | head -n 1)
               if [[ -n "$SESS" ]]

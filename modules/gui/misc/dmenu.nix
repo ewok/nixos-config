@@ -51,7 +51,7 @@ let
   '';
 
   rofi_run = pkgs.writeShellScriptBin "rofi_run" ''
-    ${pkgs.rofi}/bin/rofi -icon-theme "Papirus" -show-icons -theme android_notification -terminal ${pkgs.kitty}/bin/kitty $@
+    ${pkgs.rofi}/bin/rofi -icon-theme "Papirus" -show-icons -theme android_notification -terminal ${pkgs.alacritty}/bin/alacritty $@
   '';
 
   rofiBluetoothThemed = pkgs.writeShellScriptBin "rofi-bluetooth" ''

@@ -17,7 +17,7 @@ in
           hotkey=Ctrl+Shift+Alt+D
           showTray=true
           telemetry=false
-          terminal=kitty
+          terminal=alacritty
 
           [org.albert.extension.applications]
           enabled=true

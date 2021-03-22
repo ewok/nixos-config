@@ -9,109 +9,102 @@ in
     config = mkIf gui.enable {
 
       home-manager.users.${username} = {
-        # programs.alacritty = {
-        #   enable = true;
-        #   settings = {
-        #     scrolling = {
-        #       history = 100000;
-        #     };
-        #     font = {
-        #       normal = {
-        #         family = monospaceFont;
-        #         style = "Regular";
-        #       };
-        #       size = gui.fonts.monospaceFontSize;
-        #     };
-        #     colors = {
-        #       primary = {
-        #         background = "#000000";
-        #         foreground = "#ffffff";
-        #       };
-        #       normal = {
-        #         black = "#222222";
-        #         red = "#e84f4f";
-        #         green = "#b7ce42";
-        #         yellow = "#fea63c";
-        #         blue = "#66aabb";
-        #         magenta = "#b7416e";
-        #         cyan = "#6d878d";
-        #         white = "#dddddd";
-        #       };
-        #       bright = {
-        #         black = "#666666";
-        #         red = "#d23d3d";
-        #         green = "#bde077";
-        #         yellow = "#ffe863";
-        #         blue = "#aaccbb";
-        #         magenta = "#e16a98";
-        #         cyan = "#42717b";
-        #         white = "#cccccc";
-        #       };
-        #     };
-        #     cursor = {
-        #       style = "Block";
-        #       blinking = "On";
-
-        #     };
-            # key_bindings = [
-            #   {
-            #     key = "K";
-            #     mods = "Control";
-            #     chars = "\\x0c";
-            #   }
-            # ];
-          # };
-        # };
-        home.sessionVariables.TERMINAL = "/usr/bin/kitty";
-        programs.kitty = {
+        programs.alacritty = {
           enable = true;
           settings = {
-            font_family = monospaceFont;
-            font_size = gui.fonts.monospaceFontSize;
-            cursor_shape = "block";
-            scrollback_lines = 100000;
-            enable_audio_bell = "no";
+            scrolling = {
+              history = 100000;
+            };
+            font = {
+              normal = {
+                family = monospaceFont;
+                style = "Regular";
+              };
+              size = gui.fonts.monospaceFontSize;
+            };
+            colors = {
+              primary = {
+                background = "#000000";
+                foreground = "#ffffff";
+              };
+              normal = {
+                black = "#222222";
+                red = "#e84f4f";
+                green = "#b7ce42";
+                yellow = "#fea63c";
+                blue = "#66aabb";
+                magenta = "#b7416e";
+                cyan = "#6d878d";
+                white = "#dddddd";
+              };
+              bright = {
+                black = "#666666";
+                red = "#d23d3d";
+                green = "#bde077";
+                yellow = "#ffe863";
+                blue = "#aaccbb";
+                magenta = "#e16a98";
+                cyan = "#42717b";
+                white = "#cccccc";
+              };
+            };
+            cursor = {
+              style = "Block";
+              blinking = "On";
 
-            background = "#000000";
-            foreground = "#ffffff";
-            # black
-            color0 = "#222222";
-            color8 = "#666666";
-
-            # red
-            color1 = "#e84f4f";
-            color9 = "#d23d3d";
-
-            # green
-            color2 = "#b7ce42";
-            color10 = "#bde077";
-
-            # yellow
-            color3 = "#fea63c";
-            color11 = "#ffe863";
-
-            # blue
-            color4 = "#66aabb";
-            color12 = "#aaccbb";
-
-            # magenta
-            color5 = "#b7416e";
-            color13 = "#e16a98";
-
-            # cyan
-            color6 = "#6d878d";
-            color14 = "#42717b";
-
-            # white
-            color7 = "#dddddd";
-            color15 = "#cccccc";
+            };
           };
-          keybindings = {
-            "shift+enter" = ''send_text all \x1b[13;2u'';
-            "ctrl+enter" = ''send_text all \x1b[13;5u'';
-          };
-          extraConfig = "";
         };
+        home.sessionVariables.TERMINAL = "/usr/bin/alacritty";
+        # programs.kitty = {
+        #   enable = true;
+        #   settings = {
+        #     font_family = monospaceFont;
+        #     font_size = gui.fonts.monospaceFontSize;
+        #     cursor_shape = "block";
+        #     scrollback_lines = 100000;
+        #     enable_audio_bell = "no";
+
+        #     background = "#000000";
+        #     foreground = "#ffffff";
+        #     # black
+        #     color0 = "#222222";
+        #     color8 = "#666666";
+
+        #     # red
+        #     color1 = "#e84f4f";
+        #     color9 = "#d23d3d";
+
+        #     # green
+        #     color2 = "#b7ce42";
+        #     color10 = "#bde077";
+
+        #     # yellow
+        #     color3 = "#fea63c";
+        #     color11 = "#ffe863";
+
+        #     # blue
+        #     color4 = "#66aabb";
+        #     color12 = "#aaccbb";
+
+        #     # magenta
+        #     color5 = "#b7416e";
+        #     color13 = "#e16a98";
+
+        #     # cyan
+        #     color6 = "#6d878d";
+        #     color14 = "#42717b";
+
+        #     # white
+        #     color7 = "#dddddd";
+        #     color15 = "#cccccc";
+        #   };
+        #   keybindings = {
+        #     "shift+enter" = ''send_text all \x1b[13;2u'';
+        #     "ctrl+enter" = ''send_text all \x1b[13;5u'';
+        #   };
+        #   extraConfig = "";
+        # };
         # programs.termite = {
         #   enable = true;
         #   allowBold = true;
