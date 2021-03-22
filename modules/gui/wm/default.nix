@@ -92,6 +92,7 @@ in
           xdotool
           xorg.xrandr
           xorg.xwininfo
+          xorg.xkill
 
           gnome3.libsecret
 

@@ -83,16 +83,9 @@ bindsym $mod_a+Shift+q --release exec --no-startup-id xkill
 
 # start program launcher
 bindsym $mod+d exec --no-startup-id "xkb-switch -s us; rofi_run -show combi -combi-modi drun,ssh,run"
-# bindsym $mod+d exec --no-startup-id dmenu_recency
-
-# launch categorized menu
-bindsym $mod_a+z exec --no-startup-id morc_menu
 
 # Lock screen
 bindsym $mod_a+l exec --no-startup-id "blurlock"
-
-# Dmenu
-# bindsym $mod_a+d exec --no-startup-id dmenu_recent -fn 'xos4 Terminus:size=15' -i -l 14 -w 600 -y $PANEL_HEIGHT
 
 # reload the configuration file
 bindsym $mod+Shift+c reload
@@ -117,7 +110,7 @@ mode "$mode_keyb" {
         bindsym Ctrl+[ mode "default"
 }
 
-# bindsym $mod_a+space exec "xkb-switch -n"
+
 bindsym $mod_a+space exec "xkb-switch -n; pkill -x --signal=SIGUSR1 i3status-rs"
 
 ################################################################################################
@@ -150,68 +143,20 @@ bindsym $mod_c+Print exec --no-startup-id flameshot gui -p ~/Pictures/Screenshot
 
 # Other
 # bindsym Shift+space exec "szAnswer=$(zenity --entry --text \\"Todoist: Add Task\\" --entry-text \\"\\"); td $szAnswer && dunstify \\"Task added\\" || dunstify -u critical \\"Error\\""
-bindsym Shift+space exec "todofi.sh -a"
+#
+bindsym Shift+space exec "xkb-switch -s us; todofi.sh -a"
+
 # bindsym Control+period exec --no-startup-id "/opt/enpass/Enpass showassistant"
 bindsym --release F12 exec --no-startup-id kill -s USR1 $(pidof deadd-notification-center)
 
-# Start Applications
-bindsym $mod_a+grave mode "$mode_rofi"
-set $mode_rofi  (k)ill (b)luetooth (c)alc (t)odofi.sh
-mode "$mode_rofi" {
-        bindsym b exec rofi-bluetooth, mode "default"
-        bindsym k exec dmkill, mode "default"
-        bindsym c exec calc, mode "default"
-        bindsym t exec todofi.sh, mode "default"
-
-        # exit resize mode: Enter or Escape
-        bindsym Return mode "default"
-        bindsym Escape mode "default"
-        bindsym Ctrl+m mode "default"
-}
-
-# Start Applications
-bindsym $mod_a+o mode "$mode_apps"
-set $mode_apps  (m)essanger e(d)ucation (b)rowser (p)avu (t)asks&calendar
-mode "$mode_apps" {
-        bindsym b exec qutebrowser, mode "default"
-        bindsym d mode "$edu_apps"
-        bindsym m mode "$im_apps"
-        bindsym p exec pavucontrol-qt, mode "default"
-        bindsym t exec qutebrowser --target window "https://calendar.google.com", mode "default"
-
-        # exit resize mode: Enter or Escape
-        bindsym Return mode "default"
-        bindsym Escape mode "default"
-        bindsym Ctrl+m mode "default"
-}
-
-set $im_apps (c)awbird (s)slack (t)elegram (d)iscord (e)lement (m)ailspring
-mode "$im_apps" {
-        bindsym c exec cawbird, mode "default"
-        bindsym d exec Discord, mode "default"
-        bindsym e exec element-desktop, mode "default"
-        bindsym s exec slack, mode "default"
-        bindsym t exec telegram-desktop, mode "default"
-        bindsym m exec mailspring, mode "default"
-
-        # exit resize mode: Enter or Escape
-        bindsym Return mode "default"
-        bindsym Escape mode "default"
-        bindsym Ctrl+m mode "default"
-}
-
-set $edu_apps  (l)doce (g)oldendict
-mode "$edu_apps" {
-        bindsym l exec ldoce5viewer, mode "default"
-        bindsym g exec goldendict, mode "default"
-
-        # exit resize mode: Enter or Escape
-        bindsym Return mode "default"
-        bindsym Escape mode "default"
-        bindsym Ctrl+m mode "default"
-}
-#
-# bindsym $mod+Shift+d --release exec "killall dunst; exec notify-send 'restart dunst'"
+bindsym $mod_a+b exec --no-startup-id rofi-bluetooth
+bindsym $mod_a+Shift+k exec --no-startup-id "xkb-switch -s us; dmkill"
+bindsym $mod_a+c exec --no-startup-id calc
+bindsym $mod_a+t exec --no-startup-id "xkb-switch -s us; todofi.sh"
+bindsym $mod_a+m exec --no-startup-id mailspring
+bindsym $mod_a+p exec --no-startup-id pavucontrol-qt
+bindsym $mod_a+Return exec --no-startup-id qutebrowser
+bindsym $mod_a+Shift+c exec qutebrowser --target window "https://calendar.google.com"
 
 ################################################################################################
 # Windows control
@@ -272,8 +217,8 @@ bindsym $mod_a+Right  exec bash ~/.config/i3/rotate.sh right
 #navigate workspaces next / previous
 bindsym $mod+n workspace next
 bindsym $mod+b workspace prev
-bindsym $mod_a+n exec i3-display-swap.sh right
-bindsym $mod_a+b exec i3-display-swap.sh left
+# bindsym $mod_a+n exec i3-display-swap.sh right
+# bindsym $mod_a+b exec i3-display-swap.sh left
 
 bindsym $mod+Shift+n move workspace to output right
 bindsym $mod+Shift+b move workspace to output left
@@ -354,7 +299,7 @@ mode "resize" {
 }
 
 # Rename
-bindsym $mod_a+m exec i3-input -F 'rename workspace to "%s"' -P 'New name: '
+bindsym $mod_a+n exec i3-input -F 'rename workspace to "%s"' -P 'New name: '
 
 ################################################################################################
 # Colors
@@ -426,8 +371,8 @@ bindsym $mod+m bar mode toggle
 exec_always --no-startup-id caffeine -k
 # exec_always --no-startup-id pgrep clipit || clipit
 exec_always --no-startup-id pgrep xkb-switch || xkb-switch --i3
-exec_always --no-startup-id pgrep blueman-applet || blueman-applet
 exec_always --no-startup-id pgrep keepassxc || keepassxc
+# exec_always --no-startup-id pgrep blueman-applet || blueman-applet
 # exec_always --no-startup-id pgrep Enpass || Enpass
 # exec_always --no-startup-id sparkleshare &
 # exec_always --no-startup-id pgrep cawbird || cawbird
