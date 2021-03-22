@@ -1,10 +1,25 @@
 -- vim: ts=2 sw=2 sts=2
-
+--
 -- Helpers {{{
   _G.augroups = function(definitions)
     for group_name, definition in pairs(definitions) do
       vim.api.nvim_command('augroup '..group_name)
       vim.api.nvim_command('autocmd!')
+      for _, def in ipairs(definition) do
+        -- if type(def) == 'table' and type(def[#def]) == 'function' then
+        -- 	def[#def] = lua_callback(def[#def])
+        -- end
+        local command = table.concat(vim.tbl_flatten{'autocmd', def}, ' ')
+        vim.api.nvim_command(command)
+      end
+      vim.api.nvim_command('augroup END')
+    end
+  end
+
+  _G.augroups_buff = function(definitions)
+    for group_name, definition in pairs(definitions) do
+      vim.api.nvim_command('augroup '..group_name)
+      vim.api.nvim_command('autocmd! * <buffer>')
       for _, def in ipairs(definition) do
         -- if type(def) == 'table' and type(def[#def]) == 'function' then
         -- 	def[#def] = lua_callback(def[#def])
@@ -92,6 +107,7 @@
       ttyfast = true;
       undodir = os.getenv('HOME')..'/.vim_undo';
       undolevels = 100;
+      updatetime = 300;
       visualbell = true;
       writebackup = false;
       guicursor = 'n-v-c:block,i-ci-ve:block,r-cr:hor20,'..
@@ -434,6 +450,7 @@
     _G.load_ansible_ft = function()
       vim.bo.commentstring = [[# %s]]
       reg_highlight_cword()
+      reg_auto_save()
       -- vim.b.ale_ansible_ansible_lint_executable = 'ansible_custom'
       -- vim.b.ale_ansible_ansible_lint_command = '%e %t'
       -- vim.b.ale_ansible_yamllint_executable = 'yamllint_custom'
@@ -465,6 +482,7 @@
     _G.load_dockerfile_ft = function()
       require('lspconfig').dockerls.autostart()
       reg_highlight_cword()
+      reg_auto_save()
     end
   -- }}}
   -- Gitignore {{{
@@ -498,6 +516,7 @@
       bmap('n', '<leader>rb', ':silent GoBuild<CR>', { silent = true })
       bmap('n', '<leader>rc', ':silent GoCoverageToggle<CR>', { silent = true })
       reg_highlight_cword()
+      reg_auto_save()
     end
   -- }}}
   -- Java {{{
@@ -520,6 +539,7 @@
     _G.load_json_ft = function()
       require('lspconfig').jsonls.autostart()
       reg_highlight_cword()
+      reg_auto_save()
     end
   -- }}}
   -- Haskell {{{
@@ -544,6 +564,7 @@
     _G.load_helm_ft = function()
       bmap('n', '<leader>rr', ':lua render_helm()<CR>', { silent = true })
       reg_highlight_cword()
+      reg_auto_save()
     end
   -- }}}
   -- Log {{{
@@ -564,6 +585,7 @@
     _G.load_lua_ft = function()
       vim.wo.foldmethod = 'marker'
       require'lspconfig'.sumneko_lua.autostart()
+      reg_auto_save()
     end
   -- }}}
   -- Mail {{{
@@ -653,6 +675,7 @@
       bmap('n', '<leader>wT', ':VimwikiRebuildTags!<cr>:VimwikiGenerateTagLinks<cr><c-l>', { noremap = true })
 
       reg_highlight_cword()
+      reg_auto_save()
       vim.b.ft_loaded = true
     end
   -- }}}
@@ -675,6 +698,7 @@
     _G.load_nix_ft = function()
       bmap('i', '<C-Enter>', '<ESC>:call SmartCR()<CR>', {})
       reg_highlight_cword()
+      reg_auto_save()
     end
   -- }}}
   -- Python {{{
@@ -738,6 +762,8 @@
 
       require'lspconfig'.pyright.autostart()
       vim.fn.matchadd('OverLength', '\\%81v', 100)
+
+      reg_auto_save()
     end
   -- }}}
   -- Puppet {{{
@@ -760,6 +786,7 @@
       bmap('n', '<leader>rL', ':!gem install puppet puppet-lint r10k yaml-lint<CR>:ALEInfo<CR>', {})
 
       reg_highlight_cword()
+      reg_auto_save()
     end
   -- }}}
   -- Rust {{{
@@ -779,6 +806,8 @@
       bmap('n', '<leader>rr', ':RustRun<CR>', {})
       bmap('n', '<leader>rt', ':RustTest<CR>', {})
       bmap('n', '<leader>rL', ':RustFmr<CR>', {})
+
+      reg_auto_save()
       vim.b.ale_enabled = 0
     end
   -- }}}
@@ -791,6 +820,7 @@
       bmap('n', '<leader>rr', ':w |lua run_cmd("bash " .. vim.fn.bufname("%"))<CR>', {})
       require('lspconfig').bashls.autostart()
       reg_highlight_cword()
+      reg_auto_save()
     end
   -- }}}
   -- SQL {{{
@@ -801,6 +831,7 @@
     _G.load_sql_ft = function()
       vim.bo.commentstring = '/* %s */'
       reg_highlight_cword()
+      reg_auto_save()
     end
   -- }}}
   -- Terraform {{{
@@ -824,7 +855,8 @@
     --       \   'command': '%e',
     --       \   'project_root': getcwd(),
     --       \})
-    reg_highlight_cword()
+      reg_highlight_cword()
+      reg_auto_save()
     end
   -- }}}
   -- TODO {{{
@@ -880,6 +912,8 @@
         " syn region Block start="```" end="```" contains=TEXT,DONE,H1,H2,H3
         " syn region Block start="<" end=">" contains=TEXT,DONE,H1,H2,H3
       ]], true)
+      reg_highlight_cword()
+      reg_auto_save()
     end
   -- }}}
   -- Vim {{{
@@ -891,6 +925,7 @@
       vim.wo.foldmethod = 'marker'
       vim.bo.keywordprg = ':help'
       reg_highlight_cword()
+      reg_auto_save()
     end
   -- }}}
   -- XML {{{
@@ -908,6 +943,7 @@
       vim.b.ale_yaml_yamllint_executable = 'yamllint_custom'
       vim.b.ale_linters = { 'yamllint' }
       reg_highlight_cword()
+      reg_auto_save()
     end
   -- }}}
 -- }}}
@@ -1918,12 +1954,12 @@
               hi LspReferenceRead cterm=bold ctermbg=red guibg=#464646
               hi LspReferenceText cterm=bold ctermbg=red guibg=#464646
               hi LspReferenceWrite cterm=bold ctermbg=red guibg=#464646
-              augroup lsp_document_highlight
-              autocmd! * <buffer>
-              autocmd CursorHold <buffer> lua highlight_doc()
-              autocmd CursorMoved <buffer> lua clear_doc_highlight()
-              augroup END
             ]], false)
+            local lsp_document_highlight = {
+              {'CursorHold <buffer> lua vim.lsp.buf.document_highlight()'};
+              {'CursorMoved <buffer> lua vim.lsp.buf.clear_references()'};
+            }
+            augroups_buff({lsp_document_highlight=lsp_document_highlight})
           end
         end
         require'lspconfig'.dockerls.setup{
@@ -1989,15 +2025,6 @@
         map('n', '<leader>cf', '<cmd>lua vim.lsp.buf.formatting()<CR>', { noremap = true, silent = true })
       end,
     }
-    _G.orig_update_time = vim.o.updatetime
-    _G.highlight_doc = function()
-      vim.lsp.buf.document_highlight()
-      vim.o.updatetime = _G.orig_update_time
-    end
-    _G.clear_doc_highlight = function()
-      vim.lsp.buf.clear_references()
-      vim.o.updatetime = 300
-    end
   -- }}}
   -- Treesitter {{{
     packer.use {
@@ -2362,101 +2389,53 @@
     ]], true)
   -- }}}
   -- AutoSave {{{
-    vim.api.nvim_exec([[
-      " Trigger autoread when changing buffers or coming back to vim.
-      " au FocusGained,BufEnter,WinEnter * :silent! !
-      au! FileType vim,python,golang,go,yaml.ansible,puppet,json,sh,vimwiki,rust,yaml,nix,lua call DefaultOn()
+    local auto_save_locked = false
+    local auto_save_checkpoint = 0
 
-      function! DefaultOn()
-        if !exists("b:auto_save")
-          let b:auto_save = 1
-        endif
-      endfunction
-
-      set updatetime=4000
-
-      let save_cpo = &cpo
-      set cpo&vim
-
-      if !exists("g:auto_save_silent")
-        let g:auto_save_silent = 0
-      endif
-
-      if !exists("g:auto_save_events")
-        let g:auto_save_events = ["CursorHold","CursorHoldI","BufLeave","FocusLost","WinLeave"]
-      endif
-
-      " Check all used events exist
-      for event in g:auto_save_events
-        if !exists("##" . event)
-          let eventIndex = index(g:auto_save_events, event)
-          if (eventIndex >= 0)
-            call remove(g:auto_save_events, eventIndex)
-            echo "(AutoSave) Save on " . event . " event is not supported for your Vim version!"
-            echo "(AutoSave) " . event . " was removed from g:auto_save_events variable."
-            echo "(AutoSave) Please, upgrade your Vim to a newer version or use other events in g:auto_save_events!"
-          endif
-        endif
-      endfor
-
-      augroup auto_save
-        au!
-        for event in g:auto_save_events
-          execute "au " . event . " * nested call AutoSave()"
-        endfor
-      augroup END
-
-      function! AutoSave()
-        if &modified > 0
-          if !exists("b:auto_save")
-            let b:auto_save = 0
-          endif
-
-          if b:auto_save == 0
-            return
+    local co = coroutine.create(function ()
+      while true do
+        local timer = vim.loop.new_timer()
+        timer:start(4000, 1000, vim.schedule_wrap(function()
+          if (os.time() - auto_save_checkpoint) > 4 then
+            auto_save()
+            auto_save_locked = false
+            timer:close()
           end
+        end))
+        coroutine.yield()
+      end
+    end)
 
-          let was_modified = &modified
+    _G.auto_save_reset_checkpoint = function ()
+      auto_save_checkpoint = os.time()
+    end
 
-          " Preserve marks that are used to remember start and
-          " end position of the last changed or yanked text (`:h '[`).
-          let first_char_pos = getpos("'[")
-          let last_char_pos = getpos("']")
+    _G.auto_save_trigger = function ()
+      if auto_save_locked then return else auto_save_locked = true end
+      coroutine.resume(co)
+    end
 
-          call DoSave()
-
-          call setpos("'[", first_char_pos)
-          call setpos("']", last_char_pos)
-
-          if was_modified && !&modified
-            if g:auto_save_silent == 0
-              echo "(AutoSave) saved at " . strftime("%H:%M:%S")
-            endif
-          endif
-        endif
-      endfunction
-
-      function! DoSave()
-        silent! w
-      endfunction
-
-      function! ToggleAutoSave()
-        if !exists("b:auto_save")
-          let b:auto_save = 0
-        endif
-
-        if b:auto_save == 0
-          let b:auto_save = 1
-        else
-          let b:auto_save = 0
+    _G.auto_save = function ()
+      if vim.bo.modified then
+        vim.api.nvim_command('write')
+        if not vim.bo.modified then
+          print("(AutoSave) saved at ".. vim.fn.strftime("%H:%M:%S"))
+          auto_save_checkpoint = os.time()
         end
-      endfunction
+      end
+    end
 
-      command! ToggleAutoSave :call ToggleAutoSave()
-
-      let &cpo = save_cpo
-      unlet save_cpo
-    ]], true)
+    _G.reg_auto_save = function()
+      local reg_auto_save = {
+        {('CursorHold <buffer> lua auto_save_trigger()')};
+        {('CursorHoldI <buffer> lua auto_save_trigger()')};
+        {('BufLeave <buffer> lua auto_save_trigger()')};
+        {('FocusLost <buffer> lua auto_save_trigger()')};
+        {('WinLeave <buffer> lua auto_save_trigger()')};
+        {('CursorMoved <buffer> lua auto_save_reset_checkpoint()')};
+      }
+      augroups_buff({reg_auto_save=reg_auto_save})
+    end
   -- }}}
   -- QuickFix {{{
   vim.api.nvim_exec([[
@@ -2536,11 +2515,9 @@
   ]], true)
   -- }}}
   -- AutoHighlight Current Word {{{
-    _G.orig_update_time = vim.o.updatetime
 
     _G.highlight_cword = function()
       clear_cword_highlight()
-      vim.o.updatetime = _G.orig_update_time
 
       local cword = vim.fn.expand('<cword>')
 
@@ -2554,9 +2531,7 @@
         end
       end
     end
-    _G.clear_cword_highlight = function(updatetime)
-      if updatetime then vim.o.updatetime = 300 end
-
+    _G.clear_cword_highlight = function()
       if not vim.w.hi_ids then
         vim.w.hi_ids = {}
       end
@@ -2570,12 +2545,11 @@
     end
     -- vim.cmd[[hi! AutoHiWord ctermbg=245 ctermfg=NONE guibg=#6b7589 guifg=NONE gui=underline]]
     _G.reg_highlight_cword = function()
-      local au_auto_highlight = {
+      local reg_highlight_cword = {
         {'CursorHold <buffer> silent! lua highlight_cword()'};
-        {'CursorMoved <buffer> silent! lua clear_cword_highlight(1)'};
-        -- {'Syntax        * call s:SkipDisabledFiletypes()
+        {'CursorMoved <buffer> silent! lua clear_cword_highlight()'};
       }
-      augroups({au_auto_highlight=au_auto_highlight})
+      augroups_buff({reg_highlight_cword=reg_highlight_cword})
     end
   -- }}}
 -- }}}
