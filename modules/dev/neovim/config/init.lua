@@ -43,6 +43,10 @@
   local function bmap(mode, key, comm, flags)
     api.nvim_buf_set_keymap(api.nvim_get_current_buf(), mode, key, comm, flags)
   end
+
+  _G.t = function(str)
+    return vim.api.nvim_replace_termcodes(str, true, true, true)
+  end
 -- }}}
 
 -- Init Packer Plugin {{{
@@ -256,29 +260,6 @@
       execute('!'..command)
     end
   -- }}}
--- }}}
-
--- Helpers {{{
-  -- _G.smart_cr = function()
-  --   local line = vim.fn.getline('.')
-  --   -- if string.find(line, ';\n') then
-  --     vim.fn.normal([[o\\<Space>\\<BS>\\<Esc>]])
-  --     vim.fn['startinsert!']()
-  --   -- end
-  -- end
-  exec([[
-  function SmartCR()
-    let line = getline('.')
-    if line =~# ';$'
-      execute "normal o\<Space>\<BS>\<Esc>"
-      startinsert!
-    else
-      call setline('.', line . ';')
-      normal l
-      startinsert
-    endif
-  endfunction
-  ]], true)
 -- }}}
 
 -- Keymaps {{{
@@ -696,7 +677,7 @@
     }
     augroups({ft_nix=ft_nix})
     _G.load_nix_ft = function()
-      bmap('i', '<C-Enter>', '<ESC>:call SmartCR()<CR>', {})
+      reg_smart_cr()
       reg_highlight_cword()
       reg_auto_save()
     end
@@ -802,11 +783,11 @@
     }
     augroups({ft_rust=ft_rust})
     _G.load_rust_ft = function()
-      bmap('i', '<C-Enter>', '<ESC>:call SmartCR()<CR>', {})
       bmap('n', '<leader>rr', ':RustRun<CR>', {})
       bmap('n', '<leader>rt', ':RustTest<CR>', {})
       bmap('n', '<leader>rL', ':RustFmr<CR>', {})
 
+      reg_smart_cr()
       reg_auto_save()
       vim.b.ale_enabled = 0
     end
@@ -2596,6 +2577,22 @@
         {'CursorMoved <buffer> silent! lua clear_cword_highlight()'};
       }
       augroups_buff({reg_highlight_cword=reg_highlight_cword})
+    end
+  -- }}}
+  -- SmartCR {{{
+    _G.smart_cr = function()
+      local line = vim.fn.getline('.')
+      if string.find(line, ';$') then
+        vim.api.nvim_command("normal ".. t[[o<Space><BS><Esc>]])
+        vim.cmd'startinsert!'
+      else
+        vim.fn.setline('.', line..';')
+        vim.api.nvim_command("normal l")
+        vim.cmd'startinsert'
+      end
+    end
+    _G.reg_smart_cr = function()
+      bmap('i', '<C-Enter>', '<ESC>:lua smart_cr()<CR>', {})
     end
   -- }}}
 -- }}}
