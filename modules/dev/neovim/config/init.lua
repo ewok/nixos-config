@@ -104,6 +104,7 @@
       splitright = true;
       startofline = false;
       switchbuf = 'useopen';
+      termguicolors = true;
       timeoutlen = 500;
       titlestring = '%F';
       title = true;
@@ -160,19 +161,12 @@
     -- let $NVIM_TUI_ENABLE_TRUE_COLOR=1
     -- let $NVIM_TUI_ENABLE_CURSOR_SHAPE=1
 
-    exec([[
-    if !isdirectory($HOME . "/.vim_undo")
-      call mkdir($HOME . "/.vim_undo", "p", 0700)
-    endif
 
+    exec([[
     filetype plugin indent on
 
     syntax on
     syntax enable
-
-    if (has("termguicolors"))
-      set termguicolors
-    endif
 
     if exists('+termguicolors')
       let &t_8f = "\<Esc>[38;2;%lu;%lu;%lum"
@@ -948,6 +942,29 @@
     }
   -- }}}
 -- UI
+  -- Better QuickFix {{{
+    packer.use{
+      'kevinhwang91/nvim-bqf',
+      config = function()
+        require('bqf').setup({
+          func_map = {
+            tab = 't',
+            vsplit = 'v',
+            split = 's'
+          },
+          filter = {
+            fzf = {
+              action_for = {
+                ['ctrl-t'] = 'tabedit',
+                ['ctrl-v'] = 'vsplit',
+                ['ctrl-s'] = 'split',
+              }
+            }
+          }
+        })
+      end,
+    }
+  -- }}}
   -- Colorscheme {{{
     packer.use {
       'KeitaNakamura/neodark.vim',
@@ -1007,18 +1024,7 @@
   -- Indent-guides {{{
     packer.use {
       'glepnir/indent-guides.nvim',
-      -- opt = true,
       as = 'indent-guides',
-      -- setup = function ()
-      --   vim.g.indent_guides_auto_colors = 0
-      --   vim.g.indent_guides_start_level = 2
-      --   vim.g.indent_guides_guide_size = 1
-      --   vim.g.indent_guides_default_mapping = 0
-      --   vim.api.nvim_exec([[
-      --     hi! IndentGuidesOdd  ctermbg=237
-      --     hi! IndentGuidesEven ctermbg=236
-      --   ]], true)
-      -- end,
       config = function()
         require('indent_guides').setup({
           indent_levels = 30;
@@ -1033,10 +1039,8 @@
         })
       end,
     }
-    -- vim.cmd [[packadd inde]]
-    -- vim.cmd [[ :IndentGuidesEnable ]]
   -- }}}
-  -- Lightline {{{
+  -- Galaxyline {{{
     packer.use {
       'glepnir/galaxyline.nvim',
       branch = 'main',
@@ -1323,6 +1327,7 @@
     packer.use {
       'kshenoy/vim-signature',
       config = function ()
+        vim.g.SignatureForceRemoveGlobal = 0
         vim.g.SignatureMap = {
           Leader             =  "m",
           PlaceNextMark      =  "",
@@ -1348,6 +1353,7 @@
         }
         map('n', 'm/', ':Marks<CR>', { noremap = true })
         map('n', '<leader>mm', ':Marks<CR>', { noremap = true })
+        map('n', '<leader>mc', [[:call signature#mark#Purge('all')|wshada!<CR>]], { noremap = true, silent = true })
       end,
     }
   -- }}}
@@ -1420,37 +1426,6 @@
       end,
     }
   -- }}}
-  -- Tagbar {{{
-    -- packer.use {
-    --   'preservim/tagbar',
-    --   config = function ()
-    --     -- I don't use it yet
-    --     -- map('n', '<leader>ot', ':TagbarToggle<CR>', { noremap = true })
-    --     map('n', '<leader>ft', ':TagbarOpenAutoClose<CR>', { noremap = true })
-    --   end,
-    -- }
-    packer.use {
-      'liuchengxu/vista.vim',
-      config = function ()
-        map('n', '<leader>ov', ':Vista show<CR>', { noremap = true })
-        map('n', '<leader>ft', ':Vista finder<CR>', { noremap = true })
-        vim.g.vista_close_on_jump = 1
-        local vista_executive_for = {
-          vimwiki = 'markdown',
-          pandoc = 'markdown',
-          markdown = 'toc',
-          python = 'nvim_lsp',
-          rust = 'nvim_lsp',
-          yaml = 'nvim_lsp',
-          ['ansible.yaml'] = 'nvim_lsp',
-          json = 'nvim_lsp',
-          lua = 'nvim_lsp',
-          sh = 'nvim_lsp'
-        }
-        vim.g.vista_executive_for = vista_executive_for
-      end,
-    }
-  -- }}}
   -- Texting {{{
     packer.use {
       'junegunn/goyo.vim',
@@ -1483,7 +1458,7 @@
         vim.o.showcmd = false
         vim.o.scrolloff = 999
         vim.wo.wrap = true
-        vim.call('indent_guides#disable')
+        vim.cmd('IndentGuidesDisable')
         vim.cmd('Limelight')
       end, 1000)
     end
@@ -1500,7 +1475,7 @@
         vim.o.showcmd = true
         vim.o.scrolloff = 5
         vim.wo.wrap = false
-        vim.call('indent_guides#enable')
+        vim.cmd('IndentGuidesEnable')
         vim.cmd('Limelight!')
       end, 1000)
     end
@@ -1774,26 +1749,26 @@
       end,
     }
   -- }}}
-  -- Better QuickFix {{{
-    packer.use{
-      'kevinhwang91/nvim-bqf',
-      config = function()
-        require('bqf').setup({
-          func_map = {
-            tab = 't',
-            vsplit = 'v',
-            split = 's'
-          },
-          filter = {
-            fzf = {
-              action_for = {
-                ['ctrl-t'] = 'tabedit',
-                ['ctrl-v'] = 'vsplit',
-                ['ctrl-s'] = 'split',
-              }
-            }
-          }
-        })
+  -- Vista {{{
+    packer.use {
+      'liuchengxu/vista.vim',
+      config = function ()
+        map('n', '<leader>ov', ':Vista show<CR>', { noremap = true })
+        map('n', '<leader>ft', ':Vista finder<CR>', { noremap = true })
+        vim.g.vista_close_on_jump = 1
+        local vista_executive_for = {
+          vimwiki = 'markdown',
+          pandoc = 'markdown',
+          markdown = 'toc',
+          python = 'nvim_lsp',
+          rust = 'nvim_lsp',
+          yaml = 'nvim_lsp',
+          ['ansible.yaml'] = 'nvim_lsp',
+          json = 'nvim_lsp',
+          lua = 'nvim_lsp',
+          sh = 'nvim_lsp'
+        }
+        vim.g.vista_executive_for = vista_executive_for
       end,
     }
   -- }}}
@@ -2668,6 +2643,7 @@
   lmap.l.o = 'Open'
   lmap.l.p = 'Previous'
   lmap.m = { name = '+Marks' }
+  lmap.m.c = 'Clean'
   lmap.o = { name = '+Open/+Option'}
   lmap.o.e = 'Explorer'
   lmap.o.r = 'Root(project)'
