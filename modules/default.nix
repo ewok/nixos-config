@@ -22,6 +22,17 @@ with lib;
       type = types.str;
     };
   };
+  options.properties.work_account = {
+    enable = mkEnableOption "Enable work accoung";
+    email = mkOption {
+      description = "Email.";
+      type = types.str;
+    };
+    fullName = mkOption {
+      description = "Full name.";
+      type = types.str;
+    };
+  };
   options.properties.backup = {
     repo = mkOption {
       type = types.str;

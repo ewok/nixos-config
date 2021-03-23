@@ -3,6 +3,8 @@ with lib;
 let
   dev = config.modules.dev;
   user = config.properties.user;
+  work = config.properties.work_account;
+  hm = config.home-manager.users.${user.name};
 
   gitEnv = pkgs.symlinkJoin {
     name = "git-env";
@@ -43,29 +45,51 @@ in
         .tmp
       '';
 
+      xdg.configFile."git/work.cfg".text = ''
+        [user]
+        email = ${work.email}
+        name = ${work.fullName}
+      '';
+
+      xdg.configFile."git/home.cfg".text = ''
+        [user]
+        email = ${user.email}
+        name = ${user.fullName}
+      '';
+
       programs.git = {
         enable = true;
-        userName = user.fullName;
-        userEmail = user.email;
-        extraConfig = {
-          "rebase" = {
-            autoSquash = true;
-            autoStash = true;
-          };
-          "core" = {
-            autocrlf = false;
-            excludesfile = "~/.config/git/gitexcludes";
-            quotepath = false;
-            askPass = "";
-          };
-          "credential" = { helper = "${pkgs.gitAndTools.pass-git-helper}/bin/pass-git-helper"; };
-          "diff" = {
-            algorithm = "patience";
-            gpg = { textconv = "${pkgs.gnupg}/bin/gpg2 --no-tty --decrypt"; };
-          };
-          "push" = { default = "current"; };
-          "absorb" = { maxstack = 75; };
-        };
+        # userName = user.fullName;
+        # userEmail = user.email;
+        extraConfig = mkMerge [
+          {
+            "includeIf \"gitdir:~/\"" = {
+              path = "${hm.xdg.configHome}/git/home.cfg";
+            };
+            "rebase" = {
+              autoSquash = true;
+              autoStash = true;
+            };
+            "core" = {
+              autocrlf = false;
+              excludesfile = "~/.config/git/gitexcludes";
+              quotepath = false;
+              askPass = "";
+            };
+            "credential" = { helper = "${pkgs.gitAndTools.pass-git-helper}/bin/pass-git-helper"; };
+            "diff" = {
+              algorithm = "patience";
+              gpg = { textconv = "${pkgs.gnupg}/bin/gpg2 --no-tty --decrypt"; };
+            };
+            "push" = { default = "current"; };
+            "absorb" = { maxstack = 75; };
+          }
+          (mkIf work.enable {
+            "includeIf \"gitdir:~/projects/work/\"" = {
+              path = "${hm.xdg.configHome}/git/work.cfg";
+            };
+          })
+        ];
       };
     };
   };
