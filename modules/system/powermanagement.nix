@@ -13,7 +13,7 @@ let
   '';
 
   hibernateEnvironment = {
-    HIBERNATE_SECONDS = "3600";
+    HIBERNATE_SECONDS = "28800";
     HIBERNATE_LOCK = "/var/run/autohibernate.lock";
   };
 in
@@ -50,8 +50,8 @@ in
           CPU_ENERGY_PERF_POLICY_ON_BAT = "power";
           CPU_BOOST_ON_AC = 1;
           CPU_BOOST_ON_BAT = 0;
-          DEVICES_TO_DISABLE_ON_STARTUP = "bluetooth";
-          DEVICES_TO_DISABLE_ON_BAT_NOT_IN_USE="bluetooth wifi wwan";
+          # DEVICES_TO_DISABLE_ON_STARTUP = "bluetooth";
+          # DEVICES_TO_DISABLE_ON_BAT_NOT_IN_USE="bluetooth wifi wwan";
           DEVICES_TO_DISABLE_ON_LAN_CONNECT="wifi wwan";
           DEVICES_TO_ENABLE_ON_LAN_DISCONNECT="wifi wwan";
         };
