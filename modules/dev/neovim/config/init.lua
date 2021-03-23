@@ -2074,14 +2074,22 @@
   -- }}}
   -- FAR {{{
     packer.use {
-      'brooth/far.vim',
-      config = function ()
-        vim.g['far#source'] = 'agnvim'
-        vim.g['far#file_mask_favorites'] = { '%', '.*', '\\.py$', '\\.go$' }
-        map('n', '<leader>fr', ':Far<space>', { noremap = true })
-        map('v', '<leader>fr', ':Far<space>', { noremap = true })
-      end,
+    'wincent/ferret',
+    config = function()
+      vim.g.FerretMap = 0
+      map('n', '<leader>fr<space>', '<Plug>(FerretAck)', {})
+      map('n', '<leader>fr<cr>', '<Plug>(FerretAcks)', {})
+    end,
     }
+    -- packer.use {
+    --   'brooth/far.vim',
+    --   config = function ()
+    --     vim.g['far#source'] = 'agnvim'
+    --     vim.g['far#file_mask_favorites'] = { '%', '.*', '\\.py$', '\\.go$' }
+    --     map('n', '<leader>fr', ':Far<space>', { noremap = true })
+    --     map('v', '<leader>fr', ':Far<space>', { noremap = true })
+    --   end,
+    -- }
   -- }}}
   -- GIT {{{
     -- vim.g.fugitive_gitlab_domains = ['https://my.gitlab.com']
@@ -2620,7 +2628,10 @@
   lmap.f.b = 'Buffer'
   lmap.f.f = 'in-File'
   lmap.f.p = 'Path'
-  lmap.f.r = 'Replace'
+  lmap.f.r = {
+    [' '] = 'Search',
+    ['<CR>'] = 'Replace'
+  }
   lmap.f.t = 'Tag'
   lmap.g = {name = '+Git'}
   lmap.g.b = { name = '+Blame' }
