@@ -1021,15 +1021,15 @@
       -- end,
       config = function()
         require('indent_guides').setup({
-          -- indent_levels = 30;
-          -- indent_guide_size = 1;
+          indent_levels = 30;
+          indent_guide_size = 1;
           indent_start_level = 2;
           indent_space_guides = true;
           indent_tab_guides = false;
           indent_soft_pattern = '\\s';
           exclude_filetypes = {'help','dashboard','dashpreview','nerdtree','vista','sagahover'};
-          even_colors = { fg ='#2a3834',bg='#332b36' };
-          odd_colors = {fg='#332b36',bg='#2a3834'};
+          even_colors = { fg ='#AAAAAA',bg='#35383F' };
+          odd_colors = {fg='#AAAAAA',bg='#35383F'};
         })
       end,
     }
