@@ -93,6 +93,7 @@ in
           xorg.xrandr
           xorg.xwininfo
           xorg.xkill
+          colorpicker
 
           gnome3.libsecret
 
