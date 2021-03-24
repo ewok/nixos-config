@@ -570,7 +570,7 @@
       bmap('n', '<leader>rt', ':LivedownToggle<CR>', { silent = true })
       bmap('n', '<leader>rk', ':LivedownKill<CR>', { silent = true })
 
-      vim.g.livedown_browser = 'firefox'
+      vim.g.livedown_browser = 'qutebrowser'
       vim.g.livedown_port = 14545
     end
   -- }}}
@@ -580,7 +580,7 @@
       as = 'livedown',
       ft = { 'markdown', 'vimwiki', 'mail' },
       config = function ()
-        vim.g.livedown_browser = 'firefox'
+        vim.g.livedown_browser = 'qutebrowser'
         vim.g.livedown_port = 14545
       end,
     }
@@ -1301,7 +1301,7 @@
           },
         }
 
-        gl.short_line_list = {'nerdtree','tagbar','vista'}
+        gl.short_line_list = {'nerdtree','vista'}
         gls.short_line_right = {
           {
             FileTypeShort = {
@@ -1336,8 +1336,6 @@
                   local filetype = vim.bo.filetype
                   if filetype == 'nerdtree' then
                     return ' Explorer '
-                  elseif filetype == 'tagbar' then
-                    return ' Tags '
                   elseif filetype == 'vista' then
                     return ' Tags '
                   end
@@ -1671,11 +1669,6 @@
         zoom_nerd = true
       end
 
-      -- if vim.t.tagbar_buf_name and fn.bufwinnr(vim.t.tagbar_buf_name) ~= -1 then
-      --   cmd 'TagbarClose'
-      --   zoom_tag = true
-      -- end
-
       if fn.bufwinnr('vista') ~= -1 then
         cmd 'Vista!'
         zoom_tag = true
@@ -1819,7 +1812,7 @@
       'liuchengxu/vista.vim',
       requires = {{'junegunn/fzf'}},
       config = function ()
-        map('n', '<leader>ov', ':Vista show<CR>', { noremap = true })
+        map('n', '<leader>ov', ':Vista<CR>', { noremap = true })
         map('n', '<leader>ft', ':Vista finder<CR>', { noremap = true })
         vim.g.vista_close_on_jump = 1
         local vista_executive_for = {
@@ -2243,6 +2236,11 @@
           zv_file_types['\\v^(md|mdown|mkd|mkdn)$']  = 'markdown'
           zv_file_types['yaml.ansible']             = 'ansible'
         vim.g.zv_file_types = zv_file_types
+        map('n', '<F1>', '<Plug>Zeavim', {})
+        map('n', 'gzz', '<Plug>Zeavim', {})
+        map('v', 'gzz', '<Plug>ZVVisSelection', {})
+        map('n', 'gZ', '<Plug>ZVKeyDocset<CR>', {})
+        map('n', 'gz', '<Plug>ZVOperator', {})
       end,
     }
   -- }}}
@@ -2331,10 +2329,6 @@
 
         " if (exists("t:NERDTreeBufName") && bufwinnr(t:NERDTreeBufName) != -1)
         exe ':tabdo NERDTreeClose'
-        " endif
-
-        " if (exists("t:tagbar_buf_name") && bufwinnr(t:tagbar_buf_name) != -1)
-        exe ':tabdo TagbarClose'
         " endif
 
         " if bufwinnr('vista') != -1)

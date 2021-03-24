@@ -146,9 +146,9 @@ in
               systemctl --state=failed --no-legend
               systemctl --user --state=failed --no-legend
               if ! pgrep zoom > /dev/null;then
-                if [[ $(t lsp | tee /dev/stderr | wc -l) -eq 0 ]];then
+                # if [[ $(t lsp | tee /dev/stderr | wc -l) -eq 0 ]];then
                   t ls
-                fi
+                # fi
               fi
             else
               SESS=$(tmux list-sessions | grep -v attached | cut -d: -f1 | head -n 1)
