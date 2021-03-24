@@ -8,8 +8,8 @@ stdenv.mkDerivation rec {
   src = fetchFromGitHub {
     owner = "ewok";
     repo = "todofi.sh";
-    rev = "b5b048d28b0cc432f33ca27e649766b6a38c2896";
-    sha256 = "0xw58w56zya5i2sa1y1v1n49rcjvkq171372zciicic8q7bhxmy4";
+    rev = "aaecb8bd575b2d2bc0b50daa3171cef2aec2e6a8";
+    sha256 = "0mhizx7x1x2pjc6kjawlhiiw1y0qflbadsnrr9kzahn2h5dnfzf8";
   };
 
   phases = [ "unpackPhase" "installPhase" ];

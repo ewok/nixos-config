@@ -60,6 +60,8 @@ let
 
   todofishCustom = pkgs.writeShellScriptBin "todofi.sh" ''
     export TODOFI_SHORTCUT_NEW="Shift+space"
+    export TODOFI_CMD_DO="again"
+    export TODO_NO_AGAIN_IF_NOT_TAGGED=1
     # export TODOFI_SHORTCUT_DONE="Ctrl+space"
     ${pkgs.todofish}/bin/todofi.sh $@
   '';

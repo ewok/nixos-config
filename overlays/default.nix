@@ -7,4 +7,5 @@ self: super:
   sparkleshare = super.callPackage ./sparkleshare.nix { };
   todofish = super.callPackage ./todofish.nix { };
   rofi-bluetooth = super.callPackage ./rofi-bluetooth.nix { };
+  todo-txt-again = super.callPackage ./todoagain.nix { };
 }
