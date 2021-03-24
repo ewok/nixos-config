@@ -161,7 +161,6 @@
     -- let $NVIM_TUI_ENABLE_TRUE_COLOR=1
     -- let $NVIM_TUI_ENABLE_CURSOR_SHAPE=1
 
-
     exec([[
     filetype plugin indent on
 
@@ -357,9 +356,6 @@
   -- Settings options {{{
     map('n', '<leader>osw', ':set wrap<CR>', {})
     map('n', '<leader>ouw', ':set nowrap<CR>', {})
-
-    map('n', '<leader>osffu', ':set ff=unix<CR>', {})
-    map('n', '<leader>osffd', ':set ff=dos<CR>', {})
 
     map('n', '<leader>osts2', ':set tabstop=2 |set softtabstop=2<CR>', {})
     map('n', '<leader>osts4', ':set tabstop=4 |set softtabstop=4<CR>', {})
@@ -909,6 +905,15 @@
       ft = { 'xml' },
     }
   -- }}}
+  -- QF {{{
+    local ft_qf = {
+      {[[ FileType qf lua load_qf_ft() ]]};
+    }
+    augroups({ft_qf=ft_qf})
+    _G.load_qf_ft = function()
+      bmap('n', 'q', ':cclose<CR>', {})
+    end
+  -- }}}
   -- Yaml {{{
     local ft_yaml = {
       {[[ FileType yaml lua load_yaml_ft() ]]};
@@ -989,37 +994,97 @@
   -- }}}
   -- Fuzzy {{{
     packer.use {
-      'junegunn/fzf.vim',
-      requires = { 'junegunn/fzf', as = 'fzf' },
-      as = 'fzf.vim',
+      'nvim-telescope/telescope.nvim',
+      requires = {{'nvim-lua/popup.nvim'}, {'nvim-lua/plenary.nvim'}},
       config = function()
-        map('n', '<leader>fb', ':Buffers<CR>', { noremap = true, silent = true })
-        map('n', '<leader>of', ':Files<CR>', { noremap = true, silent = true })
-        map('n', '<leader>om', ':Maps<CR>', { noremap = true, silent = true })
-        map('n', '<leader>oh', ':History<CR>', { noremap = true, silent = true })
-        map('n', '<leader>osft', ':Filetypes<CR>', { noremap = true, silent = true })
-        map('n', '<leader>osc', ':Colors<CR>', { noremap = true, silent = true })
-        map('n', '<leader>ghf', ':BCommits<CR>', { noremap = true, silent = true })
-        map('n', '<leader>ff', ':Rg<CR>', { noremap = true, silent = true })
-        map('n', '<leader>vv', ':Buffers<CR>', { noremap = true, silent = true })
 
-        vim.g.fzf_tags_command = 'ctags -R --exclude=.git --exclude=.idea --exclude=log'
-        local fzf_action = {}
-        -- vim.g.fzf_action['ctrl-q'] = 'tab split'
-        fzf_action['ctrl-t'] = 'tab split'
-        fzf_action['ctrl-s'] = 'split'
-        fzf_action['ctrl-v'] = 'vsplit'
-        vim.g.fzf_action = fzf_action
+        map('n', '<leader>ff', ':Telescope live_grep<CR>', { noremap = true, silent = true })
+        map('n', '<leader>fo', ':Telescope find_files<CR>', { noremap = true, silent = true })
 
-        vim.env.FZF_DEFAULT_OPTS = '--bind=ctrl-a:toggle-all,ctrl-space:toggle+down,ctrl-alt-a:deselect-all'
-        vim.env.FZF_DEFAULT_COMMAND = 'rg --iglob !.git --files --hidden --ignore-vcs --ignore-file ~/.config/git/gitexcludes'
+        map('n', '<leader>oc', ':Telescope commands<CR>', { noremap = true, silent = true })
+        map('n', '<leader>oh', ':Telescope help_tags<CR>', { noremap = true, silent = true })
 
-        vim.cmd [[tnoremap <expr> <Esc> (&filetype == "fzf") ? "<Esc>" : "<c-\><c-n>"]]
-        vim.cmd([[ command! -bang -nargs=* Rg ]]..
-        [[ call fzf#vim#grep("rg --column --line-number --no-heading --color=always --smart-case ".shellescape(<q-args>),]]..
-        [[ 1, fzf#vim#with_preview({'options': '--delimiter : --nth 4..'}), <bang>0)]])
+        map('n', '<leader>osc', ':Telescope colorscheme<CR>', { noremap = true, silent = true })
+        map('n', '<leader>osf', ':Telescope filetypes<CR>', { noremap = true, silent = true })
+
+        map('n', '<leader>oo', ':Telescope vim_options<CR>', { noremap = true, silent = true })
+        map('n', '<leader>oa', ':Telescope autocommands<CR>', { noremap = true, silent = true })
+        map('n', '<leader>ok', ':Telescope keymaps<CR>', { noremap = true, silent = true })
+        map('n', '<leader>oi', ':Telescope highlights<CR>', { noremap = true, silent = true })
+
+        map('n', '<leader>mm', ':Telescope marks<CR>', { noremap = true, silent = true })
+        map('n', 'm/', ':Telescope marks<CR>', { noremap = true, silent = true })
+
+        map('n', '<leader>bb', ':Telescope buffers<CR>', { noremap = true, silent = true })
+
+        local actions = require('telescope.actions')
+        require('telescope').setup{
+          defaults = {
+            file_ignore_patterns = {},
+            width = 0.75,
+            set_env = { ['COLORTERM'] = 'truecolor' },
+            -- file_previewer = require'telescope.previewers'.vim_buffer_cat.new,
+            -- grep_previewer = require'telescope.previewers'.vim_buffer_vimgrep.new,
+            -- qflist_previewer = require'telescope.previewers'.vim_buffer_qflist.new,
+            mappings = {
+              i = {
+                -- So, to not map "<C-n>", just put
+                ["<c-n>"] = false,
+                ["<c-p>"] = false,
+                ["<c-j>"] = actions.move_selection_next,
+                ["<c-k>"] = actions.move_selection_previous,
+
+                ["<C-s>"] = actions.select_horizontal,
+                ["<C-v>"] = actions.select_vertical,
+                ["<C-t>"] = actions.select_tab,
+                ["<C-q>"] = actions.smart_send_to_qflist + actions.open_qflist,
+                -- ["<C-q>"] = actions.send_selected_to_qflist,
+
+                ["<C-Space>"] = actions.toggle_selection + actions.move_selection_previous,
+
+                -- ["<CR>"] = actions.select_default + actions.center,
+                ["<esc>"] = actions.close,
+              },
+              n = {
+                ["<esc>"] = actions.close,
+              },
+            },
+          }
+        }
       end,
     }
+    -- packer.use {
+    --   'junegunn/fzf.vim',
+    --   requires = { 'junegunn/fzf', as = 'fzf' },
+    --   as = 'fzf.vim',
+    --   config = function()
+    --     -- map('n', '<leader>fb', ':Buffers<CR>', { noremap = true, silent = true })
+    --     -- map('n', '<leader>of', ':Files<CR>', { noremap = true, silent = true })
+    --     -- map('n', '<leader>om', ':Maps<CR>', { noremap = true, silent = true })
+    --     -- map('n', '<leader>oh', ':History<CR>', { noremap = true, silent = true })
+    --     -- map('n', '<leader>osft', ':Filetypes<CR>', { noremap = true, silent = true })
+    --     -- map('n', '<leader>osc', ':Colors<CR>', { noremap = true, silent = true })
+    --     -- map('n', '<leader>ghf', ':BCommits<CR>', { noremap = true, silent = true })
+    --     -- map('n', '<leader>ff', ':Rg<CR>', { noremap = true, silent = true })
+    --     -- map('n', '<leader>vv', ':Buffers<CR>', { noremap = true, silent = true })
+
+    --     vim.g.fzf_tags_command = 'ctags -R --exclude=.git --exclude=.idea --exclude=log'
+    --     local fzf_action = {}
+    --     -- vim.g.fzf_action['ctrl-q'] = 'tab split'
+    --     fzf_action['ctrl-t'] = 'tab split'
+    --     fzf_action['ctrl-s'] = 'split'
+    --     fzf_action['ctrl-v'] = 'vsplit'
+    --     vim.g.fzf_action = fzf_action
+
+    --     vim.env.FZF_DEFAULT_OPTS = '--bind=ctrl-a:toggle-all,ctrl-space:toggle+down,ctrl-alt-a:deselect-all'
+    --     vim.env.FZF_DEFAULT_COMMAND = 'rg --iglob !.git --files --hidden --ignore-vcs --ignore-file ~/.config/git/gitexcludes'
+
+    --     vim.cmd [[tnoremap <expr> <Esc> (&filetype == "fzf") ? "<Esc>" : "<c-\><c-n>"]]
+    --     vim.cmd([[ command! -bang -nargs=* Rg ]]..
+    --     [[ call fzf#vim#grep("rg --column --line-number --no-heading --color=always --smart-case ".shellescape(<q-args>),]]..
+    --     [[ 1, fzf#vim#with_preview({'options': '--delimiter : --nth 4..'}), <bang>0)]])
+    --   end,
+    -- }
   -- }}}
   -- Indent-guides {{{
     packer.use {
@@ -1351,8 +1416,6 @@
           ListBufferMarks    =  "m/",
           ListBufferMarkers  =  ""
         }
-        map('n', 'm/', ':Marks<CR>', { noremap = true })
-        map('n', '<leader>mm', ':Marks<CR>', { noremap = true })
         map('n', '<leader>mc', [[:call signature#mark#Purge('all')|wshada!<CR>]], { noremap = true, silent = true })
       end,
     }
@@ -1663,7 +1726,9 @@
       branch = 'dev',
       requires = {
         { 'michal-h21/vim-zettel' },
-        { 'ewok/vimwiki-sync' }
+        { 'ewok/vimwiki-sync' },
+        { 'junegunn/fzf.vim' },
+        { 'junegunn/fzf' },
       },
       setup = function()
         vim.g.vimwiki_list = {
@@ -1752,6 +1817,7 @@
   -- Vista {{{
     packer.use {
       'liuchengxu/vista.vim',
+      requires = {{'junegunn/fzf'}},
       config = function ()
         map('n', '<leader>ov', ':Vista show<CR>', { noremap = true })
         map('n', '<leader>ft', ':Vista finder<CR>', { noremap = true })
@@ -2104,7 +2170,7 @@
         map('n', '<leader>gR', ':Gread<CR>', { silent = true })
         map('n', '<leader>gR', ':Gread<CR>', { silent = true })
 
-        map('n', '<leader>gbl', ':Gblame<CR>', { silent = true })
+        map('n', '<leader>gb', ':Gblame<CR>', { silent = true })
 
         map('n', '<leader>gps', ':G push<CR>', { silent = true })
         map('n', '<leader>gplr', ':G pull --rebase<CR>', { silent = true })
@@ -2599,19 +2665,21 @@
   lmap.c.r = {name = '+Refactor'}
   lmap.c.r.n = 'Rename'
   lmap.c.f = 'Formatting'
+  lmap.d = {name = '+Draw'}
+  lmap.d.i = 'Start'
+  lmap.d.s = 'Stop'
   lmap.f = {name = '+Find' }
   lmap.f.b = 'Buffer'
   lmap.f.f = 'in-File'
-  lmap.f.p = 'Path'
-  lmap.f.r = {
+  lmap.f.p = 'file in Path'
+  lmap.f.r = { name = '+Replace',
     [' '] = 'Search',
     ['<CR>'] = 'Replace'
   }
+  lmap.f.o = 'and-Open file'
   lmap.f.t = 'Tag'
   lmap.g = {name = '+Git'}
-  lmap.g.b = { name = '+Blame' }
-  lmap.g.b.b = 'Messanger'
-  lmap.g.b.l = 'bLame'
+  lmap.g.b = 'Blame'
   lmap.g.C = 'Commit'
   lmap.g.d = 'Diff'
   lmap.g.g = 'Browse'
@@ -2643,15 +2711,22 @@
   lmap.l.o = 'Open'
   lmap.l.p = 'Previous'
   lmap.m = { name = '+Marks' }
+  lmap.m.m = 'Find'
   lmap.m.c = 'Clean'
   lmap.o = { name = '+Open/+Option'}
+  lmap.o.a = 'Autocommands'
+  lmap.o.c = 'Commands'
   lmap.o.e = 'Explorer'
+  lmap.o.h = 'Help'
+  lmap.o.i = 'hIghlights'
+  lmap.o.k = 'Keymaps'
+  lmap.o.o = 'Options'
   lmap.o.r = 'Root(project)'
   lmap.o.s = { name = '+Option-Set'}
-  lmap.o.s.f = { name = '+File'}
-  lmap.o.s.f.f = { name = '+Format='}
-  lmap.o.u = { name = '+Option-Unset'}
+  lmap.o.s.c = 'Colorscheme'
+  lmap.o.s.f = 'Filetype'
   lmap.o.t = 'To-Do'
+  lmap.o.u = { name = '+Option-Unset'}
   lmap.o.v = 'Vista'
   lmap.p = { name = '+Plugins' }
   lmap.q = { name = '+QFix' }
@@ -2672,7 +2747,7 @@
   lmap.s.q = 'Quit'
   lmap.s.s = 'Save'
   lmap.s.u = 'open-cUrrent'
-  lmap.t = { name = '+Tags/Text' }
+  lmap.t = { name = '+Text' }
   lmap.t.f = {name = '+Fix'}
   lmap.t.s = 'Syntax'
   lmap.t.t = 'Text-only(Goyo)'
@@ -2682,13 +2757,11 @@
   lmap.w.m = { name = '+Maintanence'}
   lmap.w.m.c = 'Check Links'
   lmap.w.m.t = 'Rebuild Tags'
-  lmap.w.c = 'Colorize'
   lmap.w.t = 'Today'
   lmap.w.T = 'Tag Rebuild+Insert'
   lmap.w.i = 'Diary'
   lmap.w.r = 'Rename link'
   lmap.w.d = 'Delete link'
-  lmap.w.n = 'goto'
   lmap.w.j = 'Next Day'
   lmap.w.k = 'Prev Day'
   lmap.y = { name = '+Yank' }
