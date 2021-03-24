@@ -145,8 +145,10 @@ in
             then
               systemctl --state=failed --no-legend
               systemctl --user --state=failed --no-legend
-              if [[ $(TODOTXT_VERBOSE=0 todo.sh lsp | tee /dev/stderr | wc -l) -eq 0 ]];then
-                TODOTXT_VERBOSE=0 todo.sh ls
+              if ! pgrep zoom > /dev/null;then
+                if [[ $(t lsp | tee /dev/stderr | wc -l) -eq 0 ]];then
+                  t ls
+                fi
               fi
             else
               SESS=$(tmux list-sessions | grep -v attached | cut -d: -f1 | head -n 1)
