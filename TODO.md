@@ -1,10 +1,10 @@
 # TODO
 
 - [O] General:
-    - [ ] qutebrowser
+    - [X] qutebrowser
     - [ ] wallpapers
     - [ ] autofs
-    - [ ] add config to ctags modules/dev/ctags.nix
+    - [X] add config to ctags modules/dev/ctags.nix
     - [X] xprofile - touchpad
     - [X] General configuration and hardware-configuration
     - [X] direnv
@@ -20,6 +20,21 @@
     - [X] add config to rclone modules/backup/rclone.nix
     - [X] add homePath to common lib or find existing
     - [X] add to zeal modules/dev/zeal.nix
-- [ ] hp spectre:
-    - [ ] hibernate after suspend
-    - [ ] sound card
+- [o] hp spectre:
+    - [X] hibernate after suspend
+    - [ ] sound card : Kernel patch is on the way
+- Nvim:
+    - [ ] nvim-dap
+    - [ ] Implement buffer management to telescope
+    - [ ] To Lua migration:
+        - [ ] MR, MY - mapping
+        - [ ] Insert date - mapping
+        - [ ] neodark - setup
+        - [ ] rooter - config
+        - [ ] todo_ft
+        - [ ] vimux
+        - [ ] OpenToDo
+        - [ ] MyFoldText
+        - [ ] Sessions
+        - [ ] QuickFix
+        - [ ] Load Local config
