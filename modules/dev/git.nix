@@ -81,7 +81,7 @@ in
               algorithm = "patience";
               gpg = { textconv = "${pkgs.gnupg}/bin/gpg2 --no-tty --decrypt"; };
             };
-            "push" = { default = "current"; };
+            "push" = { default = "simple"; };
             "absorb" = { maxstack = 75; };
           }
           (mkIf work.enable {
