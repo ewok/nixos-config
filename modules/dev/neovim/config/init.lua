@@ -2708,9 +2708,16 @@
   lmap.c.r = {name = '+Refactor'}
   lmap.c.r.n = 'Rename'
   lmap.c.f = 'Formatting'
-  lmap.d = {name = '+Draw'}
-  lmap.d.i = 'Start'
-  lmap.d.s = 'Stop'
+  lmap.d = {name = '+Debug'}
+  lmap.d.B = 'Breakpoints'
+  lmap.d.b = 'set Breakpoint'
+  lmap.d.c = 'Run/Continue'
+  lmap.d.i = 'Step Into'
+  lmap.d.n = 'Step Over'
+  lmap.d.o = 'Step Out'
+  lmap.d.r = 'Repl'
+  lmap.d.S = 'Stop'
+  lmap.d.v = 'Variables'
   lmap.f = {name = '+Find' }
   lmap.f.b = 'Buffer'
   lmap.f.f = 'in-File'
