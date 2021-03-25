@@ -2508,15 +2508,17 @@
   -- AutoSave {{{
     local auto_save_locked = false
     local auto_save_checkpoint = 0
+    vim.g.timer_count = 0
 
+    local timer = vim.loop.new_timer()
     local co = coroutine.create(function ()
       while true do
-        local timer = vim.loop.new_timer()
-        timer:start(4000, 1000, vim.schedule_wrap(function()
+        timer:start(4000, 4000, vim.schedule_wrap(function()
           if (os.time() - auto_save_checkpoint) > 4 then
             auto_save()
             auto_save_locked = false
-            timer:close()
+            timer:stop()
+            -- timer:close()
           end
         end))
         coroutine.yield()
