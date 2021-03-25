@@ -257,9 +257,9 @@
 
 -- Keymaps {{{
   -- Tabs {{{
-    map('n', '<C-W>t', ':tabnew<CR>', { noremap = true })
-    map('n', '<Tab>', ':tabnext<CR>', { noremap = true })
-    map('n', '<S-Tab>', ':tabprev<CR>', { noremap = true })
+    map('n', '<C-W>t', ':tabnew<CR>', { noremap = true, silent = true })
+    map('n', '<Tab>', ':tabnext<CR>', { noremap = true, silent = true })
+    map('n', '<S-Tab>', ':tabprev<CR>', { noremap = true, silent = true })
   -- }}}
   -- Windows {{{
     if fn.exists('$TMUX') == 1 then
@@ -374,6 +374,9 @@
     map('n', '<leader>pc', ':PackerCompile<CR>', {})
     map('n', '<leader>pi', ':PackerInstall<CR>', {})
     map('n', '<leader>ps', ':PackerSync<CR>', {})
+  -- }}}
+  -- Terminal {{{
+  vim.cmd [[tnoremap <Esc> <C-\><C-n>]]
   -- }}}
 -- }}}
 
@@ -1000,7 +1003,7 @@
     }
     vim.cmd [[ packadd neodark ]]
   -- }}}
-  -- Fuzzy {{{
+  -- Telescope {{{
     packer.use {
       'nvim-telescope/telescope.nvim',
       requires = {{'nvim-lua/popup.nvim'}, {'nvim-lua/plenary.nvim'}},
@@ -1030,6 +1033,9 @@
           defaults = {
             file_ignore_patterns = {},
             width = 0.75,
+            prompt_position = "top",
+            prompt_prefix = " ",
+            sorting_strategy = "ascending",
             set_env = { ['COLORTERM'] = 'truecolor' },
             -- file_previewer = require'telescope.previewers'.vim_buffer_cat.new,
             -- grep_previewer = require'telescope.previewers'.vim_buffer_vimgrep.new,
@@ -1048,7 +1054,7 @@
                 ["<C-q>"] = actions.smart_send_to_qflist + actions.open_qflist,
                 -- ["<C-q>"] = actions.send_selected_to_qflist,
 
-                ["<C-Space>"] = actions.toggle_selection + actions.move_selection_previous,
+                ["<C-Space>"] = actions.toggle_selection + actions.move_selection_next,
 
                 -- ["<CR>"] = actions.select_default + actions.center,
                 ["<esc>"] = actions.close,
