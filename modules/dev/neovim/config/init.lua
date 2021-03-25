@@ -1828,6 +1828,7 @@
       config = function ()
         map('n', '<leader>ov', ':Vista<CR>', { noremap = true })
         map('n', '<leader>ft', ':Vista finder<CR>', { noremap = true })
+        vim.cmd [[tnoremap <expr> <Esc> (&filetype == "fzf") ? "<Esc>" : "<c-\><c-n>"]]
         vim.g.vista_close_on_jump = 1
         local vista_executive_for = {
           vimwiki = 'markdown',
