@@ -708,6 +708,14 @@
       bmap('n', '<leader>rT', ':w|lua run_cmd("python -m unittest")<CR>', {})
       bmap('n', '<leader>rL', ':!pip install flake8 mypy pylint bandit pydocstyle pudb jedi<CR>:ALEInfo<CR>', {})
 
+      _G.format_python = function()
+        vim.api.nvim_command('silent! write')
+        vim.api.nvim_command('silent ! black %')
+        vim.api.nvim_command('silent e')
+      end
+
+      bmap('n', '<leader>cf', ':lua format_python()<CR>', { silent = true })
+
       bmap('n', '<leader>rb', 'ofrom pudb import set_trace; set_trace()<esc>', {})
 
       bmap('x', 'af', '<Plug>(textobj-python-function-a)', {})
@@ -2261,6 +2269,39 @@
     map('n', '<leader>cP', ':Codi!! python<CR>', {})
     map('n', '<leader>cL', ':Codi!! lua<CR>', {})
   -- }}}
+  -- Debug {{{
+    packer.use{
+      'mfussenegger/nvim-dap',
+      requires = {
+        {
+          "mfussenegger/nvim-dap-python",
+          config = function()
+            require('dap-python').setup('python')
+          end,
+        },{
+          "theHamsta/nvim-dap-virtual-text",
+          config = function()
+            vim.g.dap_virtual_text = true
+          end,
+        },{
+          "nvim-telescope/telescope-dap.nvim",
+          config = function()
+            map('n', '<leader>dB', ':Telescope dap list_breakpoints<CR>', {})
+            map('n', '<leader>dv', ':Telescope dap variables<CR>', {})
+          end,
+        }
+      },
+      config = function()
+        map('n', '<leader>db', ':lua require"dap".toggle_breakpoint()<CR>', {})
+        map('n', '<leader>dc', ':lua require"dap".continue()<CR>', {})
+        map('n', '<leader>dn', ':lua require"dap".step_over()<CR>', {})
+        map('n', '<leader>di', ':lua require"dap".step_into()<CR>', {})
+        map('n', '<leader>do', ':lua require"dap".step_out()<CR>', {})
+        map('n', '<leader>dS', ':lua require"dap".stop()<CR>', {})
+        map('n', '<leader>dr', ':lua require"dap".repl.open()<CR>', {})
+      end,
+    }
+  -- }}}
 -- Motion
   -- AutoPairs {{{
     packer.use 'jiangmiao/auto-pairs'
@@ -2641,11 +2682,11 @@
 -- }}}
 
 -- Testing {{{
-  -- DrawIt {{{
-    packer.use {
-      'ewok/DrawIt'
-    }
-  -- }}}
+  -- -- DrawIt {{{
+  --   packer.use {
+  --     'ewok/DrawIt'
+  --   }
+  -- -- }}}
 -- }}}
 
 -- Leader init {{{

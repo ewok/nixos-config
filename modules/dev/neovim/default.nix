@@ -50,9 +50,11 @@ in
           nodejs
           nodePackages.markdown-link-check
           nodePackages.livedown
-          python3Packages.pynvim
-          python3Packages.msgpack
-          python3Packages.jedi
+          # All in python.nix
+          # python3Packages.pynvim
+          # python3Packages.msgpack
+          # python3Packages.jedi
+          # python3Packages.debugpy
           # language servers
           rust-analyzer
           terraform-lsp
