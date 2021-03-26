@@ -40,7 +40,8 @@ in
           master.tree-sitter
           my-nvim
           global
-          hadolint
+          # Does not work again
+          # hadolint
           gcc
           shellcheck
           silver-searcher
