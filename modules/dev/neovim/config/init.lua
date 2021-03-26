@@ -981,6 +981,18 @@
       end,
     }
   -- }}}
+  -- Cheatsheet {{{
+    packer.use {
+      'RishabhRD/nvim-cheat.sh',
+      requires = {{
+        'RishabhRD/popfix'
+      }},
+      config = function()
+        vim.g.cheat_default_window_layout = 'vertical_split'
+        map('n', '<leader>fc', ':Cheat<CR>', { noremap = true, silent = true })
+      end,
+    }
+  -- }}}
   -- Colorscheme {{{
     packer.use {
       'KeitaNakamura/neodark.vim',
@@ -2747,6 +2759,7 @@
   lmap.d.v = 'Variables'
   lmap.f = {name = '+Find' }
   lmap.f.b = 'Buffer'
+  lmap.f.b = 'Cheat'
   lmap.f.f = 'in-File'
   lmap.f.p = 'file in Path'
   lmap.f.r = { name = '+Replace',
