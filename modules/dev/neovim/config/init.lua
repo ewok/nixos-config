@@ -1011,6 +1011,12 @@
         {'nvim-lua/plenary.nvim'},
         {
           'nvim-telescope/telescope-fzf-writer.nvim',
+          requires = {{
+            'junegunn/fzf',
+            config = function()
+              map('n', '<leader>ghf', ':BCommits<CR>', { noremap = true, silent = true })
+            end,
+          }},
           config = function()
             require('telescope').setup {
               extensions = {
