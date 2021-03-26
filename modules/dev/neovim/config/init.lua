@@ -1006,11 +1006,31 @@
   -- Telescope {{{
     packer.use {
       'nvim-telescope/telescope.nvim',
-      requires = {{'nvim-lua/popup.nvim'}, {'nvim-lua/plenary.nvim'}},
+      requires = {
+        {'nvim-lua/popup.nvim'},
+        {'nvim-lua/plenary.nvim'},
+        {
+          'nvim-telescope/telescope-fzf-writer.nvim',
+          config = function()
+            require('telescope').setup {
+              extensions = {
+                fzf_writer = {
+                  minimum_grep_characters = 3,
+                  minimum_files_characters = 2,
+                  -- If slow -> turn off
+                  use_highlighter = true,
+                }
+              }
+            }
+            map('n', '<leader>ff', ':Telescope fzf_writer grep<CR>', { noremap = true, silent = true })
+            map('n', '<leader>fo', ':Telescope fzf_writer files<CR>', { noremap = true, silent = true })
+          end,
+        }
+      },
       config = function()
 
-        map('n', '<leader>ff', ':Telescope live_grep<CR>', { noremap = true, silent = true })
-        map('n', '<leader>fo', ':Telescope find_files<CR>', { noremap = true, silent = true })
+        -- map('n', '<leader>ff', ':Telescope live_grep<CR>', { noremap = true, silent = true })
+        -- map('n', '<leader>fo', ':Telescope find_files<CR>', { noremap = true, silent = true })
 
         map('n', '<leader>oc', ':Telescope commands<CR>', { noremap = true, silent = true })
         map('n', '<leader>oh', ':Telescope help_tags<CR>', { noremap = true, silent = true })
