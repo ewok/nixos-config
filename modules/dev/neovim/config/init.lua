@@ -714,7 +714,7 @@
 
       _G.format_python = function()
         vim.api.nvim_command('silent! write')
-        vim.api.nvim_command('silent ! black %')
+        vim.api.nvim_command('silent ! black -l 119 %')
         vim.api.nvim_command('silent e')
       end
 
