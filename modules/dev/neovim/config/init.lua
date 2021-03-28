@@ -670,6 +670,7 @@
     }
     augroups({ft_nix=ft_nix})
     _G.load_nix_ft = function()
+      require('lspconfig').rnix.autostart()
       reg_smart_cr()
       reg_highlight_cword()
       reg_auto_save()
@@ -2118,6 +2119,9 @@
             }
           }
         }
+        require'lspconfig'.rnix.setup{
+        }
+
         map('n', 'gd', '<cmd>lua vim.lsp.buf.definition()<CR>', { noremap = true, silent = true })
         map('n', 'gD', '<cmd>lua vim.lsp.buf.declaration()<CR>', { noremap = true, silent = true })
         map('n', 'gr', '<cmd>lua vim.lsp.buf.references()<CR>', { noremap = true, silent = true })

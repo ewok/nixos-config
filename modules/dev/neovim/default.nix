@@ -30,6 +30,11 @@ let
     localSystem = { system = "x86_64-linux"; };
   });
 
+  # rnix = import inputs.rnix ({
+  #   config = config.nixpkgs.config;
+  #   localSystem = { system = "x86_64-linux"; };
+  # });
+
 in
   {
     config = mkIf dev.enable {
@@ -49,23 +54,23 @@ in
           yamllint
           par
           nodejs
-          nodePackages.markdown-link-check
-          nodePackages.livedown
           # All in python.nix
           # python3Packages.pynvim
           # python3Packages.msgpack
           # python3Packages.jedi
           # python3Packages.debugpy
-          # language servers
           rust-analyzer
           terraform-lsp
           sumneko-lua-language-server
           nodePackages.bash-language-server
-          nodePackages.pyright
           nodePackages.dockerfile-language-server-nodejs
-          nodePackages.vscode-json-languageserver
+          nodePackages.livedown
+          nodePackages.markdown-link-check
+          nodePackages.pyright
           # nodePackages.sql-language-server
+          nodePackages.vscode-json-languageserver
           nodePackages.yaml-language-server
+          # rnix.rnix-lsp
         ] ++ [
           jrnl
         ];

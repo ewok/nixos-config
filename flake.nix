@@ -1,5 +1,4 @@
 {
-
   description = "ewoks envs";
 
   inputs = rec {
@@ -8,11 +7,12 @@
     master.url = "github:nixos/nixpkgs/master";
     nixos-hardware.url = "github:NixOS/nixos-hardware";
     neovim-nightly-overlay.url = "github:mjlbach/neovim-nightly-overlay";
+    # rnix.url = "github:nix-community/rnix-lsp/master";
+    # rnix.url = "https://github.com/nix-community/rnix-lsp/archive/master.tar.gz";
     home-manager = {
       url = "github:rycee/home-manager";
       inputs.nixpkgs.follows = "unstable";
     };
-
   };
 
   outputs = { self, ... }@inputs:
