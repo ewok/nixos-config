@@ -26,33 +26,33 @@ with lib;
     ./misc/tools.nix
     ./misc/pcmanfm.nix
     # deadd-notification-center
-      # ./deadd
-      # ./nitrogen
+    # ./deadd
+    # ./nitrogen
 
     # Books:
-      # calibre
-      # fbreader
+    # calibre
+    # fbreader
 
     # Communication:
 
-# ldoce5viewer-pyqt5-git
+    # ldoce5viewer-pyqt5-git
 
     # browsers:
     #   qutebrowser
 
-      # create dirs:
+    # create dirs:
     # - "~/.local/share/albert/org.albert.extension.python/modules/"
     # - "~/.config/albert"
     # - "~/Pictures/Screenshots"
 
-# - name: Set wallpaper from unsplash
-#   get_url:
-#     url: "https://unsplash.com/photos/aL7SA1ASVdQ/download?force=true"
-#     dest: "/usr/share/backgrounds/unsplash.jpg"
-#     mode: 0644
-#     force: True
-#   become: True
-#   notify: nitrogen-restore
+    # - name: Set wallpaper from unsplash
+    #   get_url:
+    #     url: "https://unsplash.com/photos/aL7SA1ASVdQ/download?force=true"
+    #     dest: "/usr/share/backgrounds/unsplash.jpg"
+    #     mode: 0644
+    #     force: True
+    #   become: True
+    #   notify: nitrogen-restore
   ];
   options.modules.gui = {
     enable = mkEnableOption "Enable gui.";

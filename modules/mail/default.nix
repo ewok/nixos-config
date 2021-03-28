@@ -11,6 +11,6 @@ with lib;
   ];
   options.modules.mail = {
     enable = mkEnableOption "Enable mailing soft.";
-    mailspring.enable  = mkEnableOption "Enable mailspring in addition or only.";
+    mailspring.enable = mkEnableOption "Enable mailspring in addition or only.";
   };
 }

@@ -95,18 +95,21 @@ let
   '';
 
 in
-  {
-    options.modules.gui.touchscreen = {
-      enable = mkEnableOption "Support touchscreen laptop.";
-      autoRotate = mkEnableOption "Enable auto-rotate.";
-    };
+{
+  options.modules.gui.touchscreen = {
+    enable = mkEnableOption "Support touchscreen laptop.";
+    autoRotate = mkEnableOption "Enable auto-rotate.";
+  };
 
-    config = mkMerge [
-      (mkIf ( gui.enable && gui.touchscreen.enable ) {
+  config = mkMerge [
+    (
+      mkIf (gui.enable && gui.touchscreen.enable) {
         environment.variables.MOZ_USE_XINPUT2 = "1";
-      })
+      }
+    )
 
-      (mkIf ( gui.enable && gui.touchscreen.enable && gui.touchscreen.autoRotate ) {
+    (
+      mkIf (gui.enable && gui.touchscreen.enable && gui.touchscreen.autoRotate) {
         home-manager.users.${username} = {
           home.packages = with pkgs; [ onboard ];
           systemd.user.services.auto-rotate = {
@@ -125,6 +128,7 @@ in
             Install = { WantedBy = [ "graphical-session.target" ]; };
           };
         };
-      })
-    ];
-  }
+      }
+    )
+  ];
+}

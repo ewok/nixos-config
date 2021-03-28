@@ -45,34 +45,34 @@ stdenv.mkDerivation rec {
   dontPatchELF = true;
 
   unpackPhase = ''
-      dpkg --fsys-tarfile $src | tar --extract
-      rm -rf usr/share/lintian
+    dpkg --fsys-tarfile $src | tar --extract
+    rm -rf usr/share/lintian
   '';
 
   installPhase = ''
-      runHook preInstall
+    runHook preInstall
 
-      mkdir -p $out/bin
-      mv usr/* $out
-      mv opt/LBRY $out/
+    mkdir -p $out/bin
+    mv usr/* $out
+    mv opt/LBRY $out/
 
-      # Otherwise it looks "suspicious"
-      chmod -R g-w $out
+    # Otherwise it looks "suspicious"
+    chmod -R g-w $out
 
-      for file in $(find $out -type f \( -perm /0111 -o -name \*.so\* \) ); do
-        patchelf --set-interpreter "$(cat $NIX_CC/nix-support/dynamic-linker)" "$file" || true
-        patchelf --set-rpath ${rpath}:$out/LBRY $file || true
-      done
+    for file in $(find $out -type f \( -perm /0111 -o -name \*.so\* \) ); do
+      patchelf --set-interpreter "$(cat $NIX_CC/nix-support/dynamic-linker)" "$file" || true
+      patchelf --set-rpath ${rpath}:$out/LBRY $file || true
+    done
 
-      makeWrapper $out/LBRY/lbry $out/bin/lbry \
-        --prefix XDG_DATA_DIRS : $GSETTINGS_SCHEMAS_PATH \
-        --prefix PATH : ${ffmpeg}/bin:${xdg_utils}/bin
+    makeWrapper $out/LBRY/lbry $out/bin/lbry \
+      --prefix XDG_DATA_DIRS : $GSETTINGS_SCHEMAS_PATH \
+      --prefix PATH : ${ffmpeg}/bin:${xdg_utils}/bin
 
-      # Fix the desktop link
-      substituteInPlace $out/share/applications/lbry.desktop \
-        --replace /opt/LBRY/ $out/bin/
+    # Fix the desktop link
+    substituteInPlace $out/share/applications/lbry.desktop \
+      --replace /opt/LBRY/ $out/bin/
 
-      runHook postInstall
+    runHook postInstall
   '';
 
   meta = with lib; {
@@ -84,4 +84,3 @@ stdenv.mkDerivation rec {
     maintainers = with maintainers; [ islandusurper ];
   };
 }
-

@@ -9,7 +9,7 @@ in
   options.modules.mail = {
     accounts = mkOption {
       type = types.attrs;
-      default = { };
+      default = {};
     };
   };
 

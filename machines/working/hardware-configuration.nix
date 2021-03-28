@@ -5,27 +5,31 @@
 
 {
   imports =
-    [ (modulesPath + "/installer/scan/not-detected.nix")
+    [
+      (modulesPath + "/installer/scan/not-detected.nix")
     ];
 
   boot.initrd.availableKernelModules = [ "xhci_pci" "nvme" "usb_storage" "sr_mod" "sdhci_pci" ];
-  boot.initrd.kernelModules = [ ];
+  boot.initrd.kernelModules = [];
   boot.kernelModules = [ "kvm-intel" ];
-  boot.extraModulePackages = [ ];
+  boot.extraModulePackages = [];
 
   fileSystems."/" =
-    { device = "/dev/disk/by-uuid/51a66917-9512-4d46-bb17-39a11821ba40";
+    {
+      device = "/dev/disk/by-uuid/51a66917-9512-4d46-bb17-39a11821ba40";
       fsType = "ext4";
     };
 
   boot.initrd.luks.devices."nixos".device = "/dev/disk/by-uuid/1abf13f8-4c6f-4370-9cf6-94ee29a91989";
 
   fileSystems."/boot" =
-    { device = "/dev/disk/by-uuid/209A-A853";
+    {
+      device = "/dev/disk/by-uuid/209A-A853";
       fsType = "vfat";
     };
 
   swapDevices =
-    [ { device = "/dev/disk/by-uuid/1d599cb0-7f4a-4e37-8118-1fd1703d9caf"; }
+    [
+      { device = "/dev/disk/by-uuid/1d599cb0-7f4a-4e37-8118-1fd1703d9caf"; }
     ];
 }

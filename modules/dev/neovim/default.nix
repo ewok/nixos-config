@@ -20,15 +20,17 @@ let
     name = "my-neovim";
     paths = [ pkgs.neovim-nightly ];
     postBuild = ''
-    ln -s $out/bin/nvim $out/bin/vim
-    ln -s $out/bin/nvim $out/bin/vi
+      ln -s $out/bin/nvim $out/bin/vim
+      ln -s $out/bin/nvim $out/bin/vi
     '';
-    };
+  };
 
-  master = import inputs.master ({
-    config = config.nixpkgs.config;
-    localSystem = { system = "x86_64-linux"; };
-  });
+  master = import inputs.master (
+    {
+      config = config.nixpkgs.config;
+      localSystem = { system = "x86_64-linux"; };
+    }
+  );
 
   # rnix = import inputs.rnix ({
   #   config = config.nixpkgs.config;
@@ -36,55 +38,55 @@ let
   # });
 
 in
-  {
-    config = mkIf dev.enable {
+{
+  config = mkIf dev.enable {
 
-      home-manager.users."${username}" = {
+    home-manager.users."${username}" = {
 
-        home.packages = with pkgs; [
-          master.tree-sitter
-          my-nvim
-          global
-          # Does not work again
-          # hadolint
-          gcc
-          shellcheck
-          silver-searcher
-          vale
-          yamllint
-          par
-          nodejs
-          # All in python.nix
-          # python3Packages.pynvim
-          # python3Packages.msgpack
-          # python3Packages.jedi
-          # python3Packages.debugpy
-          rust-analyzer
-          terraform-lsp
-          sumneko-lua-language-server
-          nodePackages.bash-language-server
-          nodePackages.dockerfile-language-server-nodejs
-          nodePackages.livedown
-          nodePackages.markdown-link-check
-          nodePackages.pyright
-          # nodePackages.sql-language-server
-          nodePackages.vscode-json-languageserver
-          nodePackages.yaml-language-server
-          # rnix.rnix-lsp
-        ] ++ [
-          jrnl
-        ];
+      home.packages = with pkgs; [
+        master.tree-sitter
+        my-nvim
+        global
+        # Does not work again
+        # hadolint
+        gcc
+        shellcheck
+        silver-searcher
+        vale
+        yamllint
+        par
+        nodejs
+        # All in python.nix
+        # python3Packages.pynvim
+        # python3Packages.msgpack
+        # python3Packages.jedi
+        # python3Packages.debugpy
+        rust-analyzer
+        terraform-lsp
+        sumneko-lua-language-server
+        nodePackages.bash-language-server
+        nodePackages.dockerfile-language-server-nodejs
+        nodePackages.livedown
+        nodePackages.markdown-link-check
+        nodePackages.pyright
+        # nodePackages.sql-language-server
+        nodePackages.vscode-json-languageserver
+        nodePackages.yaml-language-server
+        # rnix.rnix-lsp
+      ] ++ [
+        jrnl
+      ];
 
-        xdg.configFile."nvim/init.lua".source = ./config/init.lua;
-        xdg.configFile."nvim/.gitignore".source = ./config/gitignore;
-        # home.file.".vim/vimrc".source = ./config/init.vim;
-        home.file.".ctags".source = ./config/ctags;
-        home.file.".vale.ini".source = ./config/vale.ini;
-        home.sessionVariables = {
-          EDITOR = "nvim";
-          VISUAL = "nvim";
-          GUI_EDITOR = "/usr/bin/nvim";
-        };
+      xdg.configFile."nvim/init.lua".source = ./config/init.lua;
+      xdg.configFile."nvim/.gitignore".source = ./config/gitignore;
+      # home.file.".vim/vimrc".source = ./config/init.vim;
+      home.file.".ctags".source = ./config/ctags;
+      home.file.".vale.ini".source = ./config/vale.ini;
+      home.sessionVariables = {
+        EDITOR = "nvim";
+        VISUAL = "nvim";
+        GUI_EDITOR = "/usr/bin/nvim";
       };
     };
-  }
+  };
+}

@@ -10,7 +10,7 @@ in
 {
   options.modules.backup = {
     rslsync = {
-      enable = mkEnableOption  "Enable rslsync.";
+      enable = mkEnableOption "Enable rslsync.";
       deviceName = mkOption {
         type = types.str;
         default = "${deviceName}";

@@ -5,29 +5,33 @@
 
 {
   imports =
-    [ (modulesPath + "/installer/scan/not-detected.nix")
+    [
+      (modulesPath + "/installer/scan/not-detected.nix")
     ];
 
   boot.initrd.availableKernelModules = [ "xhci_pci" "nvme" "usbhid" "usb_storage" "sr_mod" "rtsx_pci_sdmmc" ];
-  boot.initrd.kernelModules = [ ];
+  boot.initrd.kernelModules = [];
   boot.kernelModules = [ "kvm-intel" ];
   # boot.kernelPackages =  pkgs.linuxPackages_5_9;
-  boot.extraModulePackages = [ ];
+  boot.extraModulePackages = [];
 
   fileSystems."/" =
-    { device = "/dev/disk/by-label/nixos";
+    {
+      device = "/dev/disk/by-label/nixos";
       fsType = "ext4";
     };
 
   boot.initrd.luks.devices."nixos".device = "/dev/disk/by-uuid/bd17e8c6-b1aa-4c21-8b14-2aa20b3a37e1";
 
   fileSystems."/boot" =
-    { device = "/dev/disk/by-label/BOOT";
+    {
+      device = "/dev/disk/by-label/BOOT";
       fsType = "vfat";
     };
 
   fileSystems."/mnt/Data" =
-    { device = "/dev/disk/by-label/Data";
+    {
+      device = "/dev/disk/by-label/Data";
       fsType = "ntfs";
     };
 
@@ -42,7 +46,7 @@
     # Bus ID of the Intel GPU. You can find it using lspci, either under 3D or VGA
     intelBusId = "PCI:0:2:0";
   };
-  swapDevices = [ ];
+  swapDevices = [];
 
   hardware.opengl.driSupport32Bit = true;
 }

@@ -5,9 +5,10 @@ let
   gui = config.modules.gui;
   username = config.properties.user.name;
 in
-  {
-    config = mkMerge [
-      (mkIf base.enable {
+{
+  config = mkMerge [
+    (
+      mkIf base.enable {
 
         home-manager.users."${username}" = {
           home.packages = with pkgs; [
@@ -30,9 +31,11 @@ in
           xdg.configFile."vifm/vifm_keys".source = ./config/vifm_keys;
           xdg.configFile."vifm/vifmrc".source = ./config/vifmrc;
         };
-      })
+      }
+    )
 
-      (mkIf (base.enable && gui.enable) {
+    (
+      mkIf (base.enable && gui.enable) {
         home-manager.users."${username}" = {
           programs.zathura.enable = true;
 
@@ -41,9 +44,7 @@ in
             "application/cbz"
             "application/cbr"
             "image/vnd.djvu"
-          ] (_: [ "org.pwmt.zathura.desktop" ]) //
-
-          lib.genAttrs [
+          ] (_: [ "org.pwmt.zathura.desktop" ]) // lib.genAttrs [
             "image/png"
             "image/jpg"
             "image/jpeg"
@@ -55,6 +56,7 @@ in
             viewnior
           ];
         };
-      })
-    ];
-  }
+      }
+    )
+  ];
+}

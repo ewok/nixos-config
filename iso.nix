@@ -1,6 +1,6 @@
 # This module defines a small NixOS installation CD.  It does not
 # contain any graphical stuff.
-{config, pkgs, ...}:
+{ config, pkgs, ... }:
 {
   imports = [
     <nixpkgs/nixos/modules/installer/cd-dvd/installation-cd-minimal.nix>
@@ -16,5 +16,5 @@
 
   boot.initrd.availableKernelModules = [ "vmd" ];
   boot.kernelModules = [ "vmd" ];
-  boot.kernelPackages =  pkgs.linuxPackages_5_10;
+  boot.kernelPackages = pkgs.linuxPackages_5_10;
 }

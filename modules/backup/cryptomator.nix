@@ -4,10 +4,12 @@ let
   gui = config.modules.gui;
   backup = config.modules.backup;
   username = config.properties.user.name;
-  master = import inputs.master ({
-    config = config.nixpkgs.config;
-    localSystem = { system = "x86_64-linux"; };
-  });
+  master = import inputs.master (
+    {
+      config = config.nixpkgs.config;
+      localSystem = { system = "x86_64-linux"; };
+    }
+  );
 in
 {
   config = mkIf gui.enable {
@@ -18,4 +20,3 @@ in
     };
   };
 }
-

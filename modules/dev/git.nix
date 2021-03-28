@@ -20,19 +20,19 @@ in
   config = mkIf dev.enable {
 
     environment.systemPackages = with pkgs;
-    [
-      gitAndTools.git-absorb
-      gitAndTools.git-crypt
-      gitAndTools.git-extras
-      gitAndTools.git-filter-repo
-      gitAndTools.git-machete
-      gitAndTools.git-octopus
-      gitAndTools.git-reparent
-      gitAndTools.git-trim
-      gitAndTools.pass-git-helper
-      gitAndTools.gh
-      gitEnv
-    ];
+      [
+        gitAndTools.git-absorb
+        gitAndTools.git-crypt
+        gitAndTools.git-extras
+        gitAndTools.git-filter-repo
+        gitAndTools.git-machete
+        gitAndTools.git-octopus
+        gitAndTools.git-reparent
+        gitAndTools.git-trim
+        gitAndTools.pass-git-helper
+        gitAndTools.gh
+        gitEnv
+      ];
     home-manager.users."${user.name}" = {
 
       home.packages = with pkgs; [
@@ -84,14 +84,15 @@ in
             "push" = { default = "simple"; };
             "absorb" = { maxstack = 75; };
           }
-          (mkIf work.enable {
-            "includeIf \"gitdir:~/projects/work/\"" = {
-              path = "${hm.xdg.configHome}/git/work.cfg";
-            };
-          })
+          (
+            mkIf work.enable {
+              "includeIf \"gitdir:~/projects/work/\"" = {
+                path = "${hm.xdg.configHome}/git/work.cfg";
+              };
+            }
+          )
         ];
       };
     };
   };
 }
-

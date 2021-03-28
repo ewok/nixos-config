@@ -53,7 +53,7 @@ in
         "application/x-iwork-numbers-sffnumbers"
         "application/x-starcalc"
 
-        ] (_: [ "calc.desktop" ]) // lib.genAttrs [
+      ] (_: [ "calc.desktop" ]) // lib.genAttrs [
         "application/vnd.openxmlformats-officedocument.wordprocessingml.document"
         "application/vnd.oasis.opendocument.text"
         "application/vnd.oasis.opendocument.text-template"
@@ -93,7 +93,7 @@ in
         "application/x-iwork-pages-sffpages"
         "application/x-mswrite"
         "application/x-starwriter"
-        ] (_: [ "writer.desktop" ]);
+      ] (_: [ "writer.desktop" ]);
     };
   };
 }

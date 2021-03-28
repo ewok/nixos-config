@@ -5,61 +5,61 @@ let
   cfg = config.modules.gui.fonts;
   username = config.properties.user.name;
 in
-  {
-    options.modules.gui.fonts = {
-      dpi = mkOption {
-        type = types.int;
-        default = 115;
-        description = "Font DPI.";
+{
+  options.modules.gui.fonts = {
+    dpi = mkOption {
+      type = types.int;
+      default = 115;
+      description = "Font DPI.";
+    };
+    monospaceFont = mkOption {
+      type = types.listOf types.str;
+      default = [ "FiraCode Nerd Font Mono" ];
+      description = "Default monospace font.";
+    };
+    monospaceFontSize = mkOption {
+      type = types.int;
+      default = 14;
+      description = "Default monospace font size.";
+    };
+    consoleFont = mkOption {
+      type = types.str;
+      default = "Lat2-Terminus16";
+      description = "Default console font.";
+    };
+  };
+
+  config = mkIf gui.enable {
+
+    fonts = {
+      fontconfig = {
+        enable = true;
+        antialias = true;
+        dpi = cfg.dpi;
+        defaultFonts.monospace = cfg.monospaceFont;
       };
-      monospaceFont = mkOption {
-        type = types.listOf types.str;
-        default = [ "FiraCode Nerd Font Mono" ];
-        description = "Default monospace font.";
-      };
-      monospaceFontSize = mkOption {
-        type = types.int;
-        default = 14;
-        description = "Default monospace font size.";
-      };
-      consoleFont = mkOption {
-        type = types.str;
-        default = "Lat2-Terminus16";
-        description = "Default console font.";
-      };
+
+      fontDir.enable = true;
+      enableGhostscriptFonts = true;
+      enableDefaultFonts = true;
+
+      fonts = with pkgs; [ nerdfonts ];
     };
 
-    config = mkIf gui.enable {
+    console = {
+      font = cfg.consoleFont;
+      useXkbConfig = true;
+    };
 
-      fonts = {
-        fontconfig = {
-          enable = true;
-          antialias = true;
-          dpi = cfg.dpi;
-          defaultFonts.monospace = cfg.monospaceFont;
-        };
+    home-manager.users.${username} = {
 
-        fontDir.enable = true;
-        enableGhostscriptFonts = true;
-        enableDefaultFonts = true;
-
-        fonts = with pkgs; [ nerdfonts ];
-      };
-
-      console = {
-        font = cfg.consoleFont;
-        useXkbConfig = true;
-      };
-
-      home-manager.users.${username} = {
-
-        xresources.properties = {
-          "Xft.antialias" = true;
-          "Xft.autohint" = false;
-          "Xft.dpi" = "${toString cfg.dpi}";
-          "Xft.hinting" = true;
-          "Xft.hintstyle" = "hintmedium";
-        };
+      xresources.properties = {
+        "Xft.antialias" = true;
+        "Xft.autohint" = false;
+        "Xft.dpi" = "${toString cfg.dpi}";
+        "Xft.hinting" = true;
+        "Xft.hintstyle" = "hintmedium";
       };
     };
-  }
+  };
+}

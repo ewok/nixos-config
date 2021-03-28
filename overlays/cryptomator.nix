@@ -1,8 +1,16 @@
-{ lib, stdenv, fetchurl, fetchFromGitHub
+{ lib
+, stdenv
+, fetchurl
+, fetchFromGitHub
 , autoPatchelfHook
 , makeDesktopItem
-, fuse, packer
-, maven, openjdk, makeWrapper, glib, wrapGAppsHook
+, fuse
+, packer
+, maven
+, openjdk
+, makeWrapper
+, glib
+, wrapGAppsHook
 }:
 
 let
@@ -23,7 +31,7 @@ let
     type = "Application";
     exec = "cryptomator";
     icon = "org.cryptomator.Cryptomator";
-    mimeType="application/x-vnd.cryptomator-vault-metadata";
+    mimeType = "application/x-vnd.cryptomator-vault-metadata";
     categories = "Utility;Security;FileTools;";
     terminal = "false";
     extraEntries = ''
@@ -56,7 +64,8 @@ let
     outputHash = "15gwldn9dc4gxi8ja4lay5qdadvhxry17ggj3cqamk8g38rh97v0";
   };
 
-in stdenv.mkDerivation rec {
+in
+stdenv.mkDerivation rec {
   inherit pname;
   inherit version;
   inherit src;
@@ -67,37 +76,37 @@ in stdenv.mkDerivation rec {
   '';
 
   installPhase = ''
-    mkdir -p $out/usr/share/cryptomator/libs/
-    mkdir -p $out/bin/
+        mkdir -p $out/usr/share/cryptomator/libs/
+        mkdir -p $out/bin/
 
-    cp buildkit/target/libs/* buildkit/target/linux-libs/* $out/usr/share/cryptomator/libs/
+        cp buildkit/target/libs/* buildkit/target/linux-libs/* $out/usr/share/cryptomator/libs/
 
-    cat > $out/usr/share/cryptomator/cryptomator <<EOF
-    #!/usr/bin/env sh
-    exec ${openjdk}/bin/java -verbose \
-        -cp "$out/usr/share/cryptomator/libs/*" \
-        -Dcryptomator.settingsPath="~/.config/Cryptomator/settings.json" \
-        -Dcryptomator.ipcPortPath="~/.config/Cryptomator/ipcPort.bin" \
-        -Dcryptomator.logDir="~/.local/share/Cryptomator/logs" \
-        -Dcryptomator.mountPointsDir="~/.local/share/Cryptomator/mnt" \
-        -Djdk.gtk.version=2 \
-        -Xss20m \
-        -Xmx512m \
-        org.cryptomator.launcher.Cryptomator
-EOF
+        cat > $out/usr/share/cryptomator/cryptomator <<EOF
+        #!/usr/bin/env sh
+        exec ${openjdk}/bin/java -verbose \
+            -cp "$out/usr/share/cryptomator/libs/*" \
+            -Dcryptomator.settingsPath="~/.config/Cryptomator/settings.json" \
+            -Dcryptomator.ipcPortPath="~/.config/Cryptomator/ipcPort.bin" \
+            -Dcryptomator.logDir="~/.local/share/Cryptomator/logs" \
+            -Dcryptomator.mountPointsDir="~/.local/share/Cryptomator/mnt" \
+            -Djdk.gtk.version=2 \
+            -Xss20m \
+            -Xmx512m \
+            org.cryptomator.launcher.Cryptomator
+    EOF
 
-    chmod +x $out/usr/share/cryptomator/cryptomator
-    ln -s $out/usr/share/cryptomator/cryptomator $out/bin/cryptomator
+        chmod +x $out/usr/share/cryptomator/cryptomator
+        ln -s $out/usr/share/cryptomator/cryptomator $out/bin/cryptomator
 
-    wrapProgram "$out/usr/share/cryptomator/cryptomator" \
-     --prefix PATH : "$out/usr/share/cryptomator/libs/:${lib.makeBinPath [ openjdk glib ]}" \
-     --prefix LD_LIBRARY_PATH : "${lib.makeLibraryPath [ fuse ]}" \
-     --set JAVA_HOME "$openjdk"
+        wrapProgram "$out/usr/share/cryptomator/cryptomator" \
+         --prefix PATH : "$out/usr/share/cryptomator/libs/:${lib.makeBinPath [ openjdk glib ]}" \
+         --prefix LD_LIBRARY_PATH : "${lib.makeLibraryPath [ fuse ]}" \
+         --set JAVA_HOME "$openjdk"
 
-    # install desktop entry
-    install -Dm644 -t $out/share/applications ${desktopItem}/share/applications/*
-    # install -Dm644 "{./org.cryptomator.Cryptomator.svg}" "$out/share/icons/hicolor/scalable/apps/org.cryptomator.Cryptomator.svg"
-    # install -Dm644 "{./org.cryptomator.Cryptomator.png}" "$out/share/icons/hicolor/512x512/apps/org.cryptomator.Cryptomator.png"
+        # install desktop entry
+        install -Dm644 -t $out/share/applications ${desktopItem}/share/applications/*
+        # install -Dm644 "{./org.cryptomator.Cryptomator.svg}" "$out/share/icons/hicolor/scalable/apps/org.cryptomator.Cryptomator.svg"
+        # install -Dm644 "{./org.cryptomator.Cryptomator.png}" "$out/share/icons/hicolor/512x512/apps/org.cryptomator.Cryptomator.png"
   '';
 
   nativeBuildInputs = [ autoPatchelfHook maven makeWrapper wrapGAppsHook ];
@@ -111,4 +120,3 @@ EOF
     platforms = [ "x86_64-linux" ];
   };
 }
-

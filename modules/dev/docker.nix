@@ -58,39 +58,38 @@ let
   '';
 
 in
-  {
-    options.modules.dev = {
-      docker = {
-        enable = mkEnableOption  "Enable docker.";
-        autoPrune = mkEnableOption "Enable weekly cleanup.";
+{
+  options.modules.dev = {
+    docker = {
+      enable = mkEnableOption "Enable docker.";
+      autoPrune = mkEnableOption "Enable weekly cleanup.";
+    };
+  };
+
+  config = mkIf (cfg.enable && dev.enable) {
+
+    virtualisation.docker = {
+      enable = true;
+      autoPrune = {
+        enable = cfg.autoPrune;
       };
     };
 
-    config = mkIf (cfg.enable && dev.enable) {
+    users.users.${username}.extraGroups = [ "docker" ];
 
-      virtualisation.docker = {
-        enable = true;
-        autoPrune = {
-          enable = cfg.autoPrune;
-        };
-      };
+    home-manager.users."${username}" = {
+      home.sessionVariables.DOCKER_CONFIG = "${configHome}/docker";
 
-      users.users.${username}.extraGroups = [ "docker" ];
-
-      home-manager.users."${username}" = {
-        home.sessionVariables.DOCKER_CONFIG = "${configHome}/docker";
-
-        home.packages = [
-          docker-arch
-          docker-centos
-          docker-cerebro
-          docker-mvn
-          docker-krb
-          docker-mysql-server
-          docker-mysql-cli
-          docker-mysqldump
-        ];
-      };
+      home.packages = [
+        docker-arch
+        docker-centos
+        docker-cerebro
+        docker-mvn
+        docker-krb
+        docker-mysql-server
+        docker-mysql-cli
+        docker-mysqldump
+      ];
     };
-  }
-
+  };
+}

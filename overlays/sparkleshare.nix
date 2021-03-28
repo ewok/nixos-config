@@ -1,25 +1,25 @@
-{
-  appindicator-sharp,
-  bash,
-  coreutils,
-  fetchFromGitHub,
-  git,
-  git-lfs,
-  glib,
-  gtk-sharp-3_0,
-  lib,
-  makeWrapper,
-  meson,
-  mono,
-  ninja,
-  notify-sharp,
-  openssh,
-  openssl,
-  pkg-config,
-  stdenv,
-  symlinkJoin,
-  webkit2-sharp,
-  xdg-utils,
+{ appindicator-sharp
+, bash
+, coreutils
+, fetchFromGitHub
+, git
+, git-lfs
+, glib
+, gtk-sharp-3_0
+, lib
+, makeWrapper
+, meson
+, mono
+, ninja
+, notify-sharp
+, openssh
+, openssl
+, pkg-config
+, stdenv
+, symlinkJoin
+, webkit2-sharp
+, xdg-utils
+,
 }:
 
 stdenv.mkDerivation rec {
@@ -56,30 +56,30 @@ stdenv.mkDerivation rec {
   postInstall = ''
     wrapProgram $out/bin/sparkleshare \
         --set PATH ${symlinkJoin {
-          name = "mono-path";
-          paths = [
-            bash
-            coreutils
-            git
-            git-lfs
-            glib
-            mono
-            openssh
-            openssl
-            xdg-utils
-          ];
-        }}/bin:/bin \
+    name = "mono-path";
+    paths = [
+      bash
+      coreutils
+      git
+      git-lfs
+      glib
+      mono
+      openssh
+      openssl
+      xdg-utils
+    ];
+  }}/bin:/bin \
         --set MONO_GAC_PREFIX ${lib.concatStringsSep ":" [
-          appindicator-sharp
-          gtk-sharp-3_0
-          webkit2-sharp
-        ]} \
+    appindicator-sharp
+    gtk-sharp-3_0
+    webkit2-sharp
+  ]} \
         --set LD_LIBRARY_PATH ${lib.makeLibraryPath [
-          appindicator-sharp
-          gtk-sharp-3_0.gtk3
-          webkit2-sharp
-          webkit2-sharp.webkitgtk
-        ]}
+    appindicator-sharp
+    gtk-sharp-3_0.gtk3
+    webkit2-sharp
+    webkit2-sharp.webkitgtk
+  ]}
   '';
 
   meta = {
@@ -89,4 +89,3 @@ stdenv.mkDerivation rec {
     maintainers = with lib.maintainers; [ kevincox ];
   };
 }
-

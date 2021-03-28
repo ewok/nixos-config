@@ -28,10 +28,12 @@ in
   };
 
   config = mkIf backup.enable {
-      assertions = [{
+    assertions = [
+      {
         assertion = cfg.repo != null;
         message = "Backup repo must be specified.";
-      }];
+      }
+    ];
 
     environment.etc."${passFile}" = {
       text = cfg.pass;
@@ -73,4 +75,3 @@ in
     };
   };
 }
-

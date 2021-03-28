@@ -30,12 +30,12 @@ let
     if [[ -n $selected_k ]]; then
 
         dmprompt "Kill $selected_k?" ${pkgs.writeShellScript "dmkill_helper" ''
-            selpid="$(awk '{print $1}' <<< $selected_k)";
-            kill -9 $selpid
-            echo "Process $selected_k has been killed." && exit 1
-          ''}
+    selpid="$(awk '{print $1}' <<< $selected_k)";
+    kill -9 $selpid
+    echo "Process $selected_k has been killed." && exit 1
+  ''}
     fi
-    '';
+  '';
 
   dmmyip = pkgs.writeShellScriptBin "myip" ''
     dmenucmd="${rofi_run}/bin/rofi_run -dmenu -p MyIP: $@"
@@ -67,20 +67,20 @@ let
   '';
 
 in
-  {
-    config = mkIf gui.enable {
-      home-manager.users.${username} = {
-        home.packages = with pkgs; [
-          bc
-          dmcalc
-          dmkill
-          dmmyip
-          dmprompt
-          rofi
-          rofi_run
-          todofishCustom
-          rofiBluetoothThemed
-        ];
-      };
+{
+  config = mkIf gui.enable {
+    home-manager.users.${username} = {
+      home.packages = with pkgs; [
+        bc
+        dmcalc
+        dmkill
+        dmmyip
+        dmprompt
+        rofi
+        rofi_run
+        todofishCustom
+        rofiBluetoothThemed
+      ];
     };
-  }
+  };
+}

@@ -5,7 +5,7 @@ let
   cfg = config.modules.dev.k8s;
   username = config.properties.user.name;
 
-  k8s-argo  = pkgs.writeScriptBin "k8s-argo" ''
+  k8s-argo = pkgs.writeScriptBin "k8s-argo" ''
     #!${pkgs.bash}/bin/bash
     set -ex
     PORT=$(shuf -i 31000-31999 | head -n 1 )
@@ -22,7 +22,7 @@ let
     wait $PID
   '';
 
-  k8s-busybox  = pkgs.writeScriptBin "k8s-busybox" ''
+  k8s-busybox = pkgs.writeScriptBin "k8s-busybox" ''
     #!${pkgs.bash}/bin/bash
     set -e
     if [ $# -gt 2 ];then
@@ -43,7 +43,7 @@ let
     $CMD kubectl get po | grep $NAME && echo "ERROR: Pod was not deleted!"
   '';
 
-  k8s-kafka-client  = pkgs.writeScriptBin "k8s-kafka-client" ''
+  k8s-kafka-client = pkgs.writeScriptBin "k8s-kafka-client" ''
     #!${pkgs.bash}/bin/bash
     set -e
     if [ $# -gt 1 ];then
@@ -62,7 +62,7 @@ let
     $CMD kubectl get po | grep "$NAME" && echo "ERROR: Pod was not deleted!"
   '';
 
-  k8s-jmxterm  = pkgs.writeScriptBin "k8s-jmxterm" ''
+  k8s-jmxterm = pkgs.writeScriptBin "k8s-jmxterm" ''
     #!${pkgs.bash}/bin/bash
     set -e
     if [ $# -gt 2 ];then
@@ -81,7 +81,7 @@ let
     $CMD kubectl get po | grep $NAME && echo "ERROR: Pod was not deleted!"
   '';
 
-  k8s-alpine  = pkgs.writeScriptBin "k8s-alpine" ''
+  k8s-alpine = pkgs.writeScriptBin "k8s-alpine" ''
     #!${pkgs.bash}/bin/bash
     set -e
     if [ $# -gt 2 ];then
@@ -100,30 +100,30 @@ let
     $CMD kubectl get po | grep $NAME && echo "ERROR: Pod was not deleted!"
   '';
 in
-  {
-    options.modules.dev.k8s = {
-      enable = mkOption {
-        type = types.bool;
-        description = "Enable k8s environment.";
-        default = true;
-      };
+{
+  options.modules.dev.k8s = {
+    enable = mkOption {
+      type = types.bool;
+      description = "Enable k8s environment.";
+      default = true;
     };
+  };
 
-    config = mkIf (dev.enable && cfg.enable) {
-      home-manager.users."${username}" = {
-        home.packages = with pkgs; [
-          kubectl
-          kubecfg
-          kubectx
-          minikube
-          google-cloud-sdk
-        ] ++ [
-          k8s-argo
-          k8s-busybox
-          k8s-kafka-client
-          k8s-jmxterm
-          k8s-alpine
-        ];
-      };
+  config = mkIf (dev.enable && cfg.enable) {
+    home-manager.users."${username}" = {
+      home.packages = with pkgs; [
+        kubectl
+        kubecfg
+        kubectx
+        minikube
+        google-cloud-sdk
+      ] ++ [
+        k8s-argo
+        k8s-busybox
+        k8s-kafka-client
+        k8s-jmxterm
+        k8s-alpine
+      ];
     };
-  }
+  };
+}

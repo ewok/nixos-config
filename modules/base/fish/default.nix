@@ -160,30 +160,32 @@ in
               fi
             fi
           '';
-        in ''
-          ${readFile ./config/functions/ssh-agent.fish}
-          set -Ux FZF_LEGACY_KEYBINDINGS 0
-          set -Ux OPEN_CMD open
-          bind \cw backward-kill-word
+        in
+          ''
+            ${readFile ./config/functions/ssh-agent.fish}
+            set -Ux FZF_LEGACY_KEYBINDINGS 0
+            set -Ux OPEN_CMD open
+            bind \cw backward-kill-word
 
-          ${startup-script}
-        '';
+            ${startup-script}
+          '';
 
         loginShellInit = ''
-            set fish_greeting
-            __git.reset
-          '';
-        };
-
-        xdg.configFile = mkMerge [
-          {
-            "fish/conf.d/my_git_abbr.fish".source = ./config/conf.d/my_git_abbr.fish;
-          }
-          (optionalAttrs (dev.k8s.enable) {
-            "fish/functions/fish_right_prompt.fish".source = ./config/functions/fish_right_prompt.fish;
-          })
-        ];
+          set fish_greeting
+          __git.reset
+        '';
       };
-    };
-  }
 
+      xdg.configFile = mkMerge [
+        {
+          "fish/conf.d/my_git_abbr.fish".source = ./config/conf.d/my_git_abbr.fish;
+        }
+        (
+          optionalAttrs (dev.k8s.enable) {
+            "fish/functions/fish_right_prompt.fish".source = ./config/functions/fish_right_prompt.fish;
+          }
+        )
+      ];
+    };
+  };
+}

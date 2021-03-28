@@ -1,4 +1,4 @@
-{ config, lib, pkgs, inputs,... }:
+{ config, lib, pkgs, inputs, ... }:
 with lib;
 let
   mail = config.modules.mail;
@@ -14,7 +14,7 @@ let
     # Give a time to DAVmail
     ${pkgs.coreutils}/bin/sleep 2
     fi
-    '';
+  '';
 
   davmail-stop = pkgs.writeShellScriptBin "davmail-stop" ''
     DAVMAIL_PID="$(${pkgs.procps}/bin/pgrep -f 'java .*davmail\.jar')"
@@ -22,31 +22,33 @@ let
     then
       ${pkgs.util-linux}/bin/kill $DAVMAIL_PID
     fi
-    '';
+  '';
 
-    # notmuch-clear-deleted = pkgs.writeShellScriptBin "notmuch-clear-deleted" ''
-    #   export PATH="${pkgs.notmuch}/bin''${PATH:+:}$PATH"
-    #   export NOTMUCH_CONFIG="${hm.xdg.configHome}/notmuch/notmuchrc"
-    #   export NMBGIT="${hm.xdg.dataHome}/notmuch/nmbug"
-    #   ${pkgs.notmuch}/bin/notmuch search --output=files --format=text0 tag:deleted | ${pkgs.findutils}/bin/xargs -0 ${pkgs.coreutils}/bin/rm
-    #   ${pkgs.notmuch}/bin/notmuch reindex tag:deleted
-    # '';
+  # notmuch-clear-deleted = pkgs.writeShellScriptBin "notmuch-clear-deleted" ''
+  #   export PATH="${pkgs.notmuch}/bin''${PATH:+:}$PATH"
+  #   export NOTMUCH_CONFIG="${hm.xdg.configHome}/notmuch/notmuchrc"
+  #   export NMBGIT="${hm.xdg.dataHome}/notmuch/nmbug"
+  #   ${pkgs.notmuch}/bin/notmuch search --output=files --format=text0 tag:deleted | ${pkgs.findutils}/bin/xargs -0 ${pkgs.coreutils}/bin/rm
+  #   ${pkgs.notmuch}/bin/notmuch reindex tag:deleted
+  # '';
 
-    # notmuch-update = pkgs.writeShellScriptBin "notmuch-update" ''
-    #   export PATH="${pkgs.notmuch}/bin''${PATH:+:}$PATH"
-    #   export NOTMUCH_CONFIG="${hm.xdg.configHome}/notmuch/notmuchrc"
-    #   export NMBGIT="${hm.xdg.dataHome}/notmuch/nmbug"
-    #   ${pkgs.notmuch}/bin/notmuch new
-    # '';
+  # notmuch-update = pkgs.writeShellScriptBin "notmuch-update" ''
+  #   export PATH="${pkgs.notmuch}/bin''${PATH:+:}$PATH"
+  #   export NOTMUCH_CONFIG="${hm.xdg.configHome}/notmuch/notmuchrc"
+  #   export NMBGIT="${hm.xdg.dataHome}/notmuch/nmbug"
+  #   ${pkgs.notmuch}/bin/notmuch new
+  # '';
 
-    mbsync-preexec = pkgs.writeShellScriptBin "mbsync-preexec" ''
-      ${davmail-start}/bin/davmail-start
-    '';
+  mbsync-preexec = pkgs.writeShellScriptBin "mbsync-preexec" ''
+    ${davmail-start}/bin/davmail-start
+  '';
 
-    stable = import inputs.stable ({
+  stable = import inputs.stable (
+    {
       config = config.nixpkgs.config;
       localSystem = { system = "x86_64-linux"; };
-    });
+    }
+  );
 in
 {
   config = mkIf mail.enable {
@@ -345,7 +347,7 @@ in
           date_format = ''"%m/%d %I:%M"'';
           index_format = ''"%2C %Z %?X?A& ? %D %-15.15F %s (%-4.4c)"'';
           pager_context = "3";
-          pager_index_lines   = "10";
+          pager_index_lines = "10";
 
           markers = "no";
           mark_old = "no";
@@ -362,30 +364,30 @@ in
         };
 
         extraConfig = ''
-            source ~/.config/neomutt/colors
-            unset collapse_unread
-            send2-hook . 'set mailcap_path=~/.config/neomutt/mailcap'
-            set fast_reply           # skip to compose when replying
-            set fcc_attach           # save attachments with the body
-            unset mime_forward       # forward attachments as part of body
-            set forward_format = "Fwd: %s"       # format of subject when forwarding
-            set forward_decode                   # decode when forwarding
-            set forward_quote                    # include message in forwards
-            set reverse_name                     # reply as whomever it was to
-            set include                          # include message in replies
+          source ~/.config/neomutt/colors
+          unset collapse_unread
+          send2-hook . 'set mailcap_path=~/.config/neomutt/mailcap'
+          set fast_reply           # skip to compose when replying
+          set fcc_attach           # save attachments with the body
+          unset mime_forward       # forward attachments as part of body
+          set forward_format = "Fwd: %s"       # format of subject when forwarding
+          set forward_decode                   # decode when forwarding
+          set forward_quote                    # include message in forwards
+          set reverse_name                     # reply as whomever it was to
+          set include                          # include message in replies
 
-            unalternative_order *
-            alternative_order text/enriched text/html text/plain text
-            unauto_view *
-            auto_view text/* application/* image/* audio/* video/*
+          unalternative_order *
+          alternative_order text/enriched text/html text/plain text
+          unauto_view *
+          auto_view text/* application/* image/* audio/* video/*
 
-            set mail_check_stats
-            set sidebar_delim_chars="/"
-            set sidebar_new_mail_only = no
-            set sidebar_non_empty_mailbox_only = no
-            set sidebar_sort_method = 'name'
+          set mail_check_stats
+          set sidebar_delim_chars="/"
+          set sidebar_new_mail_only = no
+          set sidebar_non_empty_mailbox_only = no
+          set sidebar_sort_method = 'name'
         '' + optionalString (gui.enable) ''
-            set new_mail_command = "notify-send 'New Email' '%n new messages, %u unread.' &"
+          set new_mail_command = "notify-send 'New Email' '%n new messages, %u unread.' &"
         '';
       };
 

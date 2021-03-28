@@ -5,14 +5,17 @@ let
   nm = config.networking.networkmanager;
   username = config.properties.user.name;
 in
-  {
-    config = mkMerge [
-      (mkIf (gui.enable && nm.enable) {
+{
+  config = mkMerge [
+    (
+      mkIf (gui.enable && nm.enable) {
         programs.nm-applet.enable = true;
-      })
-      (mkIf nm.enable {
+      }
+    )
+    (
+      mkIf nm.enable {
         users.users.${username}.extraGroups = [ "networkmanager" ];
-      })
-    ];
-  }
-
+      }
+    )
+  ];
+}

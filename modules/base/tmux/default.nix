@@ -4,7 +4,7 @@ let
   base = config.modules.base;
   username = config.properties.user.name;
 
-  tm  = pkgs.writeScriptBin "tm" ''
+  tm = pkgs.writeScriptBin "tm" ''
     #!${pkgs.bash}/bin/bash
     if [[ $1 == "" ]];then
       SESSION="main"
@@ -12,9 +12,9 @@ let
       SESSION="$1"
     fi
     tmux attach -t $SESSION || tmux new -s $SESSION
-    '';
+  '';
 
-  tssh  = pkgs.writeScriptBin "tssh" ''
+  tssh = pkgs.writeScriptBin "tssh" ''
     #!${pkgs.bash}/bin/bash
     argv=( "$@" )
     C=1
@@ -28,7 +28,7 @@ let
     else
     tmux select-layout even-vertical
     fi
-    '';
+  '';
 in
 {
   config = mkIf base.enable {
@@ -49,9 +49,9 @@ in
         escapeTime = 0;
         historyLimit = 100000;
         plugins = with pkgs.tmuxPlugins;
-        [
-          copycat # prefix + C-u to find url, n/N to navigate
-        ];
+          [
+            copycat # prefix + C-u to find url, n/N to navigate
+          ];
         extraConfig = builtins.readFile ./config/tmux.conf;
       };
     };

@@ -25,29 +25,31 @@
           inherit system;
         };
       };
-    in {
+    in
+      {
 
-      nixosConfigurations = with lib;
-      let
-        hosts = map (fname: builtins.head (builtins.match "(.*)" fname))
-        (builtins.attrNames (builtins.readDir ./machines));
-        mkHost = name:
-        nixosSystem {
-          inherit system;
-          modules = [
-            {
-              nixpkgs.overlays = [
-                unstable
-                inputs.neovim-nightly-overlay.overlay
-                (import ./overlays)
-              ];
-            }
-            (import (./. + "/machines/${name}"))
-            inputs.home-manager.nixosModules.home-manager
-            inputs.unstable.nixosModules.notDetected
-          ];
-          specialArgs = { inherit inputs; };
-        };
-      in genAttrs hosts mkHost;
-    };
-  }
+        nixosConfigurations = with lib;
+          let
+            hosts = map (fname: builtins.head (builtins.match "(.*)" fname))
+              (builtins.attrNames (builtins.readDir ./machines));
+            mkHost = name:
+              nixosSystem {
+                inherit system;
+                modules = [
+                  {
+                    nixpkgs.overlays = [
+                      unstable
+                      inputs.neovim-nightly-overlay.overlay
+                      (import ./overlays)
+                    ];
+                  }
+                  (import (./. + "/machines/${name}"))
+                  inputs.home-manager.nixosModules.home-manager
+                  inputs.unstable.nixosModules.notDetected
+                ];
+                specialArgs = { inherit inputs; };
+              };
+          in
+            genAttrs hosts mkHost;
+      };
+}

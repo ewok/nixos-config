@@ -9,9 +9,9 @@ in
   config = mkIf (gui.enable && sound.enable) {
     home-manager.users.${username} = {
       home.packages = with pkgs; [
-        playerctl spotify
+        playerctl
+        spotify
       ];
     };
   };
 }
-

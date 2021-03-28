@@ -4,16 +4,14 @@ let
   gui = config.modules.gui;
   username = config.properties.user.name;
 in
-  {
-    config = mkIf gui.enable {
-      home-manager.users.${username} = {
-        home.packages = with pkgs; [
-          caffeine-ng
-          xclip
-          xsel
-        ];
-      };
+{
+  config = mkIf gui.enable {
+    home-manager.users.${username} = {
+      home.packages = with pkgs; [
+        caffeine-ng
+        xclip
+        xsel
+      ];
     };
-  }
-
-
+  };
+}

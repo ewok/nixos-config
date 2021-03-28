@@ -1,4 +1,4 @@
-{ pkgs ? import <nixpkgs> { }, ... }:
+{ pkgs ? import <nixpkgs> {}, ... }:
 
 with pkgs;
 let
@@ -83,26 +83,26 @@ let
   '';
 
 in
-  pkgs.mkShell {
-    nativeBuildInputs = with pkgs; [
-      git
-      git-crypt
-      git-crypt-status
+pkgs.mkShell {
+  nativeBuildInputs = with pkgs; [
+    git
+    git-crypt
+    git-crypt-status
 
-      nix
-      nix-switch
-      nix-rebuild
-      nix-rebuild-vm
-      nix-boot
-      nix-clean-result
-      nix-clean-store
-      nix-update-flakes
-      nix-test
+    nix
+    nix-switch
+    nix-rebuild
+    nix-rebuild-vm
+    nix-boot
+    nix-clean-result
+    nix-clean-store
+    nix-update-flakes
+    nix-test
 
-      nvim-test
-    ];
+    nvim-test
+  ];
 
-    shellHook = ''
-      PATH=${nix}/bin:$PATH
-    '';
-  }
+  shellHook = ''
+    PATH=${nix}/bin:$PATH
+  '';
+}

@@ -15,4 +15,3 @@ with lib;
     enable = mkEnableOption "Enable communication soft.";
   };
 }
-

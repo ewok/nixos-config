@@ -21,26 +21,27 @@ let
         fi
       '';
 
-    in [
-      pkgs.todo-txt-cli
-      pkgs.todo-txt-again
-      todo
-    ];
-    };
+    in
+      [
+        pkgs.todo-txt-cli
+        pkgs.todo-txt-again
+        todo
+      ];
+  };
 in
-  {
-    config = {
-      home-manager.users.${username} = {
-        home.packages = with pkgs; [
-          todo-full
-        ];
+{
+  config = {
+    home-manager.users.${username} = {
+      home.packages = with pkgs; [
+        todo-full
+      ];
 
-        xdg.configFile."todo/config".text = ''
-          export TODO_DIR="$HOME/Notes/todo"
-          export TODO_FILE="$TODO_DIR/todo.txt"
-          export TODO_ACTIONS_DIR="${todo-full}/todo.actions.d"
-          export TODOTXT_FINAL_FILTER="${todo-full}/todo.actions.d/againFilter.sh"
-        '';
-      };
+      xdg.configFile."todo/config".text = ''
+        export TODO_DIR="$HOME/Notes/todo"
+        export TODO_FILE="$TODO_DIR/todo.txt"
+        export TODO_ACTIONS_DIR="${todo-full}/todo.actions.d"
+        export TODOTXT_FINAL_FILTER="${todo-full}/todo.actions.d/againFilter.sh"
+      '';
     };
-  }
+  };
+}

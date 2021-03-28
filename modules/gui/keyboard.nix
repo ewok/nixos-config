@@ -13,25 +13,25 @@ let
     fi
   '';
 in
-  {
-    config = mkIf gui.enable {
+{
+  config = mkIf gui.enable {
 
-      services.xserver = {
-        layout = "us,ru";
-        xkbOptions = "ctrl:swapcaps,grp:win_space_toggle";
-        autoRepeatDelay = 200;
-        autoRepeatInterval = 30;
-      };
+    services.xserver = {
+      layout = "us,ru";
+      xkbOptions = "ctrl:swapcaps,grp:win_space_toggle";
+      autoRepeatDelay = 200;
+      autoRepeatInterval = 30;
+    };
 
-      home-manager.users.${username} = {
-        home.packages = [ keyb-layout ];
-        services.xcape = {
-          enable = true;
-          mapExpression = {
-            Control_L = "Escape";
-          };
+    home-manager.users.${username} = {
+      home.packages = [ keyb-layout ];
+      services.xcape = {
+        enable = true;
+        mapExpression = {
+          Control_L = "Escape";
         };
       };
+    };
 
     # services.udev.extraRules = ''
     #     ACTION=="add", SUBSYSTEM=="usb", DRIVERS=="usb", RUN+="${pkgs.}/bin/autorandr --batch --change"
