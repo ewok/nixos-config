@@ -938,6 +938,16 @@
       reg_auto_save()
     end
   -- }}}
+  -- Other {{{
+    local ft_other = {
+      {[[ FileType gitignore lua load_other_ft() ]]};
+    }
+    augroups({ft_other=ft_other})
+    _G.load_other_ft = function()
+      reg_highlight_cword()
+      reg_auto_save()
+    end
+  -- }}}
 -- }}}
 
 -- Plugins {{{
