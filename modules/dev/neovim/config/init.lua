@@ -941,6 +941,7 @@
   -- Other {{{
     local ft_other = {
       {[[ FileType gitignore lua load_other_ft() ]]};
+      {[[ FileType config lua load_other_ft() ]]};
     }
     augroups({ft_other=ft_other})
     _G.load_other_ft = function()
