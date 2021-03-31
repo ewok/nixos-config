@@ -357,8 +357,8 @@
     map('n', '<leader>osw', ':set wrap<CR>', {})
     map('n', '<leader>ouw', ':set nowrap<CR>', {})
 
-    map('n', '<leader>osts2', ':set tabstop=2 |set softtabstop=2<CR>', {})
-    map('n', '<leader>osts4', ':set tabstop=4 |set softtabstop=4<CR>', {})
+    map('n', '<leader>ost2', ':set tabstop=2 |set softtabstop=2| set shiftwidth=2<CR>', {})
+    map('n', '<leader>ost4', ':set tabstop=4 |set softtabstop=4| set shiftwidth=4<CR>', {})
   -- }}}
   -- Insert data {{{
     exec([[
@@ -1054,6 +1054,7 @@
             }
             map('n', '<leader>ff', ':Telescope fzf_writer grep<CR>', { noremap = true, silent = true })
             map('n', '<leader>fo', ':Telescope fzf_writer files<CR>', { noremap = true, silent = true })
+            map('n', '<leader>of', ':Telescope fzf_writer files<CR>', { noremap = true, silent = true })
           end,
         }
       },
@@ -1062,16 +1063,16 @@
         -- map('n', '<leader>ff', ':Telescope live_grep<CR>', { noremap = true, silent = true })
         -- map('n', '<leader>fo', ':Telescope find_files<CR>', { noremap = true, silent = true })
 
-        map('n', '<leader>oc', ':Telescope commands<CR>', { noremap = true, silent = true })
         map('n', '<leader>oh', ':Telescope help_tags<CR>', { noremap = true, silent = true })
 
-        map('n', '<leader>osc', ':Telescope colorscheme<CR>', { noremap = true, silent = true })
         map('n', '<leader>osf', ':Telescope filetypes<CR>', { noremap = true, silent = true })
 
         map('n', '<leader>oo', ':Telescope vim_options<CR>', { noremap = true, silent = true })
-        map('n', '<leader>oa', ':Telescope autocommands<CR>', { noremap = true, silent = true })
-        map('n', '<leader>ok', ':Telescope keymaps<CR>', { noremap = true, silent = true })
-        map('n', '<leader>oi', ':Telescope highlights<CR>', { noremap = true, silent = true })
+        map('n', '<leader>ona', ':Telescope autocommands<CR>', { noremap = true, silent = true })
+        map('n', '<leader>onc', ':Telescope commands<CR>', { noremap = true, silent = true })
+        map('n', '<leader>ons', ':Telescope colorscheme<CR>', { noremap = true, silent = true })
+        map('n', '<leader>oni', ':Telescope highlights<CR>', { noremap = true, silent = true })
+        map('n', '<leader>onk', ':Telescope keymaps<CR>', { noremap = true, silent = true })
 
         map('n', '<leader>mm', ':Telescope marks<CR>', { noremap = true, silent = true })
         map('n', 'm/', ':Telescope marks<CR>', { noremap = true, silent = true })
@@ -1784,6 +1785,7 @@
       requires = {
         { 'michal-h21/vim-zettel' },
         { 'ewok/vimwiki-sync' },
+        -- { '/home/ataranchiev/projects/vim/vimwiki-sync/' },
         { 'junegunn/fzf.vim' },
         { 'junegunn/fzf' },
       },
@@ -2819,19 +2821,21 @@
   lmap.m.m = 'Find'
   lmap.m.c = 'Clean'
   lmap.o = { name = '+Open/+Option'}
-  lmap.o.a = 'Autocommands'
-  lmap.o.c = 'Commands'
+  lmap.o.n = { name = '+Options+Neovim'}
+  lmap.o.n.a = 'Autocommands'
+  lmap.o.n.c = 'Commands'
+  lmap.o.n.s = 'Colorscheme'
+  lmap.o.n.i = 'hIghlights'
+  lmap.o.n.k = 'Keymaps'
+  lmap.o.o = 'All Options'
   lmap.o.e = 'Explorer'
+  lmap.o.f = 'File'
   lmap.o.h = 'Help'
-  lmap.o.i = 'hIghlights'
-  lmap.o.k = 'Keymaps'
-  lmap.o.o = 'Options'
   lmap.o.r = 'Root(project)'
-  lmap.o.s = { name = '+Option-Set'}
-  lmap.o.s.c = 'Colorscheme'
+  lmap.o.s = { name = '+Set'}
   lmap.o.s.f = 'Filetype'
   lmap.o.t = 'To-Do'
-  lmap.o.u = { name = '+Option-Unset'}
+  lmap.o.u = { name = '+Unset'}
   lmap.o.v = 'Vista'
   lmap.p = { name = '+Plugins' }
   lmap.q = { name = '+QFix' }
