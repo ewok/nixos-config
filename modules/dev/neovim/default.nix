@@ -72,7 +72,7 @@ in
         # nodePackages.sql-language-server
         nodePackages.vscode-json-languageserver
         nodePackages.yaml-language-server
-        # rnix.rnix-lsp
+        rnix-lsp
       ] ++ [
         jrnl
       ];
