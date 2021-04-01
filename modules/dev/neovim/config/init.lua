@@ -2477,6 +2477,7 @@
   -- Sessions {{{
     vim.api.nvim_exec([[
       let g:sessiondir = $HOME . "/.vim_sessions"
+      let g:current_session_dir = getcwd()
 
       function! MakeSession(file)
 
@@ -2502,7 +2503,7 @@
             let b:sessiondir = g:sessiondir
             let file = g:sessionfile
           else
-            let b:sessiondir = g:sessiondir . getcwd()
+            let b:sessiondir = g:sessiondir . g:current_session_dir
             let file = "session"
           endif
         else
@@ -2528,7 +2529,7 @@
             let b:sessiondir = g:sessiondir
             let file = g:sessionfile
           else
-            let b:sessiondir = g:sessiondir . getcwd()
+            let b:sessiondir = g:sessiondir . g:current_session_dir
             let file = "session"
           endif
         else
@@ -2553,7 +2554,7 @@
             let b:sessiondir = g:sessiondir
             let file = g:sessionfile
           else
-            let b:sessiondir = g:sessiondir . getcwd()
+            let b:sessiondir = g:sessiondir . g:current_session_dir
             let file = "session"
           endif
         else
