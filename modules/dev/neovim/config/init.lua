@@ -40,7 +40,7 @@
   -- set
   local oset = api.nvim_set_option
   _G.map = api.nvim_set_keymap
-  local function bmap(mode, key, comm, flags)
+  function _G.bmap(mode, key, comm, flags)
     api.nvim_buf_set_keymap(api.nvim_get_current_buf(), mode, key, comm, flags)
   end
 
@@ -1163,7 +1163,7 @@
           indent_space_guides = true;
           indent_tab_guides = false;
           indent_soft_pattern = '\\s';
-          exclude_filetypes = {'help','dashboard','dashpreview','nerdtree','vista','sagahover'};
+          exclude_filetypes = {'help','dashboard','dashpreview','nerdtree','vista','sagahover','which_key'};
           even_colors = { fg ='#AAAAAA',bg='#35383F' };
           odd_colors = {fg='#AAAAAA',bg='#35383F'};
         })
@@ -1549,7 +1549,7 @@
 
         vim.g.NERDTreeMinimalUI=1
         vim.g.NERDTreeDirArrows=1
-        vim.g.NERDTreeWinSize=30
+        vim.g.NERDTreeWinSize=45
         vim.g.NERDTreeIgnore={ '.pyc$' }
 
         vim.g.NERDTreeMapOpenVSplit='v'
@@ -1562,6 +1562,15 @@
 
         map('n', '<leader>oe', ':call NERDTreeToggleCWD()<CR>', { noremap = true })
         map('n', '<leader>fp', ':call FindPathOrShowNERDTree()<CR>', {})
+
+        -- local au_nerd = {
+        --   {[[ FileType nerdtree lua load_nerdtree_ft() ]]}
+        -- }
+        -- augroups({au_nerd=au_nerd})
+
+        -- _G.load_nerdtree_ft = function ()
+        --   bmap('n', 'r', ':Rooter<CR>', {})
+        -- end
 
         vim.api.nvim_exec ([[
           function! NERDTreeToggleCWD()
@@ -1589,9 +1598,10 @@
     packer.use {
       'airblade/vim-rooter',
       config = function ()
-        vim.g.rooter_silent_chdir = 1
+        -- vim.g.rooter_silent_chdir = 1
         vim.g.rooter_resolve_links = 1
         vim.g.rooter_manual_only = 1
+        vim.g.rooter_cd_cmd = 'lcd'
         map('n', '<leader>or', ':call RooterWithCWD()<CR>', {})
         vim.api.nvim_exec([[
           function! RooterWithCWD()
