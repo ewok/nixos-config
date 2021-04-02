@@ -110,7 +110,7 @@ in
               bar.bg = "#303030";
             };
             webpage = {
-              prefers_color_scheme_dark = true;
+              preferred_color_scheme = "dark";
               bg = "#303030";
               darkmode.enabled = true;
               darkmode.policy.images = "never";
