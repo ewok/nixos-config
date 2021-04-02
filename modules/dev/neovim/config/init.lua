@@ -1955,6 +1955,7 @@
           sh = 'nvim_lsp'
         }
         vim.g.vista_executive_for = vista_executive_for
+        vim.g.vista_echo_cursor_strategy = "both"
       end,
     }
   -- }}}
