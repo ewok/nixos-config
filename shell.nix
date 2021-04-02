@@ -104,5 +104,6 @@ pkgs.mkShell {
 
   shellHook = ''
     PATH=${nix}/bin:$PATH
+    git-crypt-status
   '';
 }

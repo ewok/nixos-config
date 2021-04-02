@@ -6,6 +6,7 @@ in
   imports = [
     ./secrets.nix
     ../common.nix
+    ../secrets.nix
     ../../modules
     ./configuration.nix
     "${inputs.nixos-hardware}/common/pc/ssd"
