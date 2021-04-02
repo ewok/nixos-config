@@ -1496,6 +1496,7 @@
         -- Forgets state
         -- vim.g.nvim_tree_tab_open = 1
         vim.g.nvim_tree_group_empty = 1
+        vim.g.nvim_tree_disable_netrw = 0
         map('n', '<leader>oE', ':NvimTreeToggle<CR>', { noremap = true })
         map('n', '<leader>fP', ':NvimTreeFindFile<CR>', { noremap = true })
 
