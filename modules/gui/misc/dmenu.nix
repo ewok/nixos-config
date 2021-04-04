@@ -51,11 +51,11 @@ let
   '';
 
   rofi_run = pkgs.writeShellScriptBin "rofi_run" ''
-    ${pkgs.rofi}/bin/rofi -icon-theme "Papirus" -show-icons -theme android_notification -terminal ${pkgs.alacritty}/bin/alacritty $@
+    ${pkgs.rofi}/bin/rofi -icon-theme "Papirus" -show-icons -theme base16-onedark -terminal ${pkgs.alacritty}/bin/alacritty $@
   '';
 
   rofiBluetoothThemed = pkgs.writeShellScriptBin "rofi-bluetooth" ''
-    ROFI_THEME=android_notification ${pkgs.rofi-bluetooth}/bin/rofi-bluetooth $@
+    ROFI_THEME=base16-onedark ${pkgs.rofi-bluetooth}/bin/rofi-bluetooth $@
   '';
 
   todofishCustom = pkgs.writeShellScriptBin "todofi.sh" ''
@@ -81,6 +81,102 @@ in
         todofishCustom
         rofiBluetoothThemed
       ];
+
+      # Does not work yet
+      xdg.dataFile."rofi/colors/base16-onedark.rasi".text = ''
+        * {
+            red:                         rgba ( 224, 108, 117, 100 % );
+            blue:                        rgba ( 97, 175, 239, 100 % );
+            lightfg:                     rgba ( 182, 189, 202, 100 % );
+            lightbg:                     rgba ( 53, 59, 69, 100 % );
+            foreground:                  rgba ( 171, 178, 191, 100 % );
+            background:                  rgba ( 40, 44, 52, 100 % );
+            background-color:            rgba ( 40, 44, 52, 0 % );
+            separatorcolor:              @foreground;
+            border-color:                @foreground;
+            selected-normal-foreground:  @lightbg;
+            selected-normal-background:  @lightfg;
+            selected-active-foreground:  @background;
+            selected-active-background:  @blue;
+            selected-urgent-foreground:  @background;
+            selected-urgent-background:  @red;
+            normal-foreground:           @foreground;
+            normal-background:           @background;
+            active-foreground:           @blue;
+            active-background:           @background;
+            urgent-foreground:           @red;
+            urgent-background:           @background;
+            alternate-normal-foreground: @foreground;
+            alternate-normal-background: @lightbg;
+            alternate-active-foreground: @blue;
+            alternate-active-background: @lightbg;
+            alternate-urgent-foreground: @red;
+            alternate-urgent-background: @lightbg;
+        }
+      '';
+
+      xdg.dataFile."rofi/themes/base16-onedark.config".text = ''
+        ! Base16 OneDark
+        ! Author: Lalit Magant (http://github.com/tilal6991)
+        ! base00: #282c34
+        ! base01: #353b45
+        ! base02: #3e4451
+        ! base03: #545862
+        ! base04: #565c64
+        ! base05: #abb2bf
+        ! base06: #b6bdca
+        ! base07: #c8ccd4
+        ! base08: #e06c75
+        ! base09: #d19a66
+        ! base0A: #e5c07b
+        ! base0B: #98c379
+        ! base0C: #56b6c2
+        ! base0D: #61afef
+        ! base0E: #c678dd
+        ! base0F: #be5046
+        ! Enable the extended coloring options
+        rofi.color-enabled: true
+        ! Property Name     BG       Border   Separator
+        rofi.color-window:  #353b45, #353b45, #282c34
+        ! Property Name     BG       FG       BG-alt   Head-BG  Head-FG
+        rofi.color-normal:  #353b45, #abb2bf, #353b45, #353b45, #c8ccd4
+        rofi.color-active:  #353b45, #61afef, #353b45, #353b45, #61afef
+        rofi.color-urgent:  #353b45, #e06c75, #353b45, #353b45, #e06c75
+        ! Set the desired separator style
+        rofi.separator-style: solid
+      '';
+
+      xdg.dataFile."rofi/themes/base16-onedark.rasi".text = ''
+        * {
+            red:                         rgba ( 224, 108, 117, 100 % );
+            blue:                        rgba ( 97, 175, 239, 100 % );
+            lightfg:                     rgba ( 182, 189, 202, 100 % );
+            lightbg:                     rgba ( 53, 59, 69, 100 % );
+            foreground:                  rgba ( 171, 178, 191, 100 % );
+            background:                  rgba ( 40, 44, 52, 100 % );
+            background-color:            rgba ( 40, 44, 52, 0 % );
+            separatorcolor:              @foreground;
+            border-color:                @foreground;
+            selected-normal-foreground:  @lightbg;
+            selected-normal-background:  @lightfg;
+            selected-active-foreground:  @background;
+            selected-active-background:  @blue;
+            selected-urgent-foreground:  @background;
+            selected-urgent-background:  @red;
+            normal-foreground:           @foreground;
+            normal-background:           @background;
+            active-foreground:           @blue;
+            active-background:           @background;
+            urgent-foreground:           @red;
+            urgent-background:           @background;
+            alternate-normal-foreground: @foreground;
+            alternate-normal-background: @lightbg;
+            alternate-active-foreground: @blue;
+            alternate-active-background: @lightbg;
+            alternate-urgent-foreground: @red;
+            alternate-urgent-background: @lightbg;
+        }
+      '';
     };
   };
 }

@@ -101,19 +101,22 @@ in
             ];
           };
           colors = {
-            statusbar.url.success.https.fg = "white";
-            tabs = rec {
-              even.bg = "#49505E";
-              even.fg = "#639EE4";
-              odd.bg = "#35383F";
-              odd.fg = even.fg;
-              bar.bg = "#303030";
-            };
+            # statusbar.url.success.https.fg = "white";
+            # tabs = rec {
+            #   even.bg = "#49505E";
+            #   even.fg = "#639EE4";
+            #   odd.bg = "#35383F";
+            #   odd.fg = even.fg;
+            #   bar.bg = "#303030";
+            # };
             webpage = {
               preferred_color_scheme = "dark";
-              bg = "#303030";
+              # bg = "#303030";
               darkmode.enabled = true;
-              darkmode.policy.images = "never";
+              darkmode.policy.images = "smart";
+              # lightness-cielab lightness-hsl brightness-rgb
+              darkmode.algorithm = "lightness-cielab";
+
             };
           };
           completion = {
@@ -303,6 +306,7 @@ in
               'Ю': '>', 'ю': '.',
               ',': '?', '.': '/',
           }
+          ${readFile ./config/qutebrowser.py}
         '';
       };
 

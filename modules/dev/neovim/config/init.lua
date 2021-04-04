@@ -1006,13 +1006,14 @@
     }
   -- }}}
   -- Colorscheme {{{
+    -- packer.use "chxuan/change-colorscheme"
     packer.use {
-      'KeitaNakamura/neodark.vim',
-      as = 'neodark',
+      'chriskempson/base16-vim',
+      as = 'base16',
       opt = true,
       setup = function ()
-        vim.g['neodark#background'] = '#282c34'
-        vim.cmd [[colorscheme neodark]]
+        -- vim.g['neodark#background'] = '#282c34'
+        -- vim.cmd [[colorscheme neodark]]
         vim.api.nvim_exec([[
           " Mark 80-th character
           hi! OverLength ctermbg=168 guibg=#ebabb8 ctermfg=250 guifg=#3c3e42
@@ -1025,7 +1026,7 @@
         ]], true)
       end,
     }
-    vim.cmd [[ packadd neodark ]]
+    vim.cmd [[ colorscheme base16-onedark ]]
   -- }}}
   -- Telescope {{{
     packer.use {

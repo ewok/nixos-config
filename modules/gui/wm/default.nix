@@ -108,98 +108,118 @@ in
 
       programs.i3status-rust = {
         enable = true;
-        bars.default = {
-          blocks = [
-            {
-              block = "time";
-              interval = 60;
-              format = "MSK: %a %d/%m %R";
-              timezone = "Europe/Moscow";
-            }
-            {
-              block = "time";
-              interval = 60;
-              format = "LDN: %R";
-              timezone = "Europe/London";
-            }
-            {
-              block = "time";
-              interval = 60;
-              format = "NY: %R";
-              timezone = "America/New_York";
-            }
-            {
-              block = "time";
-              interval = 60;
-              format = "PST: %R";
-              timezone = "America/Los_Angeles";
-            }
-            {
-              block = "disk_space";
-              path = "/";
-              alias = "/";
-              info_type = "available";
-              unit = "GB";
-              interval = 60;
-              warning = 20.0;
-              alert = 10.0;
-            }
-
-            (
-              mkIf (config.fileSystems ? "/mnt/Data") {
+        bars = {
+          default = {
+            settings = {
+              theme = {
+                name = "solarized-dark";
+                overrides = {
+                  idle_bg = "#282c34";
+                  idle_fg = "#abb2bf";
+                  info_bg = "#56b6c2";
+                  info_fg = "#282c34";
+                  good_bg = "#98c379";
+                  good_fg = "#282c34";
+                  warning_bg = "#e5c07b";
+                  warning_fg = "#282c34";
+                  critical_bg = "#e06c75";
+                  critical_fg = "#282c34";
+                };
+              };
+            };
+            blocks = [
+              {
+                block = "time";
+                interval = 60;
+                format = "MSK: %a %d/%m %R";
+                timezone = "Europe/Moscow";
+              }
+              {
+                block = "time";
+                interval = 60;
+                format = "LDN: %R";
+                timezone = "Europe/London";
+              }
+              {
+                block = "time";
+                interval = 60;
+                format = "NY: %R";
+                timezone = "America/New_York";
+              }
+              {
+                block = "time";
+                interval = 60;
+                format = "PST: %R";
+                timezone = "America/Los_Angeles";
+              }
+              {
                 block = "disk_space";
-                path = "/mnt/Data";
-                alias = "/Data";
+                path = "/";
+                alias = "/";
                 info_type = "available";
                 unit = "GB";
                 interval = 60;
-                warning = 10.0;
-                alert = 5.0;
+                warning = 20.0;
+                alert = 10.0;
               }
-            )
 
-            {
-              block = "cpu";
-              interval = 1;
-            }
-            {
-              block = "memory";
-              display_type = "memory";
-              format_mem = "{Mum}MB({Mup}%)";
-              format_swap = "{SUm}MB({SUp}%)";
-              icons = true;
-              clickable = true;
-              interval = 10;
-              warning_mem = 80;
-              warning_swap = 80;
-              critical_mem = 95;
-              critical_swap = 95;
-            }
-            {
-              block = "music";
-              player = "spotify";
-              buttons = [ "play" "next" ];
-            }
-            {
-              block = "sound";
-              step_width = 5;
-            }
-            {
-              block = "battery";
-              interval = 60;
-              format = "{percentage}% {time}";
-            }
-            {
-              block = "custom";
-              command = "xkb-switch";
-              interval = 5;
-            }
-          ];
-          icons = "awesome";
-          theme = "bad-wolf";
+              (
+                mkIf (config.fileSystems ? "/mnt/Data") {
+                  block = "disk_space";
+                  path = "/mnt/Data";
+                  alias = "/Data";
+                  info_type = "available";
+                  unit = "GB";
+                  interval = 60;
+                  warning = 10.0;
+                  alert = 5.0;
+                }
+              )
+
+              {
+                block = "cpu";
+                interval = 1;
+              }
+              {
+                block = "memory";
+                display_type = "memory";
+                format_mem = "{Mum}MB({Mup}%)";
+                format_swap = "{SUm}MB({SUp}%)";
+                icons = true;
+                clickable = true;
+                interval = 10;
+                warning_mem = 80;
+                warning_swap = 80;
+                critical_mem = 95;
+                critical_swap = 95;
+              }
+              {
+                block = "music";
+                player = "spotify";
+                buttons = [ "play" "next" ];
+              }
+              {
+                block = "sound";
+                step_width = 5;
+              }
+              {
+                block = "battery";
+                interval = 60;
+                format = "{percentage}% {time}";
+              }
+              {
+                block = "custom";
+                command = "xkb-switch";
+                interval = 5;
+              }
+            ];
+            icons = "awesome";
+            theme = "solarized-dark";
+          };
         };
       };
 
+# gtk-color-scheme = "bg_color:#282c34\nfg_color:#abb2bf\nbase_color:#282c34\ntext_color:#abb2bf\nselected_bg_color:#3e4451\nselected_fg_color:#abb2bf\ntooltip_bg_color:#282c34\ntooltip_fg_color:#565c64\ntitlebar_bg_color:#282c34\ntitlebar_fg_color:#61afef\nmenubar_bg_color:#282c34\nmenubar_fg_color:#61afef\ntoolbar_bg_color:#282c34\ntoolbar_fg_color:#e5c07b\nmenu_bg_color:#282c34\nmenu_fg_color:#abb2bf\npanel_bg_color:#282c34\npanel_fg_color:#98c379\nlink_color:#d19a66"
       gtk = {
         enable = true;
         font = {

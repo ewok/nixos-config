@@ -22,14 +22,23 @@ in
             dpkg
           ];
 
-          xdg.configFile."vifm/colors".source = ./config/colors;
-          xdg.configFile."vifm/plugins".source = ./config/plugins;
+          xdg.configFile."vifm/vifmrc".text = ''
+            ${readFile ./config/vifmrc}
+            ${readFile ./config/colors/onedark.vifm}
+            ${readFile ./config/plugins/devicons.vifm}
+            ${readFile ./config/vifm_commands}
+            ${readFile ./config/vifm_keys}
+            ${readFile ./config/vifm_ext}
+            ${readFile ./config/vifm_custom}
+            '';
+
+          # xdg.configFile."vifm/colors/theme.vifm".source = ./config/colors/onedark.vifm;
+          # xdg.configFile."vifm/plugins/devicons.vifm".source = ./config/plugins/devicons.vifm;
           xdg.configFile."vifm/scripts".source = ./config/scripts;
-          xdg.configFile."vifm/vifm_commands".source = ./config/vifm_commands;
-          xdg.configFile."vifm/vifm_custom".source = ./config/vifm_custom;
-          xdg.configFile."vifm/vifm_ext".source = ./config/vifm_ext;
-          xdg.configFile."vifm/vifm_keys".source = ./config/vifm_keys;
-          xdg.configFile."vifm/vifmrc".source = ./config/vifmrc;
+          # xdg.configFile."vifm/vifm_commands".source = ./config/vifm_commands;
+          # xdg.configFile."vifm/vifm_custom".source = ./config/vifm_custom;
+          # xdg.configFile."vifm/vifm_ext".source = ./config/vifm_ext;
+          # xdg.configFile."vifm/vifm_keys".source = ./config/vifm_keys;
         };
       }
     )
