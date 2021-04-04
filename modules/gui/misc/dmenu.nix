@@ -83,7 +83,7 @@ in
       ];
 
       # Does not work yet
-      xdg.dataFile."rofi/colors/base16-onedark.rasi".text = ''
+      xdg.configFile."rofi/base16-onedark.rasi".text = ''
         * {
             red:                         rgba ( 224, 108, 117, 100 % );
             blue:                        rgba ( 97, 175, 239, 100 % );
@@ -115,7 +115,7 @@ in
         }
       '';
 
-      xdg.dataFile."rofi/themes/base16-onedark.config".text = ''
+      xresources.extraConfig = ''
         ! Base16 OneDark
         ! Author: Lalit Magant (http://github.com/tilal6991)
         ! base00: #282c34
@@ -144,38 +144,6 @@ in
         rofi.color-urgent:  #353b45, #e06c75, #353b45, #353b45, #e06c75
         ! Set the desired separator style
         rofi.separator-style: solid
-      '';
-
-      xdg.dataFile."rofi/themes/base16-onedark.rasi".text = ''
-        * {
-            red:                         rgba ( 224, 108, 117, 100 % );
-            blue:                        rgba ( 97, 175, 239, 100 % );
-            lightfg:                     rgba ( 182, 189, 202, 100 % );
-            lightbg:                     rgba ( 53, 59, 69, 100 % );
-            foreground:                  rgba ( 171, 178, 191, 100 % );
-            background:                  rgba ( 40, 44, 52, 100 % );
-            background-color:            rgba ( 40, 44, 52, 0 % );
-            separatorcolor:              @foreground;
-            border-color:                @foreground;
-            selected-normal-foreground:  @lightbg;
-            selected-normal-background:  @lightfg;
-            selected-active-foreground:  @background;
-            selected-active-background:  @blue;
-            selected-urgent-foreground:  @background;
-            selected-urgent-background:  @red;
-            normal-foreground:           @foreground;
-            normal-background:           @background;
-            active-foreground:           @blue;
-            active-background:           @background;
-            urgent-foreground:           @red;
-            urgent-background:           @background;
-            alternate-normal-foreground: @foreground;
-            alternate-normal-background: @lightbg;
-            alternate-active-foreground: @blue;
-            alternate-active-background: @lightbg;
-            alternate-urgent-foreground: @red;
-            alternate-urgent-background: @lightbg;
-        }
       '';
     };
   };
