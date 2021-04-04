@@ -62,7 +62,6 @@ in
         environment.systemPackages = with pkgs; [
           ponymix
           lxqt.pavucontrol-qt
-          sof-firmware
         ] ++ optionals (cfg.sof.enable) [
           sof-firmware
         ];
