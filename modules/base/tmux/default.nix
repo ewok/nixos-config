@@ -50,7 +50,7 @@ in
         historyLimit = 100000;
         plugins = with pkgs.tmuxPlugins;
           [
-            copycat # prefix + C-u to find url, n/N to navigate
+            yank
           ];
         extraConfig = builtins.readFile ./config/tmux.conf;
       };
