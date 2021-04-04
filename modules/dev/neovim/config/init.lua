@@ -1762,10 +1762,10 @@
     }
     cmd [[packadd vim-which-key]]
     map('n', '<leader>', [[:WhichKey '<Space>'<CR>]], { noremap = true, silent = true })
-    map('v', '<leader>', [[:<c-u>WhichKey '<Space>'<CR>]], { noremap = true, silent = true })
+    map('v', '<leader>', [[:<c-u>WhichKeyVisual '<Space>'<CR>]], { noremap = true, silent = true })
 
     map('n', '<localleader>', [[:WhichKey '\'<CR>]], { noremap = true, silent = true })
-    map('v', '<localleader>', [[:<c-u>WhichKey '\'<CR>]], { noremap = true, silent = true })
+    map('v', '<localleader>', [[:<c-u>WhichKeyVisual '\'<CR>]], { noremap = true, silent = true })
   -- }}}
   -- Xkb {{{
     packer.use {
