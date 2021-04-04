@@ -3,6 +3,8 @@ with lib;
 let
   base = config.modules.base;
   username = config.properties.user.name;
+
+  showcolors = pkgs.writeShellScriptBin "showcolors" "${readFile ./config/showcolors.sh}";
 in
 {
   config = mkIf base.enable {
@@ -38,6 +40,8 @@ in
       unzip
 
       nix-tree
+
+      showcolors
     ];
 
   };

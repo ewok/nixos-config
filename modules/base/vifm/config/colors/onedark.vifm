@@ -30,16 +30,19 @@ highlight Socket	cterm=none,standout	ctermfg=005	ctermbg=235
 " Custom colors
 
 " Images
-highlight /^.*\.(jp[e]?g|png|gif|tiff|webp|bmp|svg|svgz|ico)$/ ctermfg=magenta
+highlight /^.*\.(jp[e]?g|png|gif|tiff|webp|bmp|svg|svgz|ico)$/ ctermfg=53
 
-" Media
-highlight /^.*\.(mp3|ogg|oga|flac|m4a|avi|mpg)$/ ctermfg=lightmagenta
+" Audio
+highlight /^.*\.(mp3|ogg|oga)$/ ctermfg=54
+
+" Video
+highlight /^.*\.(flac|m4a|avi|mpg)$/ ctermfg=56
 
 " Archives
 highlight /^.*\.(zip|gz|bz2|xz|tar|tgz|tbz2|7z|rar|iso|rpm|deb)$/ ctermfg=red
 
 " Documents
-highlight /^.*\.(ans|asc|doc[x]?|dot[x]?|djvu|epub|gdoc|md|mobi|odm|odoc|odt|pdf|rtf|stw|info|txt|ppt|o[td]s|csv|xls[x]?|xlt|smmx|htm[l]?)$/ ctermfg=white
+highlight /^.*\.(ans|asc|doc[x]?|dot[x]?|djvu|epub|gdoc|md|mobi|odm|odoc|odt|pdf|rtf|stw|info|txt|ppt|o[td]s|csv|xls[x]?|xlt|smmx|htm[l]?)$/ ctermfg=55
 
 " Source code
 highlight /^.*\.(y(a)?ml|tpl|py|xml|sh|conf|config|java|cpp|j2|js(on)?|vim|asm|cc|d|go|h|php[345S]?|r[sb]?|scala|scm|swg|tcl|ipynb)$/ cterm=none	ctermfg=34
