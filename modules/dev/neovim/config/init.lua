@@ -1007,13 +1007,14 @@
   -- }}}
   -- Colorscheme {{{
     -- packer.use "chxuan/change-colorscheme"
+    -- packer.use "joshdick/onedark.vim"
+    -- packer.use "KeitaNakamura/neodark.vim"
+    -- vim.g['neodark#background'] = '#282c34'
     packer.use {
-      'chriskempson/base16-vim',
-      as = 'base16',
+      'joshdick/onedark.vim',
+      as = 'onedark',
       opt = true,
       setup = function ()
-        -- vim.g['neodark#background'] = '#282c34'
-        -- vim.cmd [[colorscheme neodark]]
         vim.api.nvim_exec([[
           " Mark 80-th character
           hi! OverLength ctermbg=168 guibg=#ebabb8 ctermfg=250 guifg=#3c3e42
@@ -1026,7 +1027,8 @@
         ]], true)
       end,
     }
-    vim.cmd [[ colorscheme base16-onedark ]]
+    vim.cmd [[ packadd onedark ]]
+    vim.cmd [[ colorscheme onedark ]]
   -- }}}
   -- Telescope {{{
     packer.use {
@@ -1885,6 +1887,8 @@
           global = 0,
           links = 0
         }
+      end,
+      config = function()
         -- Zettel part
         vim.g.zettel_format = "%y%m%d-%H%M-%title"
         vim.g.zettel_default_mappings = 0
@@ -1896,8 +1900,6 @@
           end
           vim.cmd [[ZettelBackLinks]]
         end
-      end,
-      config = function()
         map('n', '<leader>ww', ':silent call VimwikiIndexCd()<CR>', { noremap = true })
         map('n', '<leader>wi', ':VimwikiDiaryIndex<CR>', { noremap = true })
         map('n', '<leader>wj', ':VimwikiDiaryNextDay<CR>', { noremap = true })
