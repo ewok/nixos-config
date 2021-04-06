@@ -113,7 +113,7 @@ in
               preferred_color_scheme = "dark";
               # bg = "#303030";
               darkmode.enabled = true;
-              darkmode.policy.images = "smart";
+              darkmode.policy.images = "never";
               # lightness-cielab lightness-hsl brightness-rgb
               darkmode.algorithm = "lightness-cielab";
 
