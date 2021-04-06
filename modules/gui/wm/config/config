@@ -22,7 +22,7 @@ hide_edge_borders smart_no_gaps
 
 # Font for window titles. Will also be used by the bar unless a different font
 # is used in the bar {} block below.
-font pango:DejaVu Sans Mono, FontAwesome 11
+font pango:FiraCode Nerd Font Mono 11
 
 # Use Mouse+$mod to drag floating windows
 floating_modifier $mod
@@ -349,59 +349,12 @@ bar {
 
 # Basic color configuration using the Base16 variables for windows and borders.
 # Property Name         Border  BG      Text    Indicator Child Border
-client.focused          $base05 $base0D $base00 $base0D $base0C
+client.focused          $base05 $base0D $base00 $base0F $base0C
 client.focused_inactive $base01 $base01 $base05 $base03 $base01
 client.unfocused        $base01 $base00 $base05 $base01 $base01
 client.urgent           $base08 $base08 $base00 $base08 $base08
 client.placeholder      $base00 $base00 $base05 $base00 $base00
 client.background       $base07
-
-###
-# set_from_resource $term_background background
-# set_from_resource $term_foreground foreground
-# set_from_resource $term_color0     color0
-# set_from_resource $term_color1     color1
-# set_from_resource $term_color2     color2
-# set_from_resource $term_color3     color3
-# set_from_resource $term_color4     color4
-# set_from_resource $term_color5     color5
-# set_from_resource $term_color6     color6
-# set_from_resource $term_color7     color7
-# set_from_resource $term_color8     color8
-# set_from_resource $term_color9     color9
-# set_from_resource $term_color10    color10
-# set_from_resource $term_color11    color11
-# set_from_resource $term_color12    color12
-# set_from_resource $term_color13    color13
-# set_from_resource $term_color14    color14
-# set_from_resource $term_color15    color15
-
-# bar {
-#     i3bar_command i3bar
-#     tray_output primary
-#     font pango:DejaVu Sans Mono, FontAwesome 11
-#     position top
-#     status_command i3status-rs ~/.config/i3status-rust/config-default.toml
-#     colors {
-#         separator #666666
-#         background #222222
-#         statusline #dddddd
-#         focused_workspace #0088CC #0088CC #ffffff
-#         active_workspace #333333 #333333 #ffffff
-#         inactive_workspace #333333 #333333 #888888
-#         urgent_workspace #2f343a #900000 #ffffff
-#     }
-# }
-
-# # Theme colors
-# # class                   border  backgr. text    indic.   child_border
-#   client.focused          #556064 #556064 #80FFF9 #FDF6E3 #008736
-#   client.focused_inactive #2F3D44 #2F3D44 #1ABC9C #454948
-#   client.unfocused        #2F3D44 #2F3D44 #1ABC9C #454948
-#   client.urgent           #CB4B16 #FDF6E3 #1ABC9C #268BD2
-#   client.placeholder      #000000 #0c0c0c #ffffff #000000 
-
-#   client.background       #2B2C2B
 
 ################################################################################################
 # Autostart applications
