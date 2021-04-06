@@ -258,8 +258,8 @@
 -- Keymaps {{{
   -- Tabs {{{
     map('n', '<C-W>t', ':tabnew<CR>', { noremap = true, silent = true })
-    map('n', '<Tab>', ':tabnext<CR>', { noremap = true, silent = true })
-    map('n', '<S-Tab>', ':tabprev<CR>', { noremap = true, silent = true })
+  --   map('n', '<Tab>', ':tabnext<CR>', { noremap = true, silent = true })
+  --   map('n', '<S-Tab>', ':tabprev<CR>', { noremap = true, silent = true })
   -- }}}
   -- Windows {{{
     if fn.exists('$TMUX') == 1 then
@@ -970,6 +970,38 @@
     }
   -- }}}
 -- UI
+  -- BarBar {{{
+    packer.use {
+      "romgrk/barbar.nvim",
+      config = function()
+        local barbar_settings = vim.g.bufferline
+        if not vim.g.bufferline then
+          barbar_settings = {}
+        end
+        barbar_settings.closable = false
+        barbar_settings.clickable = false
+        barbar_settings.animation = false
+        barbar_settings.auto_hide = false
+        vim.g.bufferline = barbar_settings
+
+        map('n', '<Tab>', ':BufferNext<CR>', { noremap = true, silent = true })
+        map('n', '<S-Tab>', ':BufferPrev<CR>', { noremap = true, silent = true })
+        map('n', '<leader>bq', ':BufferCloseAllButCurrent<CR>', { silent = true })
+        map('n', 'gb', ':BufferPick<CR>', { silent = true })
+        map('n', '<C-W>d', ':BufferClose<CR>', { silent = true })
+        local au_barbar = {
+          -- {('BufNew * lua require"bufferline.state".order_by_directory()')};
+          {('BufNew * lua require"bufferline.state".order_by_directory()')};
+          {('BufEnter * lua require"bufferline.state".order_by_directory()')};
+          {('BufWipeout * lua require"bufferline.state".order_by_directory()')};
+          {('BufWinEnter * lua require"bufferline.state".order_by_directory()')};
+          {('BufWinLeave * lua require"bufferline.state".order_by_directory()')};
+          {('BufWipeout * lua require"bufferline.state".order_by_directory()')};
+        }
+        augroups({au_barbar=au_barbar})
+      end,
+    }
+  -- }}}
   -- Better QuickFix {{{
     packer.use{
       'kevinhwang91/nvim-bqf',
@@ -1820,12 +1852,6 @@
 
     end
   -- }}}
-  -- Buffers {{{
-    packer.use {
-      'schickling/vim-bufonly',
-    }
-    map('n', '<leader>bq', ':Bonly<CR>', { silent = true })
-  -- }}}
   -- Registers {{{
     packer.use {
       'junegunn/vim-peekaboo',
@@ -2288,6 +2314,7 @@
           {[[FileType fugitive nnoremap <buffer> <silent> c :WhichKey 'c'<CR>]]};
           {[[FileType fugitive nnoremap <buffer> <silent> d :WhichKey 'd'<CR>]]};
           {[[FileType fugitive nnoremap <buffer> <silent> r :WhichKey 'r'<CR>]]};
+          {[[FileType fugitive nnoremap <buffer> <silent> q :close<CR>]]};
           -- {[[BufEnter */.git/index nnoremap <buffer> <silent> c :WhichKey 'c'<CR>]]};
           -- {[[BufEnter */.git/index nnoremap <buffer> <silent> d :WhichKey 'd'<CR>]]};
           -- {[[BufEnter */.git/index nnoremap <buffer> <silent> r :WhichKey 'r'<CR>]]};
