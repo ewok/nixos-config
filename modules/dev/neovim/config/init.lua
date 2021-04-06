@@ -443,7 +443,7 @@
   -- }}}
   -- Config {{{
     local ft_config = {
-      {[[ BufNewFile,BufRead *.conf,*.cfg,*.ini set filetype=config ]]};
+      {[[ BufNewFile,BufRead *.conf,*.cfg,*.ini set filetype=cfg ]]};
       {[[ FileType config setlocal commentstring=#\ %s ]]};
     }
     augroups({ft_config=ft_config})
@@ -1010,6 +1010,9 @@
     -- packer.use "joshdick/onedark.vim"
     -- packer.use "KeitaNakamura/neodark.vim"
     -- vim.g['neodark#background'] = '#282c34'
+    packer.use {
+      "ap/vim-css-color"
+    }
     packer.use {
       'joshdick/onedark.vim',
       as = 'onedark',
