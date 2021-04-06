@@ -3,32 +3,31 @@
 with lib;
 stdenv.mkDerivation rec {
   pname = "sof-firmware";
-  version = "1.7-rc2";
+  version = "1.7";
 
   src = fetchFromGitHub {
     owner = "thesofproject";
     repo = "sof-bin";
-    # rev = "v${version}";
-    # rev = "0c9b35cabd85897877f1c18ec1ea3ccc4b590d5f";
-    rev = "90ca706ea65e7979135d927c6ed3303e40067189";
-    # sha256 = "172mlnhc7qvr65v2k1541inasm5hwsibmqqmpapml5n2a4srx7nr";
-    # sha256 = "0lqs07k8pdjkdk2wafz8kbadgvr5z1vgss2hxii2i908pim63wd2";
-    sha256 = "1iwjx1cv9r7lzaz12iqqzjy8zz3gjv6s3lvk1bjmbhsdzsdinml0";
+    rev = "v${version}";
+    sha256 = "1fb4rxgg3haxqg2gcm89g7af6v0a0h83c1ar2fyfa8h8pcf7hik7";
   };
 
   phases = [ "unpackPhase" "installPhase" ];
 
   installPhase = ''
-    set -x
-    # find .
-    # ls -la lib/firmware/intel/sof-tplg-v1.7
     mkdir -p $out/lib/firmware
 
     find $out
 
-    cat go.sh
+    mkdir -p tools lib/firmware/intel/sof
+
+    mv sof-tplg-v1.7 lib/firmware/intel/
+    mv sof-v1.7 lib/firmware/intel/sof/v1.7
+    mv tools-v1.7 tools/v1.7
+
     patchShebangs go.sh
-    INTEL_PATH= ROOT=$out SOF_VERSION=v${version} ./go.sh
+    sed -i 's/\-''${SOF_VERSION}.ri/.ri/g' go.sh
+    ROOT=$out SOF_VERSION=v${version} ./go.sh
   '';
 
   meta = with lib; {
