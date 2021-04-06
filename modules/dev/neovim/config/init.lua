@@ -973,6 +973,21 @@
   -- BarBar {{{
     packer.use {
       "romgrk/barbar.nvim",
+      setup = function ()
+        vim.api.nvim_exec([[
+          hi! BufferCurrent guifg=#56B6C2 gui=bold
+          hi! BufferCurrentIndex guifg=#56B6C2 gui=bold
+          hi! BufferCurrentMod guifg=#56B6C2 gui=bold
+          hi! BufferCurrentSign guifg=#56B6C2 gui=bold
+          hi! BufferCurrentTarget guifg=#56B6C2 gui=bold
+
+          hi! BufferVisible guifg=#56B6C2
+          hi! BufferVisibleIndex guifg=#56B6C2
+          hi! BufferVisibleMod guifg=#56B6C2
+          hi! BufferVisibleSing guifg=#56B6C2
+          hi! BufferVisibleTarget guifg=#56B6C2
+        ]], true)
+      end,
       config = function()
         local barbar_settings = vim.g.bufferline
         if not vim.g.bufferline then

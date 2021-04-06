@@ -5,7 +5,7 @@ highlight clear
 
 highlight Border	cterm=none	ctermfg=035	ctermbg=237
 
-highlight TopLine	cterm=none	ctermfg=002	ctermbg=235
+highlight TopLine	cterm=none	ctermfg=002	ctermbg=237
 highlight TopLineSel	cterm=bold	ctermfg=002	ctermbg=237
 
 highlight Win		cterm=none	ctermfg=250	ctermbg=235

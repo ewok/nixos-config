@@ -139,9 +139,9 @@ in
         ! Property Name     BG       Border   Separator
         rofi.color-window:  #353b45, #353b45, #282c34
         ! Property Name     BG       FG       BG-alt   Head-BG  Head-FG
-        rofi.color-normal:  #353b45, #abb2bf, #353b45, #353b45, #c8ccd4
-        rofi.color-active:  #353b45, #61afef, #353b45, #353b45, #61afef
-        rofi.color-urgent:  #353b45, #e06c75, #353b45, #353b45, #e06c75
+        rofi.color-normal:  #353b45, #abb2bf, #353b45, #e5c07b, #3e4451
+        rofi.color-active:  #353b45, #61afef, #353b45, #e5c07b, #61afef
+        rofi.color-urgent:  #353b45, #e06c75, #353b45, #e5c07b, #e06c75
         ! Set the desired separator style
         rofi.separator-style: solid
       '';
