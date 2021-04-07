@@ -1058,7 +1058,10 @@
     -- packer.use "KeitaNakamura/neodark.vim"
     -- vim.g['neodark#background'] = '#282c34'
     packer.use {
-      "ap/vim-css-color"
+      "chrisbra/Colorizer",
+      config = function ()
+        map('n', '<leader>oc', ':ColorToggle<CR>', { noremap = true, silent = false })
+      end,
     }
     packer.use {
       'joshdick/onedark.vim',
@@ -2950,6 +2953,7 @@
   lmap.o.n.s = 'Colorscheme'
   lmap.o.n.i = 'hIghlights'
   lmap.o.n.k = 'Keymaps'
+  lmap.o.c = 'highlight Color codes'
   lmap.o.o = 'All Options'
   lmap.o.e = 'Explorer'
   lmap.o.f = 'File'
