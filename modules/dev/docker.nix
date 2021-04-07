@@ -89,6 +89,8 @@ in
         docker-mysql-server
         docker-mysql-cli
         docker-mysqldump
+
+        pkgs.docker-compose
       ];
     };
   };
