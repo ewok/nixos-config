@@ -1141,17 +1141,10 @@
             file_ignore_patterns = {},
             width = 0.75,
             prompt_position = "top",
-            prompt_prefix = " ",
             sorting_strategy = "ascending",
             set_env = { ['COLORTERM'] = 'truecolor' },
-            -- file_previewer = require'telescope.previewers'.vim_buffer_cat.new,
-            -- grep_previewer = require'telescope.previewers'.vim_buffer_vimgrep.new,
-            -- qflist_previewer = require'telescope.previewers'.vim_buffer_qflist.new,
             mappings = {
               i = {
-                -- So, to not map "<C-n>", just put
-                ["<c-n>"] = false,
-                ["<c-p>"] = false,
                 ["<c-j>"] = actions.move_selection_next,
                 ["<c-k>"] = actions.move_selection_previous,
 
@@ -1159,7 +1152,6 @@
                 ["<C-v>"] = actions.select_vertical,
                 ["<C-t>"] = actions.select_tab,
                 ["<C-q>"] = actions.smart_send_to_qflist + actions.open_qflist,
-                -- ["<C-q>"] = actions.send_selected_to_qflist,
 
                 ["<C-Space>"] = actions.toggle_selection + actions.move_selection_next,
 
@@ -2901,8 +2893,7 @@
   lmap.d.S = 'Stop'
   lmap.d.v = 'Variables'
   lmap.f = {name = '+Find' }
-  lmap.f.b = 'Buffer'
-  lmap.f.b = 'Cheat'
+  lmap.f.c = 'Cheat'
   lmap.f.f = 'in-File'
   lmap.f.p = 'file in Path'
   lmap.f.r = { name = '+Replace',
