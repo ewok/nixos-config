@@ -1237,25 +1237,25 @@
         local icons = require('galaxyline.provider_fileinfo').define_file_icon()
 
          local colors = {
-          black     = '#35383F',
-          bblack    = '#49505E',
-          red       = '#cc241d',
-          bred      = '#fb4934',
-          green     = '#84B97C',
-          bgreen    = '#b8bb26',
-          yellow    = '#d79921',
-          byellow   = '#fabd2f',
-          blue      = '#458588',
-          bblue     = '#83a598',
-          mangenta  = '#b16286',
-          bmangenta = '#d3869b',
-          cyan      = '#689d6a',
-          bcyan     = '#8ec07c',
-          white     = '#aaaaaa',
-          bwhite    = '#bbbbbb',
+          base00 = '#282c34',
+          base01 = '#353b45',
+          base02 = '#3e4451',
+          base03 = '#545862',
+          base04 = '#565c64',
+          base05 = '#abb2bf',
+          base06 = '#b6bdca',
+          base07 = '#c8ccd4',
+          base08 = '#e06c75',
+          base09 = '#d19a66',
+          base0A = '#e5c07b',
+          base0B = '#98c379',
+          base0C = '#56b6c2',
+          base0D = '#61afef',
+          base0E = '#c678dd',
+          base0F = '#be5046',
         }
 
-        icons['man'] = {colors.green, ''}
+        icons['man'] = {colors.base0C, ''}
 
         function condition.checkwidth()
           local squeeze_width  = vim.fn.winwidth(0) / 2
@@ -1275,21 +1275,33 @@
                 end
                 return string.format('   %s ', alias[vim.fn.mode()])
               end,
-              highlight = {colors.black, colors.green, 'bold'},
+              highlight = {colors.base00, colors.base0C, 'bold'},
             }
           },
           {
             GitIcon = {
               provider = function() return '   ' end,
               condition = function() return condition.check_git_workspace() and condition.checkwidth() end,
-              highlight = {colors.white, colors.bblack}
+              highlight = {colors.base00, colors.base09}
             }
           },
           {
             GitBranch = {
               provider = 'GitBranch',
               condition = function() return condition.check_git_workspace() and condition.checkwidth() end,
-              highlight = {colors.bwhite, colors.bblack}
+              highlight = {colors.base00, colors.base09}
+            }
+          },
+          {
+            BlankSpace0 = {
+              provider = function() return ' ' end,
+              highlight = {colors.base09, colors.base09}
+            }
+          },
+          {
+            BlankSpace1 = {
+              provider = function() return ' ' end,
+              highlight = {colors.base01, colors.base01}
             }
           },
           {
@@ -1297,7 +1309,7 @@
               provider = 'DiffAdd',
               icon = '+',
               condition = function() return condition.check_git_workspace() and condition.checkwidth() end,
-              highlight = {colors.green, colors.bblack}
+              highlight = {colors.base0B, colors.base01}
             }
           },
           {
@@ -1305,7 +1317,7 @@
               provider = 'DiffModified',
               icon = '~',
               condition = function() return condition.check_git_workspace() and condition.checkwidth() end,
-              highlight = {colors.yellow, colors.bblack}
+              highlight = {colors.base0A, colors.base01}
             }
           },
           {
@@ -1313,13 +1325,13 @@
               provider = 'DiffRemove',
               icon = '-',
               condition = function() return condition.check_git_workspace() and condition.checkwidth() end,
-              highlight = {colors.red, colors.bblack}
+              highlight = {colors.base08, colors.base01}
             }
           },
           {
-            BlankSpace = {
+            BlankSpace2 = {
               provider = function() return ' ' end,
-              highlight = {colors.black, colors.black}
+              highlight = {colors.base01, colors.base01}
             }
           },
           {
@@ -1328,7 +1340,7 @@
               condition = condition.buffer_not_empty,
               highlight = {
                 fileinfo.get_file_icon_color,
-                colors.black
+                colors.base01
               },
             },
           },
@@ -1338,13 +1350,13 @@
                 return string.format('%s| %s ', fileinfo.get_file_size(), fileinfo.get_current_file_name())
               end,
               condition = condition.buffer_not_empty,
-              highlight = {colors.blue, colors.black}
+              highlight = {colors.base0D, colors.base01}
             }
           },
           {
             Blank = {
               provider = function() return '' end,
-              highlight = {colors.black, colors.black}
+              highlight = {colors.base01, colors.base01}
             }
           }
         }
@@ -1355,7 +1367,7 @@
               provider = 'DiagnosticError',
               icon = '  ',
               condition = function() return condition.check_active_lsp() and condition.checkwidth() end,
-              highlight = {colors.red, colors.black}
+              highlight = {colors.base08, colors.base01}
             },
           },
           {
@@ -1363,7 +1375,7 @@
               provider = 'DiagnosticWarn',
               icon = '  ',
               condition = function() return condition.check_active_lsp() and condition.checkwidth() end,
-              highlight = {colors.yellow, colors.black}
+              highlight = {colors.base09, colors.base01}
             },
           },
           {
@@ -1371,7 +1383,7 @@
               provider = 'DiagnosticHint',
               icon = '  ',
               condition = function() return condition.check_active_lsp() and condition.checkwidth() end,
-              highlight = {colors.cyan, colors.black}
+              highlight = {colors.base0B, colors.base01}
             }
           },
           {
@@ -1379,7 +1391,7 @@
               provider = 'DiagnosticInfo',
               icon = '  ',
               condition = function() return condition.check_active_lsp() and condition.checkwidth() end,
-              highlight = {colors.cyan, colors.black}
+              highlight = {colors.base0B, colors.base01}
             }
           },
           {
@@ -1387,34 +1399,34 @@
               provider = function() return string.format(' %s ', lspclient.get_lsp_client()) end,
               icon = '   ',
               condition = function() return condition.check_active_lsp() and condition.checkwidth() end,
-              highlight = {colors.white, colors.black}
+              highlight = {colors.base05, colors.base01}
             }
           },
           {
             FileType = {
               provider = function() return string.format(' %s ', buffer.get_buffer_filetype()) end,
               condition = function() return buffer.get_buffer_filetype() ~= '' end,
-              highlight = {colors.white, colors.black}
+              highlight = {colors.base05, colors.base01}
             }
           },
           {
             FileFormat = {
               provider = function() return string.format('   %s ', fileinfo.get_file_format()) end,
               condition = condition.checkwidth,
-              highlight = {colors.white, colors.bblack}
+              highlight = {colors.base00, colors.base09}
             }
           },
           {
             FileEncode = {
               provider = function() return string.format('   %s ', fileinfo.get_file_encode()) end,
               condition = condition.checkwidth,
-              highlight = {colors.white, colors.bblack}
+              highlight = {colors.base00, colors.base09}
             }
           },
           {
             LineInfo = {
               provider = function() return string.format(' %s %s ', fileinfo.current_line_percent(),fileinfo.line_column()) end,
-              highlight = {colors.black, colors.white}
+              highlight = {colors.base00, colors.base0A}
             }
           },
         }
@@ -1430,7 +1442,7 @@
                 end
                 return buffer.get_buffer_filetype() ~= ''
               end,
-              highlight = {colors.white, colors.black}
+              highlight = {colors.base05, colors.base01}
             }
           },
         }
@@ -1444,7 +1456,7 @@
                   return string.format(' %s ', icon)
                 end
               end,
-              highlight = {colors.white, colors.black}
+              highlight = {colors.base05, colors.base01}
             }
           },
           {
@@ -1465,13 +1477,13 @@
                 return ' <...> '
               end,
               separator = '',
-              highlight = {colors.white, colors.black}
+              highlight = {colors.base05, colors.base01}
             }
           },
           {
             BlankShort = {
               provider = function() return '' end,
-              highlight = {colors.black, colors.black},
+              highlight = {colors.base01, colors.base01},
             }
           }
         }
