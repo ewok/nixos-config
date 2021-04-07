@@ -97,7 +97,7 @@
       secure = true;
       shortmess = 'aOtT';
       showmode = true;
-      showtabline = 1;
+      showtabline = 2;
       smartcase = true;
       smarttab = true;
       splitbelow = true;
