@@ -101,6 +101,8 @@ in
 
         blurlock
         i3exit
+
+        font-awesome
       ] ++ [ master.xkb-switch-i3 ];
 
       xdg.configFile."i3/config".source = ./config/config;
@@ -223,7 +225,7 @@ in
       gtk = {
         enable = true;
         font = {
-          name = "Noto Sans 10";
+          name = "FiraCode Nerd Font Mono 10";
         };
         iconTheme = {
           name = "Papirus";

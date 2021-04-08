@@ -1274,6 +1274,12 @@
             }
           },
           {
+            BlankSpace0 = {
+              provider = function() return '' end,
+              highlight = {colors.base0C, colors.base09}
+            }
+          },
+          {
             GitIcon = {
               provider = function() return '   ' end,
               condition = function() return condition.check_git_workspace() and condition.checkwidth() end,
@@ -1288,13 +1294,13 @@
             }
           },
           {
-            BlankSpace0 = {
-              provider = function() return ' ' end,
-              highlight = {colors.base09, colors.base09}
+            BlankSpace1 = {
+              provider = function() return ' ' end,
+              highlight = {colors.base09, colors.base01}
             }
           },
           {
-            BlankSpace1 = {
+            BlankSpace2 = {
               provider = function() return ' ' end,
               highlight = {colors.base01, colors.base01}
             }
@@ -1324,7 +1330,7 @@
             }
           },
           {
-            BlankSpace2 = {
+            BlankSpace3 = {
               provider = function() return ' ' end,
               highlight = {colors.base01, colors.base01}
             }
@@ -1345,7 +1351,7 @@
                 return string.format('%s| %s ', fileinfo.get_file_size(), fileinfo.get_current_file_name())
               end,
               condition = condition.buffer_not_empty,
-              highlight = {colors.base0D, colors.base01}
+              highlight = {colors.base0C, colors.base01}
             }
           },
           {
@@ -1370,7 +1376,7 @@
               provider = 'DiagnosticWarn',
               icon = '  ',
               condition = function() return condition.check_active_lsp() and condition.checkwidth() end,
-              highlight = {colors.base09, colors.base01}
+              highlight = {colors.base0A, colors.base01}
             },
           },
           {
@@ -1405,10 +1411,22 @@
             }
           },
           {
+            BlankSpace4 = {
+              provider = function() return '' end,
+              highlight = {colors.base0B, colors.base01}
+            }
+          },
+          {
             FileFormat = {
               provider = function() return string.format('   %s ', fileinfo.get_file_format()) end,
               condition = condition.checkwidth,
-              highlight = {colors.base00, colors.base09}
+              highlight = {colors.base00, colors.base0B}
+            }
+          },
+          {
+            BlankSpace5 = {
+              provider = function() return '' end,
+              highlight = {colors.base09, colors.base0B}
             }
           },
           {
@@ -1419,9 +1437,15 @@
             }
           },
           {
+            BlankSpace6 = {
+              provider = function() return '' end,
+              highlight = {colors.base0C, colors.base09}
+            }
+          },
+          {
             LineInfo = {
               provider = function() return string.format(' %s %s ', fileinfo.current_line_percent(),fileinfo.line_column()) end,
-              highlight = {colors.base00, colors.base0A}
+              highlight = {colors.base00, colors.base0C}
             }
           },
         }

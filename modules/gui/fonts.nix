@@ -19,7 +19,7 @@ in
     };
     monospaceFontSize = mkOption {
       type = types.int;
-      default = 14;
+      default = 13;
       description = "Default monospace font size.";
     };
     consoleFont = mkOption {

@@ -22,7 +22,7 @@ hide_edge_borders smart_no_gaps
 
 # Font for window titles. Will also be used by the bar unless a different font
 # is used in the bar {} block below.
-font pango:FiraCode Nerd Font Mono 11
+font pango:FiraCode Nerd Font Mono, Font Awesome 5 Free
 
 # Use Mouse+$mod to drag floating windows
 floating_modifier $mod
@@ -329,7 +329,7 @@ bar {
     i3bar_command i3bar
     tray_output primary
     # font pango:DejaVu Sans Mono, FontAwesome 11
-    font pango:FiraCode Nerd Font Mono 11
+    font pango:FiraCode Nerd Font Mono, Font Awesome 5 Free
     position top
     status_command i3status-rs ~/.config/i3status-rust/config-default.toml
 
