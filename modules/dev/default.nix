@@ -8,6 +8,7 @@ with lib;
     ./docker.nix
     ./fzf.nix
     ./git.nix
+    ./go.nix
     ./java.nix
     ./k8s.nix
     ./neovim

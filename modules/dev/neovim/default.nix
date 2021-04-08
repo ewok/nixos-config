@@ -73,6 +73,7 @@ in
         nodePackages.vscode-json-languageserver
         nodePackages.yaml-language-server
         rnix-lsp
+        gopls
       ] ++ [
         jrnl
       ];

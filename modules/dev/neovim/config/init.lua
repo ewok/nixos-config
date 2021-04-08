@@ -466,19 +466,19 @@
     augroups({ft_gitignore=ft_gitignore})
   -- }}}
   -- Go {{{
-    packer.use {
-      'fatih/vim-go',
-      ft = { 'go' },
-      config = function()
-        vim.g.go_highlight_functions = 1
-        vim.g.go_highlight_methods = 1
-        vim.g.go_highlight_structs = 1
-        vim.g.go_highlight_interfaces = 1
-        vim.g.go_highlight_operators = 1
-        vim.g.go_highlight_build_constraints = 1
-        vim.g.go_auto_sameids = 1
-      end,
-    }
+    -- packer.use {
+    --   'fatih/vim-go',
+    --   ft = { 'go' },
+    --   config = function()
+    --     vim.g.go_highlight_functions = 1
+    --     vim.g.go_highlight_methods = 1
+    --     vim.g.go_highlight_structs = 1
+    --     vim.g.go_highlight_interfaces = 1
+    --     vim.g.go_highlight_operators = 1
+    --     vim.g.go_highlight_build_constraints = 1
+    --     vim.g.go_auto_sameids = 1
+    --   end,
+    -- }
 
     local ft_go = {
       {[[ FileType go lua load_go_ft() ]]}
@@ -2274,7 +2274,17 @@
         }
         require'lspconfig'.rnix.setup{
         }
-
+        require'lspconfig'.gopls.setup {
+          cmd = {"gopls", "serve"},
+          settings = {
+            gopls = {
+              analyses = {
+                unusedparams = true,
+              },
+              staticcheck = true,
+            }
+          }
+        }
         map('n', 'gd', '<cmd>lua vim.lsp.buf.definition()<CR>', { noremap = true, silent = true })
         map('n', 'gD', '<cmd>lua vim.lsp.buf.declaration()<CR>', { noremap = true, silent = true })
         map('n', 'gr', '<cmd>lua vim.lsp.buf.references()<CR>', { noremap = true, silent = true })
