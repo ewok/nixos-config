@@ -2,20 +2,17 @@
 with lib;
 {
   imports = [
-    # Development
     ./ctags.nix
     ./db.nix
     ./direnv.nix
     ./docker.nix
     ./fzf.nix
     ./git.nix
-    ./svn.nix
+    ./java.nix
     ./k8s.nix
-    # meld
     ./neovim
-    # ./notes.nix
-    # npm
     ./python.nix
+    ./svn.nix
     ./typora.nix
     ./zeal.nix
   ];

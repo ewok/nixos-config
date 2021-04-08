@@ -5,6 +5,11 @@ let
   username = config.properties.user.name;
 in
 {
+  options.modules.dev = {
+    java = {
+      enable= mkEnableOption "Enable java in dev environment.";
+    };
+  };
   config = mkIf (dev.java.enable) {
     home-manager.users."${username}" = {
       home.packages = [ pkgs.jdk ];
