@@ -975,17 +975,17 @@
       "romgrk/barbar.nvim",
       setup = function ()
         vim.api.nvim_exec([[
-          hi! BufferCurrent guifg=#56B6C2 gui=bold guibg=#224B50
-          hi! BufferCurrentIndex guifg=#56B6C2 gui=bold guibg=#224B50
-          hi! BufferCurrentMod guifg=#56B6C2 gui=bold guibg=#224B50
-          hi! BufferCurrentSign guifg=#56B6C2 gui=bold guibg=#224B50
-          hi! BufferCurrentTarget guifg=#56B6C2 gui=bold guibg=#224B50
+          hi! BufferCurrent gui=bold guifg=#56b6c2
+          hi! BufferCurrentIndex gui=bold guifg=#56b6c2
+          hi! BufferCurrentMod gui=bold guifg=#56b6c2
+          hi! BufferCurrentSign gui=bold guifg=#56b6c2
+          hi! BufferCurrentTarget gui=bold guifg=#56b6c2
 
-          hi! BufferVisible guifg=#56B6C2 gui=bold
-          hi! BufferVisibleIndex guifg=#56B6C2 gui=bold
-          hi! BufferVisibleMod guifg=#56B6C2 gui=bold
-          hi! BufferVisibleSing guifg=#56B6C2 gui=bold
-          hi! BufferVisibleTarget guifg=#56B6C2 gui=bold
+          hi! BufferVisible guifg=#56B6C2
+          hi! BufferVisibleIndex guifg=#56B6C2
+          hi! BufferVisibleMod guifg=#56B6C2
+          hi! BufferVisibleSing guifg=#56B6C2
+          hi! BufferVisibleTarget guifg=#56B6C2
         ]], true)
       end,
       config = function()
