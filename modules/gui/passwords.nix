@@ -12,6 +12,11 @@ let
 in
 {
   config = mkIf gui.enable {
+
+    services.gnome3.gnome-keyring.enable = true;
+    programs.seahorse.enable = true;
+    security.pam.services.lightdm.enableGnomeKeyring = true;
+
     home-manager.users.${username} = {
       home.packages = with master; with pkgs; [
         enpass

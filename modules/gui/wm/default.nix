@@ -26,7 +26,7 @@ let
           ${blurlock}/bin/blurlock
           ;;
       logout)
-          i3-msg exit
+          ${pkgs.i3}/bin/i3-msg exit
           ;;
       switch_user)
           dm-tool switch-to-greeter
@@ -52,23 +52,37 @@ let
 in
 {
   config = mkIf gui.enable {
+    environment.systemPackages = [ pkgs.herbstluftwm ];
     services.xserver = {
       enable = true;
+      # desktopManager.session = [
+      #   {
+      #     name = "home-manager";
+      #     start = ''
+      #       ${pkgs.runtimeShell} $HOME/.hm-xsession &
+      #       waitPID=$!
+      #     '';
+      #   }
+      # ];
       windowManager = {
         i3 = {
           enable = true;
           package = pkgs.i3-gaps;
         };
       };
+
       displayManager = {
+        autoLogin = { enable = true; user = "${username}"; };
         defaultSession = "none+i3";
         sessionCommands = ''
           setxkbmap -rules "evdev" -model "pc105" -layout "us,ru" -option "ctrl:swapcaps"
         '';
       };
-
     };
+
     environment.sessionVariables.CURRENT_WM = [ "i3" ];
+
+    # Themes
     environment.variables = {
       GTK_THEME = "Adwaita:dark";
     };
@@ -81,14 +95,9 @@ in
 
     services.dbus.packages = [ pkgs.gnome3.dconf ];
 
-    services.gnome3.gnome-keyring.enable = true;
-    programs.seahorse.enable = true;
-    security.pam.services.lightdm.enableGnomeKeyring = true;
-
     home-manager.users.${username} = {
 
       xdg.mimeApps.enable = true;
-
       home.packages = with pkgs; [
         imagemagick
         xdotool
@@ -103,6 +112,7 @@ in
         i3exit
 
         font-awesome
+
       ] ++ [ master.xkb-switch-i3 ];
 
       xdg.configFile."i3/config".source = ./config/config;
@@ -221,7 +231,7 @@ in
         };
       };
 
-# gtk-color-scheme = "bg_color:#282c34\nfg_color:#abb2bf\nbase_color:#282c34\ntext_color:#abb2bf\nselected_bg_color:#3e4451\nselected_fg_color:#abb2bf\ntooltip_bg_color:#282c34\ntooltip_fg_color:#565c64\ntitlebar_bg_color:#282c34\ntitlebar_fg_color:#61afef\nmenubar_bg_color:#282c34\nmenubar_fg_color:#61afef\ntoolbar_bg_color:#282c34\ntoolbar_fg_color:#e5c07b\nmenu_bg_color:#282c34\nmenu_fg_color:#abb2bf\npanel_bg_color:#282c34\npanel_fg_color:#98c379\nlink_color:#d19a66"
+      # gtk-color-scheme = "bg_color:#282c34\nfg_color:#abb2bf\nbase_color:#282c34\ntext_color:#abb2bf\nselected_bg_color:#3e4451\nselected_fg_color:#abb2bf\ntooltip_bg_color:#282c34\ntooltip_fg_color:#565c64\ntitlebar_bg_color:#282c34\ntitlebar_fg_color:#61afef\nmenubar_bg_color:#282c34\nmenubar_fg_color:#61afef\ntoolbar_bg_color:#282c34\ntoolbar_fg_color:#e5c07b\nmenu_bg_color:#282c34\nmenu_fg_color:#abb2bf\npanel_bg_color:#282c34\npanel_fg_color:#98c379\nlink_color:#d19a66"
       gtk = {
         enable = true;
         font = {
