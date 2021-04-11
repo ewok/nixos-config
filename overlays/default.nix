@@ -8,4 +8,11 @@ self: super:
   todofish = super.callPackage ./todofish.nix {};
   rofi-bluetooth = super.callPackage ./rofi-bluetooth.nix {};
   todo-txt-again = super.callPackage ./todoagain.nix {};
+  qtile-plasma = super.python37Packages.callPackage ./qtile-plasma.nix {};
+
+  qtile = super.qtile.overrideAttrs (
+    oldAttrs: rec {
+      pythonPath = oldAttrs.pythonPath ++ [ self.qtile-plasma ];
+    }
+  );
 }

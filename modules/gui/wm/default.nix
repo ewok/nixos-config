@@ -49,21 +49,13 @@ let
           exit 2
     esac
   '';
+
 in
 {
   config = mkIf gui.enable {
     environment.systemPackages = [ pkgs.herbstluftwm ];
     services.xserver = {
       enable = true;
-      # desktopManager.session = [
-      #   {
-      #     name = "home-manager";
-      #     start = ''
-      #       ${pkgs.runtimeShell} $HOME/.hm-xsession &
-      #       waitPID=$!
-      #     '';
-      #   }
-      # ];
       windowManager = {
         i3 = {
           enable = true;
