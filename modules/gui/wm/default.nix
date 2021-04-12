@@ -118,7 +118,7 @@ in
               theme = {
                 name = "solarized-dark";
                 overrides = {
-                  idle_bg = "#282c34";
+                  idle_bg = "#3e4451";
                   idle_fg = "#abb2bf";
                   info_bg = "#56b6c2";
                   info_fg = "#282c34";
@@ -128,6 +128,7 @@ in
                   warning_fg = "#282c34";
                   critical_bg = "#e06c75";
                   critical_fg = "#282c34";
+                  separator = "";
                 };
               };
             };

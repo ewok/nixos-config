@@ -1275,7 +1275,7 @@
           },
           {
             BlankSpace0 = {
-              provider = function() return '' end,
+              provider = function() return '' end,
               highlight = {colors.base0C, colors.base09}
             }
           },
@@ -1295,7 +1295,7 @@
           },
           {
             BlankSpace1 = {
-              provider = function() return ' ' end,
+              provider = function() return ' ' end,
               highlight = {colors.base09, colors.base01}
             }
           },
@@ -1412,7 +1412,7 @@
           },
           {
             BlankSpace4 = {
-              provider = function() return '' end,
+              provider = function() return '' end,
               highlight = {colors.base0B, colors.base01}
             }
           },
@@ -1425,7 +1425,7 @@
           },
           {
             BlankSpace5 = {
-              provider = function() return '' end,
+              provider = function() return '' end,
               highlight = {colors.base09, colors.base0B}
             }
           },
@@ -1438,7 +1438,7 @@
           },
           {
             BlankSpace6 = {
-              provider = function() return '' end,
+              provider = function() return '' end,
               highlight = {colors.base0C, colors.base09}
             }
           },
