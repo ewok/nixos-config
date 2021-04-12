@@ -1,4 +1,4 @@
-{ config, lib, inputs, ... }:
+{ config, lib, inputs, pkgs, ... }:
 with lib;
 let
   gui = config.modules.gui;
@@ -18,9 +18,9 @@ in
     security.pam.services.lightdm.enableGnomeKeyring = true;
 
     home-manager.users.${username} = {
-      home.packages = with master; with pkgs; [
-        enpass
-        keepassxc
+      home.packages = [
+        pkgs.enpass-my
+        master.keepassxc
       ];
 
       xdg.configFile."keepassxc/keepassxc.ini".text = ''
