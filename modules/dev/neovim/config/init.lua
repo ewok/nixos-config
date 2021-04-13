@@ -2440,6 +2440,10 @@
   -- Split/Join {{{
     packer.use {
       'andrewradev/splitjoin.vim',
+      setup = function ()
+        vim.g.splitjoin_split_mapping = ''
+        vim.g.splitjoin_join_mapping = ''
+      end,
       config = function()
         map('n', 'gs', ':SplitjoinSplit<CR>', {})
         map('n', 'gj', ':SplitjoinJoin<CR>', {})
@@ -3059,8 +3063,6 @@
   gmap.e = 'which_key_ignore'
   gmap.H = 'which_key_ignore'
   gmap.h = 'which_key_ignore'
-  gmap.J = 'which_key_ignore'
-  gmap.S = 'which_key_ignore'
   gmap.x = 'which_key_ignore'
   gmap['%'] = 'which_key_ignore'
   gmap['\\<BS>'] = 'which_key_ignore'
@@ -3070,7 +3072,7 @@
 
   gmap.Z = 'Zeal: '
   gmap.z = {name='+Zeal'}
-  gmap.z.m = 'which_key_ignore'
+  -- gmap.z.m = 'which_key_ignore'
   gmap.z.z = 'find in Zeal'
 
   gmap.c = { name= '+Commentary'}
@@ -3098,6 +3100,7 @@
   vim.g.which_key_run_map_on_popup = 1
   vim.g.which_key_fallback_to_native_key = 1
   vim.g.which_key_flatten = 0
+  vim.g.which_key_ignore_invalid_key = 1
 -- }}}
 
 -- Load local config {{{
