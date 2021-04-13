@@ -975,17 +975,26 @@
       "romgrk/barbar.nvim",
       setup = function ()
         vim.api.nvim_exec([[
-          hi! BufferCurrent gui=bold guifg=#56b6c2
-          hi! BufferCurrentIndex gui=bold guifg=#56b6c2
-          hi! BufferCurrentMod gui=bold guifg=#56b6c2
-          hi! BufferCurrentSign gui=bold guifg=#56b6c2
-          hi! BufferCurrentTarget gui=bold guifg=#56b6c2
+          hi! BufferCurrent gui=bold guibg=#56b6c2 guifg=#282c34
+          hi! BufferCurrentIndex gui=bold guibg=#56b6c2 guifg=#282c34
+          hi! BufferCurrentMod gui=bold guibg=#56b6c2 guifg=#282c34
+          hi! BufferCurrentSign gui=bold guifg=#56b6c2 guibg=#282c34
+          hi! BufferCurrentTarget gui=bold guibg=#56b6c2 guifg=#282c34
+          hi! BufferCurrentIcon guifg=#c678dd guibg=#282c34
 
-          hi! BufferVisible guifg=#56B6C2
-          hi! BufferVisibleIndex guifg=#56B6C2
-          hi! BufferVisibleMod guifg=#56B6C2
-          hi! BufferVisibleSing guifg=#56B6C2
-          hi! BufferVisibleTarget guifg=#56B6C2
+          hi! BufferVisible guifg=#56B6C2 guibg=#282c34
+          hi! BufferVisibleIndex guifg=#56B6C2 guibg=#282c34
+          hi! BufferVisibleMod guifg=#56B6C2 guibg=#282c34
+          hi! BufferVisibleSign guibg=#282c34 guifg=#282c34
+          hi! BufferVisibleTarget guifg=#56B6C2 guibg=#282c34
+          hi! BufferVisibleIcon guifg=#56B6C2 guibg=#282c34
+
+          hi! BufferInactive guifg=#565c64 guibg=#282c34
+          hi! BufferInactiveIndex guifg=#565c64 guibg=#282c34
+          hi! BufferInactiveMod guifg=#565c64 guibg=#282c34
+          hi! BufferInactiveSign guibg=#282c34 guifg=#282c34
+          hi! BufferInactiveTarget guifg=#565c64 guibg=#282c34
+          hi! BufferInactiveIcon guifg=#565c64 guibg=#282c34
         ]], true)
       end,
       config = function()
@@ -997,6 +1006,9 @@
         barbar_settings.clickable = false
         barbar_settings.animation = false
         barbar_settings.auto_hide = false
+        barbar_settings.icon_separator_active = ''
+        barbar_settings.icon_separator_inactive = ' '
+        barbar_settings.maximum_padding = 0
         vim.g.bufferline = barbar_settings
 
         map('n', '<Tab>', ':BufferNext<CR>', { noremap = true, silent = true })
@@ -1004,6 +1016,7 @@
         map('n', '<leader>bq', ':BufferCloseAllButCurrent<CR>', { silent = true })
         map('n', 'gb', ':BufferPick<CR>', { silent = true })
         map('n', '<C-W>d', ':BufferClose<CR>', { silent = true })
+        map('n', '<C-W><C-D>', ':BufferClose<CR>', { silent = true })
         map('n', '<leader>bs', ':lua require"bufferline.state".order_by_directory()<CR>', { silent = true })
         -- local au_barbar = {
         --   -- {('BufNew * lua require"bufferline.state".order_by_directory()')};
