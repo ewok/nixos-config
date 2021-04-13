@@ -3,13 +3,13 @@
 with lib;
 stdenv.mkDerivation rec {
   pname = "todofish";
-  version = "12c8283";
+  version = "ec5c77a";
 
   src = fetchFromGitHub {
     owner = "ewok";
     repo = "todofi.sh";
-    rev = "aaecb8bd575b2d2bc0b50daa3171cef2aec2e6a8";
-    sha256 = "0mhizx7x1x2pjc6kjawlhiiw1y0qflbadsnrr9kzahn2h5dnfzf8";
+    rev = "ec5c77ab292f59da01dee489749da494c7ba7404";
+    sha256 = "07kv4q0mzxr4hk0aar3jkmdlp8qnhch9lxhibq6djbcvpbsizv75";
   };
 
   phases = [ "unpackPhase" "installPhase" ];
