@@ -1004,16 +1004,17 @@
         map('n', '<leader>bq', ':BufferCloseAllButCurrent<CR>', { silent = true })
         map('n', 'gb', ':BufferPick<CR>', { silent = true })
         map('n', '<C-W>d', ':BufferClose<CR>', { silent = true })
-        local au_barbar = {
-          -- {('BufNew * lua require"bufferline.state".order_by_directory()')};
-          {('BufNew * lua require"bufferline.state".order_by_directory()')};
-          {('BufEnter * lua require"bufferline.state".order_by_directory()')};
-          {('BufWipeout * lua require"bufferline.state".order_by_directory()')};
-          {('BufWinEnter * lua require"bufferline.state".order_by_directory()')};
-          {('BufWinLeave * lua require"bufferline.state".order_by_directory()')};
-          {('BufWipeout * lua require"bufferline.state".order_by_directory()')};
-        }
-        augroups({au_barbar=au_barbar})
+        map('n', '<leader>bs', ':lua require"bufferline.state".order_by_directory()<CR>', { silent = true })
+        -- local au_barbar = {
+        --   -- {('BufNew * lua require"bufferline.state".order_by_directory()')};
+        --   {('BufNew * lua require"bufferline.state".order_by_directory()')};
+        --   {('BufEnter * lua require"bufferline.state".order_by_directory()')};
+        --   {('BufWipeout * lua require"bufferline.state".order_by_directory()')};
+        --   {('BufWinEnter * lua require"bufferline.state".order_by_directory()')};
+        --   {('BufWinLeave * lua require"bufferline.state".order_by_directory()')};
+        --   {('BufWipeout * lua require"bufferline.state".order_by_directory()')};
+        -- }
+        -- augroups({au_barbar=au_barbar})
       end,
     }
   -- }}}
