@@ -2,7 +2,7 @@
 
 with lib;
 stdenv.mkDerivation rec {
-  pname = "todofish";
+  pname = "todofi.sh";
   version = "ec5c77a";
 
   src = fetchFromGitHub {
@@ -15,9 +15,8 @@ stdenv.mkDerivation rec {
   phases = [ "unpackPhase" "installPhase" ];
 
   installPhase = ''
-    mkdir -p $out/bin
-    mv todofi.sh $out/bin
-    chmod +x $out/bin/todofi.sh
+    install -vd $out/bin
+    install -vm 755 todofi.sh $out/bin
   '';
 
   meta = with lib; {
