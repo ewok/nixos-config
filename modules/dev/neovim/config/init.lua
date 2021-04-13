@@ -1848,6 +1848,12 @@
     map('n', '<leader>', [[:WhichKey '<Space>'<CR>]], { noremap = true, silent = true })
     map('v', '<leader>', [[:<c-u>WhichKeyVisual '<Space>'<CR>]], { noremap = true, silent = true })
 
+    map('n', 'g', [[:WhichKey 'g'<CR>]], { noremap = true, silent = true })
+    map('v', 'g', [[:<c-u>WhichKeyVisual 'g'<CR>]], { noremap = true, silent = true })
+
+    map('n', ']', [[:WhichKey ']'<CR>]], { noremap = true, silent = true })
+    map('n', '[', [[:WhichKey '['<CR>]], { noremap = true, silent = true })
+
     map('n', '<localleader>', [[:WhichKey '\'<CR>]], { noremap = true, silent = true })
     map('v', '<localleader>', [[:<c-u>WhichKeyVisual '\'<CR>]], { noremap = true, silent = true })
   -- }}}
@@ -2368,9 +2374,11 @@
           {[[FileType git nnoremap <buffer> <silent> c :WhichKey 'c'<CR>]]};
           {[[FileType git nnoremap <buffer> <silent> d :WhichKey 'd'<CR>]]};
           {[[FileType git nnoremap <buffer> <silent> r :WhichKey 'r'<CR>]]};
+          -- {[[FileType git nnoremap <buffer> <silent> g :WhichKey 'g'<CR>]]};
           {[[FileType fugitive nnoremap <buffer> <silent> c :WhichKey 'c'<CR>]]};
           {[[FileType fugitive nnoremap <buffer> <silent> d :WhichKey 'd'<CR>]]};
           {[[FileType fugitive nnoremap <buffer> <silent> r :WhichKey 'r'<CR>]]};
+          -- {[[FileType fugitive nnoremap <buffer> <silent> g :WhichKey 'g'<CR>]]};
           {[[FileType fugitive nnoremap <buffer> <silent> q :close<CR>]]};
           -- {[[BufEnter */.git/index nnoremap <buffer> <silent> c :WhichKey 'c'<CR>]]};
           -- {[[BufEnter */.git/index nnoremap <buffer> <silent> d :WhichKey 'd'<CR>]]};
@@ -2908,9 +2916,11 @@
 
 -- Leader init {{{
   -- vim.g.lmap =  {b = {name = '+Buffer'}}
+  -- Register which key 'Space'
   local lmap =  {}
   lmap.b = {name = '+Buffer'}
   lmap.b.q = 'Quit All'
+  lmap.b.s = 'Sort by dir'
   lmap.c = {name = '+Code'}
   lmap.c.c = 'Code action(line)'
   lmap.c.d = 'Diagnostics'
@@ -3042,13 +3052,61 @@
   lmap.z.C = 'Capture As Note'
   lmap.Z = 'Zoom'
   vim.g.lmap = lmap
+  vim.fn['which_key#register']('<Space>', vim.g.lmap)
+
+  -- Register which key 'g'
+  local gmap =  {}
+  gmap.a = 'Align Text'
+  gmap.b = 'Buffer Pick'
+
+  gmap.D = 'goto Declaration'
+  gmap.d = 'goto Definition'
+  gmap.i = 'goto Implementation'
+  gmap.r = 'goto References'
+  gmap.k = 'goto Help'
+
+  gmap.e = 'which_key_ignore'
+  gmap.H = 'which_key_ignore'
+  gmap.h = 'which_key_ignore'
+  gmap.J = 'which_key_ignore'
+  gmap.S = 'which_key_ignore'
+  gmap.x = 'which_key_ignore'
+  gmap['%'] = 'which_key_ignore'
+  gmap['\\<BS>'] = 'which_key_ignore'
+
+  gmap.j = 'magic Join'
+  gmap.s = 'magic Split'
+
+  gmap.Z = 'Zeal: '
+  gmap.z = {name='+Zeal'}
+  gmap.z.m = 'which_key_ignore'
+  gmap.z.z = 'find in Zeal'
+
+  gmap.c = { name= '+Commentary'}
+  gmap.c.c = 'Comment'
+  gmap.c.u = 'Uncomment'
+
+  vim.g.gmap = gmap
+  vim.fn['which_key#register']('g', vim.g.gmap)
+
+  -- Register which key '[]'
+  local brmap =  {}
+  brmap['%'] = 'which_key_ignore'
+
+  brmap.g = 'git hunk'
+  brmap["'"] = 'mark'
+  brmap.l = 'location'
+  brmap.q = 'quickfix'
+
+  vim.g.brmap = brmap
+  vim.fn['which_key#register'](']', vim.g.brmap)
+  vim.fn['which_key#register']('[', vim.g.brmap)
+
   vim.g.which_key_use_floating_win = 1
   vim.g.which_key_align_by_seperator = 1
   vim.g.which_key_run_map_on_popup = 1
   vim.g.which_key_fallback_to_native_key = 1
   vim.g.which_key_flatten = 0
-  -- Register which key
-  vim.fn['which_key#register']('<Space>', vim.g.lmap)
 -- }}}
 
 -- Load local config {{{
