@@ -2379,20 +2379,18 @@
         }
         augroups({au_git=au_git})
 
-        map('n', '<leader>gs', ':Gstatus<CR>', { silent = true })
-        map('n', '<leader>gd', ':Gdiff<CR>', { silent = true })
-        map('n', '<leader>gC', ':Gcommit<CR>', { silent = true })
+        map('n', '<leader>gs', ':Git<CR>', { silent = true })
+        map('n', '<leader>gd', ':Gdiffsplit<CR>', { silent = true })
         map('n', '<leader>gW', ':Gwrite<CR>', { silent = true })
         map('n', '<leader>gR', ':Gread<CR>', { silent = true })
-        map('n', '<leader>gR', ':Gread<CR>', { silent = true })
 
-        map('n', '<leader>gb', ':Gblame<CR>', { silent = true })
+        map('n', '<leader>gb', ':Git blame<CR>', { silent = true })
 
-        map('n', '<leader>gps', ':G push<CR>', { silent = true })
-        map('n', '<leader>gplr', ':G pull --rebase<CR>', { silent = true })
-        map('n', '<leader>gplm', ':G pull<CR>', { silent = true })
-        map('n', '<leader>gg', ':.Gbrowse %<CR>', { silent = true })
-        map('v', '<leader>gg', [[:'<,'>Gbrowse %<CR>]], { silent = true })
+        map('n', '<leader>gps', ':Git push<CR>', { silent = true })
+        map('n', '<leader>gplr', ':Git pull --rebase<CR>', { silent = true })
+        map('n', '<leader>gplm', ':Git pull<CR>', { silent = true })
+        map('n', '<leader>gg', ':.GBrowse %<CR>', { silent = true })
+        map('v', '<leader>gg', [[:'<,'>GBrowse %<CR>]], { silent = true })
         map('v', '<leader>ghv', ':<C-U>lua git_show_block_history()<CR>', { silent = true })
         map('n', '<leader>ghl', ':lua git_show_line_history()<CR>', { silent = true })
       end,
