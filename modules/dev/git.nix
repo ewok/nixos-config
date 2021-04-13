@@ -45,6 +45,7 @@ in
         .tmp
       '';
 
+      # FIX: If not enable don't include
       xdg.configFile."git/work.cfg".text = ''
         [user]
         email = ${work.email}

@@ -24,7 +24,7 @@
     - [X] hibernate after suspend
     - [ ] sound card : Kernel patch is on the way
 - Nvim:
-    - [ ] nvim-dap
+    - [X] nvim-dap
     - [ ] Implement buffer management to telescope
     - [ ] To Lua migration:
         - [ ] MR, MY - mapping
@@ -38,3 +38,4 @@
         - [ ] Sessions
         - [ ] QuickFix
         - [ ] Load Local config
+    - [ ] p1 Fix X error when reconnecting to X
