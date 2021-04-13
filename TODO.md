@@ -26,10 +26,10 @@
 - Nvim:
     - [X] nvim-dap
     - [ ] Implement buffer management to telescope
-    - [ ] To Lua migration:
+    - [.] To Lua migration:
         - [ ] MR, MY - mapping
         - [ ] Insert date - mapping
-        - [ ] neodark - setup
+        - [X] neodark - setup
         - [ ] rooter - config
         - [ ] todo_ft
         - [ ] vimux
@@ -39,3 +39,4 @@
         - [ ] QuickFix
         - [ ] Load Local config
     - [ ] p1 Fix X error when reconnecting to X
+    - [ ] Barbar: associated buffers per tab
