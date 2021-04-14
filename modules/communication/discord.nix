@@ -2,18 +2,14 @@
 with lib;
 let
   gui = config.modules.gui;
-  gaming = config.modules.gaming;
+  comm = config.modules.communication;
   username = config.properties.user.name;
 in
 {
-  options.modules.gaming = {
-    enable = mkEnableOption "Enable gaming soft.";
-  };
-
-  config = mkIf (gui.enable && gaming.enable) {
+  config = mkIf (gui.enable && comm.enable && comm.enableDiscord) {
     home-manager.users.${username} = {
       home.packages = with pkgs; [
-        steam
+        discord
       ];
     };
   };

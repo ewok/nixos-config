@@ -4,6 +4,7 @@ with lib;
   imports = [
     # Development
     ./cawbird.nix
+    ./discord.nix
     ./element.nix
     ./signal.nix
     ./skype.nix
@@ -20,5 +21,6 @@ with lib;
     enableSlack = mkEnableOption "Enable Slack.";
     enableTelegram = mkEnableOption "Enable Telegram.";
     enableZoom = mkEnableOption "Enable Zoom.";
+    enableDiscord = mkEnableOption "Enable Discord.";
   };
 }

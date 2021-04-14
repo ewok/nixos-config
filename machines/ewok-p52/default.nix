@@ -72,9 +72,10 @@ in
     enableSlack = true;
     enableTelegram = true;
     enableZoom = true;
+    enableDiscord = true;
   };
   modules.system.powermanagement.enable = true;
 
   modules.mail.enable = true;
-  modules.gaming.enable = true;
+  modules.gaming.enable = false;
 }

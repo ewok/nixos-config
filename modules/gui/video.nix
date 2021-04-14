@@ -10,7 +10,6 @@ in
       home.packages = with pkgs; [
         vlc
         filebot
-        lbry
       ];
     };
   };
