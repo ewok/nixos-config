@@ -1013,6 +1013,8 @@
 
         map('n', '<Tab>', ':BufferNext<CR>', { noremap = true, silent = true })
         map('n', '<S-Tab>', ':BufferPrev<CR>', { noremap = true, silent = true })
+        map('n', 'g.', ':BufferMoveNext<CR>', { noremap = true, silent = true })
+        map('n', 'g,', ':BufferMovePrevious<CR>', { noremap = true, silent = true })
         map('n', '<leader>bq', ':BufferCloseAllButCurrent<CR>', { silent = true })
         map('n', 'gb', ':BufferPick<CR>', { silent = true })
         map('n', '<C-W>d', ':BufferClose<CR>', { silent = true })
