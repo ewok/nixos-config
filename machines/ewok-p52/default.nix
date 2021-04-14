@@ -23,12 +23,14 @@ in
   # Enabled by default
   modules.base.enable = true;
 
-  modules.backup.enable = true;
-  modules.backup.rslsync.enable = true;
-  modules.backup.restic = {
-    repo = properties.backup.repo;
-    excludePaths = properties.backup.excludePaths;
-    pass = properties.backup.backupPass;
+  modules.backup = {
+    enable = true;
+    rslsync.enable = true;
+    restic = {
+      repo = properties.backup.repo;
+      excludePaths = properties.backup.excludePaths;
+      pass = properties.backup.backupPass;
+    };
   };
 
   modules.dev = {
@@ -61,7 +63,16 @@ in
   modules.system.sound.pulse.enable = true;
   modules.system.printing.enable = true;
 
-  modules.communication.enable = true;
+  modules.communication = {
+    enable = true;
+    enableTwitter = true;
+    enableElement = true;
+    enableSignal = true;
+    enableSkype = false;
+    enableSlack = true;
+    enableTelegram = true;
+    enableZoom = true;
+  };
   modules.system.powermanagement.enable = true;
 
   modules.mail.enable = true;

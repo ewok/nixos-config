@@ -68,7 +68,16 @@ in
   modules.system.sound.sof.enable = true;
   # modules.system.printing.enable = true;
 
-  modules.communication.enable = true;
+  modules.communication = {
+    enable = true;
+    enableTwitter = false;
+    enableElement = false;
+    enableSignal = true;
+    enableSkype = false;
+    enableSlack = true;
+    enableTelegram = true;
+    enableZoom = false;
+  };
   modules.system.powermanagement = {
     enable = true;
     powertop.enable = true;

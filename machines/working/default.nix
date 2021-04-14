@@ -53,7 +53,7 @@ in
   modules.system.sound.enable = true;
   modules.system.sound.pulse.enable = true;
 
-  modules.communication.enable = true;
+  modules.communication.enable = false;
   modules.system.powermanagement.enable = true;
   modules.system.powermanagement.powertop.enable = true;
 }

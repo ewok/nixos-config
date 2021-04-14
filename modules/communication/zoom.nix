@@ -12,7 +12,7 @@ let
   );
 in
 {
-  config = mkIf (gui.enable && comm.enable) {
+  config = mkIf (gui.enable && comm.enable && comm.enableZoom) {
     home-manager.users.${username} = {
       home.packages = with master; [
         zoom-us

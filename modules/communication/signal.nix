@@ -6,10 +6,10 @@ let
   username = config.properties.user.name;
 in
 {
-  config = mkIf (gui.enable && comm.enable && comm.enableSlack) {
+  config = mkIf (gui.enable && comm.enable && comm.enableSignal) {
     home-manager.users.${username} = {
       home.packages = with pkgs; [
-        slack
+        signal-desktop
       ];
     };
   };

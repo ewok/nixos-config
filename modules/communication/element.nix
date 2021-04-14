@@ -6,7 +6,7 @@ let
   username = config.properties.user.name;
 in
 {
-  config = mkIf (gui.enable && comm.enable) {
+  config = mkIf (gui.enable && comm.enable && comm.enableElement) {
     home-manager.users.${username} = {
       home.packages = with pkgs; [
         element-desktop
