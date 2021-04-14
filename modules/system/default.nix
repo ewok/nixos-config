@@ -2,6 +2,7 @@
   imports = [
     # System:
     # autofs
+    ./cleanup.nix
     ./disk.nix
     ./network.nix
     ./powermanagement.nix
