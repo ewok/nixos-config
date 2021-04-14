@@ -1181,38 +1181,38 @@
         }
       end,
     }
-    -- packer.use {
-    --   'junegunn/fzf.vim',
-    --   requires = { 'junegunn/fzf', as = 'fzf' },
-    --   as = 'fzf.vim',
-    --   config = function()
+    packer.use {
+      'junegunn/fzf.vim',
+      requires = { 'junegunn/fzf', as = 'fzf' },
+      as = 'fzf.vim',
+      config = function()
     --     -- map('n', '<leader>fb', ':Buffers<CR>', { noremap = true, silent = true })
     --     -- map('n', '<leader>of', ':Files<CR>', { noremap = true, silent = true })
     --     -- map('n', '<leader>om', ':Maps<CR>', { noremap = true, silent = true })
     --     -- map('n', '<leader>oh', ':History<CR>', { noremap = true, silent = true })
     --     -- map('n', '<leader>osft', ':Filetypes<CR>', { noremap = true, silent = true })
     --     -- map('n', '<leader>osc', ':Colors<CR>', { noremap = true, silent = true })
-    --     -- map('n', '<leader>ghf', ':BCommits<CR>', { noremap = true, silent = true })
+        map('n', '<leader>ghf', ':BCommits<CR>', { noremap = true, silent = true })
     --     -- map('n', '<leader>ff', ':Rg<CR>', { noremap = true, silent = true })
     --     -- map('n', '<leader>vv', ':Buffers<CR>', { noremap = true, silent = true })
 
     --     vim.g.fzf_tags_command = 'ctags -R --exclude=.git --exclude=.idea --exclude=log'
-    --     local fzf_action = {}
+        local fzf_action = {}
     --     -- vim.g.fzf_action['ctrl-q'] = 'tab split'
-    --     fzf_action['ctrl-t'] = 'tab split'
-    --     fzf_action['ctrl-s'] = 'split'
-    --     fzf_action['ctrl-v'] = 'vsplit'
-    --     vim.g.fzf_action = fzf_action
+        fzf_action['ctrl-t'] = 'tab split'
+        fzf_action['ctrl-s'] = 'split'
+        fzf_action['ctrl-v'] = 'vsplit'
+        vim.g.fzf_action = fzf_action
 
-    --     vim.env.FZF_DEFAULT_OPTS = '--bind=ctrl-a:toggle-all,ctrl-space:toggle+down,ctrl-alt-a:deselect-all'
-    --     vim.env.FZF_DEFAULT_COMMAND = 'rg --iglob !.git --files --hidden --ignore-vcs --ignore-file ~/.config/git/gitexcludes'
+        vim.env.FZF_DEFAULT_OPTS = '--bind=ctrl-a:toggle-all,ctrl-space:toggle+down,ctrl-alt-a:deselect-all'
+        vim.env.FZF_DEFAULT_COMMAND = 'rg --iglob !.git --files --hidden --ignore-vcs --ignore-file ~/.config/git/gitexcludes'
 
     --     vim.cmd [[tnoremap <expr> <Esc> (&filetype == "fzf") ? "<Esc>" : "<c-\><c-n>"]]
     --     vim.cmd([[ command! -bang -nargs=* Rg ]]..
     --     [[ call fzf#vim#grep("rg --column --line-number --no-heading --color=always --smart-case ".shellescape(<q-args>),]]..
     --     [[ 1, fzf#vim#with_preview({'options': '--delimiter : --nth 4..'}), <bang>0)]])
-    --   end,
-    -- }
+      end,
+    }
   -- }}}
   -- Indent-guides {{{
     packer.use {
@@ -1938,8 +1938,8 @@
         { 'michal-h21/vim-zettel' },
         { 'ewok/vimwiki-sync' },
         -- { '/home/ataranchiev/projects/vim/vimwiki-sync/' },
-        { 'junegunn/fzf.vim' },
-        { 'junegunn/fzf' },
+        { 'fzf.vim' },
+        { 'fzf' },
       },
       setup = function()
         vim.g.vimwiki_list = {
@@ -2028,7 +2028,7 @@
   -- Vista {{{
     packer.use {
       'liuchengxu/vista.vim',
-      requires = {{'junegunn/fzf'}},
+      requires = {{'fzf'}},
       config = function ()
         map('n', '<leader>ov', ':Vista<CR>', { noremap = true })
         map('n', '<leader>ft', ':Vista finder<CR>', { noremap = true })
