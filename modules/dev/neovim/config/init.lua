@@ -1105,6 +1105,7 @@
       requires = {
         {'nvim-lua/popup.nvim'},
         {'nvim-lua/plenary.nvim'},
+        {'nvim-telescope/telescope-fzy-native.nvim'},
         -- {
         --   'nvim-telescope/telescope-fzf-writer.nvim',
         --   requires = {{
@@ -1160,6 +1161,8 @@
             prompt_position = "top",
             sorting_strategy = "ascending",
             set_env = { ['COLORTERM'] = 'truecolor' },
+            -- file_sorter =  require'telescope.sorters'.get_fzy_sorter,
+            -- generic_sorter =  require'telescope.sorters'.get_fzy_sorter,
             mappings = {
               i = {
                 ["<c-j>"] = actions.move_selection_next,
@@ -1181,6 +1184,7 @@
             },
           }
         }
+        require('telescope').load_extension('fzy_native')
       end,
     }
     packer.use {
