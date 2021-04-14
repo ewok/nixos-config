@@ -1,6 +1,5 @@
 { lib, stdenv, fetchFromGitHub }:
 
-with lib;
 stdenv.mkDerivation rec {
   pname = "todofi.sh";
   version = "ec5c77a";
@@ -12,11 +11,8 @@ stdenv.mkDerivation rec {
     sha256 = "07kv4q0mzxr4hk0aar3jkmdlp8qnhch9lxhibq6djbcvpbsizv75";
   };
 
-  phases = [ "unpackPhase" "installPhase" ];
-
   installPhase = ''
-    install -vd $out/bin
-    install -vm 755 todofi.sh $out/bin
+    install -Dm 755 todofi.sh -t $out/bin
   '';
 
   meta = with lib; {
