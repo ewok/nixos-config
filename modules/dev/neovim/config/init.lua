@@ -2928,7 +2928,7 @@
   -- vim.g.lmap =  {b = {name = '+Buffer'}}
   -- Register which key 'Space'
   local lmap =  {}
-  lmap.b = {name = '+Buffer'}
+  lmap.b = {name = '+Buffers'}
   lmap.b.q = 'Quit All'
   lmap.b.s = 'Sort by dir'
   lmap.c = {name = '+Code'}
@@ -2938,13 +2938,13 @@
   lmap.c.r.n = 'Rename'
   lmap.c.f = 'Formatting'
   lmap.d = {name = '+Debug'}
-  lmap.d.B = 'Breakpoints'
-  lmap.d.b = 'set Breakpoint'
+  lmap.d.B = 'Breakpoints list'
+  lmap.d.b = 'Set Breakpoint'
   lmap.d.c = 'Run/Continue'
   lmap.d.i = 'Step Into'
   lmap.d.n = 'Step Over'
   lmap.d.o = 'Step Out'
-  lmap.d.r = 'Repl'
+  lmap.d.r = 'REPL'
   lmap.d.S = 'Stop'
   lmap.d.v = 'Variables'
   lmap.f = {name = '+Find' }
@@ -2962,13 +2962,14 @@
   lmap.g.C = 'Commit'
   lmap.g.d = 'Diff'
   lmap.g.g = 'Browse'
-  lmap.g.h = { name = '+History' }
-  lmap.g.h.f = '+File'
-  lmap.g.h.h = '+All'
-  lmap.g.h.p = 'Hunk-Preview'
-  lmap.g.h.r = 'Hunk-Revert'
-  lmap.g.h.s = 'Hunk-Stage'
-  lmap.g.h.v = 'Visual'
+  lmap.g.h = { name = '+History/Hunk' }
+  lmap.g.h.f = 'History of File'
+  lmap.g.h.h = 'History All'
+  lmap.g.h.p = 'Hunk-preview'
+  lmap.g.h.r = 'Hunk-revert'
+  lmap.g.h.s = 'Hunk-stage'
+  lmap.g.h.v = 'History Visual Block'
+  lmap.g.h.l = 'History Line'
   lmap.g.p = { name = '+Push-pull' }
   lmap.g.p.l = { name = '+Pull' }
   lmap.g.p.l.m = 'Merge'
@@ -2999,7 +3000,7 @@
   lmap.o.n.s = 'Colorscheme'
   lmap.o.n.i = 'hIghlights'
   lmap.o.n.k = 'Keymaps'
-  lmap.o.c = 'highlight Color codes'
+  lmap.o.c = 'Highlight Color codes'
   lmap.o.o = 'All Options'
   lmap.o.e = 'Explorer'
   lmap.o.f = 'File'
@@ -3028,7 +3029,7 @@
   lmap.s.o = 'Open'
   lmap.s.q = 'Quit'
   lmap.s.s = 'Save'
-  lmap.s.u = 'open-cUrrent'
+  lmap.s.u = 'Open Current Session'
   lmap.t = { name = '+Text' }
   lmap.t.f = {name = '+Fix'}
   lmap.t.s = 'Syntax'
