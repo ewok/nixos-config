@@ -352,6 +352,11 @@
     --- Quick escape insert mode
     -- map('i', 'jj', '<ESC>jj', {noremap = true, silent = true})
     -- map('i', 'kk', '<ESC>kk', {noremap = true, silent = true})
+    --
+    -- Go back and forward
+    -- Go forward bind as C-O+C-I as Tab is occupied usually
+    map('n', '<C-O><C-O>', '<C-O>', { noremap = true })
+    map('n', '<C-O><C-I>', '<Tab>', { noremap = true })
   -- }}}
   -- Settings options {{{
     map('n', '<leader>osw', ':set wrap<CR>', {})
