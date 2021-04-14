@@ -65,8 +65,8 @@ in
 
   modules.communication = {
     enable = true;
-    enableTwitter = true;
-    enableElement = true;
+    enableTwitter = false;
+    enableElement = false;
     enableSignal = true;
     enableSkype = false;
     enableSlack = true;
