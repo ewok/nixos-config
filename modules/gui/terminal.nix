@@ -5,13 +5,15 @@ let
   monospaceFont = last (reverseList gui.fonts.monospaceFont);
   username = config.properties.user.name;
   colors = config.properties.theme.colors;
+  terminal = config.properties.defaultTerminal;
 in
 {
   config = mkIf gui.enable {
 
     home-manager.users.${username} = {
+
       programs.alacritty = {
-        enable = true;
+        enable = (terminal == "alacritty");
         settings = {
           scrolling = {
             history = 100000;
@@ -70,58 +72,59 @@ in
           ];
         };
       };
-      home.sessionVariables.TERMINAL = "/usr/bin/alacritty";
-      # programs.kitty = {
-      #   enable = true;
-      #   settings = {
-      #     font_family = monospaceFont;
-      #     font_size = gui.fonts.monospaceFontSize;
-      #     cursor_shape = "block";
-      #     scrollback_lines = 100000;
-      #     enable_audio_bell = "no";
+      home.sessionVariables.TERMINAL = "/usr/bin/${terminal}";
+      programs.kitty = {
+        enable = (terminal == "kitty");
+        settings = {
+          font_family = monospaceFont;
+          font_size = gui.fonts.monospaceFontSize;
+          cursor_shape = "block";
+          scrollback_lines = 100000;
+          enable_audio_bell = "no";
 
-      #     background = "#000000";
-      #     foreground = "#ffffff";
-      #     # black
-      #     color0 = "#222222";
-      #     color8 = "#666666";
+          background = "#${colors.background}";
+          foreground = "#${colors.foreground}";
 
-      #     # red
-      #     color1 = "#e84f4f";
-      #     color9 = "#d23d3d";
+          color0 = "#${colors.color0}";
+          color8 = "#${colors.color8}";
 
-      #     # green
-      #     color2 = "#b7ce42";
-      #     color10 = "#bde077";
+          # red
+          color1 = "#${colors.color1}";
+          color9 = "#${colors.color9}";
 
-      #     # yellow
-      #     color3 = "#fea63c";
-      #     color11 = "#ffe863";
+          # green
+          color2 = "#${colors.color2}";
+          color10 = "#${colors.color10}";
 
-      #     # blue
-      #     color4 = "#66aabb";
-      #     color12 = "#aaccbb";
+          # yellow
+          color3 = "#${colors.color3}";
+          color11 = "#${colors.color11}";
 
-      #     # magenta
-      #     color5 = "#b7416e";
-      #     color13 = "#e16a98";
+          # blue
+          color4 = "#${colors.color4}";
+          color12 = "#${colors.color12}";
 
-      #     # cyan
-      #     color6 = "#6d878d";
-      #     color14 = "#42717b";
+          # magenta
+          color5 = "#${colors.color5}";
+          color13 = "#${colors.color13}";
 
-      #     # white
-      #     color7 = "#dddddd";
-      #     color15 = "#cccccc";
-      #   };
-      #   keybindings = {
-      #     "shift+enter" = ''send_text all \x1b[13;2u'';
-      #     "ctrl+enter" = ''send_text all \x1b[13;5u'';
-      #   };
-      #   extraConfig = "";
-      # };
+          # cyan
+          color6 = "#${colors.color6}";
+          color14 = "#${colors.color14}";
+
+          # white
+          color7 = "#${colors.color7}";
+          color15 = "#${colors.color15}";
+
+        };
+        keybindings = {
+          "shift+enter" = ''send_text all \x1b[13;2u'';
+          "ctrl+enter" = ''send_text all \x1b[13;5u'';
+        };
+        extraConfig = "";
+      };
       programs.termite = {
-        enable = true;
+        enable = (terminal == "termite");
         allowBold = true;
         mouseAutohide = true;
         scrollOnKeystroke = true;
@@ -140,7 +143,7 @@ in
 
         backgroundColor = "#${colors.background}";
         cursorColor = "#${colors.cursor}";
-        cursorForegroundColor = "#${colors.cursor}";
+        cursorForegroundColor = "#${colors.background}";
         foregroundColor = "#${colors.foreground}";
         foregroundBoldColor = "#${colors.foreground}";
         colorsExtra = ''
@@ -175,6 +178,13 @@ in
           # white
           color7 = #${colors.color7}
           color15 = #${colors.color15}
+
+          color16 = #${colors.color9}
+          color17 = #${colors.color14}
+          color18 = #${colors.color10}
+          color19 = #${colors.color11}
+          color20 = #${colors.color12}
+          color21 = #${colors.color13}
         '';
       };
     };

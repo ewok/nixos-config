@@ -4,6 +4,7 @@ let
   gui = config.modules.gui;
   colors = config.properties.theme.colors;
   username = config.properties.user.name;
+  terminal = config.properties.defaultTerminal;
 
   dmprompt = pkgs.writeShellScriptBin "dmprompt" ''
     [ "$(printf 'No\nYes' \
@@ -52,7 +53,7 @@ let
   '';
 
   rofi_run = pkgs.writeShellScriptBin "rofi_run" ''
-    ${pkgs.rofi}/bin/rofi -icon-theme "Papirus" -show-icons -theme base16-onedark -terminal ${pkgs.alacritty}/bin/alacritty $@
+    ${pkgs.rofi}/bin/rofi -icon-theme "Papirus" -show-icons -theme base16-onedark -terminal ${terminal} $@
   '';
 
   rofiBluetoothThemed = pkgs.writeShellScriptBin "rofi-bluetooth" ''

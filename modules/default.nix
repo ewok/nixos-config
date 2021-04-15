@@ -3,6 +3,11 @@
 with lib;
 
 {
+  options.properties.defaultTerminal = mkOption {
+    description = "Default terminal";
+    type = types.str;
+    default = "alacritty";
+  };
   options.properties.user = {
     name = mkOption {
       description = "Username.";

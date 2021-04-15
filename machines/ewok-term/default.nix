@@ -86,4 +86,7 @@ in
   };
 
   modules.mail.mailspring.enable = true;
+
+  properties.defaultTerminal = "kitty";
+
 }

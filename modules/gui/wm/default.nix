@@ -3,6 +3,7 @@ with lib;
 let
   gui = config.modules.gui;
   colors = config.properties.theme.colors;
+  terminal = config.properties.defaultTerminal;
   username = config.properties.user.name;
   master = import inputs.master (
     {
@@ -125,6 +126,7 @@ in
           "set $base0D #000000"
           "set $base0E #000000"
           "set $base0F #000000"
+          "alacritty"
         ] [
           "set $base00 #${colors.color0}"
           "set $base01 #${colors.color10}"
@@ -142,6 +144,7 @@ in
           "set $base0D #${colors.color4}"
           "set $base0E #${colors.color5}"
           "set $base0F #${colors.color14}"
+          "${terminal}"
         ] (readFile ./config/config);
       };
       # (readFile ./config/config);
