@@ -2,6 +2,7 @@
 with lib;
 let
   gui = config.modules.gui;
+  colors = config.properties.theme.colors;
   username = config.properties.user.name;
   master = import inputs.master (
     {
@@ -53,7 +54,6 @@ let
 in
 {
   config = mkIf gui.enable {
-    environment.systemPackages = [ pkgs.herbstluftwm ];
     services.xserver = {
       enable = true;
       windowManager = {
@@ -107,7 +107,44 @@ in
 
       ] ++ [ master.xkb-switch-i3 ];
 
-      xdg.configFile."i3/config".source = ./config/config;
+      xdg.configFile."i3/config" = {
+        text = replaceStrings [
+          "set $base00 #000000"
+          "set $base01 #000000"
+          "set $base02 #000000"
+          "set $base03 #000000"
+          "set $base04 #000000"
+          "set $base05 #000000"
+          "set $base06 #000000"
+          "set $base07 #000000"
+          "set $base08 #000000"
+          "set $base09 #000000"
+          "set $base0A #000000"
+          "set $base0B #000000"
+          "set $base0C #000000"
+          "set $base0D #000000"
+          "set $base0E #000000"
+          "set $base0F #000000"
+        ] [
+          "set $base00 #${colors.color0}"
+          "set $base01 #${colors.color10}"
+          "set $base02 #${colors.color11}"
+          "set $base03 #${colors.color8}"
+          "set $base04 #${colors.color12}"
+          "set $base05 #${colors.color7}"
+          "set $base06 #${colors.color13}"
+          "set $base07 #${colors.color15}"
+          "set $base08 #${colors.color1}"
+          "set $base09 #${colors.color9}"
+          "set $base0A #${colors.color3}"
+          "set $base0B #${colors.color2}"
+          "set $base0C #${colors.color6}"
+          "set $base0D #${colors.color4}"
+          "set $base0E #${colors.color5}"
+          "set $base0F #${colors.color14}"
+        ] (readFile ./config/config);
+      };
+      # (readFile ./config/config);
       xdg.configFile."i3/rotate.sh".source = ./config/rotate.sh;
 
       programs.i3status-rust = {

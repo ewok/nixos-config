@@ -2,6 +2,7 @@
 with lib;
 let
   gui = config.modules.gui;
+  colors = config.properties.theme.colors;
   username = config.properties.user.name;
   mitmproxy-local-stop = pkgs.writeShellScriptBin "mitmproxy-local-stop" ''
     /run/current-system/sw/bin/pkill -f '.*.mitmdump-wrapped -p 8080 --listen-host 127.0.0.1 -k.*'
@@ -306,7 +307,42 @@ in
               'Ю': '>', 'ю': '.',
               ',': '?', '.': '/',
           }
-          ${readFile ./config/qutebrowser.py}
+          ${replaceStrings [
+          "base00 ="
+          "base01 ="
+          "base02 ="
+          "base03 ="
+          "base04 ="
+          "base05 ="
+          "base06 ="
+          "base07 ="
+          "base08 ="
+          "base09 ="
+          "base0A ="
+          "base0B ="
+          "base0C ="
+          "base0D ="
+          "base0E ="
+          "base0F ="
+        ] [
+          ''base00 = "#${colors.color0}"''
+          ''base01 = "#${colors.color10}"''
+          ''base02 = "#${colors.color11}"''
+          ''base03 = "#${colors.color8}"''
+          ''base04 = "#${colors.color12}"''
+          ''base05 = "#${colors.color7}"''
+          ''base06 = "#${colors.color13}"''
+          ''base07 = "#${colors.color15}"''
+          ''base08 = "#${colors.color1}"''
+          ''base09 = "#${colors.color9}"''
+          ''base0A = "#${colors.color3}"''
+          ''base0B = "#${colors.color2}"''
+          ''base0C = "#${colors.color6}"''
+          ''base0D = "#${colors.color4}"''
+          ''base0E = "#${colors.color5}"''
+          ''base0F = "#${colors.color14}"''
+        ]
+          (readFile ./config/qutebrowser.py)}
         '';
       };
 

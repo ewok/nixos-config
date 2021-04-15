@@ -1,4 +1,4 @@
-# I3 config
+# I3 config ${lib}
 # Please see http://i3wm.org/docs/userguide.html for a complete reference!
 
 set $mod Mod1
@@ -307,22 +307,22 @@ bindsym $mod_a+n exec i3-input -F 'rename workspace to "%s"' -P 'New name: '
 ################################################################################################
 # Colors
 ################################################################################################
-set $base00 #282c34
-set $base01 #353b45
-set $base02 #3e4451
-set $base03 #545862
-set $base04 #565c64
-set $base05 #abb2bf
-set $base06 #b6bdca
-set $base07 #c8ccd4
-set $base08 #e06c75
-set $base09 #d19a66
-set $base0A #e5c07b
-set $base0B #98c379
-set $base0C #56b6c2
-set $base0D #61afef
-set $base0E #c678dd
-set $base0F #be5046
+set $base00 #000000
+set $base01 #000000
+set $base02 #000000
+set $base03 #000000
+set $base04 #000000
+set $base05 #000000
+set $base06 #000000
+set $base07 #000000
+set $base08 #000000
+set $base09 #000000
+set $base0A #000000
+set $base0B #000000
+set $base0C #000000
+set $base0D #000000
+set $base0E #000000
+set $base0F #000000
 
 # Basic bar configuration using the Base16 variables.
 bar {

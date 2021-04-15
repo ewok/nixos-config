@@ -2,6 +2,7 @@
 with lib;
 let
   gui = config.modules.gui;
+  colors = config.properties.theme.colors;
   username = config.properties.user.name;
 
   dmprompt = pkgs.writeShellScriptBin "dmprompt" ''
@@ -117,30 +118,30 @@ in
       xresources.extraConfig = ''
         ! Base16 OneDark
         ! Author: Lalit Magant (http://github.com/tilal6991)
-        ! base00: #282c34
-        ! base01: #353b45
-        ! base02: #3e4451
-        ! base03: #545862
-        ! base04: #565c64
-        ! base05: #abb2bf
-        ! base06: #b6bdca
-        ! base07: #c8ccd4
-        ! base08: #e06c75
-        ! base09: #d19a66
-        ! base0A: #e5c07b
-        ! base0B: #98c379
-        ! base0C: #56b6c2
-        ! base0D: #61afef
-        ! base0E: #c678dd
-        ! base0F: #be5046
+        ! base00: #${colors.color0}
+        ! base01: #${colors.color10}
+        ! base02: #${colors.color11}
+        ! base03: #${colors.color8}
+        ! base04: #${colors.color12}
+        ! base05: #${colors.color7}
+        ! base06: #${colors.color13}
+        ! base07: #${colors.color15}
+        ! base08: #${colors.color1}
+        ! base09: #${colors.color9}
+        ! base0A: #${colors.color3}
+        ! base0B: #${colors.color2}
+        ! base0C: #${colors.color6}
+        ! base0D: #${colors.color4}
+        ! base0E: #${colors.color5}
+        ! base0F: #${colors.color14}
         ! Enable the extended coloring options
         rofi.color-enabled: true
         ! Property Name     BG       Border   Separator
-        rofi.color-window:  #353b45, #353b45, #282c34
+        rofi.color-window:  #${colors.color10}, #${colors.color10}, #${colors.color0}
         ! Property Name     BG       FG       BG-alt   Head-BG  Head-FG
-        rofi.color-normal:  #353b45, #abb2bf, #353b45, #e5c07b, #3e4451
-        rofi.color-active:  #353b45, #61afef, #353b45, #e5c07b, #61afef
-        rofi.color-urgent:  #353b45, #e06c75, #353b45, #e5c07b, #e06c75
+        rofi.color-normal:  #${colors.color10}, #${colors.color7}, #${colors.color10}, #${colors.color3}, #${colors.color11}
+        rofi.color-active:  #${colors.color10}, #${colors.color4}, #${colors.color10}, #${colors.color3}, #${colors.color4}
+        rofi.color-urgent:  #${colors.color10}, #${colors.color1}, #${colors.color10}, #${colors.color3}, #${colors.color1}
         ! Set the desired separator style
         rofi.separator-style: solid
       '';

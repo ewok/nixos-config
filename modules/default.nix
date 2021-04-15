@@ -76,6 +76,106 @@ with lib;
     #   default = { };
     # };
   };
+  options.properties.theme = {
+    colors = {
+      background = mkOption {
+        type = types.str;
+        default = "";
+      };
+      foreground = mkOption {
+        type = types.str;
+        default = "";
+      };
+      text = mkOption {
+        type = types.str;
+        default = "";
+      };
+      cursor = mkOption {
+        type = types.str;
+        default = "";
+      };
+      # Black
+      color0 = mkOption {
+        type = types.str;
+        default = "";
+      };
+      # Red
+      color1 = mkOption {
+        type = types.str;
+        default = "";
+      };
+      # Green
+      color2 = mkOption {
+        type = types.str;
+        default = "";
+      };
+      # Yellow
+      color3 = mkOption {
+        type = types.str;
+        default = "";
+      };
+      # Blue
+      color4 = mkOption {
+        type = types.str;
+        default = "";
+      };
+      # Magenta
+      color5 = mkOption {
+        type = types.str;
+        default = "";
+      };
+      # Cyan
+      color6 = mkOption {
+        type = types.str;
+        default = "";
+      };
+      # White
+      color7 = mkOption {
+        type = types.str;
+        default = "";
+      };
+      # Br Black
+      color8 = mkOption {
+        type = types.str;
+        default = "";
+      };
+      # Br Red
+      color9 = mkOption {
+        type = types.str;
+        default = "";
+      };
+      # Br Green
+      color10 = mkOption {
+        type = types.str;
+        default = "";
+      };
+      # Br Yellow
+      color11 = mkOption {
+        type = types.str;
+        default = "";
+      };
+      # Br Blue
+      color12 = mkOption {
+        type = types.str;
+        default = "";
+      };
+      # Br Magenta
+      color13 = mkOption {
+        type = types.str;
+        default = "";
+      };
+      # Br Cyan
+      color14 = mkOption {
+        type = types.str;
+        default = "";
+      };
+      # Br White
+      color15 = mkOption {
+        type = types.str;
+        default = "";
+      };
+    };
+  };
 
   imports = [
     ./backup
