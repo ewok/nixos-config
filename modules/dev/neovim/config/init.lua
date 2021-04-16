@@ -390,14 +390,6 @@
     map('n', '<leader>ost2', ':set tabstop=2 |set softtabstop=2| set shiftwidth=2<CR>', {})
     map('n', '<leader>ost4', ':set tabstop=4 |set softtabstop=4| set shiftwidth=4<CR>', {})
   -- }}}
-  -- Insert data {{{
-    exec([[
-      nnoremap <leader>it O<C-R>=split(&commentstring, '%s')[0] . 'TODO: '<CR><CR><C-R>=expand("%:h") . '/' . expand("%:t") . ':' . line(".")<CR><C-G><C-K><C-O>A
-      nnoremap <leader>ids a<C-R>=strftime("%Y-%m-%d %H:%M:%S")<CR><ESC>
-      nnoremap <leader>idm a<C-R>=strftime("%Y-%m-%d %H:%M")<CR><ESC>
-      nnoremap <leader>idd a<C-R>=strftime("%Y-%m-%d")<CR><ESC>
-    ]], true)
-  -- }}}
   -- Packer {{{
     map('n', '<leader>pu', ':PackerUpdate<CR>', {})
     map('n', '<leader>pC', ':PackerClean<CR>', {})
@@ -644,8 +636,6 @@
 
       cmd [[ command! -bang -nargs=? EvalBlock call medieval#eval(<bang>0, <f-args>) ]]
       bmap('n', '<leader>rb', '"":EvalBlock<CR>', { silent = true })
-
-      cmd [[iab \c ```]]
 
     -- inoremap <buffer><expr> ]] fzf#vim#complete({
     --       \ 'source':  'rg --no-heading --smart-case  .',
@@ -1895,8 +1885,8 @@
     map('n', '<leader>', [[:WhichKey '<Space>'<CR>]], { noremap = true, silent = true })
     map('v', '<leader>', [[:<c-u>WhichKeyVisual '<Space>'<CR>]], { noremap = true, silent = true })
 
-    map('n', 'g', [[:WhichKey 'g'<CR>]], { noremap = true, silent = true })
-    map('v', 'g', [[:<c-u>WhichKeyVisual 'g'<CR>]], { noremap = true, silent = true })
+    -- map('n', 'g', [[:WhichKey 'g'<CR>]], { noremap = true, silent = true })
+    -- map('v', 'g', [[:<c-u>WhichKeyVisual 'g'<CR>]], { noremap = true, silent = true })
 
     map('n', ']', [[:WhichKey ']'<CR>]], { noremap = true, silent = true })
     map('n', '[', [[:WhichKey '['<CR>]], { noremap = true, silent = true })
@@ -1970,7 +1960,6 @@
       requires = {
         { 'michal-h21/vim-zettel' },
         { 'ewok/vimwiki-sync' },
-        -- { '/home/ataranchiev/projects/vim/vimwiki-sync/' },
         { 'fzf.vim' },
         { 'fzf' },
       },
@@ -2002,6 +1991,7 @@
         vim.g.vimwiki_commentstring = '<!--%s-->'
         vim.g.vimwiki_auto_header = 1
         vim.g.vimwiki_create_link = 0
+        vim.g.vimwiki_emoji_enable = 1
 
         vim.g.vimwiki_key_mappings =
         {
@@ -2123,8 +2113,30 @@
     packer.use {
       'hrsh7th/nvim-compe',
       requires = {
-        { 'honza/vim-snippets', },
+        { 'rafamadriz/friendly-snippets', },
         { 'hrsh7th/vim-vsnip', },
+        { 'norcalli/snippets.nvim',
+        config=function()
+          local U = require'snippets.utils'
+          _G.sep = function () return string.gsub(vim.bo.commentstring, "%%s", "") end
+          require'snippets'.snippets = {
+            _global = {
+              ["date_ymd"]   = "${=os.date('%Y-%m-%d')}",
+              ["date_ymdHM"]   = "${=os.date('%Y-%m-%d %H-%M')}",
+              ["date_ymdHMS"]   = "${=os.date('%Y-%m-%d %H-%M-%S')}",
+
+              ["todo"] = U.match_indentation (
+              "${=sep()} TODO(${=io.popen('id -un'):read'*l'}): $0\n"..
+              "${=sep()} ${=vim.fn.expand('%:h')}/${=vim.fn.expand('%:t')}:${=tostring(vim.fn.line('.'))}"),
+
+            };
+            vimwiki = {
+              code  = "```\n$0\n```",
+              code_shell = "```sh\n$0\n```",
+              code_python = "```python\n$0\n```",
+            };
+          }
+        end,},
         { 'cstrap/python-snippets', },
         { 'rust-lang/vscode-rust', },
       },
@@ -2201,14 +2213,24 @@
         map("i", "<S-Tab>", "v:lua.s_tab_complete()", {expr = true})
         map("s", "<S-Tab>", "v:lua.s_tab_complete()", {expr = true})
 
-        map("i", "<C-j>", "v:lua.tab_complete('<C-j>')", {expr = true})
-        map("s", "<C-j>", "v:lua.tab_complete('<C-j>')", {expr = true})
-        map("i", "<C-k>", "v:lua.s_tab_complete('<C-k>')", {expr = true})
-        map("s", "<C-k>", "v:lua.s_tab_complete('<C-k>')", {expr = true})
+        map("i", "<C-n>", "v:lua.tab_complete('<C-n>')", {expr = true})
+        map("s", "<C-n>", "v:lua.tab_complete('<C-n>')", {expr = true})
+        map("i", "<C-p>", "v:lua.s_tab_complete('<C-p>')", {expr = true})
+        map("s", "<C-p>", "v:lua.s_tab_complete('<C-p>')", {expr = true})
+
+        map("i", "<C-y>", [[pumvisible() ? "\<C-y>\<C-y>"  : "\<C-y>"]], {expr = true, noremap = true})
+        map("s", "<C-y>", [[pumvisible() ? "\<C-y>\<C-y>"  : "\<C-y>"]], {expr = true, noremap = true})
+
+        map("i", "<C-e>", [[pumvisible() ? "\<C-y>\<C-e>"  : "\<Esc>a\<C-e>"]], {expr = true, noremap = true})
+        map("s", "<C-e>", [[pumvisible() ? "\<C-y>\<C-e>"  : "\<Esc>a\<C-e>"]], {expr = true, noremap = true})
 
         map("i", "<C-Space>", "compe#complete()", {expr = true})
         map("i", "<CR>", "compe#confirm('<CR>')", {expr = true})
-        map("i", "<C-e>", "compe#close('<C-e>')", {expr = true})
+        map("i", "<C-j>", "compe#confirm('<C-j>')", {expr = true})
+
+        -- map("i", "<C-e>", "compe#close('<C-e>')", {expr = true})
+        -- map("i", "<C-e>", "compe#close('<C-e>')", {expr = true})
+
         map("i", "<C-f>", "compe#scroll({ 'delta': +4 })", {expr = true})
         map("i", "<C-b>", "compe#scroll({ 'delta': -4 })", {expr = true})
       end,
@@ -2276,32 +2298,43 @@
             augroups_buff({lsp_document_highlight=lsp_document_highlight})
           end
         end
+
         require'lspconfig'.dockerls.setup{
+          capabilities = capabilities,
+          on_attach = common_on_attach,
           root_dir = function(fname)
             return require'lspconfig'.util.find_git_ancestor(fname) or require'lspconfig'.util.path.dirname(fname)
           end;
         }
         require'lspconfig'.bashls.setup{
+          capabilities = capabilities,
+          on_attach = common_on_attach,
           autostart = false,
           root_dir = function(fname)
             return require'lspconfig'.util.find_git_ancestor(fname) or require'lspconfig'.util.path.dirname(fname)
           end;
         }
         require'lspconfig'.rust_analyzer.setup{
+          capabilities = capabilities,
           on_attach = common_on_attach,
           autostart = false,
         }
         require'lspconfig'.pyright.setup{
+          capabilities = capabilities,
           on_attach = common_on_attach,
           autostart = false,
         }
         require'lspconfig'.jsonls.setup{
+          capabilities = capabilities,
+          on_attach = common_on_attach,
           autostart = false,
           root_dir = function(fname)
             return require'lspconfig'.util.find_git_ancestor(fname) or require'lspconfig'.util.path.dirname(fname)
           end;
         }
         require'lspconfig'.yamlls.setup{
+          capabilities = capabilities,
+          on_attach = common_on_attach,
           filetypes = { "yaml", "yaml.ansible", "helm"},
           autostart = false,
           root_dir = function(fname)
@@ -2309,6 +2342,7 @@
           end;
         }
         require'lspconfig'.sumneko_lua.setup{
+          capabilities = capabilities,
           on_attach = common_on_attach,
           autostart = false,
           cmd = {os.getenv("HOME") .. "/.nix-profile/bin/lua-language-server"};
@@ -2323,8 +2357,14 @@
           }
         }
         require'lspconfig'.rnix.setup{
+          capabilities = capabilities,
+          on_attach = common_on_attach,
+          autostart = false,
         }
         require'lspconfig'.gopls.setup {
+          capabilities = capabilities,
+          on_attach = common_on_attach,
+          autostart = false,
           cmd = {"gopls", "serve"},
           settings = {
             gopls = {
@@ -3013,12 +3053,6 @@
   lmap.g.R = 'Read'
   lmap.g.s = 'Status'
   lmap.g.W = 'Write'
-  lmap.i = { name = '+Insert' }
-  lmap.i.t = 'To-do'
-  lmap.i.d = {name = '+DateTime'}
-  lmap.i.d.m = 'date Time(Minutes)'
-  lmap.i.d.d = 'date Time(Day)'
-  lmap.i.d.s = 'date Time(seconds)'
   lmap.l = { name = '+Location' }
   lmap.l.c = 'Close'
   lmap.l.l = 'Toggle'
