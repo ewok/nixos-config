@@ -143,8 +143,8 @@ in
           startup-script = pkgs.writeShellScript "startup-script.sh" ''
             if [[ -n "$TMUX" ]]
             then
-              systemctl --state=failed --no-legend
-              systemctl --user --state=failed --no-legend
+              systemctl --state=failed --no-legend --no-pager &
+              systemctl --user --state=failed --no-legend --no-pager &
               if ! pgrep zoom > /dev/null;then
                 # if [[ $(t lsp | tee /dev/stderr | wc -l) -eq 0 ]];then
                   t ls
