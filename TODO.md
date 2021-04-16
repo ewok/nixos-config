@@ -41,3 +41,5 @@
     - [ ] p1 Fix X error when reconnecting to X
     - [ ] Barbar: associated buffers per tab
     - [ ] p1 fix <C-y> mapping not entering text because of omni
+    - [X] color from nixos
+- [ ] color for neomutt

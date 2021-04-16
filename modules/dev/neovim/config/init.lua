@@ -1,5 +1,5 @@
 -- vim: ts=2 sw=2 sts=2
---
+
 -- Helpers {{{
   _G.augroups = function(definitions)
     for group_name, definition in pairs(definitions) do
@@ -47,6 +47,11 @@
   _G.t = function(str)
     return vim.api.nvim_replace_termcodes(str, true, true, true)
   end
+
+  _G.interp = function(s, tab)
+    return (s:gsub('($%b{})', function(w) return tab[w:sub(3, -2)] or w end))
+  end
+  getmetatable("").__mod = interp
 -- }}}
 
 -- Init Packer Plugin {{{
@@ -252,6 +257,26 @@
     _G.run_cmd = function(command)
       execute('!'..command)
     end
+  -- }}}
+  -- Colors {{{
+    _G.colors = {
+      color_0 = "#282c34",
+      color_1 = "#e06c75",
+      color_2 = "#98c379",
+      color_3 = "#e5c07b",
+      color_4 = "#61afef",
+      color_5 = "#c678dd",
+      color_6 = "#56b6c2",
+      color_7 = "#abb2bf",
+      color_8 = "#545862",
+      color_9 = "#d19a66",
+      color_10 = "#353b45",
+      color_11 = "#3e4451",
+      color_12 = "#565c64",
+      color_13 = "#b6bdca",
+      color_14 = "#be5046",
+      color_15 = "#c8ccd4",
+    }
   -- }}}
 -- }}}
 
@@ -980,28 +1005,25 @@
       "romgrk/barbar.nvim",
       setup = function ()
         vim.api.nvim_exec([[
-          hi! BufferCurrent gui=bold guibg=#56b6c2 guifg=#282c34
-          hi! BufferCurrentIndex gui=bold guibg=#56b6c2 guifg=#282c34
-          hi! BufferCurrentMod gui=bold guibg=#56b6c2 guifg=#282c34
-          hi! BufferCurrentSign gui=bold guifg=#56b6c2 guibg=#282c34
-          hi! BufferCurrentTarget gui=bold guibg=#56b6c2 guifg=#282c34
-          hi! BufferCurrentIcon guifg=#c678dd guibg=#282c34
-
-          hi! BufferVisible guifg=#56B6C2 guibg=#282c34
-          hi! BufferVisibleIndex guifg=#56B6C2 guibg=#282c34
-          hi! BufferVisibleMod guifg=#56B6C2 guibg=#282c34
-          hi! BufferVisibleSign guibg=#282c34 guifg=#282c34
-          hi! BufferVisibleTarget guifg=#56B6C2 guibg=#282c34
-          hi! BufferVisibleIcon guifg=#56B6C2 guibg=#282c34
-
-          hi! BufferInactive guifg=#565c64 guibg=#282c34
-          hi! BufferInactiveIndex guifg=#565c64 guibg=#282c34
-          hi! BufferInactiveMod guifg=#565c64 guibg=#282c34
-          hi! BufferInactiveSign guibg=#282c34 guifg=#282c34
-          hi! BufferInactiveTarget guifg=#565c64 guibg=#282c34
-          hi! BufferInactiveIcon guifg=#565c64 guibg=#282c34
-        ]], true)
-      end,
+          hi! BufferCurrent gui=bold guibg=${color_6} guifg=${color_0}
+          hi! BufferCurrentIndex gui=bold guibg=${color_6} guifg=${color_0}
+          hi! BufferCurrentMod gui=bold guibg=${color_6} guifg=${color_0}
+          hi! BufferCurrentSign gui=bold guifg=${color_6} guibg=${color_0}
+          hi! BufferCurrentTarget gui=bold guibg=${color_6} guifg=${color_0}
+          hi! BufferCurrentIcon guifg=${color_1} guibg=${color_0}
+          hi! BufferVisible guifg=${color_6} guibg=${color_0}
+          hi! BufferVisibleIndex guifg=${color_6} guibg=${color_0}
+          hi! BufferVisibleMod guifg=${color_6} guibg=${color_0}
+          hi! BufferVisibleSign guibg=${color_0} guifg=${color_0}
+          hi! BufferVisibleTarget guifg=${color_6} guibg=${color_0}
+          hi! BufferVisibleIcon guifg=${color_6} guibg=${color_0}
+          hi! BufferInactive guifg=${color_12} guibg=${color_0}
+          hi! BufferInactiveIndex guifg=${color_12} guibg=${color_0}
+          hi! BufferInactiveMod guifg=${color_12} guibg=${color_0}
+          hi! BufferInactiveSign guibg=${color_0} guifg=${color_0}
+          hi! BufferInactiveTarget guifg=${color_12} guibg=${color_0}
+          hi! BufferInactiveIcon guifg=${color_12} guibg=${color_0}]] % colors, true)
+          end,
       config = function()
         local barbar_settings = vim.g.bufferline
         if not vim.g.bufferline then
@@ -1091,14 +1113,14 @@
       setup = function ()
         vim.api.nvim_exec([[
           " Mark 80-th character
-          hi! OverLength ctermbg=168 guibg=#ebabb8 ctermfg=250 guifg=#3c3e42
+          hi! OverLength ctermbg=168 guibg=${color_14} ctermfg=250 guifg=${color_0}
           call matchadd('OverLength', '\%81v', 100)
 
           " Change cursor color to make it more visible
-          hi! Cursor ctermbg=140 guibg=#B888E2
-          hi! Search ctermfg=236 ctermbg=74 guifg=#282c34 guibg=#639EE4
-          hi! AutoHiWord cterm=bold ctermbg=red guibg=#464646
-        ]], true)
+          hi! Cursor ctermbg=140 guibg=${color_5}
+          hi! Search ctermfg=236 ctermbg=74 guifg=${color_0} guibg=${color_4}
+          hi! AutoHiWord cterm=bold ctermbg=red guibg=${color_0}
+        ]] % colors, true)
       end,
     }
     vim.cmd [[ packadd onedark ]]
@@ -1238,8 +1260,8 @@
           indent_tab_guides = false;
           indent_soft_pattern = '\\s';
           exclude_filetypes = {'help','dashboard','dashpreview','nerdtree','vista','sagahover','which_key'};
-          even_colors = { fg ='#AAAAAA',bg='#35383F' };
-          odd_colors = {fg='#AAAAAA',bg='#35383F'};
+          even_colors = { fg ='#AAAAAA',bg=colors.color_10 };
+          odd_colors = {fg='#AAAAAA',bg=colors.color_10};
         })
       end,
     }
@@ -1258,22 +1280,22 @@
         local icons = require('galaxyline.provider_fileinfo').define_file_icon()
 
          local colors = {
-          base00 = '#282c34',
-          base01 = '#353b45',
-          base02 = '#3e4451',
-          base03 = '#545862',
-          base04 = '#565c64',
-          base05 = '#abb2bf',
-          base06 = '#b6bdca',
-          base07 = '#c8ccd4',
-          base08 = '#e06c75',
-          base09 = '#d19a66',
-          base0A = '#e5c07b',
-          base0B = '#98c379',
-          base0C = '#56b6c2',
-          base0D = '#61afef',
-          base0E = '#c678dd',
-          base0F = '#be5046',
+          base00 = colors.color_0,
+          base08 = colors.color_1,
+          base0B = colors.color_2,
+          base0A = colors.color_3,
+          base0D = colors.color_4,
+          base0E = colors.color_5,
+          base0C = colors.color_6,
+          base05 = colors.color_7,
+          base03 = colors.color_8,
+          base09 = colors.color_9,
+          base01 = colors.color_10,
+          base02 = colors.color_11,
+          base04 = colors.color_12,
+          base06 = colors.color_13,
+          base0F = colors.color_14,
+          base07 = colors.color_15,
         }
 
         icons['man'] = {colors.base0C, ''}
@@ -2236,13 +2258,17 @@
       },
       as = 'lspconfig',
       config = function()
+        -- Turn on snippets
+        local capabilities = vim.lsp.protocol.make_client_capabilities()
+        capabilities.textDocument.completion.completionItem.snippetSupport = true
+
         local function common_on_attach(client, _)
           if client.resolved_capabilities.document_highlight then
             vim.api.nvim_exec([[
-              hi LspReferenceRead cterm=bold ctermbg=red guibg=#464646
-              hi LspReferenceText cterm=bold ctermbg=red guibg=#464646
-              hi LspReferenceWrite cterm=bold ctermbg=red guibg=#464646
-            ]], false)
+              hi LspReferenceRead cterm=bold ctermbg=red guibg=${color_12}
+              hi LspReferenceText cterm=bold ctermbg=red guibg=${color_12}
+              hi LspReferenceWrite cterm=bold ctermbg=red guibg=${color_12}
+            ]] % colors, false)
             local lsp_document_highlight = {
               {'CursorHold <buffer> lua vim.lsp.buf.document_highlight()'};
               {'CursorMoved <buffer> lua vim.lsp.buf.clear_references()'};
