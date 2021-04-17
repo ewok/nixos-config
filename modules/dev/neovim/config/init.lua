@@ -1126,6 +1126,22 @@
       },
       config = function()
 
+        _G.telescope_buffers = function()
+          local actions = require('telescope.actions')
+          local action_set = require('telescope.actions.set')
+          local action_state = require('telescope.actions.state')
+          require('telescope.builtin').buffers({
+            attach_mappings = function(prompt_bufnr)
+              action_set.select:replace(function(prompt_bufnr, type)
+                local entry = action_state.get_selected_entry()
+                actions.close(prompt_bufnr)
+                vim.cmd("bdelete " .. tostring(entry['bufnr']))
+              end)
+              return true
+            end,
+          })
+        end
+
         map('n', '<leader>ff', ':Telescope live_grep<CR>', { noremap = true, silent = true })
         map('n', '<leader>fo', ':Telescope find_files<CR>', { noremap = true, silent = true })
         map('n', '<leader>of', ':Telescope find_files<CR>', { noremap = true, silent = true })
@@ -1145,6 +1161,7 @@
         map('n', 'm/', ':Telescope marks<CR>', { noremap = true, silent = true })
 
         map('n', '<leader>bb', ':Telescope buffers<CR>', { noremap = true, silent = true })
+        map('n', '<leader>bd', ':lua telescope_buffers()<CR>', { noremap = true, silent = true })
 
         local actions = require('telescope.actions')
         require('telescope').setup{
