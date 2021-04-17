@@ -1735,6 +1735,46 @@
       end,
     }
   -- }}}
+  -- StartScreen and Sessions {{{
+    packer.use {
+      'mhinz/vim-startify',
+      config = function()
+        vim.g.startify_session_before_save = {
+          'silent! tabdo NERDTreeClose',
+          'silent! tabdo Vista!',
+          'silent! lclose',
+          'silent! cclose',
+        }
+
+        vim.g.startify_session_persistence = 1
+        vim.g.startify_change_to_dir = 1
+
+        local startify_lists = {
+          -- { type = 'files',     header = {'   MRU'}            },
+          { type = 'sessions',  header = {'   Sessions'}       },
+          { type = 'dir',       header = {'   MRU '.. vim.fn.getcwd()} },
+          { type = 'bookmarks', header = {'   Bookmarks'}      },
+          { type = 'commands',  header = {'   Commands'}       },
+        }
+        vim.g.startify_lists = startify_lists
+
+        -- Autoload session
+        vim.g.startify_session_autoload = 1
+        map('n', '<leader>so', ':SLoad<CR>', {})
+        map('n', '<leader>su', ':SLoad ' .. vim.g.current_session_name .. '<CR>', {})
+        map('n', '<leader>ss', ':SSave ' .. vim.g.current_session_name .. '<CR>', {})
+        map('n', '<leader>sc', ':SClose<CR>', {})
+        map('n', '<leader>sq', ':SClose<CR>q', {})
+        map('n', '<leader>sd', ':SDelete<CR>', {})
+      end,
+    }
+
+    vim.api.nvim_exec([[
+      let g:current_session_name = fnamemodify(getcwd(), ':~:s?\~/??:gs?/?_?')
+      au SessionLoadPost * let g:current_session_name = fnamemodify(getcwd(), ':~:s?\~/??:gs?/?_?')
+      command! LoadSessionCurrent :call startify#session_load(0, g:current_session_name)
+    ]], false)
+  -- }}}
   -- Texting {{{
     packer.use {
       'junegunn/goyo.vim',
@@ -2667,144 +2707,6 @@
         return line . '…' . repeat(" ",fillcharcount) . foldedlinecount . '…' . ' '
       endfunction " }}}
       set foldtext=MyFoldText()
-    ]], true)
-  -- }}}
-  -- Sessions {{{
-    vim.api.nvim_exec([[
-      let g:sessiondir = $HOME . "/.vim_sessions"
-      let g:current_session_dir = getcwd()
-
-      function! MakeSession(file)
-
-        " if (exists("t:NERDTreeBufName") && bufwinnr(t:NERDTreeBufName) != -1)
-        exe ':tabdo NERDTreeClose'
-        " endif
-
-        " if bufwinnr('vista') != -1)
-        exe ':tabdo Vista!'
-        " endif
-
-        if (exists("t:coc_explorer_tab_id") && bufwinnr('coc-explorer') != -1)
-          exe ':tabdo exe bufwinnr("coc-explorer") "wincmd q"'
-        endif
-
-
-        exe ':lclose|cclose'
-
-        let file = a:file
-
-        if (file == "")
-          if (exists('g:sessionfile'))
-            let b:sessiondir = g:sessiondir
-            let file = g:sessionfile
-          else
-            let b:sessiondir = g:sessiondir . g:current_session_dir
-            let file = "session"
-          endif
-        else
-          let b:sessiondir = g:sessiondir
-          let g:sessionfile = file
-        endif
-
-        if (filewritable(b:sessiondir) != 2)
-          exe 'silent !mkdir -p ' b:sessiondir
-          redraw!
-        endif
-        let b:filename = b:sessiondir . '/' . file . '.vim'
-
-        exe "silent mksession! " . b:filename
-      endfunction
-
-      function! LoadSession(file)
-
-        let file = a:file
-
-        if (file == "")
-          if (exists('g:sessionfile'))
-            let b:sessiondir = g:sessiondir
-            let file = g:sessionfile
-          else
-            let b:sessiondir = g:sessiondir . g:current_session_dir
-            let file = "session"
-          endif
-        else
-          let b:sessiondir = g:sessiondir
-          let g:sessionfile = file
-        endif
-
-        let b:sessionfile = b:sessiondir . '/' . file . '.vim'
-        if (filereadable(b:sessionfile))
-          exe 'silent source ' b:sessionfile
-        else
-          echo "No session loaded."
-        endif
-      endfunction
-
-      function! DeleteSession(file)
-
-        let file = a:file
-
-        if (file == "")
-          if (exists('g:sessionfile'))
-            let b:sessiondir = g:sessiondir
-            let file = g:sessionfile
-          else
-            let b:sessiondir = g:sessiondir . g:current_session_dir
-            let file = "session"
-          endif
-        else
-          let b:sessiondir = g:sessiondir
-        endif
-
-        let b:sessionfile = b:sessiondir . '/' . file . '.vim'
-        if (filereadable(b:sessionfile))
-          exe 'silent !rm -f ' b:sessionfile
-        else
-          echo "No session loaded."
-        endif
-      endfunction
-
-      function! CloseSession()
-        if (exists('g:sessionfile'))
-          call MakeSession(g:sessionfile)
-          unlet g:sessionfile
-        else
-          call MakeSession("")
-        endif
-        exe 'silent wa | %bd!'
-      endfunction
-
-      function! CloseSessionAndExit()
-        call CloseSession()
-        exe 'silent qa'
-      endfunction
-
-      fun! ListSessions(A,L,P)
-        return system("ls " . g:sessiondir . ' | grep .vim | sed s/\.vim$//')
-      endfun
-
-      command! -nargs=1 -range -complete=custom,ListSessions MakeSession :call MakeSession("<args>")
-      command! -nargs=1 -range -complete=custom,ListSessions LoadSession :call LoadSession("<args>")
-      command! -nargs=1 -range -complete=custom,ListSessions DeleteSession :call DeleteSession("<args>")
-      command! MakeSessionCurrent :call MakeSession("")
-      command! LoadSessionCurrent :call LoadSession("")
-      command! DeleteSessionCurrent :call DeleteSession("")
-      command! CloseSession :call CloseSession()
-      command! CloseSessionAndExitCurrent :call CloseSessionAndExit()
-
-      nnoremap <Plug>(session_Load) :LoadSession<SPACE>
-      nnoremap <Plug>(session_Load-Current) :LoadSessionCurrent<CR>
-      nnoremap <Plug>(session_Make) :MakeSessionCurrent<CR>
-      nnoremap <Plug>(session_Exit) :CloseSessionAndExit<CR>
-      nnoremap <Plug>(session_Close) :CloseSession<CR>
-      nnoremap <Plug>(session_Delete) :DeleteSessionCurrent<CR>
-
-      nmap <leader>so <Plug>(session_Load)
-      nmap <leader>su <Plug>(session_Load-Current)
-      nmap <leader>ss <Plug>(session_Make)
-      nmap <leader>sq <Plug>(session_Exit)
-      nmap <leader>sc <Plug>(session_Close)
-      nmap <leader>sd <Plug>(session_Delete)
     ]], true)
   -- }}}
   -- AutoSave {{{
