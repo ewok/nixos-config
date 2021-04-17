@@ -1715,6 +1715,7 @@
           'silent! cclose',
         }
 
+        vim.g.startify_session_autoload = 1
         vim.g.startify_session_persistence = 1
         vim.g.startify_change_to_dir = 1
 
@@ -1727,8 +1728,14 @@
         }
         vim.g.startify_lists = startify_lists
 
-        -- Autoload session
-        vim.g.startify_session_autoload = 1
+        -- vim.g.startify_custom_header = {
+        --   [[                    | |  ( )                (_)]],
+        --   [[   _____      _____ | | _|/ ___   _ ____   ___ _ __ ___]],
+        --   [[  / _ \ \ /\ / / _ \| |/ / / __| | '_ \ \ / / | '_ ` _ \]],
+        --   [[ |  __/\ V  V / (_) |   <  \__ \ | | | \ V /| | | | | | |]],
+        --   [[  \___| \_/\_/ \___/|_|\_\ |___/ |_| |_|\_/ |_|_| |_| |_|]],
+        -- }
+
         map('n', '<leader>so', ':SLoad<CR>', {})
         map('n', '<leader>su', ':SLoad ' .. vim.g.current_session_name .. '<CR>', {})
         map('n', '<leader>ss', ':SSave ' .. vim.g.current_session_name .. '<CR>', {})
