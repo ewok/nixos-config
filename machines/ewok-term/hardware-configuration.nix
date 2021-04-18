@@ -1,11 +1,11 @@
 { config, lib, pkgs, modulesPath, inputs, ... }:
 let
-  master = import inputs.master (
-    {
-      config = config.nixpkgs.config;
-      localSystem = { system = "x86_64-linux"; };
-    }
-  );
+  # master = import inputs.master (
+  #   {
+  #     config = config.nixpkgs.config;
+  #     localSystem = { system = "x86_64-linux"; };
+  #   }
+  # );
 in
 {
   imports =
@@ -17,7 +17,7 @@ in
   boot.initrd.kernelModules = [];
   boot.kernelModules = [ "kvm-intel" "vmd" ];
   # boot.kernelPackages = pkgs.linuxPackages_latest;
-  boot.kernelPackages = master.linuxPackagesFor master.linux_latest;
+  # boot.kernelPackages = pkgs.linuxPackagesFor pkgs.linux_latest;
   boot.extraModulePackages = [];
   boot.blacklistedKernelModules = [ "snd_hda_intel" "snd_soc_skl" ];
   boot.extraModprobeConfig = ''
