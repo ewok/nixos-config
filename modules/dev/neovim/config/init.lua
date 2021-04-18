@@ -1737,8 +1737,8 @@
         -- }
 
         map('n', '<leader>so', ':SLoad<CR>', {})
-        map('n', '<leader>su', ':SLoad ' .. vim.g.current_session_name .. '<CR>', {})
-        map('n', '<leader>ss', ':SSave ' .. vim.g.current_session_name .. '<CR>', {})
+        map('n', '<leader>su', ':SLoad ' .. vim.g.current_session_name, {})
+        map('n', '<leader>ss', ':SSave ' .. vim.g.current_session_name, {})
         map('n', '<leader>sc', ':SClose<CR>', {})
         map('n', '<leader>sq', ':SClose<CR>q', {})
         map('n', '<leader>sd', ':SDelete<CR>', {})
@@ -1747,7 +1747,6 @@
 
     vim.api.nvim_exec([[
       let g:current_session_name = fnamemodify(getcwd(), ':~:s?\~/??:gs?/?_?')
-      au SessionLoadPost * let g:current_session_name = fnamemodify(getcwd(), ':~:s?\~/??:gs?/?_?')
       command! LoadSessionCurrent :call startify#session_load(0, g:current_session_name)
     ]], false)
   -- }}}
