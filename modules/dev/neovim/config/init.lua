@@ -1588,8 +1588,12 @@
         -- vim.g.nvim_tree_tab_open = 1
         vim.g.nvim_tree_group_empty = 1
         vim.g.nvim_tree_disable_netrw = 0
-        map('n', '<leader>oE', ':NvimTreeToggle<CR>', { noremap = true })
-        map('n', '<leader>fP', ':NvimTreeFindFile<CR>', { noremap = true })
+        vim.g.nvim_tree_auto_ignore_ft = {'startify', 'dashboard'}
+        vim.g.nvim_tree_quit_on_open = 1
+        vim.g.nvim_tree_lsp_diagnostics = 1
+        vim.g.nvim_tree_highlight_opened_files = 1
+        map('n', '<leader>oe', ':NvimTreeToggle<CR>', { noremap = true })
+        map('n', '<leader>fp', ':NvimTreeFindFile<CR>', { noremap = true })
 
         local tree_cb = require'nvim-tree.config'.nvim_tree_callback
         vim.g.nvim_tree_bindings = {
@@ -1609,16 +1613,17 @@
           ["<Tab>"]          = tree_cb("preview"),
           ["I"]              = tree_cb("toggle_ignored"),
           ["H"]              = tree_cb("toggle_dotfiles"),
+          ["r"]              = tree_cb("refresh"),
           ["R"]              = tree_cb("refresh"),
           ["a"]              = tree_cb("create"),
           ["d"]              = tree_cb("remove"),
-          ["r"]              = tree_cb("rename"),
-          ["<C-r>"]          = tree_cb("full_rename"),
+          ["m"]              = tree_cb("rename"),
+          ["M"]          = tree_cb("full_rename"),
           ["x"]              = tree_cb("cut"),
           ["c"]              = tree_cb("copy"),
           ["p"]              = tree_cb("paste"),
-          ["[c"]             = tree_cb("prev_git_item"),
-          ["]c"]             = tree_cb("next_git_item"),
+          ["[g"]             = tree_cb("prev_git_item"),
+          ["]g"]             = tree_cb("next_git_item"),
           ["u"]              = tree_cb("dir_up"),
           ["q"]              = tree_cb("close"),
         }
@@ -1641,7 +1646,7 @@
 
         vim.g.NERDTreeMinimalUI=1
         vim.g.NERDTreeDirArrows=1
-        vim.g.NERDTreeWinSize=45
+        vim.g.NERDTreeWinSize=40
         vim.g.NERDTreeIgnore={ '.pyc$' }
 
         vim.g.NERDTreeMapOpenVSplit='v'
@@ -1652,8 +1657,8 @@
         vim.g.NERDTreeQuitOnOpen=1
         vim.g.NERDTreeCustomOpenArgs={ file = {reuse = '', where = 'p', keepopen = 0, stay = 0 }}
 
-        map('n', '<leader>oe', ':call NERDTreeToggleCWD()<CR>', { noremap = true })
-        map('n', '<leader>fp', ':call FindPathOrShowNERDTree()<CR>', {})
+        map('n', '<leader>oE', ':call NERDTreeToggleCWD()<CR>', { noremap = true })
+        map('n', '<leader>fP', ':call FindPathOrShowNERDTree()<CR>', {})
 
         -- local au_nerd = {
         --   {[[ FileType nerdtree lua load_nerdtree_ft() ]]}
@@ -1698,7 +1703,9 @@
         vim.api.nvim_exec([[
           function! RooterWithCWD()
             Rooter
-            NERDTreeCWD
+            "NERDTreeCWD
+            NvimTreeClose
+            NvimTreeOpen
           endfunction
         ]], true)
       end,
@@ -1710,6 +1717,7 @@
       config = function()
         vim.g.startify_session_before_save = {
           'silent! tabdo NERDTreeClose',
+          'silent! tabdo NvimTreeClose',
           'silent! tabdo Vista!',
           'silent! lclose',
           'silent! cclose',
@@ -1737,7 +1745,7 @@
         -- }
 
         map('n', '<leader>so', ':SLoad<CR>', {})
-        map('n', '<leader>su', ':SLoad ' .. vim.g.current_session_name, {})
+        map('n', '<leader>su', ':SLoad ' .. vim.g.current_session_name .. '<CR>', {})
         map('n', '<leader>ss', ':SSave ' .. vim.g.current_session_name, {})
         map('n', '<leader>sc', ':SClose<CR>', {})
         map('n', '<leader>sq', ':SClose<CR>q', {})
@@ -1931,11 +1939,17 @@
     _G.zoom_toggle = function()
 
       local zoom_nerd = false
+      local zoom_ntree = false
       local zoom_tag = false
 
       if vim.t.NERDTreeBufName and fn.bufwinnr(vim.t.NERDTreeBufName) ~= -1 then
         cmd 'NERDTreeClose'
         zoom_nerd = true
+      end
+
+      if fn.bufwinnr('NvimTree') ~= -1 then
+        cmd 'NvimTreeClose'
+        zoom_ntree = true
       end
 
       if fn.bufwinnr('vista') ~= -1 then
@@ -1947,6 +1961,11 @@
 
       if zoom_nerd then
         cmd 'NERDTreeCWD'
+        execute ':wincmd p'
+      end
+
+      if zoom_ntree then
+        cmd 'NvimTreeOpen'
         execute ':wincmd p'
       end
 
