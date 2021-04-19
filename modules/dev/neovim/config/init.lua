@@ -1627,6 +1627,12 @@
           ["u"]              = tree_cb("dir_up"),
           ["q"]              = tree_cb("close"),
         }
+
+        vim.g.nvim_tree_icons = {
+          default = '',
+          symlink = '',
+        }
+
       end,
     }
   --   -- }}}
