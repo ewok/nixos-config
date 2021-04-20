@@ -259,6 +259,8 @@ in
             "gB" = "tab-give";
             "gj" = "tab-move +";
             "gk" = "tab-move -";
+            "dd" = "tab-close";
+            "rr" = "reload";
           };
           insert = {
             "<Ctrl-y>" = "insert-text -- {clipboard}";
@@ -270,6 +272,8 @@ in
           };
         };
         extraConfig = ''
+          config.unbind('d', mode='normal')
+          config.unbind('r', mode='normal')
           config.set('content.javascript.enabled', True, 'chrome://*/*')
           config.set('content.javascript.enabled', True, 'file://*')
           config.set('content.javascript.enabled', True, 'qute://*/*')
