@@ -2,25 +2,25 @@
   description = "ewoks envs";
 
   inputs = rec {
+    nixpkgs.url = "github:nixos/nixpkgs/nixos-unstable";
     stable.url = "github:NixOS/nixpkgs/nixos-20.09";
-    unstable.url = "github:nixos/nixpkgs/nixos-unstable";
     master.url = "github:nixos/nixpkgs/master";
     nixos-hardware.url = "github:NixOS/nixos-hardware";
-    neovim-nightly-overlay.url = "github:mjlbach/neovim-nightly-overlay";
+    neovim-nightly-overlay.url = "github:nix-community/neovim-nightly-overlay";
     # rnix.url = "github:nix-community/rnix-lsp/master";
     # rnix.url = "https://github.com/nix-community/rnix-lsp/archive/master.tar.gz";
     home-manager = {
       url = "github:rycee/home-manager";
-      inputs.nixpkgs.follows = "unstable";
+      inputs.nixpkgs.follows = "nixpkgs";
     };
   };
 
   outputs = { self, ... }@inputs:
     let
-      lib = inputs.unstable.lib;
+      lib = inputs.nixpkgs.lib;
       system = "x86_64-linux";
-      unstable = final: prev: {
-        unstable = import inputs.unstable {
+      nixpkgs = final: prev: {
+        nixpkgs = import inputs.nixpkgs {
           config.allowUnfree = true;
           inherit system;
         };
@@ -38,14 +38,14 @@
                 modules = [
                   {
                     nixpkgs.overlays = [
-                      unstable
+                      nixpkgs
                       inputs.neovim-nightly-overlay.overlay
                       (import ./overlays)
                     ];
                   }
                   (import (./. + "/machines/${name}"))
                   inputs.home-manager.nixosModules.home-manager
-                  inputs.unstable.nixosModules.notDetected
+                  inputs.nixpkgs.nixosModules.notDetected
                 ];
                 specialArgs = { inherit inputs; };
               };
