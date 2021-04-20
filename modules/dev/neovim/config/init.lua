@@ -1243,7 +1243,7 @@
           indent_space_guides = true;
           indent_tab_guides = false;
           indent_soft_pattern = '\\s';
-          exclude_filetypes = {'help','dashboard','dashpreview','nerdtree','vista','sagahover','which_key'};
+          exclude_filetypes = {'help','dashboard','dashpreview','nerdtree','vista','sagahover','which_key', 'nvimtree'};
           even_colors = { fg ='#AAAAAA',bg=colors.color_10 };
           odd_colors = {fg='#AAAAAA',bg=colors.color_10};
         })
@@ -1378,9 +1378,11 @@
             },
           },
           {
-            FileName = {
+            CurrDir = {
               provider = function()
-                return string.format('%s| %s ', fileinfo.get_file_size(), fileinfo.get_current_file_name())
+                return string.format(' | %s ',
+                vim.fn.fnamemodify(vim.fn.getcwd(), ':~')
+                )
               end,
               condition = condition.buffer_not_empty,
               highlight = {colors.base0C, colors.base01}
@@ -1395,6 +1397,18 @@
         }
 
         gls.right = {
+          {
+            FileName = {
+              provider = function()
+                return string.format('%s | %s ',
+                vim.fn. expand('%:.'),
+                fileinfo.get_file_size()
+                )
+              end,
+              condition = condition.buffer_not_empty,
+              highlight = {colors.base0C, colors.base01}
+            }
+          },
           {
             DiagnosticError = {
               provider = 'DiagnosticError',
@@ -1482,7 +1496,7 @@
           },
         }
 
-        gl.short_line_list = {'nerdtree','vista'}
+        gl.short_line_list = {'nerdtree','vista','nvimtree'}
         gls.short_line_right = {
           {
             FileTypeShort = {
@@ -1515,7 +1529,7 @@
               provider = function()
                 if vim.fn.index(gl.short_line_list, vim.bo.filetype) ~= -1 then
                   local filetype = vim.bo.filetype
-                  if filetype == 'nerdtree' then
+                  if filetype == 'nvimtree' then
                     return ' Explorer '
                   elseif filetype == 'vista' then
                     return ' Tags '
@@ -1575,7 +1589,6 @@
     }
   -- }}}
   -- NvimTree {{{
-    -- Buggy yet. Added for tracking.
     packer.use {
       'kyazdani42/nvim-tree.lua',
       requires = {{'kyazdani42/nvim-web-devicons'}},
@@ -1636,67 +1649,67 @@
       end,
     }
   --   -- }}}
-  -- NERDTree {{{
-    packer.use {
-      'preservim/nerdtree',
-      requires = {
-        {'Xuyuanp/nerdtree-git-plugin'},
-        {'ryanoasis/vim-devicons'}
-      },
-      config = function ()
-        vim.g.NERDTreeShowBookmarks=0
-        vim.g.NERDTreeChDirMode=2
-        vim.g.NERDTreeMouseMode=2
-        vim.g.nerdtree_tabs_focus_on_files=1
-        vim.g.nerdtree_tabs_open_on_gui_startup=0
+  -- -- NERDTree {{{
+  --   packer.use {
+  --     'preservim/nerdtree',
+  --     requires = {
+  --       {'Xuyuanp/nerdtree-git-plugin'},
+  --       {'ryanoasis/vim-devicons'}
+  --     },
+  --     config = function ()
+  --       vim.g.NERDTreeShowBookmarks=0
+  --       vim.g.NERDTreeChDirMode=2
+  --       vim.g.NERDTreeMouseMode=2
+  --       vim.g.nerdtree_tabs_focus_on_files=1
+  --       vim.g.nerdtree_tabs_open_on_gui_startup=0
 
-        vim.g.NERDTreeMinimalUI=1
-        vim.g.NERDTreeDirArrows=1
-        vim.g.NERDTreeWinSize=40
-        vim.g.NERDTreeIgnore={ '.pyc$' }
+  --       vim.g.NERDTreeMinimalUI=1
+  --       vim.g.NERDTreeDirArrows=1
+  --       vim.g.NERDTreeWinSize=40
+  --       vim.g.NERDTreeIgnore={ '.pyc$' }
 
-        vim.g.NERDTreeMapOpenVSplit='v'
-        vim.g.NERDTreeMapOpenSplit='s'
-        vim.g.NERDTreeMapJumpNextSibling=''
-        vim.g.NERDTreeMapJumpPrevSibling=''
-        vim.g.NERDTreeMapMenu='<leader>'
-        vim.g.NERDTreeQuitOnOpen=1
-        vim.g.NERDTreeCustomOpenArgs={ file = {reuse = '', where = 'p', keepopen = 0, stay = 0 }}
+  --       vim.g.NERDTreeMapOpenVSplit='v'
+  --       vim.g.NERDTreeMapOpenSplit='s'
+  --       vim.g.NERDTreeMapJumpNextSibling=''
+  --       vim.g.NERDTreeMapJumpPrevSibling=''
+  --       vim.g.NERDTreeMapMenu='<leader>'
+  --       vim.g.NERDTreeQuitOnOpen=1
+  --       vim.g.NERDTreeCustomOpenArgs={ file = {reuse = '', where = 'p', keepopen = 0, stay = 0 }}
 
-        map('n', '<leader>oE', ':call NERDTreeToggleCWD()<CR>', { noremap = true })
-        map('n', '<leader>fP', ':call FindPathOrShowNERDTree()<CR>', {})
+  --       map('n', '<leader>oE', ':call NERDTreeToggleCWD()<CR>', { noremap = true })
+  --       map('n', '<leader>fP', ':call FindPathOrShowNERDTree()<CR>', {})
 
-        -- local au_nerd = {
-        --   {[[ FileType nerdtree lua load_nerdtree_ft() ]]}
-        -- }
-        -- augroups({au_nerd=au_nerd})
+  --       -- local au_nerd = {
+  --       --   {[[ FileType nerdtree lua load_nerdtree_ft() ]]}
+  --       -- }
+  --       -- augroups({au_nerd=au_nerd})
 
-        -- _G.load_nerdtree_ft = function ()
-        --   bmap('n', 'r', ':Rooter<CR>', {})
-        -- end
+  --       -- _G.load_nerdtree_ft = function ()
+  --       --   bmap('n', 'r', ':Rooter<CR>', {})
+  --       -- end
 
-        vim.api.nvim_exec ([[
-          function! NERDTreeToggleCWD()
-            NERDTreeToggle
-            let currentfile = expand('%')
-            if (currentfile == "") || !(currentfile !~? 'NERD')
-              NERDTreeCWD
-            endif
-          endfunction
+  --       vim.api.nvim_exec ([[
+  --         function! NERDTreeToggleCWD()
+  --           NERDTreeToggle
+  --           let currentfile = expand('%')
+  --           if (currentfile == "") || !(currentfile !~? 'NERD')
+  --             NERDTreeCWD
+  --           endif
+  --         endfunction
 
-          function! FindPathOrShowNERDTree()
-            let currentfile = expand('%')
-            if (currentfile == "") || !(currentfile !~? 'NERD')
-              NERDTreeToggle
-            else
-              NERDTreeFind
-              NERDTreeCWD
-            endif
-          endfunction
-        ]], true)
-      end,
-    }
-  -- }}}
+  --         function! FindPathOrShowNERDTree()
+  --           let currentfile = expand('%')
+  --           if (currentfile == "") || !(currentfile !~? 'NERD')
+  --             NERDTreeToggle
+  --           else
+  --             NERDTreeFind
+  --             NERDTreeCWD
+  --           endif
+  --         endfunction
+  --       ]], true)
+  --     end,
+  --   }
+  -- -- }}}
   -- Rooter {{{
     packer.use {
       'airblade/vim-rooter',
@@ -1928,7 +1941,7 @@
       'lyokha/vim-xkbswitch',
       config = function ()
         vim.g.XkbSwitchEnabled = 1
-        vim.g.XkbSwitchSkipFt = { 'nerdtree', 'coc-explorer' }
+        vim.g.XkbSwitchSkipFt = { 'nerdtree', 'coc-explorer', 'nvimtree' }
       end,
     }
     if fn.executable('nix-store') == 1 then
@@ -2663,7 +2676,7 @@
     packer.use {
       'unblevable/quick-scope',
       config = function()
-        vim.g.qs_buftype_blacklist = { 'terminal', 'nofile', 'nerdtree' }
+        vim.g.qs_buftype_blacklist = { 'terminal', 'nofile', 'nerdtree', 'nvimtree' }
       end,
     }
   -- }}}
