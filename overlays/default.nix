@@ -15,16 +15,16 @@ self: super:
     }
   );
 
-  enpass-my = super.enpass.overrideAttrs (
-    oldAttrs: rec {
-      version = "6.6.1.809";
+  # enpass-my = super.enpass.overrideAttrs (
+  #   oldAttrs: rec {
+  #     version = "6.6.1.809";
 
-      src = super.fetchurl {
-        sha256 = "b1b9bd67653c3163bd80b340150ecf123552cbe4af23c350fbadea8ffd7939ba";
-        url = "http://repo.sinew.in/pool/main/e/enpass/enpass_6.6.1.809_amd64.deb";
-      };
-    }
-  );
+  #     src = super.fetchurl {
+  #       sha256 = "b1b9bd67653c3163bd80b340150ecf123552cbe4af23c350fbadea8ffd7939ba";
+  #       url = "http://repo.sinew.in/pool/main/e/enpass/enpass_6.6.1.809_amd64.deb";
+  #     };
+  #   }
+  # );
 
   filebot = super.filebot.overrideAttrs (
     oldAttrs: rec {

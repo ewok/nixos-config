@@ -19,7 +19,7 @@ in
 
     home-manager.users.${username} = {
       home.packages = [
-        pkgs.enpass-my
+        pkgs.enpass
         master.keepassxc
       ];
 
