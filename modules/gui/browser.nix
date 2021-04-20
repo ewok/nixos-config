@@ -140,12 +140,14 @@ in
             geolocation = "ask";
             javascript.enabled = true;
             mute = true;
-            notifications = true;
+            notifications.enabled = true;
             pdfjs = true;
             plugins = true;
             proxy = "none";
             register_protocol_handler = true;
-            ssl_strict = true;
+            tls = {
+              certificate_errors = "block";
+            };
             webgl = true;
           };
           downloads = {
