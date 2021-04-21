@@ -172,6 +172,8 @@
     syntax on
     syntax enable
 
+    set sessionoptions+=globals
+
     if exists('+termguicolors')
       let &t_8f = "\<Esc>[38;2;%lu;%lu;%lum"
       let &t_8b = "\<Esc>[48;2;%lu;%lu;%lum"
@@ -990,66 +992,125 @@
     }
   -- }}}
 -- UI
-  -- BarBar {{{
+  -- BufferLine {{{
     packer.use {
-      "romgrk/barbar.nvim",
-      setup = function ()
-        vim.api.nvim_exec([[
-          hi! BufferCurrent gui=bold guibg=${color_6} guifg=${color_0}
-          hi! BufferCurrentIndex gui=bold guibg=${color_6} guifg=${color_0}
-          hi! BufferCurrentMod gui=bold guibg=${color_6} guifg=${color_0}
-          hi! BufferCurrentSign gui=bold guifg=${color_6} guibg=${color_0}
-          hi! BufferCurrentTarget gui=bold guibg=${color_6} guifg=${color_0}
-          hi! BufferCurrentIcon guifg=${color_1} guibg=${color_0}
-          hi! BufferVisible guifg=${color_6} guibg=${color_0}
-          hi! BufferVisibleIndex guifg=${color_6} guibg=${color_0}
-          hi! BufferVisibleMod guifg=${color_6} guibg=${color_0}
-          hi! BufferVisibleSign guibg=${color_0} guifg=${color_0}
-          hi! BufferVisibleTarget guifg=${color_6} guibg=${color_0}
-          hi! BufferVisibleIcon guifg=${color_6} guibg=${color_0}
-          hi! BufferInactive guifg=${color_12} guibg=${color_0}
-          hi! BufferInactiveIndex guifg=${color_12} guibg=${color_0}
-          hi! BufferInactiveMod guifg=${color_12} guibg=${color_0}
-          hi! BufferInactiveSign guibg=${color_0} guifg=${color_0}
-          hi! BufferInactiveTarget guifg=${color_12} guibg=${color_0}
-          hi! BufferInactiveIcon guifg=${color_12} guibg=${color_0}]] % colors, true)
-          end,
+      'akinsho/nvim-bufferline.lua',
+      requires = 'kyazdani42/nvim-web-devicons',
       config = function()
-        local barbar_settings = vim.g.bufferline
-        if not vim.g.bufferline then
-          barbar_settings = {}
-        end
-        barbar_settings.closable = false
-        barbar_settings.clickable = false
-        barbar_settings.animation = false
-        barbar_settings.auto_hide = false
-        barbar_settings.icon_separator_active = ''
-        barbar_settings.icon_separator_inactive = ' '
-        barbar_settings.maximum_padding = 0
-        vim.g.bufferline = barbar_settings
+        require'bufferline'.setup{
+          options = {
+            mappings = false,
+            max_name_length = 18,
+            max_prefix_length = 15,
+            tab_size = 18,
+            diagnostics = "nvim_lsp",
+            diagnostics_indicator = function(_, _, diagnostics_dict)
+              local s = " "
+              for e, n in pairs(diagnostics_dict) do
+                local sym = e == "error" and " "
+                or (e == "warning" and " " or " " )
+                s = s .. n .. sym
+              end
+              return s
+            end,
+            -- -- NOTE: this will be called a lot so don't do any heavy processing here
+            -- custom_filter = function(buf_number)
+            --   -- filter out filetypes you don't want to see
+            --   if vim.bo[buf_number].filetype ~= "<i-dont-want-to-see-this>" then
+            --     return true
+            --   end
+            --   -- filter out by buffer name
+            --   if vim.fn.bufname(buf_number) ~= "<buffer-name-I-dont-want>" then
+            --     return true
+            --   end
+            --   -- filter out based on arbitrary rules
+            --   -- e.g. filter out vim wiki buffer from tabline in your work repo
+            --   if vim.fn.getcwd() == "<work-repo>" and vim.bo[buf_number].filetype ~= "wiki" then
+            --     return true
+            --   end
+            -- end,
+            show_buffer_close_icons = false,
+            show_close_icon = false,
+            show_tab_indicators = true,
+            persist_buffer_sort = true,
+            always_show_bufferline = true,
+          }
+        }
 
-        map('n', '<Tab>', ':BufferNext<CR>', { noremap = true, silent = true })
-        map('n', '<S-Tab>', ':BufferPrev<CR>', { noremap = true, silent = true })
-        map('n', 'g.', ':BufferMoveNext<CR>', { noremap = true, silent = true })
-        map('n', 'g,', ':BufferMovePrevious<CR>', { noremap = true, silent = true })
-        map('n', '<leader>bq', ':BufferCloseAllButCurrent<CR>', { silent = true })
-        map('n', 'gb', ':BufferPick<CR>', { silent = true })
-        map('n', '<C-W>d', ':BufferClose<CR>', { silent = true })
-        map('n', '<C-W><C-D>', ':BufferClose<CR>', { silent = true })
-        map('n', '<leader>bs', ':lua require"bufferline.state".order_by_directory()<CR>', { silent = true })
-        -- local au_barbar = {
-        --   -- {('BufNew * lua require"bufferline.state".order_by_directory()')};
-        --   {('BufNew * lua require"bufferline.state".order_by_directory()')};
-        --   {('BufEnter * lua require"bufferline.state".order_by_directory()')};
-        --   {('BufWipeout * lua require"bufferline.state".order_by_directory()')};
-        --   {('BufWinEnter * lua require"bufferline.state".order_by_directory()')};
-        --   {('BufWinLeave * lua require"bufferline.state".order_by_directory()')};
-        --   {('BufWipeout * lua require"bufferline.state".order_by_directory()')};
-        -- }
-        -- augroups({au_barbar=au_barbar})
+        map('n', '<Tab>', ':BufferLineCycleNext<CR>', { noremap = true, silent = true })
+        map('n', '<S-Tab>', ':BufferLineCyclePrev<CR>', { noremap = true, silent = true })
+        map('n', 'g.', ':BufferLineMoveNext<CR>', { noremap = true, silent = true })
+        map('n', 'g,', ':BufferLineMovePrev<CR>', { noremap = true, silent = true })
+        -- map('n', '<leader>bq', ':BufferCloseAllButCurrent<CR>', { silent = true })
+        map('n', 'gb', ':BufferLinePick<CR>', { silent = true })
+        map('n', '<C-W>d', ':bdelete<CR>', { silent = true })
+        map('n', '<C-W><C-D>', ':bdelete<CR>', { silent = true })
+        map('n', '<leader>bs', ':BufferLineSortByDirectory<CR>', { silent = true })
       end,
     }
   -- }}}
+  -- -- BarBar {{{
+  --   packer.use {
+  --     "romgrk/barbar.nvim",
+  --     setup = function ()
+  --       vim.api.nvim_exec([[
+  --         hi! BufferCurrent       gui=bold guibg=${color_6} guifg=${color_0}
+  --         hi! BufferCurrentIndex  gui=bold guibg=${color_6} guifg=${color_0}
+  --         hi! BufferCurrentMod    gui=bold guibg=${color_6} guifg=${color_0}
+  --         hi! BufferCurrentSign   gui=bold guibg=${color_0} guifg=${color_6}
+  --         hi! BufferCurrentTarget gui=bold guibg=${color_6} guifg=${color_1}
+  --         hi! BufferCurrentIcon   guibg=${color_0} guifg=${color_1}
+
+  --         hi! BufferVisible       guibg=${color_0} guifg=${color_6}
+  --         hi! BufferVisibleIndex  guibg=${color_0} guifg=${color_6}
+  --         hi! BufferVisibleMod    guibg=${color_0} guifg=${color_6}
+  --         hi! BufferVisibleSign   guibg=${color_0} guifg=${color_0}
+  --         hi! BufferVisibleTarget guibg=${color_0} guifg=${color_1}
+  --         hi! BufferVisibleIcon   guibg=${color_0} guifg=${color_6}
+
+  --         hi! BufferInactive       guibg=${color_0} guifg=${color_12}
+  --         hi! BufferInactiveIndex  guibg=${color_0} guifg=${color_12}
+  --         hi! BufferInactiveMod    guibg=${color_0} guifg=${color_12}
+  --         hi! BufferInactiveSign   guibg=${color_0} guifg=${color_0}
+  --         hi! BufferInactiveTarget guibg=${color_0} guifg=${color_1}
+  --         hi! BufferInactiveIcon   guibg=${color_0} guifg=${color_12}]] % colors, true)
+  --         end,
+  --     config = function()
+  --       local barbar_settings = vim.g.bufferline
+  --       if not vim.g.bufferline then
+  --         barbar_settings = {}
+  --       end
+  --       barbar_settings.closable = false
+  --       barbar_settings.clickable = false
+  --       barbar_settings.animation = false
+  --       barbar_settings.auto_hide = false
+  --       barbar_settings.icon_separator_active = ''
+  --       barbar_settings.icon_separator_inactive = ' '
+  --       barbar_settings.maximum_padding = 0
+  --       vim.g.bufferline = barbar_settings
+
+  --       map('n', '<Tab>', ':BufferNext<CR>', { noremap = true, silent = true })
+  --       map('n', '<S-Tab>', ':BufferPrev<CR>', { noremap = true, silent = true })
+  --       map('n', 'g.', ':BufferMoveNext<CR>', { noremap = true, silent = true })
+  --       map('n', 'g,', ':BufferMovePrevious<CR>', { noremap = true, silent = true })
+  --       map('n', '<leader>bq', ':BufferCloseAllButCurrent<CR>', { silent = true })
+  --       map('n', 'gb', ':BufferPick<CR>', { silent = true })
+  --       map('n', '<C-W>d', ':BufferClose<CR>', { silent = true })
+  --       map('n', '<C-W><C-D>', ':BufferClose<CR>', { silent = true })
+  --       map('n', '<leader>bs', ':lua require"bufferline.state".order_by_directory()<CR>', { silent = true })
+  --       -- local au_barbar = {
+  --       --   -- {('BufNew * lua require"bufferline.state".order_by_directory()')};
+  --       --   {('BufNew * lua require"bufferline.state".order_by_directory()')};
+  --       --   {('BufEnter * lua require"bufferline.state".order_by_directory()')};
+  --       --   {('BufWipeout * lua require"bufferline.state".order_by_directory()')};
+  --       --   {('BufWinEnter * lua require"bufferline.state".order_by_directory()')};
+  --       --   {('BufWinLeave * lua require"bufferline.state".order_by_directory()')};
+  --       --   {('BufWipeout * lua require"bufferline.state".order_by_directory()')};
+  --       -- }
+  --       -- augroups({au_barbar=au_barbar})
+  --     end,
+  --   }
+  -- -- }}}
   -- Better QuickFix {{{
     packer.use{
       'kevinhwang91/nvim-bqf',
@@ -1380,9 +1441,23 @@
           {
             CurrDir = {
               provider = function()
-                return string.format(' | %s ',
-                vim.fn.fnamemodify(vim.fn.getcwd(), ':~')
-                )
+                local cwd = vim.fn.fnamemodify(vim.fn.getcwd(), ":~")
+                local panel_width  = vim.fn.winwidth(0)
+                local limit_size = vim.fn.len(cwd)
+                if condition.check_active_lsp() then
+                  limit_size = limit_size + 15
+                end
+                if panel_width - limit_size < 30 then
+                  return ''
+                elseif panel_width - limit_size < 70 then
+                  return string.format(' | %s ',
+                  vim.fn.fnamemodify(vim.fn.getcwd(), ":t")
+                  )
+                else
+                  return string.format(' | %s ',
+                  cwd
+                  )
+                end
               end,
               condition = condition.buffer_not_empty,
               highlight = {colors.base0C, colors.base01}
@@ -1400,8 +1475,8 @@
           {
             FileName = {
               provider = function()
-                return string.format('%s | %s ',
-                vim.fn. expand('%:.'),
+                return string.format('%s| %s ',
+                fileinfo.get_current_file_name(),
                 fileinfo.get_file_size()
                 )
               end,
