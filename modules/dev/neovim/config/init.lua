@@ -1046,6 +1046,9 @@
         map('n', '<C-W>d', ':bdelete<CR>', { silent = true })
         map('n', '<C-W><C-D>', ':bdelete<CR>', { silent = true })
         map('n', '<leader>bs', ':BufferLineSortByDirectory<CR>', { silent = true })
+
+        -- Add CWD to buffferline
+        vim.o.tabline = "%!v:lua.nvim_bufferline() . ' ' . fnamemodify(getcwd(),':~')"
       end,
     }
   -- }}}
@@ -1439,25 +1442,12 @@
             },
           },
           {
-            CurrDir = {
+            FileName = {
               provider = function()
-                local cwd = vim.fn.fnamemodify(vim.fn.getcwd(), ":~")
-                local panel_width  = vim.fn.winwidth(0)
-                local limit_size = vim.fn.len(cwd)
-                if condition.check_active_lsp() then
-                  limit_size = limit_size + 15
-                end
-                if panel_width - limit_size < 30 then
-                  return ''
-                elseif panel_width - limit_size < 70 then
-                  return string.format(' | %s ',
-                  vim.fn.fnamemodify(vim.fn.getcwd(), ":t")
-                  )
-                else
-                  return string.format(' | %s ',
-                  cwd
-                  )
-                end
+                return string.format('%s| %s ',
+                fileinfo.get_file_size(),
+                fileinfo.get_current_file_name()
+                )
               end,
               condition = condition.buffer_not_empty,
               highlight = {colors.base0C, colors.base01}
@@ -1472,18 +1462,6 @@
         }
 
         gls.right = {
-          {
-            FileName = {
-              provider = function()
-                return string.format('%s| %s ',
-                fileinfo.get_current_file_name(),
-                fileinfo.get_file_size()
-                )
-              end,
-              condition = condition.buffer_not_empty,
-              highlight = {colors.base0C, colors.base01}
-            }
-          },
           {
             DiagnosticError = {
               provider = 'DiagnosticError',
