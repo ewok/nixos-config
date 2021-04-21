@@ -248,8 +248,8 @@ in
             "wq" = "close";
             "to" = "tab-only";
             "gT" = "set-cmd-text -s :tab-take";
-            "si" = "set -u *://{url:host}/* content.ssl_strict false";
-            "sI" = "set -u *://{url:host}/* content.ssl_strict true";
+            "si" = "set -u *://{url:host}/* content.tls.certificate_errors load-insecurely";
+            "sI" = "set -u *://{url:host}/* content.tls.certificate_errors block";
             "<space>pr" = "proxym";
             "<space>ps" = "noproxym";
             "<space>pm" = "spawn mitmproxy-local-start";
