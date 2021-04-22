@@ -5,6 +5,42 @@ let
   cfg = config.modules.dev.k8s;
   username = config.properties.user.name;
 
+  k8s-mysqldump = pkgs.writeScriptBin "k8s-mysqldump" ''
+    #!${pkgs.bash}/bin/bash
+    set -e
+    if [ $# -eq 1 ];then
+    echo "Usage: $(basename $0) [mysql options]"
+    exit 1
+    fi
+    NAME="debug-mysqldump"
+    if ! which kubectl &>/dev/null;then
+    echo "kubectl not found, please run the command below:"
+    echo
+    CMD="echo"
+    fi
+    $CMD kubectl run $NAME --image=mysql:5.6.47 -it --rm --restart='Never' -- mysqldump $@
+    sleep 1
+    $CMD kubectl get po | grep $NAME && echo "ERROR: Pod was not deleted!"
+  '';
+
+  k8s-mysql = pkgs.writeScriptBin "k8s-mysql" ''
+    #!${pkgs.bash}/bin/bash
+    set -e
+    if [ $# -eq 1 ];then
+    echo "Usage: $(basename $0) [mysql options]"
+    exit 1
+    fi
+    NAME="debug-mysql-client"
+    if ! which kubectl &>/dev/null;then
+    echo "kubectl not found, please run the command below:"
+    echo
+    CMD="echo"
+    fi
+    $CMD kubectl run $NAME --image=mysql:5.6.47 -it --rm --restart='Never' -- mysql $@
+    sleep 1
+    $CMD kubectl get po | grep $NAME && echo "ERROR: Pod was not deleted!"
+  '';
+
   k8s-argo = pkgs.writeScriptBin "k8s-argo" ''
     #!${pkgs.bash}/bin/bash
     set -ex
@@ -123,6 +159,8 @@ in
         k8s-kafka-client
         k8s-jmxterm
         k8s-alpine
+        k8s-mysql
+        k8s-mysqldump
       ];
     };
   };
