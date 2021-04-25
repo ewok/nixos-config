@@ -211,7 +211,7 @@ bindsym $mod+minus scratchpad show
 ################################################################################################
 # Workspaces
 ################################################################################################
-bindsym $mod_a+r exec autorandr -c
+bindsym $mod_a+r exec "autorandr -c; sleep 2; systemctl --user start random-background.service"
 bindsym $mod_a+Up  exec bash ~/.config/i3/rotate.sh inverted
 bindsym $mod_a+Down  exec bash ~/.config/i3/rotate.sh normal
 bindsym $mod_a+Left  exec bash ~/.config/i3/rotate.sh left
