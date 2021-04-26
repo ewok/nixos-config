@@ -40,9 +40,10 @@ in
       ];
 
       xdg.configFile."git/gitexcludes".text = ''
-        .direnv
-        .out
-        .tmp
+        .direnv/
+        .mypy_cache/
+        .out/
+        .tmp/
       '';
 
       # FIX: If not enable don't include
