@@ -38,6 +38,7 @@ in
       home.packages = [
         tm
         tssh
+        pkgs.tmate
       ];
 
       programs.tmux = {
