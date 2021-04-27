@@ -175,27 +175,33 @@ in
             blocks = [
               {
                 block = "time";
-                interval = 60;
-                format = "MSK: %a %d/%m %R";
+                interval = 28800;
+                format = "%a %d/%m";
                 timezone = "Europe/Moscow";
-              }
-              {
-                block = "time";
-                interval = 60;
-                format = "LDN: %R";
-                timezone = "Europe/London";
-              }
-              {
-                block = "time";
-                interval = 60;
-                format = "NY: %R";
-                timezone = "America/New_York";
               }
               {
                 block = "time";
                 interval = 60;
                 format = "PST: %R";
                 timezone = "America/Los_Angeles";
+              }
+              {
+                block = "time";
+                interval = 60;
+                format = "UTC: %R";
+                timezone = "UTC";
+              }
+              {
+                block = "time";
+                interval = 60;
+                format = "MSK: %R";
+                timezone = "Europe/Moscow";
+              }
+              {
+                block = "time";
+                interval = 60;
+                format = "PHT: %R";
+                timezone = "Asia/Manila";
               }
               {
                 block = "disk_space";
