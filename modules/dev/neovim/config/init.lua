@@ -995,7 +995,16 @@
   -- BufferLine {{{
     packer.use {
       'akinsho/nvim-bufferline.lua',
-      requires = 'kyazdani42/nvim-web-devicons',
+      requires = {
+        'kyazdani42/nvim-web-devicons',
+        {
+          'moll/vim-bbye',
+          config = function()
+            map('n', '<C-W>d', ':Bdelete<CR>', { silent = true })
+            map('n', '<C-W><C-D>', ':Bdelete<CR>', { silent = true })
+          end,
+        }
+      },
       run = function(plugin)
 
         local bufferline_patch = [[
@@ -1067,8 +1076,8 @@ index 4d19c2f..8892633 100644
         map('n', 'g,', ':BufferLineMovePrev<CR>', { noremap = true, silent = true })
         -- map('n', '<leader>bq', ':BufferCloseAllButCurrent<CR>', { silent = true })
         map('n', 'gb', ':BufferLinePick<CR>', { silent = true })
-        map('n', '<C-W>d', ':bdelete<CR>', { silent = true })
-        map('n', '<C-W><C-D>', ':bdelete<CR>', { silent = true })
+        -- map('n', '<C-W>d', ':bdelete<CR>', { silent = true })
+        -- map('n', '<C-W><C-D>', ':bdelete<CR>', { silent = true })
         map('n', '<leader>bs', ':BufferLineSortByDirectory<CR>', { silent = true })
 
         -- Add CWD to buffferline
