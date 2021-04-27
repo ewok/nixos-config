@@ -6,19 +6,19 @@ let
   username = config.properties.user.name;
   configHome = config.home-manager.users."${username}".xdg.configHome;
 
-  docker-arch = pkgs.writeShellScriptBin "docker-arch " ''
+  docker-arch = pkgs.writeShellScriptBin "docker-arch" ''
     docker run -ti --rm --entrypoint bash -u root archlinux -c "$*"
   '';
 
-  docker-centos = pkgs.writeShellScriptBin "docker-centos " ''
+  docker-centos = pkgs.writeShellScriptBin "docker-centos" ''
     docker run -ti --rm --entrypoint bash centos:7 -c "$*"
   '';
 
-  docker-cerebro = pkgs.writeShellScriptBin "docker-cerebro " ''
+  docker-cerebro = pkgs.writeShellScriptBin "docker-cerebro" ''
     docker run -ti --rm -p 9000:9000 lmenezes/cerebro
   '';
 
-  docker-mvn = pkgs.writeShellScriptBin "docker-mvn " ''
+  docker-mvn = pkgs.writeShellScriptBin "docker-mvn" ''
     docker run -v $HOME/.m2:/var/maven/.m2 \
     -v "$PWD":/var/maven/src -w /var/maven/src  \
     -ti --rm -u $(id -u) \
@@ -27,7 +27,7 @@ let
     mvn -Duser.home=/var/maven ''${*:2}
   '';
 
-  docker-krb = pkgs.writeShellScriptBin "docker-krb " ''
+  docker-krb = pkgs.writeShellScriptBin "docker-krb" ''
     docker run -ti --rm -e KRB5_CONFIG=/etc/krb5.conf \
     -v ''$(pwd)/krb5.conf:/etc/krb5.conf \
     --entrypoint bash -w ''${PWD} \
@@ -49,12 +49,32 @@ let
     docker logs -f mysql
   '';
 
-  docker-mysql-cli = pkgs.writeShellScriptBin "docker-mysql " ''
+  docker-mysql-cli = pkgs.writeShellScriptBin "docker-mysql" ''
     docker exec -it mysql mysql -uroot -proot $@
   '';
 
-  docker-mysqldump = pkgs.writeShellScriptBin "docker-mysqldump " ''
+  docker-mysqldump = pkgs.writeShellScriptBin "docker-mysqldump" ''
     docker exec -it mysql mysqldump -uroot -proot $@
+  '';
+
+  docker-kafka = pkgs.writeShellScriptBin "docker-kafka" ''
+    case $1 in
+      cc)
+        docker run -ti --rm confluentinc/cp-kafka kafka-console-consumer $@
+        ;;
+      cp)
+        docker run -ti --rm confluentinc/cp-kafka kafka-console-producer $@
+        ;;
+      t)
+        docker run -ti --rm confluentinc/cp-kafka kafka-topics $@
+        ;;
+      cg)
+        docker run -ti --rm confluentinc/cp-kafka kafka-consumer-groups $@
+        ;;
+      *)
+      docker run -ti --rm confluentinc/cp-kafka $@
+      ;;
+    esac
   '';
 
 in
@@ -89,6 +109,7 @@ in
         docker-mysql-server
         docker-mysql-cli
         docker-mysqldump
+        docker-kafka
 
         pkgs.docker-compose
       ];
