@@ -2599,6 +2599,7 @@ index 4d19c2f..8892633 100644
           {[[FileType fugitive nnoremap <buffer> <silent> r :WhichKey 'r'<CR>]]};
           -- {[[FileType fugitive nnoremap <buffer> <silent> g :WhichKey 'g'<CR>]]};
           {[[FileType fugitive nnoremap <buffer> <silent> q :close<CR>]]};
+          {[[FileType fugitiveblame nnoremap <buffer> <silent> q :close<CR>]]};
           -- {[[BufEnter */.git/index nnoremap <buffer> <silent> c :WhichKey 'c'<CR>]]};
           -- {[[BufEnter */.git/index nnoremap <buffer> <silent> d :WhichKey 'd'<CR>]]};
           -- {[[BufEnter */.git/index nnoremap <buffer> <silent> r :WhichKey 'r'<CR>]]};
@@ -2984,7 +2985,9 @@ index 4d19c2f..8892633 100644
       end
     end
     _G.reg_smart_cr = function()
-      bmap('i', '<C-Enter>', '<ESC>:lua smart_cr()<CR>', {})
+      bmap('i', '<C-CR>', '<ESC>:lua smart_cr()<CR>', {noremap=true})
+      bmap('i', ';;', '<ESC>:lua smart_cr()<CR>', {noremap=true})
+      bmap('i', ';<CR>', '<ESC>A;<CR>', {noremap=true})
     end
   -- }}}
 -- }}}
