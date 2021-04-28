@@ -106,8 +106,8 @@ in
             src = pkgs.fetchFromGitHub {
               owner = "jhillyerd";
               repo = "plugin-git";
-              rev = "ac95cd71e961dbe6fc4c15d539a34c42247623f6";
-              sha256 = "sjNDQn66M+RB42aYBEE3MUy9MWcPFdKt5w6P/e5WZE8=";
+              rev = "eb02787e19f24e926789ac497493b87e6e50b0a2";
+              sha256 = "02465j23x0cxfja1ycq8k1slwd6fd25jhr6llma5wpd5b577vhw8";
             };
           }
           {
@@ -115,8 +115,8 @@ in
             src = pkgs.fetchFromGitHub {
               owner = "Gazorby";
               repo = "fish-abbreviation-tips";
-              rev = "0be97640909fb20de51ff9ed9bcbda0bd2b28b36";
-              sha256 = "QhedoSwlenuRbnd20rdfTEesV8X2IhzefB7bbmUGVq8=";
+              rev = "71662df06da763d3d38d93706555beb2ffce22e3";
+              sha256 = "01dwx85h8zv7r5155034ic0bdy7w4pghx3sz0z6sxr2pm9zb8jlw";
             };
           }
           {
@@ -124,8 +124,8 @@ in
             src = pkgs.fetchFromGitHub {
               owner = "evanlucas";
               repo = "fish-kubectl-completions";
-              rev = "da5fa3c0dc254d37eb4b8e73a86d07c7bcebe637";
-              sha256 = "7pR5/aQCkHct9lBx3u3nHmCAuo/V7XN1lC+ZvlRnNCo=";
+              rev = "bbe3b831bcf8c0511fceb0607e4e7511c73e8c71";
+              sha256 = "1r6wqvvvb755jkmlng1i085s7cj1psxmddqghm80x5573rkklfps";
             };
           }
           {
@@ -166,13 +166,16 @@ in
             set -Ux FZF_LEGACY_KEYBINDINGS 0
             set -Ux OPEN_CMD open
             bind \cw backward-kill-word
-
+            set -Ux ABBR_TIPS_PROMPT "\n💡 \e[1m{{ .abbr }}\e[0m => {{ .cmd }}"
+            set -Ux ABBR_TIPS_ALIAS_WHITELIST # Not set
+            set -Ux ABBR_TIPS_REGEXES '(^(\w+\s+)+(-{1,2})\w+)(\s\S+)' '(^( ?\w+){3}).*' '(^( ?\w+){2}).*' '(^( ?\w+){1}).*'
             ${startup-script}
           '';
 
         loginShellInit = ''
           set fish_greeting
           __git.reset
+          __abbr_tips_init.fish
         '';
       };
 
