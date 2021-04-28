@@ -2600,6 +2600,7 @@ index 4d19c2f..8892633 100644
           -- {[[FileType fugitive nnoremap <buffer> <silent> g :WhichKey 'g'<CR>]]};
           {[[FileType fugitive nnoremap <buffer> <silent> q :close<CR>]]};
           {[[FileType fugitiveblame nnoremap <buffer> <silent> q :close<CR>]]};
+          {[[FileType git nnoremap <buffer> <silent> q :close<CR>]]};
           -- {[[BufEnter */.git/index nnoremap <buffer> <silent> c :WhichKey 'c'<CR>]]};
           -- {[[BufEnter */.git/index nnoremap <buffer> <silent> d :WhichKey 'd'<CR>]]};
           -- {[[BufEnter */.git/index nnoremap <buffer> <silent> r :WhichKey 'r'<CR>]]};
