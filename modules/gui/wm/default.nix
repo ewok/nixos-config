@@ -155,6 +155,13 @@ in
         bars = {
           default = {
             settings = {
+              icons = {
+                name = "awesome";
+                overrides = {
+                  time = "";
+                };
+              };
+
               theme = {
                 name = "solarized-dark";
                 overrides = {
@@ -176,31 +183,31 @@ in
               {
                 block = "time";
                 interval = 28800;
-                format = "%a %d/%m";
+                format = "📆 %a %d/%m";
                 timezone = "Europe/Moscow";
               }
               {
                 block = "time";
                 interval = 60;
-                format = "PST: %R";
+                format = "🌎PST: %R";
                 timezone = "America/Los_Angeles";
               }
               {
                 block = "time";
                 interval = 60;
-                format = "UTC: %R";
+                format = "🌐UTC: %R";
                 timezone = "UTC";
               }
               {
                 block = "time";
                 interval = 60;
-                format = "MSK: %R";
+                format = "🏠MSK: %R";
                 timezone = "Europe/Moscow";
               }
               {
                 block = "time";
                 interval = 60;
-                format = "PHT: %R";
+                format = "🌏PHT: %R";
                 timezone = "Asia/Manila";
               }
               {
