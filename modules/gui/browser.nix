@@ -261,6 +261,7 @@ in
             "gk" = "tab-move -";
             "dd" = "tab-close";
             "rr" = "reload";
+            "yv" = "spawn vlc {url}";
           };
           insert = {
             "<Ctrl-y>" = "insert-text -- {clipboard}";
