@@ -66,6 +66,7 @@ for_window [title="DavMail Gateway Settings"] floating enable
 for_window [title="File Transfer*"] floating enable
 for_window [title="Unlock Vault"] floating enable
 for_window [title=".*Mozilla Firefox$"] floating disable
+for_window [class="vlc"] floating enable
 # switch to workspace with urgent window automatically
 # for_window [urgent=latest] focus
 
