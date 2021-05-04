@@ -76,7 +76,7 @@ in
     enableSkype = false;
     enableSlack = true;
     enableTelegram = true;
-    enableZoom = false;
+    enableZoom = true;
   };
   modules.system.powermanagement = {
     enable = true;
