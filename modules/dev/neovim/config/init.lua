@@ -6,9 +6,6 @@
       vim.api.nvim_command('augroup '..group_name)
       vim.api.nvim_command('autocmd!')
       for _, def in ipairs(definition) do
-        -- if type(def) == 'table' and type(def[#def]) == 'function' then
-        -- 	def[#def] = lua_callback(def[#def])
-        -- end
         local command = table.concat(vim.tbl_flatten{'autocmd', def}, ' ')
         vim.api.nvim_command(command)
       end
@@ -21,9 +18,6 @@
       vim.api.nvim_command('augroup '..group_name)
       vim.api.nvim_command('autocmd! * <buffer>')
       for _, def in ipairs(definition) do
-        -- if type(def) == 'table' and type(def[#def]) == 'function' then
-        -- 	def[#def] = lua_callback(def[#def])
-        -- end
         local command = table.concat(vim.tbl_flatten{'autocmd', def}, ' ')
         vim.api.nvim_command(command)
       end
@@ -498,10 +492,6 @@
       vim.bo.commentstring = [[# %s]]
       reg_highlight_cword()
       reg_auto_save()
-      -- vim.b.ale_ansible_ansible_lint_executable = 'ansible_custom'
-      -- vim.b.ale_ansible_ansible_lint_command = '%e %t'
-      -- vim.b.ale_ansible_yamllint_executable = 'yamllint_custom'
-      -- vim.b.ale_linters = { 'yamllint', 'ansible_custom' }
     end
   -- }}}
   -- CSV {{{
@@ -539,20 +529,6 @@
     augroups({ft_gitignore=ft_gitignore})
   -- }}}
   -- Go {{{
-    -- packer.use {
-    --   'fatih/vim-go',
-    --   ft = { 'go' },
-    --   config = function()
-    --     vim.g.go_highlight_functions = 1
-    --     vim.g.go_highlight_methods = 1
-    --     vim.g.go_highlight_structs = 1
-    --     vim.g.go_highlight_interfaces = 1
-    --     vim.g.go_highlight_operators = 1
-    --     vim.g.go_highlight_build_constraints = 1
-    --     vim.g.go_auto_sameids = 1
-    --   end,
-    -- }
-
     local ft_go = {
       {[[ FileType go lua load_go_ft() ]]}
     }
@@ -598,9 +574,6 @@
       reg_highlight_cword()
       reg_auto_save()
     end
-  -- }}}
-  -- Haskell {{{
-    -- None yet
   -- }}}
   -- Helm {{{
     packer.use {
@@ -1002,6 +975,7 @@
     }
     augroups({ft_terraform=ft_terraform})
     _G.load_terraform_ft = function()
+      -- TODO: Recover
     -- call ale#linter#Define('terraform', {
     --       \   'name': 'terraform-lsp',
     --       \   'lsp': 'stdio',
@@ -1276,10 +1250,6 @@ index 4d19c2f..8892633 100644
     }
   -- }}}
   -- Colorscheme {{{
-    -- packer.use "chxuan/change-colorscheme"
-    -- packer.use "joshdick/onedark.vim"
-    -- packer.use "KeitaNakamura/neodark.vim"
-    -- vim.g['neodark#background'] = '#282c34'
     packer.use {
       "chrisbra/Colorizer",
       config = function ()
@@ -1837,68 +1807,6 @@ index 4d19c2f..8892633 100644
 
       end,
     }
-  --   -- }}}
-  -- -- NERDTree {{{
-  --   packer.use {
-  --     'preservim/nerdtree',
-  --     requires = {
-  --       {'Xuyuanp/nerdtree-git-plugin'},
-  --       {'ryanoasis/vim-devicons'}
-  --     },
-  --     config = function ()
-  --       vim.g.NERDTreeShowBookmarks=0
-  --       vim.g.NERDTreeChDirMode=2
-  --       vim.g.NERDTreeMouseMode=2
-  --       vim.g.nerdtree_tabs_focus_on_files=1
-  --       vim.g.nerdtree_tabs_open_on_gui_startup=0
-
-  --       vim.g.NERDTreeMinimalUI=1
-  --       vim.g.NERDTreeDirArrows=1
-  --       vim.g.NERDTreeWinSize=40
-  --       vim.g.NERDTreeIgnore={ '.pyc$' }
-
-  --       vim.g.NERDTreeMapOpenVSplit='v'
-  --       vim.g.NERDTreeMapOpenSplit='s'
-  --       vim.g.NERDTreeMapJumpNextSibling=''
-  --       vim.g.NERDTreeMapJumpPrevSibling=''
-  --       vim.g.NERDTreeMapMenu='<leader>'
-  --       vim.g.NERDTreeQuitOnOpen=1
-  --       vim.g.NERDTreeCustomOpenArgs={ file = {reuse = '', where = 'p', keepopen = 0, stay = 0 }}
-
-  --       map('n', '<leader>oE', ':call NERDTreeToggleCWD()<CR>', { noremap = true })
-  --       map('n', '<leader>fP', ':call FindPathOrShowNERDTree()<CR>', {})
-
-  --       -- local au_nerd = {
-  --       --   {[[ FileType nerdtree lua load_nerdtree_ft() ]]}
-  --       -- }
-  --       -- augroups({au_nerd=au_nerd})
-
-  --       -- _G.load_nerdtree_ft = function ()
-  --       --   bmap('n', 'r', ':Rooter<CR>', {})
-  --       -- end
-
-  --       vim.api.nvim_exec ([[
-  --         function! NERDTreeToggleCWD()
-  --           NERDTreeToggle
-  --           let currentfile = expand('%')
-  --           if (currentfile == "") || !(currentfile !~? 'NERD')
-  --             NERDTreeCWD
-  --           endif
-  --         endfunction
-
-  --         function! FindPathOrShowNERDTree()
-  --           let currentfile = expand('%')
-  --           if (currentfile == "") || !(currentfile !~? 'NERD')
-  --             NERDTreeToggle
-  --           else
-  --             NERDTreeFind
-  --             NERDTreeCWD
-  --           endif
-  --         endfunction
-  --       ]], true)
-  --     end,
-  --   }
-  -- -- }}}
   -- Rooter {{{
     packer.use {
       'airblade/vim-rooter',
@@ -2196,14 +2104,6 @@ index 4d19c2f..8892633 100644
       end
 
     end
-  -- }}}
-  -- -- Registers {{{
-  --   packer.use {
-  --     'junegunn/vim-peekaboo',
-  --     config = function()
-  --       vim.g.peekaboo_delay = 1000
-  --     end,
-  --   }
   -- }}}
   -- VimWiki {{{
     packer.use {
@@ -2737,20 +2637,9 @@ index 4d19c2f..8892633 100644
         end
 
         local au_git = {
-          -- {[[FileType git nnoremap <buffer> <silent> c :WhichKey 'c'<CR>]]};
-          -- {[[FileType git nnoremap <buffer> <silent> d :WhichKey 'd'<CR>]]};
-          -- {[[FileType git nnoremap <buffer> <silent> r :WhichKey 'r'<CR>]]};
-          -- {[[FileType git nnoremap <buffer> <silent> g :WhichKey 'g'<CR>]]};
-          -- {[[FileType fugitive nnoremap <buffer> <silent> c :WhichKey 'c'<CR>]]};
-          -- {[[FileType fugitive nnoremap <buffer> <silent> d :WhichKey 'd'<CR>]]};
-          -- {[[FileType fugitive nnoremap <buffer> <silent> r :WhichKey 'r'<CR>]]};
-          -- {[[FileType fugitive nnoremap <buffer> <silent> g :WhichKey 'g'<CR>]]};
           {[[FileType fugitive nnoremap <buffer> <silent> q :close<CR>]]};
           {[[FileType fugitiveblame nnoremap <buffer> <silent> q :close<CR>]]};
           {[[FileType git nnoremap <buffer> <silent> q :close<CR>]]};
-          -- {[[BufEnter */.git/index nnoremap <buffer> <silent> c :WhichKey 'c'<CR>]]};
-          -- {[[BufEnter */.git/index nnoremap <buffer> <silent> d :WhichKey 'd'<CR>]]};
-          -- {[[BufEnter */.git/index nnoremap <buffer> <silent> r :WhichKey 'r'<CR>]]};
         }
         augroups({au_git=au_git})
 
