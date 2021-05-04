@@ -983,7 +983,10 @@
     --       \   'command': '%e',
     --       \   'project_root': getcwd(),
     --       \})
-      reg_highlight_cword()
+    --
+      require'lspconfig'.terraformls.autostart()
+
+      -- reg_highlight_cword()
       reg_auto_save()
     end
   -- }}}
@@ -1807,6 +1810,7 @@ index 4d19c2f..8892633 100644
 
       end,
     }
+  -- }}}
   -- Rooter {{{
     packer.use {
       'airblade/vim-rooter',
@@ -2243,7 +2247,8 @@ index 4d19c2f..8892633 100644
       ft = {'sh', 'zsh', 'bash', 'c',
       'cpp', 'cmake', 'html', 'markdown',
       'racket', 'vim', 'text', 'ansible', 'yaml',
-      'yaml.ansible', 'dockerfile', 'python' },
+      'yaml.ansible', 'dockerfile', 'python', 'terraform',
+      'hcl'},
       as = 'ale',
       cmd = 'ALEEnable',
       opt = true,
@@ -2572,6 +2577,11 @@ index 4d19c2f..8892633 100644
               staticcheck = true,
             }
           }
+        }
+        require'lspconfig'.terraformls.setup{
+          capabilities = capabilities,
+          on_attach = common_on_attach,
+          autostart = false,
         }
       end,
     }

@@ -63,7 +63,10 @@ in
         # python3Packages.jedi
         # python3Packages.debugpy
         rust-analyzer
-        terraform-lsp
+
+        terraform-ls
+        tflint
+
         sumneko-lua-language-server
         nodePackages.bash-language-server
         nodePackages.dockerfile-language-server-nodejs

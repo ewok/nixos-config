@@ -14,6 +14,7 @@ with lib;
     ./neovim
     ./python.nix
     ./svn.nix
+    ./terraform.nix
     ./typora.nix
     ./zeal.nix
   ];
