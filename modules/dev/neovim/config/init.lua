@@ -2564,7 +2564,7 @@ index 4d19c2f..8892633 100644
           on_attach = common_on_attach,
           autostart = false,
         }
-        require'lspconfig'.gopls.setup {
+        require'lspconfig'.gopls.setup{
           capabilities = capabilities,
           on_attach = common_on_attach,
           autostart = false,
@@ -2886,7 +2886,7 @@ index 4d19c2f..8892633 100644
   -- }}}
   -- FoldText {{{
     vim.api.nvim_exec([[
-      function! MyFoldText() " {{{
+      function! MyFoldText()
         let line = getline(v:foldstart)
 
         let nucolwidth = &fdc + &number * &numberwidth
@@ -2900,7 +2900,7 @@ index 4d19c2f..8892633 100644
         let line = strpart(line, 0, windowwidth - 2 -len(foldedlinecount))
         let fillcharcount = windowwidth - len(line) - len(foldedlinecount)
         return line . '…' . repeat(" ",fillcharcount) . foldedlinecount . '…' . ' '
-      endfunction " }}}
+      endfunction
       set foldtext=MyFoldText()
     ]], true)
   -- }}}
@@ -3048,7 +3048,6 @@ index 4d19c2f..8892633 100644
   })
   -- }}}
   -- AutoHighlight Current Word {{{
-
     _G.highlight_cword = function()
       clear_cword_highlight()
 
