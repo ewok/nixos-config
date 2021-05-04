@@ -386,8 +386,7 @@
     },
   },{
     mode = 'x',
-    noremap = true,
-    silent = true
+    noremap = true
   })
 
   -- Replace search
@@ -975,17 +974,7 @@
     }
     augroups({ft_terraform=ft_terraform})
     _G.load_terraform_ft = function()
-      -- TODO: Recover
-    -- call ale#linter#Define('terraform', {
-    --       \   'name': 'terraform-lsp',
-    --       \   'lsp': 'stdio',
-    --       \   'executable': 'terraform-lsp',
-    --       \   'command': '%e',
-    --       \   'project_root': getcwd(),
-    --       \})
-    --
       require'lspconfig'.terraformls.autostart()
-
       -- reg_highlight_cword()
       reg_auto_save()
     end
@@ -2253,11 +2242,8 @@ index 4d19c2f..8892633 100644
       cmd = 'ALEEnable',
       opt = true,
       setup = function ()
-        -- vim.g.ale_sign_column_always = 1
         vim.g.ale_sign_error = '!!'
         vim.g.ale_sign_warning = '..'
-        -- vim.g.ale_lint_on_text_changed = 'never'
-        -- vim.g.ale_lint_on_insert_leave = 0
         vim.g.ale_completion_enabled = 0
         vim.g.ale_disable_lsp = 1
       end,
@@ -2914,10 +2900,12 @@ index 4d19c2f..8892633 100644
       while true do
         timer:start(4000, 4000, vim.schedule_wrap(function()
           if (os.time() - auto_save_checkpoint) > 4 then
-            auto_save()
-            auto_save_locked = false
-            timer:stop()
-            -- timer:close()
+            if vim.fn.mode() ~= 'i' then
+              auto_save()
+              auto_save_locked = false
+              timer:stop()
+              -- timer:close()
+            end
           end
         end))
         coroutine.yield()
