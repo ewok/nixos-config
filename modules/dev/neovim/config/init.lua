@@ -71,6 +71,33 @@
   end)
 -- }}}
 
+-- WhichKey {{{
+  packer.use {
+    "folke/which-key.nvim",
+    opt = true,
+    as = 'which-key',
+    config = function()
+      require("which-key").setup {
+        operators = { gc = "Comments", gz = "Zeal in" },
+      }
+    end
+  }
+  cmd [[packadd which-key]]
+  local wk = require("which-key")
+  _G.wkmap = wk.register
+
+  -- Some common menu items
+  wkmap({
+    ['<leader>'] = {
+      b = '+Buffers',
+      c = '+Code',
+      f = '+Find',
+      m = '+Marks',
+      o = '+Open/+Options',
+    }
+  })
+-- }}}
+
 -- Basic options {{{
   vim.g.mapleader = ' '
   vim.g.maplocalleader = '\\'
@@ -283,125 +310,147 @@
 -- }}}
 
 -- Keymaps {{{
-  -- Tabs {{{
-    map('n', '<C-W>t', ':tabnew<CR>', { noremap = true, silent = true })
-  --   map('n', '<Tab>', ':tabnext<CR>', { noremap = true, silent = true })
-  --   map('n', '<S-Tab>', ':tabprev<CR>', { noremap = true, silent = true })
-  -- }}}
-  -- Windows {{{
-    if fn.exists('$TMUX') == 1 then
-      map('n', '<Plug>(window_split-tmux)', ':!tmux split-window -v -p 20<CR><CR>', { noremap = true })
-      map('n', '<C-W>S', '<Plug>(window_split-tmux)', { silent = true })
-
-      map('n', '<Plug>(window_vsplit-tmux)', ':!tmux split-window -h -p 20<CR><CR>', { noremap = true })
-      map('n', '<C-W>V', '<Plug>(window_vsplit-tmux)', { silent = true })
-    else
-      map('n', '<C-W>S', ':split terminal<CR>i', {})
-      map('n', '<C-W>V', ':vsplit terminal<CR>i', {})
-    end
-    -- Resize Windows
-    map('n', '<C-W><C-J>', ':resize +5<CR>', {})
-    map('n', '<C-W><C-K>', ':resize -5<CR>', {})
-    map('n', '<C-W><C-L>', ':vertical resize +5<CR>', {})
-    map('n', '<C-W><C-H>', ':vertical resize -5<CR>', {})
-  -- Don't close last window
-    map('n', '<C-W>q', ':close<CR>', {})
-  -- }}}
-  -- Folding {{{
-    map('n', '<space><space>', 'za"{{{"', { noremap = true, silent = true })
-    map('n', 'z.', 'mzzMzvzz15<c-e>`z', { noremap = true, silent = true })
-    map('v', '<space><space>', 'zf"}}}"', { noremap = true, silent = true })
-    -- Make zO recursively open whatever fold we're in, even if it's partially open.
-    map('n', 'zO', 'zczO', { noremap = true })
-    -- Close recursively
-    map('n', 'zC', 'zcV:foldc!<CR>', { noremap = true })
-    -- Navigation
-    map('n', 'zj', 'zjmzzMzvzz15<c-e>`z', {})
-    map('n', 'zk', 'zkmzzMzvzz15<c-e>`z', {})
-  -- }}}
-  -- Yank {{{
-    -- Don't know how to do that natively yet
-    -- map('n', 'MR', ':%s/\\(' .. fn.getreg('/') .. '\\)/\1/g<LEFT><LEFT>', { expr = true })
-    exec([[
-      nmap <expr>  MR  ':%s/\(' . @/ . '\)/\1/g<LEFT><LEFT>'
-      vmap <expr>  MR  ':s/\(' . @/ . '\)/\1/g<LEFT><LEFT>'
-    ]], true)
-    -- Replace without yanking
-    map('v', 'p', ':<C-U>let @p = @+<CR>gvp:let @+ = @p<CR>', { noremap = true })
-    -- Permanent buffer
-    map('n', '<leader>yy', ':.w! ~/.vbuf<CR>', {})
-    map('v', '<leader>yy', [[:'<,'>w! ~/.vbuf<CR>]], {})
-    map('n', '<leader>yp', ':r ~/.vbuf<CR>', {})
-    -- Yank some file data
-    map('n', '<leader>yfl', [[:let @+=expand("%") . ':' . line(".")<CR>]], { noremap = true })
-    map('n', '<leader>yfn', [[:let @+=expand("%")<CR>]], { noremap = true })
-    map('n', '<leader>yfp', [[:let @+=expand("%:p")<CR>]], { noremap = true })
-  -- }}}
-  -- Tunings {{{
-    map('n', 'Y', 'y$', { noremap = true })
-    -- Don't yank to default register when changing something
-    map('n', 'c', '"xc', { noremap = true })
-    map('x', 'c', '"xc', { noremap = true })
-    -- Don't cancel visual select when shifting
-    map('x', '<', '<gv', { noremap = true })
-    map('x', '>', '>gv', { noremap = true })
-    -- Keep the cursor in place while joining lines
-    map('n', 'J', 'mzJ`z', { noremap = true })
-    -- [S]plit line (sister to [J]oin lines) S is covered by cc.
-    map('n', 'S', 'mzi<CR><ESC>`z', { noremap = true })
-    -- Don't move cursor when searching via *
-    map('n', '*', ':let stay_star_view = winsaveview()<cr>*:call winrestview(stay_star_view)<CR>', { noremap = true, silent = true })
-    -- Keep search matches in the middle of the window.
-    map('n', 'n', 'nzzzv', { noremap = true })
-    map('n', 'N', 'Nzzzv', { noremap = true })
-
-    _G.start_line = function(mode)
-      mode = mode or 'n'
-      if mode == 'v' then
-        vim.api.nvim_exec('normal! gv', false)
-      elseif mode == 'n' then
-      else
-        print('Unknown mode, using normal.')
-      end
-      local cursor = vim.api.nvim_win_get_cursor(vim.api.nvim_get_current_win())
-      vim.api.nvim_exec('normal ^', false)
-      local check_cursor = vim.api.nvim_win_get_cursor(vim.api.nvim_get_current_win())
-      if cursor[2] == check_cursor[2] then
-        vim.api.nvim_exec('normal 0', false)
-      end
-    end
-    map('n', 'H', ':lua start_line()<CR>', { noremap = true, silent = true })
-    map('n', 'L', '$', { noremap = true })
-    map('v', 'H', [[:lua start_line('v')<CR>]], { noremap = true, silent = true })
-    map('v', 'L', '$', { noremap = true })
-    -- Sudo
-    map('c', 'w!!', 'w !sudo tee %', {})
-    --- Quick escape insert mode
-    -- map('i', 'jj', '<ESC>jj', {noremap = true, silent = true})
-    -- map('i', 'kk', '<ESC>kk', {noremap = true, silent = true})
-    --
+  wkmap({
     -- Go back and forward
-    -- Go forward bind as C-O+C-I as Tab is occupied usually
-    map('n', '<C-O><C-O>', '<C-O>', { noremap = true })
-    map('n', '<C-O><C-I>', '<Tab>', { noremap = true })
-  -- }}}
-  -- Settings options {{{
-    map('n', '<leader>osw', ':set wrap<CR>', {})
-    map('n', '<leader>ouw', ':set nowrap<CR>', {})
+    ['<C-O>'] = {
+      ['<C-O>'] = {'<C-O>', 'Go Back'},
+      ['<C-I>'] = {'<Tab>', 'Go Forward'},
+    },
+    ['<C-W>'] = {
 
-    map('n', '<leader>ost2', ':set tabstop=2 |set softtabstop=2| set shiftwidth=2<CR>', {})
-    map('n', '<leader>ost4', ':set tabstop=4 |set softtabstop=4| set shiftwidth=4<CR>', {})
-  -- }}}
-  -- Packer {{{
-    map('n', '<leader>pu', ':PackerUpdate<CR>', {})
-    map('n', '<leader>pC', ':PackerClean<CR>', {})
-    map('n', '<leader>pc', ':PackerCompile<CR>', {})
-    map('n', '<leader>pi', ':PackerInstall<CR>', {})
-    map('n', '<leader>ps', ':PackerSync<CR>', {})
-  -- }}}
-  -- Terminal {{{
+      -- Tabs
+      t = {'<cmd>tabnew<CR>', 'New Tab'},
+
+      -- Terminal
+      S = fn.exists('$TMUX') == 1
+      and {'<cmd>!tmux split-window -v -p 20<CR><CR>', 'Split window[tmux]'}
+      or {'<cmd>split term://bash<CR>i', 'Split window[terminal]'},
+      V = fn.exists('$TMUX') == 1
+      and {'<cmd>!tmux split-window -h -p 20<CR><CR>', 'VSplit window[tmux]'}
+      or {'<cmd>vsplit term://bash<CR>i', 'VSplit window[terminal]'},
+
+      -- Resize
+      ['<C-J>'] = {':resize +5<CR>', 'Increase height +5'},
+      ['<C-K>'] = {':resize -5<CR>', 'Decrease height -5'},
+      ['<C-L>'] = {':vertical resize +5<CR>', 'Increase width +5'},
+      ['<C-H>'] = {':vertical resize -5<CR>', 'Decrease width -5'},
+
+      -- Don't close last window
+      q = {'<cmd>close<CR>', 'Quit a window'}
+    },
+
+    -- Folding
+    [']z'] = {'zjmzzMzvzz15<c-e>`z', 'Next Fold'},
+    ['[z'] = {'zkmzzMzvzz15<c-e>`z', 'Previous Fold'},
+    z = {
+      O = {'zczO', 'Open all folds under cursor'},
+      C = {'zcV:foldc!<CR>', 'Close all folds under cursor'},
+      ['<Space>'] = {'mzzMzvzz15<c-e>`z', 'Show only current Fold'}
+    },
+    ['<Space><Space>'] = {'za"{{{"', 'Toggle Fold'},
+
+    -- Yank
+    ['<leader>'] = {
+      y = {
+        name = "+Yank",
+        y = {'<cmd>.w! ~/.vbuf<CR>', 'Yank to ~/.vbuf'},
+        p = {'<cmd>r ~/.vbuf<CR>', 'Paste from ~/.vbuf'},
+
+        -- Yank some data
+        f = {
+          name = "+File",
+          l = {[[:let @+=expand("%") . ':' . line(".")<CR>]], 'Yank file name and line'},
+          n = {[[:let @+=expand("%")<CR>]], 'Yank file name'},
+          p = {[[:let @+=expand("%:p")<CR>]], 'Yank file path'}
+        }
+      },
+
+      -- Packer
+      p = {
+        name = '+Packer',
+        u = {'<cmd>PackerUpdate<CR>', 'Update'},
+        C = {'<cmd>PackerClean<CR>', 'Clean'},
+        c = {'<cmd>PackerCompile<CR>', 'Compile'},
+        i = {'<cmd>PackerInstall<CR>', 'Install'},
+        s = {'<cmd>PackerSync<CR>', 'Sync'},
+      },
+    }
+  },{
+    noremap = true,
+  })
+
+  wkmap({
+    -- Folding
+    ['<Space><Space>'] = {'zf"}}}"', 'Toggle Fold'},
+
+    -- Permanent buffer
+    ['<leader>'] = {
+      y = {
+        name = "+Yank",
+        y = {[[:'<,'>w! ~/.vbuf<CR>]], 'Yank to ~/.vbuf'},
+      },
+    },
+  },{
+    mode = 'x',
+    noremap = true,
+    silent = true
+  })
+
+  -- Replace search
+  exec([[
+  nmap <expr>  MR  ':%s/\(' . @/ . '\)/\1/g<LEFT><LEFT>'
+  vmap <expr>  MR  ':s/\(' . @/ . '\)/\1/g<LEFT><LEFT>'
+  ]], true)
+
+  -- Replace without yanking
+  map('v', 'p', ':<C-U>let @p = @+<CR>gvp:let @+ = @p<CR>', { noremap = true })
+
+  -- Tunings
+  map('n', 'Y', 'y$', { noremap = true })
+
+  -- Don't cancel visual select when shifting
+  map('x', '<', '<gv', { noremap = true })
+  map('x', '>', '>gv', { noremap = true })
+
+  -- Keep the cursor in place while joining lines
+  map('n', 'J', 'mzJ`z', { noremap = true })
+
+  -- [S]plit line (sister to [J]oin lines) S is covered by cc.
+  map('n', 'S', 'mzi<CR><ESC>`z', { noremap = true })
+
+  -- Don't move cursor when searching via *
+  map('n', '*', ':let stay_star_view = winsaveview()<cr>*:call winrestview(stay_star_view)<CR>', { noremap = true, silent = true })
+
+  -- Keep search matches in the middle of the window.
+  map('n', 'n', 'nzzzv', { noremap = true })
+  map('n', 'N', 'Nzzzv', { noremap = true })
+
+  -- Smart start line
+  _G.start_line = function(mode)
+    mode = mode or 'n'
+    if mode == 'v' then
+      vim.api.nvim_exec('normal! gv', false)
+    elseif mode == 'n' then
+    else
+      print('Unknown mode, using normal.')
+    end
+    local cursor = vim.api.nvim_win_get_cursor(vim.api.nvim_get_current_win())
+    vim.api.nvim_exec('normal ^', false)
+    local check_cursor = vim.api.nvim_win_get_cursor(vim.api.nvim_get_current_win())
+    if cursor[2] == check_cursor[2] then
+      vim.api.nvim_exec('normal 0', false)
+    end
+  end
+  map('n', 'H', ':lua start_line()<CR>', { noremap = true, silent = true })
+  map('n', 'L', '$', { noremap = true })
+  map('v', 'H', [[:lua start_line('v')<CR>]], { noremap = true, silent = true })
+  map('v', 'L', '$', { noremap = true })
+
+  -- Sudo
+  map('c', 'w!!', 'w !sudo tee %', {})
+
+  -- Terminal
   vim.cmd [[tnoremap <Esc> <C-\><C-n>]]
-  -- }}}
 -- }}}
 
 -- Filetypes {{{
@@ -509,10 +558,20 @@
     }
     augroups({ft_go=ft_go})
     _G.load_go_ft = function()
-      bmap('n', '<leader>rr', ':silent GoRun<CR>', { silent = true })
-      bmap('n', '<leader>rt', ':silent GoTest<CR>', { silent = true })
-      bmap('n', '<leader>rb', ':silent GoBuild<CR>', { silent = true })
-      bmap('n', '<leader>rc', ':silent GoCoverageToggle<CR>', { silent = true })
+
+      wkmap({
+        name = '+Run[go]',
+        r = {'<cmd>silent GoRun<CR>', 'Run'},
+        t = {'<cmd>silent GoTest<CR>', 'Test'},
+        b = {'<cmd>silent GoBuild<CR>', 'Build'},
+        c = {'<cmd>silent GoCoverageToggle<CR>', 'Coverage Toggle'},
+      },{
+        prefix = '<leader>r',
+        silent = true,
+        noremap = true,
+        buffer = api.nvim_get_current_buf()
+      })
+
       reg_highlight_cword()
       reg_auto_save()
     end
@@ -560,7 +619,17 @@
     end
 
     _G.load_helm_ft = function()
-      bmap('n', '<leader>rr', ':lua render_helm()<CR>', { silent = true })
+
+      wkmap({
+        name = '+Run[helm]',
+        r = {'<cmd>lua render_helm()<CR>', 'Render'},
+      },{
+        prefix = '<leader>r',
+        silent = true,
+        noremap = true,
+        buffer = api.nvim_get_current_buf()
+      })
+
       reg_highlight_cword()
       reg_auto_save()
     end
@@ -592,10 +661,19 @@
     }
     augroups({ft_mail=ft_mail})
     _G.load_mail_ft = function()
-      bmap('n', '<leader>ry', ':%!pandoc -f markdown_mmd -t html<CR>', {})
-      bmap('n', '<leader>rr', ':LivedownPreview<CR>', { silent = true })
-      bmap('n', '<leader>rt', ':LivedownToggle<CR>', { silent = true })
-      bmap('n', '<leader>rk', ':LivedownKill<CR>', { silent = true })
+
+      wkmap({
+        name = '+Run[mail]',
+        y = {':%!pandoc -f markdown_mmd -t html<CR>', 'From MD to HTML'},
+        r = {':LivedownPreview<CR>', 'Live preview'},
+        t = {':LivedownToggle<CR>', 'Live preview ON/OFF'},
+        k = {':LivedownKill<CR>', 'Kill live preview'}
+      },{
+        prefix = '<leader>r',
+        silent = true,
+        noremap = true,
+        buffer = api.nvim_get_current_buf()
+      })
 
       vim.g.livedown_browser = 'qutebrowser'
       vim.g.livedown_port = 14545
@@ -631,13 +709,7 @@
       vim.wo.foldlevel = 2
       vim.wo.conceallevel = 2
 
-      bmap('n', '<leader>rr', ':LivedownPreview<CR>', { silent = true })
-      bmap('n', '<leader>rt', ':LivedownToggle<CR>', { silent = true })
-      bmap('n', '<leader>rk', ':LivedownKill<CR>', { silent = true })
-      bmap('n', '<leader>oT', ':silent ! typora "%" &<CR>', { silent = true })
-
       cmd [[ command! -bang -nargs=? EvalBlock call medieval#eval(<bang>0, <f-args>) ]]
-      bmap('n', '<leader>rb', '"":EvalBlock<CR>', { silent = true })
 
     -- inoremap <buffer><expr> ]] fzf#vim#complete({
     --       \ 'source':  'rg --no-heading --smart-case  .',
@@ -651,24 +723,47 @@
       bmap('i', '[[', 'qq<esc><Plug>ZettelSearchMap', { silent = true })
       bmap('x', '<CR>', '<Plug>ZettelNewSelectedMap', { silent = true })
 
-      bmap('n', '<leader>wb', ':VimwikiBacklinks<cr>', { noremap = true })
-
-      bmap('n', '<CR>', ':VimwikiFollowLink<CR>', { noremap = true })
-
-      bmap('n', '<Backspace>', ':VimwikiGoBackLink<CR>', { noremap = true })
-      bmap('n', '<leader>wd', ':VimwikiDeleteFile<CR>', { noremap = true })
-      bmap('n', '<leader>wr', ':VimwikiRenameFile<CR>', { noremap = true })
-
-      bmap('n', ']w',':VimwikiNextLink<CR>', { noremap = true })
-      bmap('n', '[w',':VimwikiPrevLink<CR>', { noremap = true })
-
-      bmap('n', '<leader>zb',':lua update_back_links()<CR>', { noremap = true, silent = true })
-      bmap('n', '<leader>zz',':ZettelOpen<CR>', { noremap = true })
-      bmap('n', '<leader>zy',':ZettelYankName<CR>', { noremap = true })
-      bmap('n', '<leader>zn',':ZettelNew<space>', { noremap = true })
-      bmap('n', '<leader>zi',':ZettelInsertNote<CR>', { noremap = true })
-      bmap('n', '<leader>zC',':ZettelCapture<CR>', { noremap = true })
-      bmap('n', '<leader>wT', ':VimwikiRebuildTags!<cr>:VimwikiGenerateTagLinks<cr><c-l>', { noremap = true })
+      wkmap({
+        ['<CR>'] = {'<cmd>VimwikiFollowLink<CR>', 'Follow Link'},
+        ['<Backspace>'] = {'<cmd>VimwikiGoBackLink<CR>', 'Go Back'},
+        [']w'] = {'<cmd>VimwikiNextLink<CR>', 'Next Wiki Link'},
+        ['[w'] = {'<cmd>VimwikiPrevLink<CR>', 'Prev Wiki Link'},
+        ['<leader>oT'] = {'<cmd>silent ! typora "%" &<CR>', 'Open in Typora'},
+        ['<leader>r'] = {
+          name = '+Run[md]',
+          b = {'<cmd>"":EvalBlock<CR>', 'Run Block'},
+          r = {'<cmd>LivedownPreview<CR>', 'Live preview'},
+          t = {'<cmd>LivedownToggle<CR>', 'Live preview ON/OFF'},
+          k = {'<cmd>LivedownKill<CR>', 'Kill live preview'}
+        },
+        ['<leader>w'] = {
+          name = '+Wiki',
+          b = {'<cmd>VimwikiBacklinks<cr>', 'Update wiki backlinks'},
+          d = {'<cmd>VimwikiDeleteFile<CR>', 'Delete page'},
+          r = {'<cmd>VimwikiRenameFile<CR>', 'Rename page'},
+          T = {'<cmd>VimwikiRebuildTags!<cr>:VimwikiGenerateTagLinks<cr><c-l>', 'Rebuild tags'},
+          j = {'<cmd>VimwikiDiaryNextDay<CR>', 'Show Next Day'},
+          k = {'<cmd>VimwikiDiaryPrevDay<CR>', 'Show Previous Day'},
+          m = {
+            name = '+Maint',
+            c = {'<cmd>VimwikiCheckLinks<CR>', 'Check Links'},
+            t = {'<cmd>VimwikiRebuildTags<CR>', 'Rebuild Tags'},
+          }
+        },
+        ['<leader>z'] = {
+          name = '+Zettel',
+          b = {'<cmd>lua update_back_links()<CR>', 'Update Backlinks'},
+          z = {'<cmd>ZettelOpen<CR>', 'Open'},
+          y = {'<cmd>ZettelYankName<CR>', 'Yank Page'},
+          n = {'<cmd>ZettelNew<space>', 'New'},
+          i = {'<cmd>ZettelInsertNote<CR>', 'Insert Note'},
+          C = {'<cmd>ZettelCapture<CR>', 'Capture as Note'},
+        },
+      },{
+        silent = true,
+        noremap = true,
+        buffer = api.nvim_get_current_buf()
+      })
 
       reg_highlight_cword()
       reg_auto_save()
@@ -729,20 +824,33 @@
       vim.bo.expandtab = true
       vim.bo.shiftwidth = 4
 
-      bmap('n', '<leader>rr', ':w|lua run_cmd("python " .. vim.fn.bufname("%"))<CR>', {})
-      bmap('n', '<leader>rt', ':w|lua run_cmd("python -m unittest " .. vim.fn.bufname("%"))<CR>', {})
-      bmap('n', '<leader>rT', ':w|lua run_cmd("python -m unittest")<CR>', {})
-      bmap('n', '<leader>rL', ':!pip install flake8 mypy pylint bandit pydocstyle pudb jedi<CR>:ALEInfo<CR>', {})
+      wkmap({
+        ['<leader>c'] = {
+          f = {'<cmd>lua format_python()<CR>', 'Formatting[black]'},
+        },
+        ['<leader>r'] = {
+          name = '+Run[python]',
+          b = {'<cmd>ofrom pudb import set_trace; set_trace()<esc>', 'Breakpoint'},
+          r = {'<cmd>w|lua run_cmd("python " .. vim.fn.bufname("%"))<CR>', 'Run'},
+          t = {'<cmd>w|lua run_cmd("python -m unittest " .. vim.fn.bufname("%"))<CR>', 'Test'},
+          T = {'<cmd>w|lua run_cmd("python -m unittest")<CR>', 'Test All'},
+          L = {'<cmd>:!pip install flake8 mypy pylint bandit pydocstyle pudb jedi<CR>:ALEInfo<CR>', 'Install Libs'},
+          R = {
+            name = '+Runner',
+            Q = 'Closer Runner',
+            X = 'Interrupt'
+          }
+        },
+      },{
+        silent = true,
+        buffer = api.nvim_get_current_buf()
+      })
 
       _G.format_python = function()
         vim.api.nvim_command('silent! write')
         vim.api.nvim_command('silent ! black -l 119 %')
         vim.api.nvim_command('silent e')
       end
-
-      bmap('n', '<leader>cf', ':lua format_python()<CR>', { silent = true })
-
-      bmap('n', '<leader>rb', 'ofrom pudb import set_trace; set_trace()<esc>', {})
 
       bmap('x', 'af', '<Plug>(textobj-python-function-a)', {})
       bmap('o', 'af', '<Plug>(textobj-python-function-a)', {})
@@ -769,6 +877,7 @@
       vim.fn.matchadd('OverLength', '\\%81v', 100)
 
       reg_auto_save()
+      reg_dap_keys()
     end
   -- }}}
   -- Puppet {{{
@@ -786,9 +895,22 @@
     augroups({ft_puppet=ft_puppet})
     _G.load_puppet_ft = function()
       vim.bo.commentstring = '# %s'
-      bmap('n', '<leader>rr', ':w |lua run_cmd("puppet " .. vim.fn.bufname("%"))<CR>', {})
-      bmap('n', '<leader>rt', ':w |lua run_cmd("puppet parser validate")<CR>', {})
-      bmap('n', '<leader>rL', ':!gem install puppet puppet-lint r10k yaml-lint<CR>:ALEInfo<CR>', {})
+
+      wkmap({
+        name = '+Run[puppet]',
+        r = {'<cmd>w |lua run_cmd("puppet " .. vim.fn.bufname("%"))<CR>', 'Run'},
+        t = {'<cmd>w |lua run_cmd("puppet parser validate")<CR>', 'Test'},
+        L = {'<cmd>!gem install puppet puppet-lint r10k yaml-lint<CR>:ALEInfo<CR>', 'Install Libs'},
+        R = {
+          name = '+Runner',
+          Q = 'Closer Runner',
+          X = 'Interrupt'
+        }
+      },{
+        prefix = '<leader>r',
+        silent = true,
+        buffer = api.nvim_get_current_buf()
+      })
 
       reg_highlight_cword()
       reg_auto_save()
@@ -807,9 +929,22 @@
     }
     augroups({ft_rust=ft_rust})
     _G.load_rust_ft = function()
-      bmap('n', '<leader>rr', ':RustRun<CR>', {})
-      bmap('n', '<leader>rt', ':RustTest<CR>', {})
-      bmap('n', '<leader>rL', ':RustFmr<CR>', {})
+
+      wkmap({
+        name = '+Run[rust]',
+        r = {'<cmd>RustRun<CR>', 'Run'},
+        t = {'<cmd>RustTest', 'Test'},
+        L = {'<cmd>RustFmr', 'Install Libs'},
+        R = {
+          name = '+Runner',
+          Q = 'Closer Runner',
+          X = 'Interrupt'
+        }
+      },{
+        prefix = '<leader>r',
+        silent = true,
+        buffer = api.nvim_get_current_buf()
+      })
 
       reg_smart_cr()
       reg_auto_save()
@@ -822,7 +957,21 @@
     }
     augroups({ft_shell=ft_shell})
     _G.load_shell_ft = function()
-      bmap('n', '<leader>rr', ':w |lua run_cmd("bash " .. vim.fn.bufname("%"))<CR>', {})
+
+      wkmap({
+        name = '+Run[shell]',
+        r = {'<cmd>w |lua run_cmd("bash " .. vim.fn.bufname("%"))<CR>', 'Run'},
+        R = {
+          name = '+Runner',
+          Q = 'Closer Runner',
+          X = 'Interrupt'
+        }
+      },{
+        prefix = '<leader>r',
+        silent = true,
+        buffer = api.nvim_get_current_buf()
+      })
+
       require('lspconfig').bashls.autostart()
       reg_highlight_cword()
       reg_auto_save()
@@ -1000,8 +1149,12 @@
         {
           'moll/vim-bbye',
           config = function()
-            map('n', '<C-W>d', ':Bdelete<CR>', { silent = true })
-            map('n', '<C-W><C-D>', ':Bdelete<CR>', { silent = true })
+            wkmap({
+              ['<C-W>'] = {
+                d = {'<cmd>Bdelete<CR>', 'Delete Buffer'},
+                ['<C-D>'] = {'<cmd>Bdelete<CR>', 'Delete Buffer'}
+              }
+            })
           end,
         }
       },
@@ -1070,83 +1223,23 @@ index 4d19c2f..8892633 100644
           }
         }
 
-        map('n', '<Tab>', ':BufferLineCycleNext<CR>', { noremap = true, silent = true })
-        map('n', '<S-Tab>', ':BufferLineCyclePrev<CR>', { noremap = true, silent = true })
-        map('n', 'g.', ':BufferLineMoveNext<CR>', { noremap = true, silent = true })
-        map('n', 'g,', ':BufferLineMovePrev<CR>', { noremap = true, silent = true })
-        -- map('n', '<leader>bq', ':BufferCloseAllButCurrent<CR>', { silent = true })
-        map('n', 'gb', ':BufferLinePick<CR>', { silent = true })
-        -- map('n', '<C-W>d', ':bdelete<CR>', { silent = true })
-        -- map('n', '<C-W><C-D>', ':bdelete<CR>', { silent = true })
-        map('n', '<leader>bs', ':BufferLineSortByDirectory<CR>', { silent = true })
+        wkmap({
+          ['<Tab>'] = {'<cmd>BufferLineCycleNext<CR>', 'Cycle Buffer'},
+          ['<S-Tab>'] = {'<cmd>BufferLineCyclePrev<CR>', 'Cycle Back Buffer'},
+          ['g.'] = {'<cmd>BufferLineMoveNext<CR>', 'Move Buffer Next in Line'},
+          ['g,'] = {'<cmd>BufferLineMovePrev<CR>', 'Move Buffer Back in Line'},
+          gb = {'<cmd>BufferLinePick<CR>', 'Buffer Pick'},
+          ['<leader>bs'] = {'<cmd>BufferLineSortByDirectory<CR>', 'Sort Buffer in Line'},
+        },{
+          noremap = true,
+          silent = true
+        })
 
         -- Add CWD to buffferline
         vim.o.tabline = "%!v:lua.nvim_bufferline() . ' ' . fnamemodify(getcwd(),':~')"
       end,
     }
   -- }}}
-  -- -- BarBar {{{
-  --   packer.use {
-  --     "romgrk/barbar.nvim",
-  --     setup = function ()
-  --       vim.api.nvim_exec([[
-  --         hi! BufferCurrent       gui=bold guibg=${color_6} guifg=${color_0}
-  --         hi! BufferCurrentIndex  gui=bold guibg=${color_6} guifg=${color_0}
-  --         hi! BufferCurrentMod    gui=bold guibg=${color_6} guifg=${color_0}
-  --         hi! BufferCurrentSign   gui=bold guibg=${color_0} guifg=${color_6}
-  --         hi! BufferCurrentTarget gui=bold guibg=${color_6} guifg=${color_1}
-  --         hi! BufferCurrentIcon   guibg=${color_0} guifg=${color_1}
-
-  --         hi! BufferVisible       guibg=${color_0} guifg=${color_6}
-  --         hi! BufferVisibleIndex  guibg=${color_0} guifg=${color_6}
-  --         hi! BufferVisibleMod    guibg=${color_0} guifg=${color_6}
-  --         hi! BufferVisibleSign   guibg=${color_0} guifg=${color_0}
-  --         hi! BufferVisibleTarget guibg=${color_0} guifg=${color_1}
-  --         hi! BufferVisibleIcon   guibg=${color_0} guifg=${color_6}
-
-  --         hi! BufferInactive       guibg=${color_0} guifg=${color_12}
-  --         hi! BufferInactiveIndex  guibg=${color_0} guifg=${color_12}
-  --         hi! BufferInactiveMod    guibg=${color_0} guifg=${color_12}
-  --         hi! BufferInactiveSign   guibg=${color_0} guifg=${color_0}
-  --         hi! BufferInactiveTarget guibg=${color_0} guifg=${color_1}
-  --         hi! BufferInactiveIcon   guibg=${color_0} guifg=${color_12}]] % colors, true)
-  --         end,
-  --     config = function()
-  --       local barbar_settings = vim.g.bufferline
-  --       if not vim.g.bufferline then
-  --         barbar_settings = {}
-  --       end
-  --       barbar_settings.closable = false
-  --       barbar_settings.clickable = false
-  --       barbar_settings.animation = false
-  --       barbar_settings.auto_hide = false
-  --       barbar_settings.icon_separator_active = ''
-  --       barbar_settings.icon_separator_inactive = ' '
-  --       barbar_settings.maximum_padding = 0
-  --       vim.g.bufferline = barbar_settings
-
-  --       map('n', '<Tab>', ':BufferNext<CR>', { noremap = true, silent = true })
-  --       map('n', '<S-Tab>', ':BufferPrev<CR>', { noremap = true, silent = true })
-  --       map('n', 'g.', ':BufferMoveNext<CR>', { noremap = true, silent = true })
-  --       map('n', 'g,', ':BufferMovePrevious<CR>', { noremap = true, silent = true })
-  --       map('n', '<leader>bq', ':BufferCloseAllButCurrent<CR>', { silent = true })
-  --       map('n', 'gb', ':BufferPick<CR>', { silent = true })
-  --       map('n', '<C-W>d', ':BufferClose<CR>', { silent = true })
-  --       map('n', '<C-W><C-D>', ':BufferClose<CR>', { silent = true })
-  --       map('n', '<leader>bs', ':lua require"bufferline.state".order_by_directory()<CR>', { silent = true })
-  --       -- local au_barbar = {
-  --       --   -- {('BufNew * lua require"bufferline.state".order_by_directory()')};
-  --       --   {('BufNew * lua require"bufferline.state".order_by_directory()')};
-  --       --   {('BufEnter * lua require"bufferline.state".order_by_directory()')};
-  --       --   {('BufWipeout * lua require"bufferline.state".order_by_directory()')};
-  --       --   {('BufWinEnter * lua require"bufferline.state".order_by_directory()')};
-  --       --   {('BufWinLeave * lua require"bufferline.state".order_by_directory()')};
-  --       --   {('BufWipeout * lua require"bufferline.state".order_by_directory()')};
-  --       -- }
-  --       -- augroups({au_barbar=au_barbar})
-  --     end,
-  --   }
-  -- -- }}}
   -- Better QuickFix {{{
     packer.use{
       'kevinhwang91/nvim-bqf',
@@ -1178,7 +1271,7 @@ index 4d19c2f..8892633 100644
       }},
       config = function()
         vim.g.cheat_default_window_layout = 'vertical_split'
-        map('n', '<leader>fc', ':Cheat<CR>', { noremap = true, silent = true })
+        wkmap({['<leader>fc'] = {'<cmd>Cheat<CR>', 'Find Cheat in cheat.sh'}})
       end,
     }
   -- }}}
@@ -1190,7 +1283,7 @@ index 4d19c2f..8892633 100644
     packer.use {
       "chrisbra/Colorizer",
       config = function ()
-        map('n', '<leader>oc', ':ColorToggle<CR>', { noremap = true, silent = false })
+        wkmap({['<leader>oc'] = {'<cmd>ColorToggle<CR>', 'Toggle Colors showing'}})
       end,
     }
     packer.use {
@@ -1239,26 +1332,33 @@ index 4d19c2f..8892633 100644
           })
         end
 
-        map('n', '<leader>ff', ':Telescope live_grep<CR>', { noremap = true, silent = true })
-        map('n', '<leader>fo', ':Telescope find_files<CR>', { noremap = true, silent = true })
-        map('n', '<leader>of', ':Telescope find_files<CR>', { noremap = true, silent = true })
-
-        map('n', '<leader>oh', ':Telescope help_tags<CR>', { noremap = true, silent = true })
-
-        map('n', '<leader>osf', ':Telescope filetypes<CR>', { noremap = true, silent = true })
-
-        map('n', '<leader>oo', ':Telescope vim_options<CR>', { noremap = true, silent = true })
-        map('n', '<leader>ona', ':Telescope autocommands<CR>', { noremap = true, silent = true })
-        map('n', '<leader>onc', ':Telescope commands<CR>', { noremap = true, silent = true })
-        map('n', '<leader>ons', ':Telescope colorscheme<CR>', { noremap = true, silent = true })
-        map('n', '<leader>oni', ':Telescope highlights<CR>', { noremap = true, silent = true })
-        map('n', '<leader>onk', ':Telescope keymaps<CR>', { noremap = true, silent = true })
-
-        map('n', '<leader>mm', ':Telescope marks<CR>', { noremap = true, silent = true })
-        map('n', 'm/', ':Telescope marks<CR>', { noremap = true, silent = true })
-
-        map('n', '<leader>bb', ':Telescope buffers<CR>', { noremap = true, silent = true })
-        map('n', '<leader>bd', ':lua telescope_buffers()<CR>', { noremap = true, silent = true })
+        wkmap({
+          ['<leader>'] = {
+            f = {
+              f = {'<cmd>Telescope live_grep<CR>', 'Find in Files'},
+              o = {'<cmd>Telescope find_files<CR>', 'Find File'}
+            },
+            o = {
+              o = {'<cmd>Telescope vim_options<CR>', 'Open options'},
+              h = {'<cmd>Telescope help_tags<CR>', 'Open Help'},
+              s = {
+                name = '+Set',
+                a = {'<cmd>Telescope autocommands<CR>', 'Autocommands'},
+                c = {'<cmd>Telescope commands<CR>', 'Commands'},
+                f = {'<cmd>Telescope filetypes<CR>', 'Filetypes'},
+                i = {'<cmd>Telescope highlights<CR>', 'Highlights'},
+                k = {'<cmd>Telescope keymaps<CR>', 'Keymaps'},
+                s = {'<cmd>Telescope colorscheme<CR>', 'Colorschemes'},
+              }
+            },
+            mm = {'<cmd>Telescope marks<CR>', 'Show Marks'},
+            bb = {'<cmd>Telescope buffers<CR>', 'Show buffers'},
+            bd = {function() telescope_buffers() end, 'Delete Buffer'}
+          }
+        },{
+          noremap = true,
+          silent = true
+        })
 
         local actions = require('telescope.actions')
         require('telescope').setup{
@@ -1300,15 +1400,8 @@ index 4d19c2f..8892633 100644
       requires = { 'junegunn/fzf', as = 'fzf' },
       as = 'fzf.vim',
       config = function()
-    --     -- map('n', '<leader>fb', ':Buffers<CR>', { noremap = true, silent = true })
-    --     -- map('n', '<leader>of', ':Files<CR>', { noremap = true, silent = true })
-    --     -- map('n', '<leader>om', ':Maps<CR>', { noremap = true, silent = true })
-    --     -- map('n', '<leader>oh', ':History<CR>', { noremap = true, silent = true })
-    --     -- map('n', '<leader>osft', ':Filetypes<CR>', { noremap = true, silent = true })
-    --     -- map('n', '<leader>osc', ':Colors<CR>', { noremap = true, silent = true })
-        map('n', '<leader>ghf', ':BCommits<CR>', { noremap = true, silent = true })
-    --     -- map('n', '<leader>ff', ':Rg<CR>', { noremap = true, silent = true })
-    --     -- map('n', '<leader>vv', ':Buffers<CR>', { noremap = true, silent = true })
+
+        wkmap({['<leader>ghf'] = {'<cmd>BCommits<CR>', 'File History'}},{noremap=true})
 
     --     vim.g.fzf_tags_command = 'ctags -R --exclude=.git --exclude=.idea --exclude=log'
         local fzf_action = {}
@@ -1670,7 +1763,9 @@ index 4d19c2f..8892633 100644
           ListBufferMarks    =  "m/",
           ListBufferMarkers  =  ""
         }
-        map('n', '<leader>mc', [[:call signature#mark#Purge('all')|wshada!<CR>]], { noremap = true, silent = true })
+
+        wkmap({['<leader>mc'] = {[[:call signature#mark#Purge('all')|wshada!<CR>]], 'Clear All'}})
+
       end,
     }
   -- }}}
@@ -1691,8 +1786,16 @@ index 4d19c2f..8892633 100644
         vim.g.nvim_tree_quit_on_open = 1
         vim.g.nvim_tree_lsp_diagnostics = 1
         vim.g.nvim_tree_highlight_opened_files = 1
-        map('n', '<leader>oe', ':NvimTreeToggle<CR>', { noremap = true })
-        map('n', '<leader>fp', ':NvimTreeFindFile<CR>', { noremap = true })
+
+        wkmap({
+          ['<leader>'] = {
+            oe = {'<cmd>NvimTreeToggle<CR>', 'Open Explorer'},
+            fp = {'<cmd>NvimTreeFindFile<CR>', 'Find file in Path'}
+          }
+        },{
+          noremap = true,
+          silent = true
+        })
 
         local tree_cb = require'nvim-tree.config'.nvim_tree_callback
         vim.g.nvim_tree_bindings = {
@@ -1804,7 +1907,14 @@ index 4d19c2f..8892633 100644
         vim.g.rooter_resolve_links = 1
         vim.g.rooter_manual_only = 1
         vim.g.rooter_cd_cmd = 'lcd'
-        map('n', '<leader>or', ':call RooterWithCWD()<CR>', {})
+
+        wkmap({
+          ['<leader>or'] = {'<cmd>call RooterWithCWD()<CR>', 'Open RootDir'}
+        },{
+          noremap = true,
+          silent = true
+        })
+
         vim.api.nvim_exec([[
           function! RooterWithCWD()
             Rooter
@@ -1849,12 +1959,18 @@ index 4d19c2f..8892633 100644
         --   [[  \___| \_/\_/ \___/|_|\_\ |___/ |_| |_|\_/ |_|_| |_| |_|]],
         -- }
 
-        map('n', '<leader>so', ':SLoad<CR>', {})
-        map('n', '<leader>su', ':SLoad ' .. vim.g.current_session_name .. '<CR>', {})
-        map('n', '<leader>ss', ':SSave ' .. vim.g.current_session_name, {})
-        map('n', '<leader>sc', ':SClose<CR>', {})
-        map('n', '<leader>sq', ':SClose<CR>q', {})
-        map('n', '<leader>sd', ':SDelete<CR>', {})
+        wkmap({
+          ['<leader>s'] = {
+            name = '+Session',
+            o = {'<cmd>SLoad<CR>', 'Load'},
+            u = {'<cmd>SLoad ' .. vim.g.current_session_name .. '<CR>', 'Load Current'},
+            s = {'<cmd>SSave ' .. vim.g.current_session_name, 'Save'},
+            c = {'<cmd>SClose<CR>', 'Close'},
+            q = {'<cmd>SClose<CR>:q<CR>', 'Save and Quit'},
+            d = {'<cmd>SDelete<CR>', 'Delete'}
+          }
+        })
+
       end,
     }
 
@@ -1923,7 +2039,6 @@ index 4d19c2f..8892633 100644
     }
     augroups({au_goyo=au_goyo})
 
-    map('n', '<leader>tt', ':Goyo<CR>', { noremap = true })
     -- Spelling
     vim.g.myLangList = { 'nospell', 'en_us', 'ru_ru' }
     local index={}
@@ -1952,9 +2067,24 @@ index 4d19c2f..8892633 100644
       print('spell checking lang: '..vim.g.myLangList[vim.b.myLang])
     end
 
-    map('n', '<F7>', ':lua toggle_spell()<CR>', { noremap = true, silent = true })
-    map('n', '<leader>ts', ':lua toggle_spell()<CR>', { noremap = true, silent = true })
     map('i', '<F7>', '<ESC>:lua toggle_spell()<CR>a', { silent = true })
+    -- Keys
+    wkmap({
+      ['<F7>'] = {function() toggle_spell() end, 'Toggle Spelling'},
+      ['<leader>'] = {
+        t = {
+          name = '+Text',
+          t = {'<cmd>Goyo<CR>', 'Goyo'},
+          s = {function() toggle_spell() end, 'Toggle Spelling'},
+          f = {
+            name = '+Fix'
+          }
+        }
+      }
+    },{
+      noremap = true,
+      silent = true
+    })
   -- }}}
   -- Tmux {{{
     packer.use {
@@ -1975,6 +2105,8 @@ index 4d19c2f..8892633 100644
 
     if fn.exists('$TMUX') == 1 then
       _G.run_cmd = function(command)
+        bmap('n', '<leader>rRQ', ':call CloseRunner()<CR>', {})
+        bmap('n', '<leader>rRX', ':VimuxInterruptRunner<CR>', {})
         execute('VimuxRunCommand("'..command..'")')
       end
 
@@ -1994,33 +2126,15 @@ index 4d19c2f..8892633 100644
         endfunction
       ]], true)
 
-      map('n', '<leader>rRQ', ':call CloseRunner()<CR>', {})
-      map('n', '<leader>rRX', ':VimuxInterruptRunner<CR>', {})
     end
   -- }}}
   -- Undo {{{
     packer.use {
       'mbbill/undotree',
     }
-    map('n', '<leader>u', ':UndotreeToggle<CR>', { noremap = true, silent = true })
-  -- }}}
-  -- WhichKey {{{
-    packer.use {
-      'liuchengxu/vim-which-key',
-      opt = true,
-    }
-    cmd [[packadd vim-which-key]]
-    map('n', '<leader>', [[:WhichKey '<Space>'<CR>]], { noremap = true, silent = true })
-    map('v', '<leader>', [[:<c-u>WhichKeyVisual '<Space>'<CR>]], { noremap = true, silent = true })
 
-    -- map('n', 'g', [[:WhichKey 'g'<CR>]], { noremap = true, silent = true })
-    -- map('v', 'g', [[:<c-u>WhichKeyVisual 'g'<CR>]], { noremap = true, silent = true })
+    wkmap({['<leader>u'] = {'<cmd>UndotreeToggle<CR>', 'Undo Tree'}})
 
-    map('n', ']', [[:WhichKey ']'<CR>]], { noremap = true, silent = true })
-    map('n', '[', [[:WhichKey '['<CR>]], { noremap = true, silent = true })
-
-    map('n', '<localleader>', [[:WhichKey '\'<CR>]], { noremap = true, silent = true })
-    map('v', '<localleader>', [[:<c-u>WhichKeyVisual '\'<CR>]], { noremap = true, silent = true })
   -- }}}
   -- Xkb {{{
     packer.use {
@@ -2040,7 +2154,9 @@ index 4d19c2f..8892633 100644
     packer.use {
       'dhruvasagar/vim-zoom'
     }
-    map('n', '<leader>Z', ':lua zoom_toggle()<CR>', {})
+
+    wkmap({['<leader>Z'] = {function() zoom_toggle() end, 'Toggle Zoom'}})
+
     _G.zoom_toggle = function()
 
       local zoom_nerd = false
@@ -2081,13 +2197,13 @@ index 4d19c2f..8892633 100644
 
     end
   -- }}}
-  -- Registers {{{
-    packer.use {
-      'junegunn/vim-peekaboo',
-      config = function()
-        vim.g.peekaboo_delay = 1000
-      end,
-    }
+  -- -- Registers {{{
+  --   packer.use {
+  --     'junegunn/vim-peekaboo',
+  --     config = function()
+  --       vim.g.peekaboo_delay = 1000
+  --     end,
+  --   }
   -- }}}
   -- VimWiki {{{
     packer.use {
@@ -2147,13 +2263,17 @@ index 4d19c2f..8892633 100644
           end
           vim.cmd [[ZettelBackLinks]]
         end
-        map('n', '<leader>ww', ':silent call VimwikiIndexCd()<CR>', { noremap = true })
-        map('n', '<leader>wi', ':VimwikiDiaryIndex<CR>', { noremap = true })
-        map('n', '<leader>wj', ':VimwikiDiaryNextDay<CR>', { noremap = true })
-        map('n', '<leader>wk', ':VimwikiDiaryPrevDay<CR>', { noremap = true })
-        map('n', '<leader>wmc', ':VimwikiCheckLinks<CR>', { noremap = true })
-        map('n', '<leader>wmt', ':VimwikiRebuildTags<CR>', { noremap = true })
-        map('n', '<leader>wt', ':call VimwikiMakeDiaryNoteNew()<CR>', { noremap = true })
+
+        wkmap({
+          ['<leader>w'] = {
+            name = '+Wiki',
+            w = {'<cmd>silent call VimwikiIndexCd()<CR>', 'Index'},
+            i = {'<cmd>VimwikiDiaryIndex<CR>', 'Diary'},
+            t = {'<cmd>call VimwikiMakeDiaryNoteNew()<CR>', 'Today'}
+          }
+        },{
+          noremap = true
+        })
 
         -- " make_note_link: List -> Str
         -- " returned string: [Title](YYYYMMDDHH.md)
@@ -2189,8 +2309,14 @@ index 4d19c2f..8892633 100644
       'liuchengxu/vista.vim',
       requires = {{'fzf'}},
       config = function ()
-        map('n', '<leader>ov', ':Vista<CR>', { noremap = true })
-        map('n', '<leader>ft', ':Vista finder<CR>', { noremap = true })
+
+        wkmap({
+          ['<leader>'] = {
+            ov = {'<cmd>Vista<CR>', 'Open Vista'},
+            ft = {'<cmd>Vista finder<CR>', 'Find Tag in Vista'}
+          }
+        })
+
         vim.cmd [[tnoremap <expr> <Esc> (&filetype == "fzf") ? "<Esc>" : "<c-\><c-n>"]]
         vim.g.vista_close_on_jump = 1
         local vista_executive_for = {
@@ -2411,7 +2537,9 @@ index 4d19c2f..8892633 100644
           map('n', 'K', [[<cmd>lua require('lspsaga.hover').render_hover_doc()<CR>]], { noremap = true, silent = true })
           map('n', '<C-f>', [[<cmd>lua require('lspsaga.action').smart_scroll_with_saga(1)<CR>]], { noremap = true, silent = true })
           map('n', '<C-b>', [[<cmd>lua require('lspsaga.action').smart_scroll_with_saga(-1)<CR>]], { noremap = true, silent = true })
-          map('n', 'gk', [[<cmd>lua require('lspsaga.signaturehelp').signature_help()<CR>]], { noremap = true, silent = true })
+          wkmap({
+            gk = {function() require('lspsaga.signaturehelp').signature_help() end, 'Signature Help[lspsaga]'}
+          })
         end, }
       },
       as = 'lspconfig',
@@ -2420,7 +2548,8 @@ index 4d19c2f..8892633 100644
         local capabilities = vim.lsp.protocol.make_client_capabilities()
         capabilities.textDocument.completion.completionItem.snippetSupport = true
 
-        local function common_on_attach(client, _)
+        local function common_on_attach(client, bufnr)
+
           if client.resolved_capabilities.document_highlight then
             vim.api.nvim_exec([[
               hi LspReferenceRead cterm=bold ctermbg=red guibg=${color_12}
@@ -2433,6 +2562,39 @@ index 4d19c2f..8892633 100644
             }
             augroups_buff({lsp_document_highlight=lsp_document_highlight})
           end
+
+          wkmap({
+            ['[d'] = {'<cmd>lua vim.lsp.diagnostic.goto_prev()<CR>', 'Previous Diagnostic Record'},
+            [']d'] = {'<cmd>lua vim.lsp.diagnostic.goto_next()<CR>', 'Next Diagnostic Record'},
+            g = {
+              d = {'<cmd>lua vim.lsp.buf.definition()<CR>', 'Goto Definition'},
+              D = {'<cmd>lua vim.lsp.buf.declaration()<CR>', 'Goto Declaration'},
+              r = {'<cmd>lua vim.lsp.buf.references()<CR>', 'Goto References'},
+              i = {'<cmd>lua vim.lsp.buf.implementation()<CR>', 'Goto Implementation'},
+              T = {'<cmd>lua vim.lsp.buf.type_definition()<CR>', 'Goto Type Definition'}
+            },
+            ['<leader>W'] = {
+              name = '+Workspace',
+              a = {'<cmd>lua vim.lsp.buf.add_workspace_folder()<CR>', 'Add Workspace'},
+              r = {'<cmd>lua vim.lsp.buf.remove_workspace_folder()<CR>', 'Remove Workspace'},
+              l = {'<cmd>lua print(vim.inspect(vim.lsp.buf.list_workspace_folders()))<CR>', 'List Workspaces'},
+            },
+            ['<leader>c'] = {
+              c = {'<cmd>lua vim.lsp.buf.code_action()<CR>', 'Code Action'},
+              d = {'<cmd>lua vim.lsp.diagnostic.show_line_diagnostics()<CR>', 'Show Diagnostics'},
+              D = {'<cmd>lua vim.lsp.diagnostic.set_loclist()<CR>', 'Show Diagnostics in LocList'},
+              r = {'<cmd>lua vim.lsp.buf.rename()<CR>', 'Rename'},
+            }
+          },{
+            silent = true,
+            noremap = true,
+            buffer = bufnr
+          })
+
+          if client.resolved_capabilities.document_formatting then
+            wkmap({['<leader>cf'] = {'<cmd>lua vim.lsp.buf.formatting()<CR>', 'Formatting'}})
+          end
+
         end
 
         require'lspconfig'.dockerls.setup{
@@ -2511,21 +2673,6 @@ index 4d19c2f..8892633 100644
             }
           }
         }
-        map('n', 'gd', '<cmd>lua vim.lsp.buf.definition()<CR>', { noremap = true, silent = true })
-        map('n', 'gD', '<cmd>lua vim.lsp.buf.declaration()<CR>', { noremap = true, silent = true })
-        map('n', 'gr', '<cmd>lua vim.lsp.buf.references()<CR>', { noremap = true, silent = true })
-        map('n', 'gi', '<cmd>lua vim.lsp.buf.implementation()<CR>', { noremap = true, silent = true })
-
-        -- map('n', 'K', '<cmd>lua vim.lsp.buf.hover()<CR>', { noremap = true, silent = true })
-        -- map('n', '<C-k>', '<cmd>lua vim.lsp.buf.signature_help()<CR>', { noremap = true, silent = true })
-
-        map('n', '<C-n>', '<cmd>lua vim.lsp.diagnostic.goto_prev()<CR>', { noremap = true, silent = true })
-        map('n', '<C-p>', '<cmd>lua vim.lsp.diagnostic.goto_next()<CR>', { noremap = true, silent = true })
-
-        map('n', '<leader>cc', '<cmd>lua vim.lsp.buf.code_action()<CR>', { noremap = true, silent = true })
-        map('n', '<leader>cd', '<cmd>lua vim.lsp.diagnostic.show_line_diagnostics()<CR>', { noremap = true, silent = true })
-        map('n', '<leader>crn', '<cmd>lua vim.lsp.buf.rename()<CR>', { noremap = true, silent = true })
-        map('n', '<leader>cf', '<cmd>lua vim.lsp.buf.formatting()<CR>', { noremap = true, silent = true })
       end,
     }
   -- }}}
@@ -2547,8 +2694,12 @@ index 4d19c2f..8892633 100644
     packer.use {
       'junegunn/vim-easy-align',
       config = function ()
-        map('n', 'ga', '<Plug>(LiveEasyAlign)', {})
-        map('x', 'ga', '<Plug>(LiveEasyAlign)', {})
+        wkmap({
+          ga = {'<Plug>(LiveEasyAlign)', 'Align Block'}
+        })
+        wkmap({
+          ga = {'<Plug>(LiveEasyAlign)', 'Align Block'}
+        },{mode='x'})
       end,
     }
   -- }}}
@@ -2557,19 +2708,15 @@ index 4d19c2f..8892633 100644
     'wincent/ferret',
     config = function()
       vim.g.FerretMap = 0
-      map('n', '<leader>fr<space>', '<Plug>(FerretAck)', {})
-      map('n', '<leader>fr<cr>', '<Plug>(FerretAcks)', {})
+      wkmap({
+        ['<leader>fr'] = {
+          name = '+Replace',
+          ['<space>'] = {'<Plug>(FerretAck)', 'Search'},
+          ['<CR>'] = {'<Plug>(FerretAcks)', 'Replace'}
+        }
+      })
     end,
     }
-    -- packer.use {
-    --   'brooth/far.vim',
-    --   config = function ()
-    --     vim.g['far#source'] = 'agnvim'
-    --     vim.g['far#file_mask_favorites'] = { '%', '.*', '\\.py$', '\\.go$' }
-    --     map('n', '<leader>fr', ':Far<space>', { noremap = true })
-    --     map('v', '<leader>fr', ':Far<space>', { noremap = true })
-    --   end,
-    -- }
   -- }}}
   -- GIT {{{
     -- vim.g.fugitive_gitlab_domains = ['https://my.gitlab.com']
@@ -2590,13 +2737,13 @@ index 4d19c2f..8892633 100644
         end
 
         local au_git = {
-          {[[FileType git nnoremap <buffer> <silent> c :WhichKey 'c'<CR>]]};
-          {[[FileType git nnoremap <buffer> <silent> d :WhichKey 'd'<CR>]]};
-          {[[FileType git nnoremap <buffer> <silent> r :WhichKey 'r'<CR>]]};
+          -- {[[FileType git nnoremap <buffer> <silent> c :WhichKey 'c'<CR>]]};
+          -- {[[FileType git nnoremap <buffer> <silent> d :WhichKey 'd'<CR>]]};
+          -- {[[FileType git nnoremap <buffer> <silent> r :WhichKey 'r'<CR>]]};
           -- {[[FileType git nnoremap <buffer> <silent> g :WhichKey 'g'<CR>]]};
-          {[[FileType fugitive nnoremap <buffer> <silent> c :WhichKey 'c'<CR>]]};
-          {[[FileType fugitive nnoremap <buffer> <silent> d :WhichKey 'd'<CR>]]};
-          {[[FileType fugitive nnoremap <buffer> <silent> r :WhichKey 'r'<CR>]]};
+          -- {[[FileType fugitive nnoremap <buffer> <silent> c :WhichKey 'c'<CR>]]};
+          -- {[[FileType fugitive nnoremap <buffer> <silent> d :WhichKey 'd'<CR>]]};
+          -- {[[FileType fugitive nnoremap <buffer> <silent> r :WhichKey 'r'<CR>]]};
           -- {[[FileType fugitive nnoremap <buffer> <silent> g :WhichKey 'g'<CR>]]};
           {[[FileType fugitive nnoremap <buffer> <silent> q :close<CR>]]};
           {[[FileType fugitiveblame nnoremap <buffer> <silent> q :close<CR>]]};
@@ -2607,20 +2754,41 @@ index 4d19c2f..8892633 100644
         }
         augroups({au_git=au_git})
 
-        map('n', '<leader>gs', ':Git<CR>', { silent = true })
-        map('n', '<leader>gd', ':Gdiffsplit<CR>', { silent = true })
-        map('n', '<leader>gW', ':Gwrite<CR>', { silent = true })
-        map('n', '<leader>gR', ':Gread<CR>', { silent = true })
+        wkmap({
+          ['<leader>g'] = {
+            name = '+Git',
+            b = {'<cmd>Git blame<CR>', 'Blame'},
+            d = {'<cmd>Gdiffsplit<CR>', 'Diff'},
+            g =  {'<cmd>.GBrowse %<CR>', 'Browse'},
+            h = {
+              name = '+History/Hunk',
+              l = {'<cmd>lua git_show_line_history()<CR>', 'History Line'},
+            },
+            p = {
+              name = '+Push/Pull',
+              lm = {'<cmd>Git pull<CR>', 'Merge'},
+              lr = {'<cmd>Git pull --rebase<CR>', 'Rebase'},
+              s = {'<cmd>Git push<CR>', 'Push'},
+            },
+            R = {'<cmd>Gread<CR>', 'Read'},
+            s = {'<cmd>Git<CR>', 'Status'},
+            W = {'<cmd>Gwrite<CR>', 'Write'},
+          }
+        })
 
-        map('n', '<leader>gb', ':Git blame<CR>', { silent = true })
+        wkmap({
+          ['<leader>g'] = {
+            name = '+Git',
+            g =  {[[:'<,'>GBrowse %<CR>]], 'Browse'},
+            h = {
+              name = '+History/Hunk',
+              v = {'<cmd>lua git_show_block_history()<CR>', 'History Visual Block'},
+            },
+          }
+        },{
+          mode = 'x'
+        })
 
-        map('n', '<leader>gps', ':Git push<CR>', { silent = true })
-        map('n', '<leader>gplr', ':Git pull --rebase<CR>', { silent = true })
-        map('n', '<leader>gplm', ':Git pull<CR>', { silent = true })
-        map('n', '<leader>gg', ':.GBrowse %<CR>', { silent = true })
-        map('v', '<leader>gg', [[:'<,'>GBrowse %<CR>]], { silent = true })
-        map('v', '<leader>ghv', ':<C-U>lua git_show_block_history()<CR>', { silent = true })
-        map('n', '<leader>ghl', ':lua git_show_line_history()<CR>', { silent = true })
       end,
     }
     -- Gitgutter
@@ -2629,11 +2797,17 @@ index 4d19c2f..8892633 100644
       config = function()
         vim.g.gitgutter_map_keys = 0
         vim.g.gitgutter_override_sign_column_highlight = 0
-        map('n', '[g', '<Plug>(GitGutterPrevHunk)', {})
-        map('n', ']g', '<Plug>(GitGutterNextHunk)', {})
-        map('n', '<leader>ghs', ':GitGutterStageHunk<CR>', {})
-        map('n', '<leader>ghr', ':GitGutterUndoHunk<CR>', {})
-        map('n', '<leader>ghp', ':GitGutterPreviewHunk<CR>', {})
+
+        wkmap({
+          [']g'] = {'<Plug>(GitGutterNextHunk)', 'Next Git Hunk'},
+          ['[g'] = {'<Plug>(GitGutterPrevHunk)', 'Previous Git Hunk'},
+          ['<leader>gh'] = {
+            s = {'<cmd>GitGutterStageHunk<CR>', 'Hunk Stage'},
+            r = {'<cmd>GitGutterUndoHunk<CR>', 'Hunk Revert'},
+            p = {'<cmd>GitGutterPreviewHunk<CR>', 'Hunk Preview'},
+          }
+        })
+
       end,
     }
     -- Gitv
@@ -2641,7 +2815,9 @@ index 4d19c2f..8892633 100644
       'junegunn/gv.vim',
       config = function()
         vim.g.Gitv_DoNotMapCtrlKey = 1
-        map('n', '<leader>ghh', ':GV<CR>', { silent = true })
+        wkmap({
+          ['<leader>ghh'] = {'<cmd>GV<CR>', 'History All'}
+        })
       end,
     }
   -- }}}
@@ -2673,8 +2849,10 @@ index 4d19c2f..8892633 100644
         vim.g.splitjoin_join_mapping = ''
       end,
       config = function()
-        map('n', 'gs', ':SplitjoinSplit<CR>', {})
-        map('n', 'gj', ':SplitjoinJoin<CR>', {})
+        wkmap({
+          gs = {'<cmd>SplitjoinSplit<CR>', 'Magic Split'},
+          gj = {'<cmd>SplitjoinJoin<CR>', 'Magic Join'}
+        })
       end,
     }
   -- }}}
@@ -2689,11 +2867,19 @@ index 4d19c2f..8892633 100644
           zv_file_types['\\v^(md|mdown|mkd|mkdn)$']  = 'markdown'
           zv_file_types['yaml.ansible']             = 'ansible'
         vim.g.zv_file_types = zv_file_types
-        map('n', '<F1>', '<Plug>Zeavim', {})
-        map('n', 'gzz', '<Plug>Zeavim', {})
-        map('v', 'gzz', '<Plug>ZVVisSelection', {})
-        map('n', 'gZ', '<Plug>ZVKeyDocset<CR>', {})
-        map('n', 'gz', '<Plug>ZVOperator', {})
+
+        wkmap({
+          gzz = {'<Plug>Zeavim', 'Find in Zeal'},
+          gZ = {'<Plug>ZVKeyDocset<CR>', 'Find Docset'},
+          gz = {'<Plug>ZVOperator', 'Zeal in...'}
+        })
+
+        wkmap({
+          gz = {'<Plug>ZVVisSelection', 'Find in Zeal'},
+        },{
+          mode = 'x'
+        })
+
       end,
     }
   -- }}}
@@ -2702,7 +2888,7 @@ index 4d19c2f..8892633 100644
       'ntpeters/vim-better-whitespace',
       config = function()
         vim.g.better_whitespace_filetypes_blacklist = { 'gitcommit', 'unite', 'qf', 'help', 'dotooagenda', 'dotoo' }
-        map('n', '<leader>tfw', ':StripWhitespace<CR>', {})
+        wkmap({['<leader>tfw'] = {'<cmd>StripWhitespace<CR>', 'Strip Whitespaces'}})
       end,
     }
   -- }}}
@@ -2711,8 +2897,13 @@ index 4d19c2f..8892633 100644
       'metakirby5/codi.vim',
       cmd = {'Codi'},
     }
-    map('n', '<leader>cP', ':Codi!! python<CR>', {})
-    map('n', '<leader>cL', ':Codi!! lua<CR>', {})
+
+    wkmap({
+      ['<leader>c'] = {
+        P = {'<cmd>Codi!! python<CR>', 'Codi Python'},
+        L = {'<cmd>Codi!! lua<CR>', 'Codi LUA'},
+      }
+    })
   -- }}}
   -- Debug {{{
     packer.use{
@@ -2730,22 +2921,28 @@ index 4d19c2f..8892633 100644
           end,
         },{
           "nvim-telescope/telescope-dap.nvim",
-          config = function()
-            map('n', '<leader>dB', ':Telescope dap list_breakpoints<CR>', {})
-            map('n', '<leader>dv', ':Telescope dap variables<CR>', {})
-          end,
         }
       },
-      config = function()
-        map('n', '<leader>db', ':lua require"dap".toggle_breakpoint()<CR>', {})
-        map('n', '<leader>dc', ':lua require"dap".continue()<CR>', {})
-        map('n', '<leader>dn', ':lua require"dap".step_over()<CR>', {})
-        map('n', '<leader>di', ':lua require"dap".step_into()<CR>', {})
-        map('n', '<leader>do', ':lua require"dap".step_out()<CR>', {})
-        map('n', '<leader>dS', ':lua require"dap".stop()<CR>', {})
-        map('n', '<leader>dr', ':lua require"dap".repl.open()<CR>', {})
-      end,
     }
+    _G.reg_dap_keys = function()
+      wkmap({
+        name = '+Debug',
+        b = {'<cmd>lua require"dap".toggle_breakpoint()<CR>', 'Toggle Breakpoint'},
+        c = {'<cmd>lua require"dap".continue()<CR>', 'Run/Continue'},
+        n = {'<cmd>lua require"dap".step_over()<CR>', 'Step Over'},
+        i = {'<cmd>lua require"dap".step_into()<CR>', 'Step Into'},
+        o = {'<cmd>lua require"dap".step_out()<CR>', 'Step Out'},
+        S = {'<cmd>lua require"dap".stop()<CR>', 'Stop'},
+        r = {'<cmd>lua require"dap".repl.open()<CR>', 'REPL'},
+        B = {'<cmd>Telescope dap list_breakpoints<CR>', 'Breakpoints List'},
+        v = {'<cmd>Telescope dap variables<CR>', 'Variables'},
+      },{
+        prefix = '<leader>d',
+        silent = true,
+        noremap = true,
+        buffer = api.nvim_get_current_buf()
+      })
+    end
   -- }}}
 -- Motion
   -- AutoPairs {{{
@@ -2779,13 +2976,14 @@ index 4d19c2f..8892633 100644
 -- Scripts {{{
   -- TODOs {{{
     vim.api.nvim_exec([[
-      nnoremap <silent> <leader>ot :call OpenToDo()<CR>
       function! OpenToDo()
         silent! vsplit TODO.md
         nnoremap <buffer> q :x<CR>
         setf todo
       endfunction
     ]], true)
+
+    wkmap({['<leader>ot'] = {'<cmd>call OpenToDo()<CR>', 'Open ToDO'}})
   -- }}}
   -- FoldText {{{
     vim.api.nvim_exec([[
@@ -2913,27 +3111,42 @@ index 4d19c2f..8892633 100644
     nnoremap <Plug>(qfix_Close) :cclose<CR>
     nnoremap <Plug>(qfix_QNext) :call QFixSwitch('next')<CR>
     nnoremap <Plug>(qfix_QPrev) :call QFixSwitch('prev')<CR>
-    nmap <leader>qq  <Plug>(qfix_Toggle)
-    nmap <leader>qo <Plug>(qfix_Open)
-    nmap <leader>qc <Plug>(qfix_Close)
-    nmap <leader>qn <Plug>(qfix_QNext)
-    nmap ]q <Plug>(qfix_QNext)
-    nmap <leader>qp <Plug>(qfix_QPrev)
-    nmap [q <Plug>(qfix_QPrev)
 
     nnoremap <Plug>(qfix_LToggle) :call ToggleList("Location List", 'l')<CR>
     nnoremap <Plug>(qfix_LOpen) :lopen<CR>
     nnoremap <Plug>(qfix_LClose) :lclose<CR>
     nnoremap <Plug>(qfix_LNext) :lnext<CR>
     nnoremap <Plug>(qfix_LPrev) :lprev<CR>
-    nmap <leader>ll  <Plug>(qfix_LToggle)
-    nmap <leader>lo <Plug>(qfix_LOpen)
-    nmap <leader>lc <Plug>(qfix_LClose)
-    nmap <leader>ln <Plug>(qfix_LNext)
-    nmap ]l <Plug>(qfix_LNext)
-    nmap <leader>lp <Plug>(qfix_LPrev)
-    nmap [l <Plug>(qfix_LPrev)
   ]], true)
+
+  wkmap({
+    [']'] = {
+      q = {'<Plug>(qfix_QNext)', 'Next QFix Item'},
+      l = {'<Plug>(qfix_LNext)', 'Next Location Item'},
+    },
+    ['['] = {
+      q = {'<Plug>(qfix_QPrev)', 'Previous QFix Item'},
+      l = {'<Plug>(qfix_LPrev)', 'Previous Location Item'},
+    },
+    ['<leader>'] = {
+      q = {
+        name = '+QFix',
+        q = {'<Plug>(qfix_Toggle)', 'Toggle'},
+        o = {'<Plug>(qfix_Open)', 'Open'},
+        c = {'<Plug>(qfix_Close)', 'Close'},
+        n = {'<Plug>(qfix_QNext)', 'Next'},
+        p = {'<Plug>(qfix_QPrev)', 'Previous'},
+      },
+      l = {
+        name = '+Location',
+        q = {'<Plug>(qfix_LToggle)', 'Toggle'},
+        o = {'<Plug>(qfix_LOpen)', 'Open'},
+        c = {'<Plug>(qfix_LClose)', 'Close'},
+        n = {'<Plug>(qfix_LQNext)', 'Next'},
+        p = {'<Plug>(qfix_LQPrev)', 'Previous'},
+      }
+    }
+  })
   -- }}}
   -- AutoHighlight Current Word {{{
 
@@ -2999,195 +3212,6 @@ index 4d19c2f..8892633 100644
   --     'ewok/DrawIt'
   --   }
   -- -- }}}
--- }}}
-
--- Leader init {{{
-  -- vim.g.lmap =  {b = {name = '+Buffer'}}
-  -- Register which key 'Space'
-  local lmap =  {}
-  lmap.b = {name = '+Buffers'}
-  lmap.b.q = 'Quit All'
-  lmap.b.s = 'Sort by dir'
-  lmap.c = {name = '+Code'}
-  lmap.c.c = 'Code action(line)'
-  lmap.c.d = 'Diagnostics'
-  lmap.c.r = {name = '+Refactor'}
-  lmap.c.r.n = 'Rename'
-  lmap.c.f = 'Formatting'
-  lmap.d = {name = '+Debug'}
-  lmap.d.B = 'Breakpoints list'
-  lmap.d.b = 'Set Breakpoint'
-  lmap.d.c = 'Run/Continue'
-  lmap.d.i = 'Step Into'
-  lmap.d.n = 'Step Over'
-  lmap.d.o = 'Step Out'
-  lmap.d.r = 'REPL'
-  lmap.d.S = 'Stop'
-  lmap.d.v = 'Variables'
-  lmap.f = {name = '+Find' }
-  lmap.f.c = 'Cheat'
-  lmap.f.f = 'in-File'
-  lmap.f.p = 'file in Path'
-  lmap.f.r = { name = '+Replace',
-    [' '] = 'Search',
-    ['<CR>'] = 'Replace'
-  }
-  lmap.f.o = 'and-Open file'
-  lmap.f.t = 'Tag'
-  lmap.g = {name = '+Git'}
-  lmap.g.b = 'Blame'
-  lmap.g.C = 'Commit'
-  lmap.g.d = 'Diff'
-  lmap.g.g = 'Browse'
-  lmap.g.h = { name = '+History/Hunk' }
-  lmap.g.h.f = 'History of File'
-  lmap.g.h.h = 'History All'
-  lmap.g.h.p = 'Hunk-preview'
-  lmap.g.h.r = 'Hunk-revert'
-  lmap.g.h.s = 'Hunk-stage'
-  lmap.g.h.v = 'History Visual Block'
-  lmap.g.h.l = 'History Line'
-  lmap.g.p = { name = '+Push-pull' }
-  lmap.g.p.l = { name = '+Pull' }
-  lmap.g.p.l.m = 'Merge'
-  lmap.g.p.l.r = 'Rebase'
-  lmap.g.p.s = 'Push'
-  lmap.g.R = 'Read'
-  lmap.g.s = 'Status'
-  lmap.g.W = 'Write'
-  lmap.l = { name = '+Location' }
-  lmap.l.c = 'Close'
-  lmap.l.l = 'Toggle'
-  lmap.l.n = 'Next'
-  lmap.l.o = 'Open'
-  lmap.l.p = 'Previous'
-  lmap.m = { name = '+Marks' }
-  lmap.m.m = 'Find'
-  lmap.m.c = 'Clean'
-  lmap.o = { name = '+Open/+Option'}
-  lmap.o.n = { name = '+Options+Neovim'}
-  lmap.o.n.a = 'Autocommands'
-  lmap.o.n.c = 'Commands'
-  lmap.o.n.s = 'Colorscheme'
-  lmap.o.n.i = 'hIghlights'
-  lmap.o.n.k = 'Keymaps'
-  lmap.o.c = 'Highlight Color codes'
-  lmap.o.o = 'All Options'
-  lmap.o.e = 'Explorer'
-  lmap.o.f = 'File'
-  lmap.o.h = 'Help'
-  lmap.o.r = 'Root(project)'
-  lmap.o.s = { name = '+Set'}
-  lmap.o.s.f = 'Filetype'
-  lmap.o.t = 'To-Do'
-  lmap.o.u = { name = '+Unset'}
-  lmap.o.v = 'Vista'
-  lmap.p = { name = '+Plugins' }
-  lmap.q = { name = '+QFix' }
-  lmap.q.c = 'Close'
-  lmap.q.n = 'Next'
-  lmap.q.o = 'Open'
-  lmap.q.p = 'Previous'
-  lmap.q.q = 'Toggle'
-  lmap.r = { name = '+Run' }
-  lmap.r.b = 'Breakpoint'
-  lmap.r.R = { name = '+Runner' }
-  lmap.r.R.q = 'Close Runner'
-  lmap.r.R.x = 'Interrupt'
-  lmap.s = { name = '+Session' }
-  lmap.s.c = 'Close'
-  lmap.s.d = 'Delete'
-  lmap.s.o = 'Open'
-  lmap.s.q = 'Quit'
-  lmap.s.s = 'Save'
-  lmap.s.u = 'Open Current Session'
-  lmap.t = { name = '+Text' }
-  lmap.t.f = {name = '+Fix'}
-  lmap.t.s = 'Syntax'
-  lmap.t.t = 'Text-only(Goyo)'
-  lmap.u = 'Undo'
-  lmap.w = { name = '+Wiki' }
-  lmap.w.w = 'Index'
-  lmap.w.m = { name = '+Maintanence'}
-  lmap.w.m.c = 'Check Links'
-  lmap.w.m.t = 'Rebuild Tags'
-  lmap.w.t = 'Today'
-  lmap.w.T = 'Tag Rebuild+Insert'
-  lmap.w.i = 'Diary'
-  lmap.w.r = 'Rename link'
-  lmap.w.d = 'Delete link'
-  lmap.w.j = 'Next Day'
-  lmap.w.k = 'Prev Day'
-  lmap.y = { name = '+Yank' }
-  lmap.y.f = { name = '+File' }
-  lmap.y.y = 'Yank-Ext'
-  lmap.y.p = 'Paste-Ext'
-  lmap.y.f.n = 'Name'
-  lmap.y.f.p = 'Path'
-  lmap.y.f.l = 'File:Line'
-  lmap.z = { name = '+Zettel' }
-  lmap.z.b = 'Update Backlinks'
-  lmap.z.z = 'Open'
-  lmap.z.y = 'Yank Page'
-  lmap.z.n = 'New'
-  lmap.z.i = 'Insert Note'
-  lmap.z.C = 'Capture As Note'
-  lmap.Z = 'Zoom'
-  vim.g.lmap = lmap
-  vim.fn['which_key#register']('<Space>', vim.g.lmap)
-
-  -- Register which key 'g'
-  local gmap =  {}
-  gmap.a = 'Align Text'
-  gmap.b = 'Buffer Pick'
-
-  gmap.D = 'goto Declaration'
-  gmap.d = 'goto Definition'
-  gmap.i = 'goto Implementation'
-  gmap.r = 'goto References'
-  gmap.k = 'goto Help'
-
-  gmap.e = 'which_key_ignore'
-  gmap.H = 'which_key_ignore'
-  gmap.h = 'which_key_ignore'
-  gmap.x = 'which_key_ignore'
-  gmap['%'] = 'which_key_ignore'
-  gmap['\\<BS>'] = 'which_key_ignore'
-
-  gmap.j = 'magic Join'
-  gmap.s = 'magic Split'
-
-  gmap.Z = 'Zeal: '
-  gmap.z = {name='+Zeal'}
-  -- gmap.z.m = 'which_key_ignore'
-  gmap.z.z = 'find in Zeal'
-
-  gmap.c = { name= '+Commentary'}
-  gmap.c.c = 'Comment'
-  gmap.c.u = 'Uncomment'
-
-  vim.g.gmap = gmap
-  vim.fn['which_key#register']('g', vim.g.gmap)
-
-  -- Register which key '[]'
-  local brmap =  {}
-  brmap['%'] = 'which_key_ignore'
-
-  brmap.g = 'git hunk'
-  brmap["'"] = 'mark'
-  brmap.l = 'location'
-  brmap.q = 'quickfix'
-
-  vim.g.brmap = brmap
-  vim.fn['which_key#register'](']', vim.g.brmap)
-  vim.fn['which_key#register']('[', vim.g.brmap)
-
-  vim.g.which_key_use_floating_win = 1
-  vim.g.which_key_align_by_seperator = 1
-  vim.g.which_key_run_map_on_popup = 1
-  vim.g.which_key_fallback_to_native_key = 1
-  vim.g.which_key_flatten = 0
-  vim.g.which_key_ignore_invalid_key = 1
 -- }}}
 
 -- Load local config {{{
