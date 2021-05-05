@@ -1143,7 +1143,7 @@ index 4d19c2f..8892633 100644
      ]]
         local fh, err, oserr = io.open(plugin.install_path .. '/patch.txt', 'wb')
         if not fh then return fh, err, oserr end
-        local status, err, oserr = fh:write(bufferline_patch)
+        fh:write(bufferline_patch)
         fh:close()
         os.execute('cd ' .. plugin.install_path .. ' && patch -i patch.txt -p1 && rm -f patch.txt')
       end,
@@ -1283,8 +1283,8 @@ index 4d19c2f..8892633 100644
           local action_set = require('telescope.actions.set')
           local action_state = require('telescope.actions.state')
           require('telescope.builtin').buffers({
-            attach_mappings = function(prompt_bufnr)
-              action_set.select:replace(function(prompt_bufnr, type)
+            attach_mappings = function()
+              action_set.select:replace(function(prompt_bufnr, _)
                 local entry = action_state.get_selected_entry()
                 actions.close(prompt_bufnr)
                 vim.cmd("bdelete " .. tostring(entry['bufnr']))
@@ -2338,8 +2338,8 @@ index 4d19c2f..8892633 100644
           end
         end
 
-        _G.tab_complete = function(key)
-          local key = key or "<Tab>"
+        _G.tab_complete = function(a_key)
+          local key = a_key or "<Tab>"
           if vim.fn.pumvisible() == 1 then
             return t "<C-n>"
           elseif vim.fn.call("vsnip#available", {1}) == 1 then
@@ -2350,8 +2350,8 @@ index 4d19c2f..8892633 100644
             return vim.fn['compe#complete']()
           end
         end
-        _G.s_tab_complete = function(key)
-          local key = key or "<S-Tab>"
+        _G.s_tab_complete = function(a_key)
+          local key = a_key or "<S-Tab>"
           if vim.fn.pumvisible() == 1 then
             return t "<C-p>"
           elseif vim.fn.call("vsnip#jumpable", {-1}) == 1 then
