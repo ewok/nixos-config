@@ -189,6 +189,12 @@ in
               {
                 block = "time";
                 interval = 60;
+                format = "🏠MSK: %R";
+                timezone = "Europe/Moscow";
+              }
+              {
+                block = "time";
+                interval = 60;
                 format = "🌎PST: %R";
                 timezone = "America/Los_Angeles";
               }
@@ -197,12 +203,6 @@ in
                 interval = 60;
                 format = "🌐UTC: %R";
                 timezone = "UTC";
-              }
-              {
-                block = "time";
-                interval = 60;
-                format = "🏠MSK: %R";
-                timezone = "Europe/Moscow";
               }
               {
                 block = "time";
