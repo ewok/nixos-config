@@ -1,6 +1,8 @@
 { config, inputs, lib, pkgs, ... }:
 let
   properties = config.properties;
+  username = config.properties.user.name;
+  homeDirectory = config.home-manager.users.${username}.home.homeDirectory;
 in
 {
   imports = [
@@ -30,6 +32,7 @@ in
       repo = properties.backup.repo;
       excludePaths = properties.backup.excludePaths;
       pass = properties.backup.backupPass;
+      paths = [ "/etc/" "${homeDirectory}" "/mnt/Data" ];
     };
   };
 

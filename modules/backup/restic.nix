@@ -19,6 +19,11 @@ in
         description = "Restic repository password.";
         type = types.str;
       };
+      paths = mkOption {
+        description = "Backup directories.";
+        type = types.listOf types.str;
+        default = [ "/etc/" "${homeDirectory}" ];
+      };
       excludePaths = mkOption {
         description = "List of paths to exclude from backup.";
         type = types.listOf types.str;
@@ -43,7 +48,7 @@ in
     services.restic.backups = {
       home = {
         passwordFile = "/etc/${passFile}";
-        paths = [ "/etc/" "${homeDirectory}" ];
+        paths = cfg.paths;
         repository = cfg.repo;
         timerConfig = {
           OnCalendar = "12:30";
