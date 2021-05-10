@@ -22,6 +22,7 @@
     };
 
   boot.initrd.luks.devices."nixos".device = "/dev/disk/by-uuid/bd17e8c6-b1aa-4c21-8b14-2aa20b3a37e1";
+  boot.initrd.luks.devices."data".device = "/dev/disk/by-label/data_crypted";
 
   fileSystems."/boot" =
     {
@@ -30,6 +31,12 @@
     };
 
   fileSystems."/mnt/Data" =
+    {
+      device = "/dev/disk/by-label/data";
+      fsType = "ext4";
+    };
+
+  fileSystems."/mnt/DataWin" =
     {
       device = "/dev/disk/by-label/Data";
       fsType = "ntfs";
