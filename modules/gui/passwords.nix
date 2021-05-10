@@ -21,7 +21,15 @@ in
       home.packages = [
         pkgs.enpass
         master.keepassxc
+        pkgs.pinentry
       ];
+
+      programs.gpg.enable = true;
+      services.gpg-agent = {
+        enable = true;
+        defaultCacheTtl = 7200;
+        maxCacheTtl = 86400;
+      };
 
       xdg.configFile."keepassxc/keepassxc.ini".text = ''
         [General]
@@ -33,7 +41,7 @@ in
 
         [Browser]
         CustomProxyLocation=
-        Enabled=false
+        Enabled=true
 
         [GUI]
         ApplicationTheme=dark

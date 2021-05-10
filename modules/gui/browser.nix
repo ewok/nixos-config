@@ -262,9 +262,11 @@ in
             "dd" = "tab-close";
             "rr" = "reload";
             "yv" = "spawn vlc {url}";
+            "pw" = "spawn --userscript qute-keepassxc";
           };
           insert = {
             "<Ctrl-y>" = "insert-text -- {clipboard}";
+            "<Alt-Shift-u>" = "spawn --userscript qute-keepassxc";
           };
           command = {
             "<Ctrl-j>" = "completion-item-focus --history next";
