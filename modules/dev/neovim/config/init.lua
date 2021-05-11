@@ -1110,6 +1110,7 @@
   -- BufferLine {{{
     packer.use {
       'akinsho/nvim-bufferline.lua',
+      as = 'bufferline',
       requires = {
         'kyazdani42/nvim-web-devicons',
         {
@@ -1128,15 +1129,15 @@
 
         local bufferline_patch = [[
 diff --git a/lua/bufferline.lua b/lua/bufferline.lua
-index 4d19c2f..8892633 100644
+index 52d1e26..15c6e8e 100644
 --- a/lua/bufferline.lua
 +++ b/lua/bufferline.lua
 @@ -583,7 +583,7 @@ local function render(bufs, tbs, prefs)
-   local left_element_size = strwidth(join(padding, padding, left_trunc_icon, padding, padding))
    local right_element_size = strwidth(join(padding, padding, right_trunc_icon, padding))
 
--  local available_width = vim.o.columns - tabs_length - close_length
-+  local available_width = vim.o.columns - tabs_length - close_length - vim.fn.len(vim.fn.fnamemodify(vim.fn.getcwd(), ':~'))
+   local offset_size, left_offset, right_offset = require("bufferline.offset").get(prefs)
+-  local available_width = vim.o.columns - offset_size - tabs_length - close_length
++  local available_width = vim.o.columns - offset_size - tabs_length - close_length - vim.fn.len(vim.fn.fnamemodify(vim.fn.getcwd(), ':~'))
    local before, current, after = get_sections(bufs)
    local line, marker = truncate(before, current, after, available_width, {
      left_count = 0,
@@ -1145,7 +1146,7 @@ index 4d19c2f..8892633 100644
         if not fh then return fh, err, oserr end
         fh:write(bufferline_patch)
         fh:close()
-        os.execute('cd ' .. plugin.install_path .. ' && patch -i patch.txt -p1 && rm -f patch.txt')
+        os.execute('cd ' .. plugin.install_path .. ' && patch -i patch.txt -p1 && rm -f patch.txt || true')
       end,
       config = function()
         require'bufferline'.setup{
@@ -1186,6 +1187,7 @@ index 4d19c2f..8892633 100644
             show_tab_indicators = true,
             persist_buffer_sort = true,
             always_show_bufferline = true,
+            offsets = {{filetype = "NvimTree", text = "File Explorer", highlight = "Directory"}}
           }
         }
 
