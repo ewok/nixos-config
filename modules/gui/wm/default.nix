@@ -182,7 +182,7 @@ in
             blocks = [
               {
                 block = "time";
-                interval = 28800;
+                interval = 3600;
                 format = "📆 %a %d/%m";
                 timezone = "Europe/Moscow";
               }
