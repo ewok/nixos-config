@@ -703,7 +703,7 @@
         ['<leader>oT'] = {'<cmd>silent ! typora "%" &<CR>', 'Open in Typora'},
         ['<leader>r'] = {
           name = '+Run[md]',
-          b = {'<cmd>"":EvalBlock<CR>', 'Run Block'},
+          b = {'<cmd>EvalBlock<CR>', 'Run Block'},
           r = {'<cmd>LivedownPreview<CR>', 'Live preview'},
           t = {'<cmd>LivedownToggle<CR>', 'Live preview ON/OFF'},
           k = {'<cmd>LivedownKill<CR>', 'Kill live preview'}
