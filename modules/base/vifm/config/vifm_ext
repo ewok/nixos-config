@@ -84,7 +84,7 @@ filetype *.avi,*.mp4,*.wmv,*.dat,*.3gp,*.ogv,*.mkv,*.mpg,*.vob,*.flv,*.m2v,*.mov
 " Web
 filextype *.html,*.htm
         \ {Open with luakit}
-        \ luakit %f:p %i &,
+        \ qutebrowser %f:p %i &,
         \ {Open with firefox}
         \ firefox %f %i &,
 filetype *.html,*.htm w3m
@@ -139,7 +139,7 @@ filextype *.pro qtcreator %f &
 
 " Directories
 filextype */
-        \ {View in thunar}
+        \ {View in default browser}
         \ open %f %i &,
 
 fileviewer .*/,*/ tree %f
@@ -202,3 +202,7 @@ filetype *.ftp
 " uncommenting one of lines below will result in ignoring 'vi[x]cmd' option
 " for unknown file types.
 filetype * vim
+
+filextype *
+        \ {Default}
+        \ open %f %i &,
