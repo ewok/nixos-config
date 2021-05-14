@@ -65,7 +65,7 @@ in
       };
 
       displayManager = {
-        autoLogin = { enable = true; user = "${username}"; };
+        #autoLogin = { enable = true; user = "${username}"; };
         defaultSession = "none+i3";
         sessionCommands = ''
           setxkbmap -rules "evdev" -model "pc105" -layout "us,ru" -option "ctrl:swapcaps"
