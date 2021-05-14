@@ -80,5 +80,5 @@ in
   modules.system.powermanagement.enable = true;
 
   modules.mail.enable = true;
-  modules.gaming.enable = false;
+  modules.gaming.enable = true;
 }
