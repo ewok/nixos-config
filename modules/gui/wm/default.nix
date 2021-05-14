@@ -79,6 +79,9 @@ in
     environment.variables = {
       GTK_THEME = "Adwaita:dark";
     };
+    environment.systemPackages = with pkgs; [
+      plymouth
+    ];
 
     qt5 = {
       enable = true;
