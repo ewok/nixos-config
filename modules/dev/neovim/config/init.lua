@@ -536,13 +536,13 @@
 
       wkmap({
         name = '+Run[go]',
-        r = {'<cmd>silent GoRun<CR>', 'Run'},
-        t = {'<cmd>silent GoTest<CR>', 'Test'},
-        b = {'<cmd>silent GoBuild<CR>', 'Build'},
-        c = {'<cmd>silent GoCoverageToggle<CR>', 'Coverage Toggle'},
+        r = {'<cmd>GoRun<CR>', 'Run'},
+        t = {'<cmd>GoTest<CR>', 'Test'},
+        b = {'<cmd>GoBuild<CR>', 'Build'},
+        c = {'<cmd>GoCoverageToggle<CR>', 'Coverage Toggle'},
       },{
         prefix = '<leader>r',
-        silent = true,
+        silent = false,
         noremap = true,
         buffer = api.nvim_get_current_buf()
       })
@@ -594,7 +594,7 @@
 
       wkmap({
         name = '+Run[helm]',
-        r = {'<cmd>lua render_helm()<CR>', 'Render'},
+        r = {function() render_helm() end, 'Render'},
       },{
         prefix = '<leader>r',
         silent = true,
@@ -642,7 +642,7 @@
         k = {':LivedownKill<CR>', 'Kill live preview'}
       },{
         prefix = '<leader>r',
-        silent = true,
+        silent = false,
         noremap = true,
         buffer = api.nvim_get_current_buf()
       })
@@ -724,15 +724,15 @@
         },
         ['<leader>z'] = {
           name = '+Zettel',
-          b = {'<cmd>lua update_back_links()<CR>', 'Update Backlinks'},
+          b = {function() update_back_links() end, 'Update Backlinks'},
           z = {'<cmd>ZettelOpen<CR>', 'Open'},
           y = {'<cmd>ZettelYankName<CR>', 'Yank Page'},
-          n = {'<cmd>ZettelNew<space>', 'New'},
+          n = {':ZettelNew<space>', 'New'},
           i = {'<cmd>ZettelInsertNote<CR>', 'Insert Note'},
           C = {'<cmd>ZettelCapture<CR>', 'Capture as Note'},
         },
       },{
-        silent = true,
+        silent = false,
         noremap = true,
         buffer = api.nvim_get_current_buf()
       })
@@ -798,11 +798,11 @@
 
       wkmap({
         ['<leader>c'] = {
-          f = {'<cmd>lua format_python()<CR>', 'Formatting[black]'},
+          f = {function() format_python() end, 'Formatting[black]'},
         },
         ['<leader>r'] = {
           name = '+Run[python]',
-          b = {'<cmd>ofrom pudb import set_trace; set_trace()<esc>', 'Breakpoint'},
+          b = {'ofrom pudb import set_trace; set_trace()<esc>', 'Breakpoint'},
           r = {'<cmd>w|lua run_cmd("python " .. vim.fn.bufname("%"))<CR>', 'Run'},
           t = {'<cmd>w|lua run_cmd("python -m unittest " .. vim.fn.bufname("%"))<CR>', 'Test'},
           T = {'<cmd>w|lua run_cmd("python -m unittest")<CR>', 'Test All'},
@@ -905,8 +905,8 @@
       wkmap({
         name = '+Run[rust]',
         r = {'<cmd>RustRun<CR>', 'Run'},
-        t = {'<cmd>RustTest', 'Test'},
-        L = {'<cmd>RustFmr', 'Install Libs'},
+        t = {'<cmd>RustTest<CR>', 'Test'},
+        L = {'<cmd>RustFmr<CR>', 'Install Libs'},
         R = {
           name = '+Runner',
           Q = 'Closer Runner',
@@ -914,7 +914,7 @@
         }
       },{
         prefix = '<leader>r',
-        silent = true,
+        silent = false,
         buffer = api.nvim_get_current_buf()
       })
 
@@ -940,7 +940,6 @@
         }
       },{
         prefix = '<leader>r',
-        silent = true,
         buffer = api.nvim_get_current_buf()
       })
 
@@ -1867,11 +1866,13 @@ index 52d1e26..15c6e8e 100644
             name = '+Session',
             o = {'<cmd>SLoad<CR>', 'Load'},
             u = {'<cmd>SLoad ' .. vim.g.current_session_name .. '<CR>', 'Load Current'},
-            s = {'<cmd>SSave ' .. vim.g.current_session_name, 'Save'},
+            s = {':SSave ' .. vim.g.current_session_name, 'Save'},
             c = {'<cmd>SClose<CR>', 'Close'},
             q = {'<cmd>SClose<CR>:q<CR>', 'Save and Quit'},
             d = {'<cmd>SDelete<CR>', 'Delete'}
           }
+        },{
+          silent = false
         })
 
       end,
@@ -2457,26 +2458,26 @@ index 52d1e26..15c6e8e 100644
           end
 
           wkmap({
-            ['[d'] = {'<cmd>lua vim.lsp.diagnostic.goto_prev()<CR>', 'Previous Diagnostic Record'},
-            [']d'] = {'<cmd>lua vim.lsp.diagnostic.goto_next()<CR>', 'Next Diagnostic Record'},
+            ['[d'] = {function() vim.lsp.diagnostic.goto_prev() end, 'Previous Diagnostic Record'},
+            [']d'] = {function() vim.lsp.diagnostic.goto_next() end, 'Next Diagnostic Record'},
             g = {
-              d = {'<cmd>lua vim.lsp.buf.definition()<CR>', 'Goto Definition'},
-              D = {'<cmd>lua vim.lsp.buf.declaration()<CR>', 'Goto Declaration'},
-              r = {'<cmd>lua vim.lsp.buf.references()<CR>', 'Goto References'},
-              i = {'<cmd>lua vim.lsp.buf.implementation()<CR>', 'Goto Implementation'},
-              T = {'<cmd>lua vim.lsp.buf.type_definition()<CR>', 'Goto Type Definition'}
+              d = {function() vim.lsp.buf.definition() end, 'Goto Definition'},
+              D = {function() vim.lsp.buf.declaration() end, 'Goto Declaration'},
+              r = {function() vim.lsp.buf.references() end, 'Goto References'},
+              i = {function() vim.lsp.buf.implementation() end, 'Goto Implementation'},
+              T = {function() vim.lsp.buf.type_definition() end, 'Goto Type Definition'}
             },
             ['<leader>W'] = {
               name = '+Workspace',
-              a = {'<cmd>lua vim.lsp.buf.add_workspace_folder()<CR>', 'Add Workspace'},
-              r = {'<cmd>lua vim.lsp.buf.remove_workspace_folder()<CR>', 'Remove Workspace'},
-              l = {'<cmd>lua print(vim.inspect(vim.lsp.buf.list_workspace_folders()))<CR>', 'List Workspaces'},
+              a = {function() vim.lsp.buf.add_workspace_folder() end, 'Add Workspace'},
+              r = {function() vim.lsp.buf.remove_workspace_folder() end, 'Remove Workspace'},
+              l = {function() print(vim.inspect(vim.lsp.buf.list_workspace_folders())) end, 'List Workspaces'},
             },
             ['<leader>c'] = {
-              c = {'<cmd>lua vim.lsp.buf.code_action()<CR>', 'Code Action'},
-              d = {'<cmd>lua vim.lsp.diagnostic.show_line_diagnostics()<CR>', 'Show Diagnostics'},
-              D = {'<cmd>lua vim.lsp.diagnostic.set_loclist()<CR>', 'Show Diagnostics in LocList'},
-              r = {'<cmd>lua vim.lsp.buf.rename()<CR>', 'Rename'},
+              c = {function() vim.lsp.buf.code_action() end, 'Code Action'},
+              d = {function() vim.lsp.diagnostic.show_line_diagnostics() end, 'Show Diagnostics'},
+              D = {function() vim.lsp.diagnostic.set_loclist() end, 'Show Diagnostics in LocList'},
+              r = {function() vim.lsp.buf.rename() end, 'Rename'},
             }
           },{
             silent = true,
@@ -2485,7 +2486,7 @@ index 52d1e26..15c6e8e 100644
           })
 
           if client.resolved_capabilities.document_formatting then
-            wkmap({['<leader>cf'] = {'<cmd>lua vim.lsp.buf.formatting()<CR>', 'Formatting'}})
+            wkmap({['<leader>cf'] = {function() vim.lsp.buf.formatting() end, 'Formatting'}})
           end
 
         end
@@ -2649,7 +2650,7 @@ index 52d1e26..15c6e8e 100644
             g =  {'<cmd>.GBrowse %<CR>', 'Browse'},
             h = {
               name = '+History/Hunk',
-              l = {'<cmd>lua git_show_line_history()<CR>', 'History Line'},
+              l = {function() git_show_line_history() end, 'History Line'},
             },
             p = {
               name = '+Push/Pull',
@@ -2669,7 +2670,7 @@ index 52d1e26..15c6e8e 100644
             g =  {[[:'<,'>GBrowse %<CR>]], 'Browse'},
             h = {
               name = '+History/Hunk',
-              v = {'<cmd>lua git_show_block_history()<CR>', 'History Visual Block'},
+              v = {function() git_show_block_history() end, 'History Visual Block'},
             },
           }
         },{
@@ -2814,18 +2815,18 @@ index 52d1e26..15c6e8e 100644
     _G.reg_dap_keys = function()
       wkmap({
         name = '+Debug',
-        b = {'<cmd>lua require"dap".toggle_breakpoint()<CR>', 'Toggle Breakpoint'},
-        c = {'<cmd>lua require"dap".continue()<CR>', 'Run/Continue'},
-        n = {'<cmd>lua require"dap".step_over()<CR>', 'Step Over'},
-        i = {'<cmd>lua require"dap".step_into()<CR>', 'Step Into'},
-        o = {'<cmd>lua require"dap".step_out()<CR>', 'Step Out'},
-        S = {'<cmd>lua require"dap".stop()<CR>', 'Stop'},
-        r = {'<cmd>lua require"dap".repl.open()<CR>', 'REPL'},
+        b = {function() require"dap".toggle_breakpoint() end, 'Toggle Breakpoint'},
+        c = {function() require"dap".continue() end, 'Run/Continue'},
+        n = {function() require"dap".step_over() end, 'Step Over'},
+        i = {function() require"dap".step_into() end, 'Step Into'},
+        o = {function() require"dap".step_out() end, 'Step Out'},
+        S = {function() require"dap".stop() end, 'Stop'},
+        r = {function() require"dap".repl.open() end, 'REPL'},
         B = {'<cmd>Telescope dap list_breakpoints<CR>', 'Breakpoints List'},
         v = {'<cmd>Telescope dap variables<CR>', 'Variables'},
       },{
         prefix = '<leader>d',
-        silent = true,
+        silent = false,
         noremap = true,
         buffer = api.nvim_get_current_buf()
       })
