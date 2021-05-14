@@ -95,7 +95,7 @@ in
         };
       };
 
-      home.packages = [ master.deadd-notification-center ];
+      home.packages = [ pkgs.dunst ];
 
     };
   };
