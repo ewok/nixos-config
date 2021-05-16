@@ -1186,7 +1186,10 @@ index 52d1e26..15c6e8e 100644
             show_tab_indicators = true,
             persist_buffer_sort = true,
             always_show_bufferline = true,
-            offsets = {{filetype = "NvimTree", text = "File Explorer", highlight = "Directory"}}
+            offsets = {
+              {filetype = "NvimTree", text = "File Explorer", highlight = "Directory"},
+              {filetype = "nerdtree", text = "File Explorer", highlight = "Directory"}
+          }
           }
         }
 
@@ -1673,6 +1676,8 @@ index 52d1e26..15c6e8e 100644
                   local filetype = vim.bo.filetype
                   if filetype == 'nvimtree' then
                     return ' Explorer '
+                  elseif filetype == 'nerdtree' then
+                    return ' Explorer '
                   elseif filetype == 'vista' then
                     return ' Tags '
                   end
@@ -1732,6 +1737,65 @@ index 52d1e26..15c6e8e 100644
       end,
     }
   -- }}}
+  -- NERDTree {{{
+    packer.use {
+      'preservim/nerdtree',
+      requires = {
+        {'Xuyuanp/nerdtree-git-plugin'},
+        {'ryanoasis/vim-devicons'}
+      },
+      config = function ()
+        vim.g.NERDTreeShowBookmarks=0
+        vim.g.NERDTreeChDirMode=2
+        vim.g.NERDTreeMouseMode=2
+        vim.g.nerdtree_tabs_focus_on_files=1
+        vim.g.nerdtree_tabs_open_on_gui_startup=0
+
+        vim.g.NERDTreeMinimalUI=1
+        vim.g.NERDTreeDirArrows=1
+        vim.g.NERDTreeWinSize=40
+        vim.g.NERDTreeIgnore={ '.pyc$' }
+        vim.g.NERDTreeShowHidden=1
+
+        vim.g.NERDTreeMapOpenVSplit='v'
+        vim.g.NERDTreeMapOpenSplit='s'
+        vim.g.NERDTreeMapJumpNextSibling=''
+        vim.g.NERDTreeMapJumpPrevSibling=''
+        vim.g.NERDTreeMapMenu='<leader>'
+        vim.g.NERDTreeQuitOnOpen=1
+        vim.g.NERDTreeCustomOpenArgs={ file = {reuse = '', where = 'p', keepopen = 0, stay = 0 }}
+
+        wkmap({
+          ['<leader>'] = {
+            oe = {'<cmd>call NERDTreeToggleCWD()<CR>', 'Open Explorer'},
+            fp = {'<cmd>call FindPathOrShowNERDTree()<CR>', 'Find file in Path'}
+          }
+        },{
+          noremap = true,
+          silent = true
+        })
+
+        vim.api.nvim_exec ([[
+          function! NERDTreeToggleCWD()
+            NERDTreeToggle
+            let currentfile = expand('%')
+            if (currentfile == "") || !(currentfile !~? 'NERD')
+              NERDTreeCWD
+            endif
+          endfunction
+          function! FindPathOrShowNERDTree()
+            let currentfile = expand('%')
+            if (currentfile == "") || !(currentfile !~? 'NERD')
+              NERDTreeToggle
+            else
+              NERDTreeFind
+              NERDTreeCWD
+            endif
+          endfunction
+        ]], true)
+      end,
+    }
+  -- }}}
   -- NvimTree {{{
     packer.use {
       'kyazdani42/nvim-tree.lua',
@@ -1740,9 +1804,9 @@ index 52d1e26..15c6e8e 100644
         vim.g.nvim_tree_width = 40
         vim.g.nvim_tree_auto_close = 1
         -- vim.g.nvim_tree_quit_on_open = 1
-        vim.g.nvim_tree_follow = 1
+        -- vim.g.nvim_tree_follow = 1
         -- Forgets state
-        -- vim.g.nvim_tree_tab_open = 1
+        vim.g.nvim_tree_tab_open = 0
         vim.g.nvim_tree_group_empty = 1
         vim.g.nvim_tree_disable_netrw = 0
         vim.g.nvim_tree_auto_ignore_ft = {'startify', 'dashboard'}
@@ -1752,8 +1816,8 @@ index 52d1e26..15c6e8e 100644
 
         wkmap({
           ['<leader>'] = {
-            oe = {'<cmd>NvimTreeToggle<CR>', 'Open Explorer'},
-            fp = {'<cmd>NvimTreeFindFile<CR>', 'Find file in Path'}
+            oE = {'<cmd>NvimTreeToggle<CR>', 'Open Explorer'},
+            fP = {'<cmd>NvimTreeFindFile<CR>', 'Find file in Path'}
           }
         },{
           noremap = true,
@@ -1820,9 +1884,9 @@ index 52d1e26..15c6e8e 100644
         vim.api.nvim_exec([[
           function! RooterWithCWD()
             Rooter
-            "NERDTreeCWD
-            NvimTreeClose
-            NvimTreeOpen
+            NERDTreeCWD
+            "NvimTreeClose
+            "NvimTreeOpen
           endfunction
         ]], true)
       end,
