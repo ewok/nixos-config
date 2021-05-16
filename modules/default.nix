@@ -37,6 +37,11 @@ with lib;
       description = "Full name.";
       type = types.str;
     };
+    workProjectDir = mkOption {
+      description = "Directiry with work projects.";
+      type = types.str;
+      default = "~/projects/work";
+    };
   };
   options.properties.backup = {
     repo = mkOption {

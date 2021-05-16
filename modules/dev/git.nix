@@ -88,7 +88,7 @@ in
           }
           (
             mkIf work.enable {
-              "includeIf \"gitdir:~/projects/work/\"" = {
+              "includeIf \"gitdir:${work.workProjectDir}/\"" = {
                 path = "${hm.xdg.configHome}/git/work.cfg";
               };
             }
