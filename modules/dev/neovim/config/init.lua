@@ -2923,6 +2923,9 @@ index 52d1e26..15c6e8e 100644
   -- Repeat {{{
     packer.use 'tpope/vim-repeat'
   -- }}}
+  -- MultiCursor {{{
+    packer.use 'mg979/vim-visual-multi'
+    -- }}}
 -- }}}
 
 -- Scripts {{{
