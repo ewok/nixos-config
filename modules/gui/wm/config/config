@@ -160,7 +160,7 @@ bindsym $mod_a+o mode "$mode_apps"
 set $mode_apps (b)luetooth,(c)alc,(C)ryptomator,Ca(l)endar,(e)xplorer,(k)ill menu,(m)ail,(p)avucontrol,(t)odo
 mode "$mode_apps" {
     bindsym b exec --no-startup-id rofi-bluetooth, mode "default"
-    bindsym C exec cryptomator, mode "default"
+    bindsym Shift+c exec cryptomator, mode "default"
     bindsym c exec --no-startup-id calc, mode "default"
     bindsym l exec qutebrowser --target window "https://calendar.google.com", mode "default"
     bindsym e exec pcmanfm, mode "default"
