@@ -2642,7 +2642,6 @@ index 52d1e26..15c6e8e 100644
   -- Treesitter {{{
     packer.use {
       'nvim-treesitter/nvim-treesitter',
-      commit = 'efbb1c66d27eb5b4bfbcc1f59d3384e0641c8214',
       run = ':TSUpdate',
       config = function ()
         require'nvim-treesitter.configs'.setup {
