@@ -83,10 +83,8 @@
   -- Some common menu items
   wkmap({
     ['<leader>'] = {
-      b = '+Buffers',
       c = '+Code',
       f = '+Find',
-      m = '+Marks',
       o = '+Open/+Options',
     }
   })
@@ -1199,7 +1197,14 @@ index 52d1e26..15c6e8e 100644
           ['g.'] = {'<cmd>BufferLineMoveNext<CR>', 'Move Buffer Next in Line'},
           ['g,'] = {'<cmd>BufferLineMovePrev<CR>', 'Move Buffer Back in Line'},
           gb = {'<cmd>BufferLinePick<CR>', 'Buffer Pick'},
-          ['<leader>bs'] = {'<cmd>BufferLineSortByDirectory<CR>', 'Sort Buffer in Line'},
+          ['<leader>'] = {
+            o = {
+              b = {
+                name = '+Buffers',
+                s = {'<cmd>BufferLineSortByDirectory<CR>', 'Sort Buffer in Line'},
+              }
+            }
+          },
         },{
           noremap = true,
           silent = true
@@ -1282,27 +1287,13 @@ index 52d1e26..15c6e8e 100644
       },
       config = function()
 
-        _G.telescope_buffers = function()
-          local actions = require('telescope.actions')
-          local action_set = require('telescope.actions.set')
-          local action_state = require('telescope.actions.state')
-          require('telescope.builtin').buffers({
-            attach_mappings = function()
-              action_set.select:replace(function(prompt_bufnr, _)
-                local entry = action_state.get_selected_entry()
-                actions.close(prompt_bufnr)
-                vim.cmd("bdelete " .. tostring(entry['bufnr']))
-              end)
-              return true
-            end,
-          })
-        end
-
         wkmap({
           ['<leader>'] = {
             f = {
               f = {'<cmd>Telescope live_grep<CR>', 'Find in Files'},
-              o = {'<cmd>Telescope find_files<CR>', 'Find File'}
+              o = {'<cmd>Telescope find_files<CR>', 'Find File'},
+              b = {'<cmd>Telescope buffers<CR>', 'Find Buffers'},
+              m = {'<cmd>Telescope marks<CR>', 'Find Marks'},
             },
             o = {
               o = {'<cmd>Telescope vim_options<CR>', 'Open options'},
@@ -1317,9 +1308,6 @@ index 52d1e26..15c6e8e 100644
                 s = {'<cmd>Telescope colorscheme<CR>', 'Colorschemes'},
               }
             },
-            mm = {'<cmd>Telescope marks<CR>', 'Show Marks'},
-            bb = {'<cmd>Telescope buffers<CR>', 'Show buffers'},
-            bd = {function() telescope_buffers() end, 'Delete Buffer'}
           }
         },{
           noremap = true,
@@ -1732,7 +1720,19 @@ index 52d1e26..15c6e8e 100644
           ListBufferMarkers  =  ""
         }
 
-        wkmap({['<leader>mc'] = {[[:call signature#mark#Purge('all')|wshada!<CR>]], 'Clear All'}})
+        wkmap({
+          ['<leader>'] = {
+            o = {
+              m = {
+                name = '+Marks',
+                c = {[[:call signature#mark#Purge('all')|wshada!<CR>]], 'Clear All'},
+              },
+            }
+          }
+        },{
+          noremap = true,
+          silent = true
+        })
 
       end,
     }
@@ -2642,6 +2642,7 @@ index 52d1e26..15c6e8e 100644
   -- Treesitter {{{
     packer.use {
       'nvim-treesitter/nvim-treesitter',
+      commit = 'efbb1c66d27eb5b4bfbcc1f59d3384e0641c8214',
       run = ':TSUpdate',
       config = function ()
         require'nvim-treesitter.configs'.setup {
