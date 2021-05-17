@@ -5,6 +5,7 @@ let
   user = config.properties.user;
   work = config.properties.work_account;
   hm = config.home-manager.users.${user.name};
+  homeDirectory = hm.home.homeDirectory;
 
   gitEnv = pkgs.symlinkJoin {
     name = "git-env";
@@ -65,7 +66,7 @@ in
         # userEmail = user.email;
         extraConfig = mkMerge [
           {
-            "includeIf \"gitdir:~/\"" = {
+            "includeIf \"gitdir:/\"" = {
               path = "${hm.xdg.configHome}/git/home.cfg";
             };
             "rebase" = {
@@ -74,7 +75,7 @@ in
             };
             "core" = {
               autocrlf = false;
-              excludesfile = "~/.config/git/gitexcludes";
+              excludesfile = "${hm.xdg.configHome}/git/gitexcludes";
               quotepath = false;
               askPass = "";
             };
