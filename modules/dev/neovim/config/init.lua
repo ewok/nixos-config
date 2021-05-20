@@ -1738,7 +1738,7 @@
         vim.g.NERDTreeMapOpenSplit='s'
         vim.g.NERDTreeMapJumpNextSibling=''
         vim.g.NERDTreeMapJumpPrevSibling=''
-        vim.g.NERDTreeMapMenu='<leader>'
+        vim.g.NERDTreeMapMenu='M'
         vim.g.NERDTreeQuitOnOpen=1
         vim.g.NERDTreeCustomOpenArgs={ file = {reuse = '', where = 'p', keepopen = 0, stay = 0 }}
 
