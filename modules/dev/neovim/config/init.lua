@@ -1132,30 +1132,13 @@
             diagnostics = "nvim_lsp",
             separator_style = "slant",
             diagnostics_indicator = function(_, _, diagnostics_dict)
-              local s = " "
               for e, n in pairs(diagnostics_dict) do
-                local sym = e == "error" and " "
-                or (e == "warning" and " " or " " )
-                s = s .. n .. sym
+                local sym = e == "error" and ""
+                or (e == "warning" and "" or "" )
+                s = " " .. sym .. n
               end
               return s
             end,
-            -- -- NOTE: this will be called a lot so don't do any heavy processing here
-            -- custom_filter = function(buf_number)
-            --   -- filter out filetypes you don't want to see
-            --   if vim.bo[buf_number].filetype ~= "<i-dont-want-to-see-this>" then
-            --     return true
-            --   end
-            --   -- filter out by buffer name
-            --   if vim.fn.bufname(buf_number) ~= "<buffer-name-I-dont-want>" then
-            --     return true
-            --   end
-            --   -- filter out based on arbitrary rules
-            --   -- e.g. filter out vim wiki buffer from tabline in your work repo
-            --   if vim.fn.getcwd() == "<work-repo>" and vim.bo[buf_number].filetype ~= "wiki" then
-            --     return true
-            --   end
-            -- end,
             show_buffer_close_icons = false,
             show_close_icon = false,
             show_tab_indicators = true,
@@ -1166,7 +1149,10 @@
               {filetype = "nerdtree", text = "File Explorer", highlight = "Directory"}
             },
             custom_areas = {
-              right = function() return {{text = vim.fn.fnamemodify(vim.fn.getcwd(),':~'), guifg = colors.color_4, guibg = colors.color_0}} end,
+              right = function() return {
+                {text = vim.fn.fnamemodify(vim.fn.getcwd(),':~'), guifg = colors.color_4, guibg = colors.color_0}
+              }
+              end,
             },
           }
         }
@@ -1519,38 +1505,38 @@
         }
 
         gls.right = {
-          {
-            DiagnosticError = {
-              provider = 'DiagnosticError',
-              icon = '  ',
-              condition = function() return condition.check_active_lsp() and condition.checkwidth() end,
-              highlight = {colors.base08, colors.base01}
-            },
-          },
-          {
-            DiagnosticWarn = {
-              provider = 'DiagnosticWarn',
-              icon = '  ',
-              condition = function() return condition.check_active_lsp() and condition.checkwidth() end,
-              highlight = {colors.base0A, colors.base01}
-            },
-          },
-          {
-            DiagnosticHint = {
-              provider = 'DiagnosticHint',
-              icon = '  ',
-              condition = function() return condition.check_active_lsp() and condition.checkwidth() end,
-              highlight = {colors.base0B, colors.base01}
-            }
-          },
-          {
-            DiagnosticInfo = {
-              provider = 'DiagnosticInfo',
-              icon = '  ',
-              condition = function() return condition.check_active_lsp() and condition.checkwidth() end,
-              highlight = {colors.base0B, colors.base01}
-            }
-          },
+          -- {
+          --   DiagnosticError = {
+          --     provider = 'DiagnosticError',
+          --     icon = '  ',
+          --     condition = function() return condition.check_active_lsp() and condition.checkwidth() end,
+          --     highlight = {colors.base08, colors.base01}
+          --   },
+          -- },
+          -- {
+          --   DiagnosticWarn = {
+          --     provider = 'DiagnosticWarn',
+          --     icon = '  ',
+          --     condition = function() return condition.check_active_lsp() and condition.checkwidth() end,
+          --     highlight = {colors.base0A, colors.base01}
+          --   },
+          -- },
+          -- {
+          --   DiagnosticHint = {
+          --     provider = 'DiagnosticHint',
+          --     icon = '  ',
+          --     condition = function() return condition.check_active_lsp() and condition.checkwidth() end,
+          --     highlight = {colors.base0B, colors.base01}
+          --   }
+          -- },
+          -- {
+          --   DiagnosticInfo = {
+          --     provider = 'DiagnosticInfo',
+          --     icon = '  ',
+          --     condition = function() return condition.check_active_lsp() and condition.checkwidth() end,
+          --     highlight = {colors.base0B, colors.base01}
+          --   }
+          -- },
           {
             LspStatus = {
               provider = function() return string.format(' %s ', lspclient.get_lsp_client()) end,
