@@ -1122,29 +1122,6 @@
           end,
         }
       },
-      run = function(plugin)
-
-        local bufferline_patch = [[
-diff --git a/lua/bufferline.lua b/lua/bufferline.lua
-index 52d1e26..15c6e8e 100644
---- a/lua/bufferline.lua
-+++ b/lua/bufferline.lua
-@@ -583,7 +583,7 @@ local function render(bufs, tbs, prefs)
-   local right_element_size = strwidth(join(padding, padding, right_trunc_icon, padding))
-
-   local offset_size, left_offset, right_offset = require("bufferline.offset").get(prefs)
--  local available_width = vim.o.columns - offset_size - tabs_length - close_length
-+  local available_width = vim.o.columns - offset_size - tabs_length - close_length - vim.fn.len(vim.fn.fnamemodify(vim.fn.getcwd(), ':~'))
-   local before, current, after = get_sections(bufs)
-   local line, marker = truncate(before, current, after, available_width, {
-     left_count = 0,
-     ]]
-        local fh, err, oserr = io.open(plugin.install_path .. '/patch.txt', 'wb')
-        if not fh then return fh, err, oserr end
-        fh:write(bufferline_patch)
-        fh:close()
-        os.execute('cd ' .. plugin.install_path .. ' && patch -i patch.txt -p1 && rm -f patch.txt || true')
-      end,
       config = function()
         require'bufferline'.setup{
           options = {
@@ -1187,7 +1164,10 @@ index 52d1e26..15c6e8e 100644
             offsets = {
               {filetype = "NvimTree", text = "File Explorer", highlight = "Directory"},
               {filetype = "nerdtree", text = "File Explorer", highlight = "Directory"}
-          }
+            },
+            custom_areas = {
+              right = function() return {{text = vim.fn.fnamemodify(vim.fn.getcwd(),':~'), guifg = colors.color_4, guibg = colors.color_0}} end,
+            },
           }
         }
 
@@ -1209,9 +1189,6 @@ index 52d1e26..15c6e8e 100644
           noremap = true,
           silent = true
         })
-
-        -- Add CWD to buffferline
-        vim.o.tabline = "%!v:lua.nvim_bufferline() . ' ' . fnamemodify(getcwd(),':~')"
       end,
     }
   -- }}}
