@@ -75,6 +75,7 @@ in
         };
 
         # Backlight
+        # Scan with "showkeys"
         programs.light.enable = true;
         services.actkbd = {
           enable = true;

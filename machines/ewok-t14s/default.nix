@@ -46,12 +46,12 @@ in
     _JAVA_OPTIONS = "-Dsun.java2d.uiScale=1.1";
   };
 
-  services.xserver.dpi = 118;
+  services.xserver.dpi = 115;
 
   modules.gui = {
     enable = true;
     fonts = {
-      dpi = 118;
+      dpi = 115;
     };
     displayProfiles = properties.displayProfiles;
     longitude = properties.longitude;
@@ -76,7 +76,7 @@ in
     enableSkype = false;
     enableSlack = true;
     enableTelegram = true;
-    enableZoom = false;
+    enableZoom = true;
   };
 
   modules.system.powermanagement = {
@@ -87,5 +87,5 @@ in
   };
 
   modules.mail.mailspring.enable = true;
-  # properties.defaultTerminal = "kitty";
+  properties.defaultTerminal = "kitty";
 }

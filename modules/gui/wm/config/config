@@ -137,8 +137,8 @@ bindsym XF86AudioNext exec playerctl next
 ################################################################################################
 # Screen brightness controls
 ################################################################################################
-bindsym XF86MonBrightnessUp exec "xbacklight -inc 10; notify-send 'brightness up'"
-bindsym XF86MonBrightnessDown exec "xbacklight -dec 10; notify-send 'brightness down'"
+bindsym XF86MonBrightnessUp exec "/run/current-system/sw/bin/light -A 5"
+bindsym XF86MonBrightnessDown exec "/run/current-system/sw/bin/light -U 5"
 
 # Screenshots
 bindsym Print exec --no-startup-id flameshot full -p ~/Pictures/Screenshots/
