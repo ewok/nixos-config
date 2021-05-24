@@ -77,13 +77,13 @@ in
         # Backlight
         # Scan with "showkeys"
         programs.light.enable = true;
-        services.actkbd = {
-          enable = true;
-          bindings = [
-            { keys = [ 225 ]; events = [ "key" ]; command = "/run/current-system/sw/bin/light -A 1"; }
-            { keys = [ 224 ]; events = [ "key" ]; command = "/run/current-system/sw/bin/light -U 1"; }
-          ];
-        };
+        # services.actkbd = {
+        #   enable = true;
+        #   bindings = [
+        #     { keys = [ 225 ]; events = [ "key" ]; command = "/run/current-system/sw/bin/light -A 1"; }
+        #     { keys = [ 224 ]; events = [ "key" ]; command = "/run/current-system/sw/bin/light -U 1"; }
+        #   ];
+        # };
         users.users.${username}.extraGroups = [ "video" ];
       }
     )
