@@ -109,6 +109,8 @@ in
 
         font-awesome
 
+        lm_sensors
+
       ] ++ [ master.xkb-switch-i3 ];
 
       xdg.configFile."i3/config" = {
@@ -155,6 +157,7 @@ in
 
       programs.i3status-rust = {
         enable = true;
+        package = master.i3status-rust;
         bars = {
           default = {
             settings = {
@@ -192,31 +195,55 @@ in
               {
                 block = "time";
                 interval = 60;
-                format = "🏠MSK: %R";
+                format = "🏠 %R";
                 timezone = "Europe/Moscow";
               }
               {
                 block = "time";
                 interval = 60;
-                format = "🌎PST: %R";
-                timezone = "America/Los_Angeles";
-              }
-              {
-                block = "time";
-                interval = 60;
-                format = "🌐UTC: %R";
+                format = "🌐 %R";
                 timezone = "UTC";
               }
               {
                 block = "time";
                 interval = 60;
-                format = "🌏PHT: %R";
+                format = "🌏 %R";
                 timezone = "Asia/Manila";
               }
+
+              {
+                block = "temperature";
+                collapsed = false;
+                interval = 10;
+                format = "{max}";
+                chip = "*-isa-*";
+                # inputs = ["CPUTIN" "SYSTIN"];
+                good = 50;
+                idle = 70;
+                info = 85;
+                warning = 90;
+              }
+
+              {
+                block = "custom";
+                command = pkgs.writeShellScript "show-fans.sh" ''
+                  FAN_SPEED="$(sensors | grep fan1 | awk '{ print $2}')"
+                  if [ $FAN_SPEED -gt 0 ]
+                  then
+                    echo '{"state":"Warning", "text": "  '$FAN_SPEED'"}'
+                  else
+                    echo '{"state":"Good", "text": "ﴛ"}'
+                  fi
+                '';
+                interval = 10;
+                json = true;
+              }
+
               {
                 block = "disk_space";
                 path = "/";
-                alias = "/";
+                # alias = " /";
+                format = " / {available}";
                 info_type = "available";
                 unit = "GB";
                 interval = 60;
@@ -228,7 +255,8 @@ in
                 mkIf (config.fileSystems ? "/mnt/Data") {
                   block = "disk_space";
                   path = "/mnt/Data";
-                  alias = "/Data";
+                  # alias = " data";
+                  format = " data {available}";
                   info_type = "available";
                   unit = "GB";
                   interval = 60;
@@ -239,13 +267,14 @@ in
 
               {
                 block = "cpu";
-                interval = 1;
+                interval = 5;
+                format = "{barchart}";
               }
               {
                 block = "memory";
                 display_type = "memory";
-                format_mem = "{Mum}MB({Mup}%)";
-                format_swap = "{SUm}MB({SUp}%)";
+                format_mem = "{mem_used;G}({mem_used_percents:1})";
+                format_swap = "{swap_used;G}({swap_used_percents:1})";
                 icons = true;
                 clickable = true;
                 interval = 10;
@@ -255,23 +284,33 @@ in
                 critical_swap = 95;
               }
               {
-                block = "music";
-                player = "spotify";
-                buttons = [ "play" "next" ];
+                block = "net";
+                format = "{speed_down;K*b}{speed_up;K*b}";
+                interval = 10;
+                hide_inactive = true;
+                hide_missing = true;
               }
               {
                 block = "sound";
                 step_width = 5;
               }
               {
+                block = "music";
+                player = "spotify";
+                buttons = [ "play" "next" ];
+                dynamic_width = true;
+                format = "{player}";
+              }
+              {
                 block = "battery";
                 interval = 60;
-                format = "{percentage}% {time}";
+                format = "{percentage} {time}";
               }
               {
                 block = "custom";
                 command = "xkb-switch";
-                interval = 5;
+                interval = 10;
+                signal = 4;
               }
             ];
             icons = "awesome";

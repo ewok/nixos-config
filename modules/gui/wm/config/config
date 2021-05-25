@@ -115,7 +115,7 @@ mode "$mode_keyb" {
 }
 
 
-bindsym $mod_a+space exec "xkb-switch -n; pkill -x --signal=SIGUSR1 i3status-rs"
+bindsym $mod_a+space exec "xkb-switch -n; pkill -SIGRTMIN+4 i3status-rs"
 
 ################################################################################################
 ## sound-section - DO NOT EDIT if you wish to automatically upgrade Alsa -> Pulseaudio later! ##
