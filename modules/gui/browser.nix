@@ -1,4 +1,4 @@
-{ config, lib, pkgs, ... }:
+{ config, lib, pkgs, inputs, firefox, ... }:
 with lib;
 let
   gui = config.modules.gui;
@@ -11,12 +11,15 @@ let
   mitmproxy-local-start = pkgs.writeShellScriptBin "mitmproxy-local-start" ''
     ${pkgs.mitmproxy}/bin/mitmdump -p 8080 --listen-host 127.0.0.1 -k > /dev/null
   '';
+
 in
 {
   config = mkIf gui.enable {
-    environment.sessionVariables = { BROWSER = "qutebrowser"; };
 
     home-manager.users.${username} = {
+
+    home.sessionVariables = { "BROWSER" = "qutebrowser"; };
+
       home.packages = with pkgs; [
         xsel
         mitmproxy-local-start
@@ -36,6 +39,7 @@ in
 
       programs.firefox = {
         enable = true;
+
         profiles = {
           options = {
             name = "${username}";
