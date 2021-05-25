@@ -79,6 +79,10 @@ in
   };
   modules.system.powermanagement.enable = true;
 
-  modules.mail.enable = true;
+  modules.mail = {
+    enable = true;
+    thunderbird.enable = true;
+  };
+
   modules.gaming.enable = true;
 }

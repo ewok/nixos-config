@@ -86,6 +86,10 @@ in
     suspendHibernate.enable = true;
   };
 
-  modules.mail.mailspring.enable = true;
+  modules.mail = {
+    enable = true;
+    thunderbird.enable = true;
+  };
+
   properties.defaultTerminal = "kitty";
 }

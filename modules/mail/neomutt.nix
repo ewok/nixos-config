@@ -1,7 +1,7 @@
 { config, lib, pkgs, inputs, ... }:
 with lib;
 let
-  mail = config.modules.mail;
+  cfg = config.modules.mail;
   gui = config.modules.gui;
   username = config.properties.user.name;
   hm = config.home-manager.users.${username};
@@ -51,7 +51,7 @@ let
   );
 in
 {
-  config = mkIf mail.enable {
+  config = mkIf (cfg.enable && cfg.neomutt.enable) {
     home-manager.users.${username} = {
 
       home.packages = [
