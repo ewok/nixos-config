@@ -36,6 +36,7 @@ in
     docker.autoPrune = true;
     k8s.enable = true;
     java.enable = true;
+    virtualisation.enableVirtualbox = true;
   };
 
   modules.gui = {

@@ -16,6 +16,7 @@ with lib;
     ./svn.nix
     ./terraform.nix
     ./typora.nix
+    ./virtualisation.nix
     ./zeal.nix
   ];
   options.modules.dev = {
