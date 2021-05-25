@@ -10,14 +10,8 @@ in
     ../../modules
     ./configuration.nix
     "${inputs.nixos-hardware}/common/pc/ssd"
+    "${inputs.nixos-hardware}/lenovo/thinkpad/t14s"
   ];
-
-  # services.xserver.libinput.middleEmulation = true;
-  # services.xserver.libinput.tapping = true;
-  services.xserver.libinput.enable = true;
-  services.xserver.libinput.touchpad.naturalScrolling = true;
-  # hardware.video.hidpi.enable = true;
-  # hardware.sensor.iio.enable = true;
 
   time.timeZone = properties.timezone;
 

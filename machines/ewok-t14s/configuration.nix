@@ -21,6 +21,8 @@ in
 
   hardware.bluetooth.enable = true;
   services.blueman.enable = true;
+  services.xserver.libinput.enable = true;
+  services.xserver.libinput.touchpad.naturalScrolling = true;
 
   system.stateVersion = "20.09";
 }

@@ -25,6 +25,8 @@ in
   hardware.bluetooth.enable = true;
   services.blueman.enable = true;
 
+  services.xserver.libinput.enable = true;
+
   # i18n.defaultLocale = "en_US.UTF-8";
 
   system.stateVersion = "20.09"; # Did you read the comment?
