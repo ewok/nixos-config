@@ -188,6 +188,13 @@ in
             "fish/functions/fish_right_prompt.fish".source = ./config/functions/fish_right_prompt.fish;
           }
         )
+        (
+          optionalAttrs (dev.aws.enable) {
+            "fish/conf.d/aws_completer.fish".text = ''
+              complete --command aws --no-files --arguments '(begin; set --local --export COMP_SHELL fish; set --local --export COMP_LINE (commandline); aws_completer | sed \'s/ $//\'; end)'
+            '';
+          }
+        )
       ];
     };
   };
