@@ -10,7 +10,7 @@ in
       enable= mkEnableOption "Enable java in dev environment.";
     };
   };
-  config = mkIf (dev.java.enable) {
+  config = mkIf (dev.enable && dev.java.enable) {
     home-manager.users."${username}" = {
       home.packages = [ pkgs.jdk ];
     };

@@ -31,8 +31,9 @@ in
     docker.enable = true;
     docker.autoPrune = true;
     k8s.enable = true;
-    java.enable = true;
     virtualisation.enableVirtualbox = true;
+    terraform.enable = true;
+    aws.enable = true;
   };
 
   environment.variables = {

@@ -1,7 +1,6 @@
 { config, lib, pkgs, ... }:
 with lib;
 let
-  cfg = config.modules.dev.docker;
   dev = config.modules.dev;
   username = config.properties.user.name;
   configHome = config.home-manager.users."${username}".xdg.configHome;
@@ -86,12 +85,12 @@ in
     };
   };
 
-  config = mkIf (cfg.enable && dev.enable) {
+  config = mkIf (dev.docker.enable && dev.enable) {
 
     virtualisation.docker = {
       enable = true;
       autoPrune = {
-        enable = cfg.autoPrune;
+        enable = dev.docker.autoPrune;
       };
     };
 

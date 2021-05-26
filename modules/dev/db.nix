@@ -6,7 +6,12 @@ let
   username = config.properties.user.name;
 in
 {
-  config = mkIf (dev.enable && gui.enable) {
+  options.modules.dev = {
+    dbtools = {
+      enable= mkEnableOption "Enable dbtools in dev environment.";
+    };
+  };
+  config = mkIf (dev.enable && gui.enable && dev.dbtools.enable) {
     home-manager.users."${username}" = {
       home.packages = with pkgs; [ dbeaver ];
     };

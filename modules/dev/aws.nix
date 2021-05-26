@@ -6,13 +6,14 @@ let
 in
 {
   options.modules.dev = {
-    go = {
-      enable= mkEnableOption "Enable go in dev environment.";
+    aws = {
+      enable= mkEnableOption "Enable aws in dev environment.";
     };
   };
-  config = mkIf (dev.enable && dev.go.enable) {
+  config = mkIf (dev.enable) {
     home-manager.users."${username}" = {
-      home.packages = [ pkgs.go ];
+      home.packages = [ pkgs.awscli2 ];
     };
   };
 }
+

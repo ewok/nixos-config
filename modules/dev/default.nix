@@ -2,7 +2,7 @@
 with lib;
 {
   imports = [
-    ./ctags.nix
+    ./aws.nix
     ./db.nix
     ./direnv.nix
     ./docker.nix

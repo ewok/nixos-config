@@ -37,6 +37,8 @@ in
     k8s.enable = true;
     java.enable = true;
     virtualisation.enableVirtualbox = true;
+    terraform.enable = true;
+    aws.enable = true;
   };
 
   modules.gui = {
