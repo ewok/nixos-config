@@ -68,11 +68,12 @@ in
     enable = true;
     enableTwitter = false;
     enableElement = false;
-    enableSignal = true;
+    enableSignal = false;
     enableSkype = false;
     enableSlack = true;
     enableTelegram = true;
     enableZoom = true;
+    enableDiscord = false;
   };
 
   modules.system.powermanagement = {
