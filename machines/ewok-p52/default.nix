@@ -82,5 +82,5 @@ in
     thunderbird.enable = true;
   };
 
-  modules.gaming.enable = true;
+  modules.gaming.enable = false;
 }
