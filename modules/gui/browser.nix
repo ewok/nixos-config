@@ -65,16 +65,11 @@ in
               "browser.urlbar.formatting.enabled" = false;
 
               # Some security twiks
-              "network.http.sendSecureXSiteReferrer" = false;
               "network.http.speculative-parallel-limit" = 0;
               "geo.enabled" = false;
               "geo.wifi.logging.enabled" = false;
               "browser.search.countryCode" = "";
               "browser.search.region" = "";
-
-              # Can cause some sites not working
-              "network.http.sendRefererHeader" = 0;
-              # "dom.storage.enabled" = false;
 
               "dom.event.clipboardevents.enabled" = false;
               "dom.event.contextmenu.enabled" = false;
