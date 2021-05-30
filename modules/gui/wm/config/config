@@ -157,7 +157,7 @@ bindsym Shift+space exec "xkb-switch -s us; todofi.sh -a"
 bindsym --release F12 exec --no-startup-id dunstctl history-pop
 
 # Start Applications
-bindsym $mod_a+Return exec --no-startup-id qutebrowser
+bindsym $mod_a+Return exec --no-startup-id firefox
 
 bindsym $mod_a+o mode "$mode_apps"
 set $mode_apps (b)luetooth,(c)alc,(C)ryptomator,Ca(l)endar,(e)xplorer,(k)ill menu,(m)ail,(p)avucontrol,(t)odo

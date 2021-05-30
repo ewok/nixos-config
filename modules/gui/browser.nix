@@ -18,7 +18,7 @@ in
 
     home-manager.users.${username} = {
 
-    home.sessionVariables = { "BROWSER" = "qutebrowser"; };
+    home.sessionVariables = { "BROWSER" = "firefox"; };
 
       home.packages = with pkgs; [
         xsel
@@ -56,6 +56,7 @@ in
               "browser.urlbar.suggest.searches" = false;
               "extensions.pocket.enabled" = false;
               "toolkit.legacyUserProfileCustomizations.stylesheets" = true;
+              "services.sync.prefs.sync.browser.uiCustomization.state" = true;
             } // optionalAttrs (gui.touchscreen.enable) {
               "dom.w3c_touch_events.enabled" = true;
             };
@@ -370,7 +371,7 @@ in
         "application/x-extension-xht"
         "x-scheme-handler/about"
         "x-scheme-handler/unknown"
-      ] (_: [ "org.custom.qutebrowser.windowed.desktop" ]);
+      ] (_: [ "firefox.desktop" ]);
 
     };
   };
