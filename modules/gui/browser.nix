@@ -46,7 +46,6 @@ in
             id = 0;
             settings = {
               "browser.startup.homepage" = "about:blank";
-              "browser.search.region" = "RU";
               "browser.search.isUS" = true;
               "browser.bookmarks.showMobileBookmarks" = true;
               "browser.bookmarks.restore_default_bookmarks" = false;
@@ -54,9 +53,52 @@ in
               "browser.tabs.warnOnClose" = false;
               "browser.urlbar.suggest.history" = false;
               "browser.urlbar.suggest.searches" = false;
-              "extensions.pocket.enabled" = false;
+
               "toolkit.legacyUserProfileCustomizations.stylesheets" = true;
               "services.sync.prefs.sync.browser.uiCustomization.state" = true;
+
+              "browser.download.animateNotifications" = false;
+              "media.autoplay.default" = 1;
+              "findbar.highlightAll" = true;
+              "layout.spellcheckDefault" = true;
+              "browser.urlbar.trimURLs" = false;
+              "browser.urlbar.formatting.enabled" = false;
+
+              # Some security twiks
+              "network.http.sendSecureXSiteReferrer" = false;
+              "network.http.speculative-parallel-limit" = 0;
+              "geo.enabled" = false;
+              "geo.wifi.logging.enabled" = false;
+              "browser.search.countryCode" = "";
+              "browser.search.region" = "";
+
+              # Can cause some sites not working
+              "network.http.sendRefererHeader" = 0;
+              # "dom.storage.enabled" = false;
+
+              "dom.event.clipboardevents.enabled" = false;
+              "dom.event.contextmenu.enabled" = false;
+              "webgl.disabled" = true;
+
+              "extensions.pocket.enabled" = false;
+              "browser.pocket.api" = "";
+              "browser.pocket.oAuthConsumerKey" = "";
+              "browser.pocket.site" = "";
+              "geo.wifi.uri" = "";
+              "browser.safebrowsing.appRepURL" = "";
+              "browser.safebrowsing.gethashURL" = "";
+              "browser.safebrowsing.malware.reportURL" = "";
+              "browser.safebrowsing.reportURL" = "";
+              "browser.safebrowsing.updateURL" = "";
+
+              "network.dns.disablePrefetch" = true;
+              "network.prefetch-next" = false;
+              "beacon.enabled" = false;
+
+              # "content.notify.ontimer" = true;
+              # "content.notify.interval" = 500000;
+              # "browser.sessionstore.interval" = 60000;
+
             } // optionalAttrs (gui.touchscreen.enable) {
               "dom.w3c_touch_events.enabled" = true;
             };
