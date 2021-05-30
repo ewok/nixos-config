@@ -26,9 +26,20 @@ in
 {
   config = mkIf base.enable {
 
+    environment.loginShellInit = ''
+      if [ -e $HOME/.profile ]
+      then
+        . $HOME/.profile
+      fi
+    '';
+
     home-manager.users."${username}" = {
 
       home.packages = [ open ];
+
+      home.file.".profile".text = ''
+        umask 0077
+      '';
 
       programs.autojump = {
         enable = true;
