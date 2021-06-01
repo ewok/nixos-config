@@ -184,7 +184,7 @@ in
           '';
 
         loginShellInit = ''
-          set fish_greeting
+          set -U fish_greeting
           __git.reset
           __abbr_tips_init
         '';
