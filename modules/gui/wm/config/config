@@ -379,7 +379,7 @@ client.background       $base07
 exec_always --no-startup-id caffeine -k
 # exec_always --no-startup-id pgrep clipit || clipit
 exec_always --no-startup-id pgrep xkb-switch || xkb-switch --i3
-exec_always --no-startup-id pgrep keepassxc || keepassxc
+# exec_always --no-startup-id pgrep keepassxc || keepassxc
 # exec_always --no-startup-id pgrep blueman-applet || blueman-applet
 # exec_always --no-startup-id pgrep Enpass || Enpass
 # exec_always --no-startup-id sparkleshare &
