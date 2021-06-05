@@ -83,10 +83,10 @@ filetype *.avi,*.mp4,*.wmv,*.dat,*.3gp,*.ogv,*.mkv,*.mpg,*.vob,*.flv,*.m2v,*.mov
 
 " Web
 filextype *.html,*.htm
-        \ {Open with firefox}
-        \ firefox %f %i &,
         \ {Open with qutebrowser}
         \ qutebrowser %f:p %i &,
+        \ {Open with firefox}
+        \ firefox %f %i &,
 filetype *.html,*.htm w3m
 
 " Object

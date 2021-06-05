@@ -738,7 +738,7 @@ augroup ft_markdown
     setlocal conceallevel=2
 
     PackAdd livedown
-    let g:livedown_browser = 'firefox'
+    let g:livedown_browser = 'qutebrowser'
     let g:livedown_port = 14545
 
     nmap <buffer> <silent> <leader>rr :LivedownPreview<CR>
@@ -1155,7 +1155,7 @@ augroup ft_mail
 
     PackAdd livedown
 
-    let g:livedown_browser = 'firefox'
+    let g:livedown_browser = 'qutebrowser'
     let g:livedown_port = 14545
 
     nmap <buffer> <silent> <leader>rr :LivedownPreview<CR>

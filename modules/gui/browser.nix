@@ -18,7 +18,7 @@ in
 
     home-manager.users.${username} = {
 
-    home.sessionVariables = { "BROWSER" = "firefox"; };
+    home.sessionVariables = { "BROWSER" = "qutebrowser"; };
 
       home.packages = with pkgs; [
         xsel
@@ -303,12 +303,12 @@ in
             "gk" = "tab-move -";
             "dd" = "tab-close";
             "rr" = "reload";
-            "yv" = "spawn vlc {url}";
-            "pw" = "spawn --userscript qute-keepassxc";
+            "wv" = "spawn vlc {url}";
+            "pw" = "spawn --userscript qute-lastpass";
           };
           insert = {
             "<Ctrl-y>" = "insert-text -- {clipboard}";
-            "<Alt-Shift-u>" = "spawn --userscript qute-keepassxc";
+            "<Alt-Shift-u>" = "spawn --userscript qute-lastpass";
           };
           command = {
             "<Ctrl-j>" = "completion-item-focus --history next";
@@ -408,7 +408,7 @@ in
         "application/x-extension-xht"
         "x-scheme-handler/about"
         "x-scheme-handler/unknown"
-      ] (_: [ "firefox.desktop" ]);
+      ] (_: [ "org.custom.qutebrowser.windowed.desktop" ]);
 
     };
   };

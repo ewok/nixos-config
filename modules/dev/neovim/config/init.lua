@@ -645,7 +645,7 @@
         buffer = api.nvim_get_current_buf()
       })
 
-      vim.g.livedown_browser = 'firefox'
+      vim.g.livedown_browser = 'qutebrowser'
       vim.g.livedown_port = 14545
     end
   -- }}}
@@ -655,7 +655,7 @@
       as = 'livedown',
       ft = { 'markdown', 'vimwiki', 'mail' },
       config = function ()
-        vim.g.livedown_browser = 'firefox'
+        vim.g.livedown_browser = 'qutebrowser'
         vim.g.livedown_port = 14545
       end,
     }

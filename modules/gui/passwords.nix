@@ -17,11 +17,24 @@ in
     programs.seahorse.enable = true;
     security.pam.services.lightdm.enableGnomeKeyring = true;
 
+    environment.systemPackages = with pkgs; [
+      gnupg
+    ];
+    services.pcscd.enable = true;
+
     home-manager.users.${username} = {
       home.packages = [
         pkgs.enpass
         master.keepassxc
         pkgs.pinentry
+
+        pkgs.lastpass-cli
+
+        master.yubikey-manager-qt
+        master.yubikey-personalization-gui
+        pkgs.yubico-pam
+        pkgs.yubikey-agent
+        pkgs.yubioath-desktop
       ];
 
       programs.gpg.enable = true;
