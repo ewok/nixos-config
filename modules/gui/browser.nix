@@ -21,6 +21,9 @@ in
     home.sessionVariables = { "BROWSER" = "qutebrowser"; };
 
       home.packages = with pkgs; [
+        # For Google Meet
+        google-chrome
+
         xsel
         mitmproxy-local-start
         mitmproxy-local-stop
