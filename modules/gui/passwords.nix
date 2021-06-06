@@ -30,6 +30,7 @@ in
 
         pkgs.lastpass-cli
 
+        master.yubikey-manager
         master.yubikey-manager-qt
         master.yubikey-personalization-gui
         pkgs.yubico-pam
@@ -37,7 +38,14 @@ in
         pkgs.yubioath-desktop
       ];
 
-      programs.gpg.enable = true;
+      programs.gpg = {
+        enable = true;
+        scdaemonSettings = {
+          disable-ccid = true;
+          reader-port = "Yubico Yubi";
+        };
+
+      };
       services.gpg-agent = {
         enable = true;
         defaultCacheTtl = 7200;
