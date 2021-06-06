@@ -188,14 +188,8 @@ in
             blocks = [
               {
                 block = "time";
-                interval = 3600;
-                format = "📆 %a %d/%m";
-                timezone = "Europe/Moscow";
-              }
-              {
-                block = "time";
                 interval = 60;
-                format = "🏠 %R";
+                format = "📆 %a %d %b 🏠 %R";
                 timezone = "Europe/Moscow";
               }
               {
@@ -268,7 +262,7 @@ in
               {
                 block = "cpu";
                 interval = 5;
-                format = "{barchart}";
+                format = "{utilization}";
               }
               {
                 block = "memory";
@@ -284,12 +278,20 @@ in
                 critical_swap = 95;
               }
               {
-                block = "net";
-                format = "{speed_down;K*b}{speed_up;K*b}";
-                interval = 10;
-                hide_inactive = true;
-                hide_missing = true;
+                block = "networkmanager";
+                on_click = "alacritty -e nmtui";
+                interface_name_exclude = ["br\\-[0-9a-f]{12}" "docker\\d+"];
+                interface_name_include = [];
+                ap_format = "{ssid^3}";
+                device_format = "{icon}{name^4} {ap:0}";
               }
+              # {
+              #   block = "net";
+              #   format = "{speed_down;K*b}{speed_up;K*b}";
+              #   interval = 10;
+              #   hide_inactive = true;
+              #   hide_missing = true;
+              # }
               {
                 block = "sound";
                 step_width = 5;

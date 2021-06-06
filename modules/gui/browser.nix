@@ -223,7 +223,7 @@ in
             smooth = true;
           };
           search.ignore_case = "smart";
-          session.lazy_restore = false;
+          session.lazy_restore = true;
           statusbar = {
             widgets = [ "keypress" "url" "history" "tabs" "progress" ];
           };
@@ -311,7 +311,8 @@ in
           };
           insert = {
             "<Ctrl-y>" = "insert-text -- {clipboard}";
-            "<Alt-Shift-u>" = "spawn --userscript qute-lastpass";
+            "<Alt-Shift-u>" = "spawn --userscript qute-lastpass -e";
+            "<Alt-Shift-p>" = "spawn --userscript qute-lastpass -w";
           };
           command = {
             "<Ctrl-j>" = "completion-item-focus --history next";

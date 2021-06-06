@@ -87,6 +87,4 @@ in
     enable = true;
     thunderbird.enable = true;
   };
-
-  properties.defaultTerminal = "kitty";
 }
