@@ -186,23 +186,34 @@ in
               };
             };
             blocks = [
+              # {
+              #   block = "time";
+              #   interval = 60;
+              #   format = "📆 %a %d %b 🏠 %R";
+              #   timezone = "Europe/Moscow";
+              # }
+              # {
+              #   block = "time";
+              #   interval = 60;
+              #   format = "🌐 %R";
+              #   timezone = "UTC";
+              # }
+              # {
+              #   block = "time";
+              #   interval = 60;
+              #   format = "🌏 %R";
+              #   timezone = "Asia/Manila";
+              # }
+
               {
-                block = "time";
+                block = "custom";
+                command = pkgs.writeShellScript "show-date.sh" ''
+                  LOCAL=$(date +"📆 %a %d %b 🏠 %R")
+                  UTC=$(date -u +"🌐 %R")
+                  ASIA=$(TZ='Asia/Manila' date +"🌏 %R")
+                  echo "$LOCAL $UTC $ASIA"
+                '';
                 interval = 60;
-                format = "📆 %a %d %b 🏠 %R";
-                timezone = "Europe/Moscow";
-              }
-              {
-                block = "time";
-                interval = 60;
-                format = "🌐 %R";
-                timezone = "UTC";
-              }
-              {
-                block = "time";
-                interval = 60;
-                format = "🌏 %R";
-                timezone = "Asia/Manila";
               }
 
               {
@@ -224,7 +235,7 @@ in
                   FAN_SPEED="$(sensors | grep fan1 | awk '{ print $2}')"
                   if [ $FAN_SPEED -gt 0 ]
                   then
-                    echo '{"state":"Warning", "text": "  '$FAN_SPEED'"}'
+                    echo '{"state":"Warning", "text": " '$FAN_SPEED'"}'
                   else
                     echo '{"state":"Good", "text": "ﴛ"}'
                   fi
@@ -236,7 +247,6 @@ in
               {
                 block = "disk_space";
                 path = "/";
-                # alias = " /";
                 format = " / {available}";
                 info_type = "available";
                 unit = "GB";
@@ -267,8 +277,8 @@ in
               {
                 block = "memory";
                 display_type = "memory";
-                format_mem = "{mem_used;G}({mem_used_percents:1})";
-                format_swap = "{swap_used;G}({swap_used_percents:1})";
+                format_mem = "{mem_used;G}";
+                format_swap = "{swap_used;G}";
                 icons = true;
                 clickable = true;
                 interval = 10;
@@ -303,10 +313,10 @@ in
               }
               {
                 block = "music";
-                player = "spotify";
                 buttons = [ "play" "next" ];
-                dynamic_width = true;
-                format = "{player}";
+                format = "{combo}";
+                hide_when_empty = true;
+                max_width = 5;
               }
               {
                 block = "battery";
