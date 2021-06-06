@@ -280,10 +280,15 @@ in
               {
                 block = "networkmanager";
                 on_click = "alacritty -e nmtui";
-                interface_name_exclude = ["br\\-[0-9a-f]{12}" "docker\\d+"];
+                interface_name_exclude = [
+                  "br\\-[0-9a-f]{12}"
+                  "docker\\d+"
+                  "wlp[0-9a-f]+"
+                  "enp[0-9a-f]+"
+                ];
                 interface_name_include = [];
                 ap_format = "{ssid^3}";
-                device_format = "{icon}{name^4} {ap:0}";
+                device_format = "{icon}{name:0^4}";
               }
               # {
               #   block = "net";
