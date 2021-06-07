@@ -50,6 +50,7 @@ in
         enable = true;
         defaultCacheTtl = 7200;
         maxCacheTtl = 86400;
+        enableSshSupport = true;
       };
 
       xdg.configFile."keepassxc/keepassxc.ini".text = ''

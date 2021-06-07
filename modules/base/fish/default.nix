@@ -173,7 +173,7 @@ in
           '';
         in
           ''
-            ${readFile ./config/functions/ssh-agent.fish}
+            # {readFile ./config/functions/ssh-agent.fish}
             set -Ux FZF_LEGACY_KEYBINDINGS 0
             set -Ux OPEN_CMD open
             bind \cw backward-kill-word
