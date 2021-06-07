@@ -369,6 +369,7 @@ in
       services.screen-locker = {
         enable = true;
         lockCmd = "${blurlock}/bin/blurlock";
+        inactiveInterval = 5;
       };
     };
   };
