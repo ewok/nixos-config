@@ -20,6 +20,7 @@ in
       pciutils
       openssl
       ntfs3g
+      usbutils
 
       exa
       bat

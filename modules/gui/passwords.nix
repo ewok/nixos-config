@@ -36,6 +36,24 @@ in
         pkgs.yubico-pam
         pkgs.yubikey-agent
         pkgs.yubioath-desktop
+
+        (pkgs.writeShellScriptBin "yubikey-reset" ''
+          set -euo pipefail
+          IFS=$'\n\t'
+
+          VENDOR="1050"
+          PRODUCT="0407"
+
+          for DIR in $(find /sys/bus/usb/devices/ -maxdepth 1 -type l); do
+            if [[ -f $DIR/idVendor && -f $DIR/idProduct &&
+                  $(cat $DIR/idVendor) == $VENDOR && $(cat $DIR/idProduct) == $PRODUCT ]]; then
+              echo 0 | sudo tee -a $DIR/authorized
+              sleep 0.5
+              echo 1 | sudo tee -a $DIR/authorized
+            fi
+          done
+        '')
+
       ];
 
       programs.gpg = {
