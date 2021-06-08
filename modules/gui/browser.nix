@@ -12,13 +12,18 @@ let
     ${pkgs.mitmproxy}/bin/mitmdump -p 8080 --listen-host 127.0.0.1 -k > /dev/null
   '';
 
+  chooseBrowser = pkgs.writeShellScriptBin "choose-browser" ''
+    CMD=$(echo "qutebrowser|google-chrome-stable|firefox" | rofi_run -dmenu -i -l 20 -p "Open url in:" -sep "|")
+    $CMD "$1"
+  '';
+
 in
 {
   config = mkIf gui.enable {
 
     home-manager.users.${username} = {
 
-    home.sessionVariables = { "BROWSER" = "qutebrowser"; };
+    home.sessionVariables = { "BROWSER" = "choose-browser"; };
 
       home.packages = with pkgs; [
         # For Google Meet
@@ -27,6 +32,7 @@ in
         xsel
         mitmproxy-local-start
         mitmproxy-local-stop
+        chooseBrowser
 
         (
           makeDesktopItem {
@@ -38,6 +44,18 @@ in
             categories = lib.concatStringsSep ";" [ "Network" "WebBrowser" ];
           }
         )
+
+        (
+          makeDesktopItem {
+            name = "org.custom.choose.browser";
+            type = "Application";
+            exec = "choose-browser %U";
+            comment = "Choose browser to open URL";
+            desktopName = "ChooseBrowser";
+            categories = lib.concatStringsSep ";" [ "Network" "WebBrowser" ];
+          }
+        )
+
       ];
 
       programs.firefox = {
@@ -412,7 +430,7 @@ in
         "application/x-extension-xht"
         "x-scheme-handler/about"
         "x-scheme-handler/unknown"
-      ] (_: [ "org.custom.qutebrowser.windowed.desktop" ]);
+      ] (_: [ "org.custom.choose.browser.desktop" ]);
 
     };
   };
