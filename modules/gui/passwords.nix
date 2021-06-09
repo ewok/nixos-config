@@ -30,8 +30,8 @@ in
 
         pkgs.lastpass-cli
 
-        pkgs._1password
-        pkgs._1password-gui
+        master._1password
+        master._1password-gui
 
         master.yubikey-manager
         master.yubikey-manager-qt
