@@ -89,7 +89,7 @@ bindsym $mod_a+Shift+q --release exec --no-startup-id xkill
 bindsym $mod+d exec --no-startup-id "xkb-switch -s us; rofi_run -show combi -combi-modi drun,ssh,run"
 
 # Lock screen
-bindsym $mod_a+l exec --no-startup-id "blurlock"
+bindsym $mod_a+l exec --no-startup-id "loginctl lock-session"
 
 # reload the configuration file
 bindsym $mod+Shift+c reload
