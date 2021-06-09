@@ -325,12 +325,13 @@ in
             "dd" = "tab-close";
             "rr" = "reload";
             "wv" = "spawn vlc {url}";
-            "pw" = "spawn --userscript qute-lastpass";
+            "pw" = "spawn --userscript qute_1pass --cache-session fill_credentials";
           };
           insert = {
             "<Ctrl-y>" = "insert-text -- {clipboard}";
-            "<Alt-Shift-u>" = "spawn --userscript qute-lastpass -e";
-            "<Alt-Shift-p>" = "spawn --userscript qute-lastpass -w";
+            "<Alt-Shift-u>" = "spawn --userscript qute_1pass --cache-session fill_username";
+            "<Alt-Shift-p>" = "spawn --userscript qute_1pass --cache-session fill_password";
+            "<Alt-Shift-t>" = "spawn --userscript qute_1pass --cache-session fill_totp";
           };
           command = {
             "<Ctrl-j>" = "completion-item-focus --history next";
@@ -417,6 +418,11 @@ in
         ]
           (readFile ./config/qutebrowser.py)}
         '';
+      };
+
+      xdg.configFile."qutebrowser/userscripts/qute_1pass" = {
+        source = ./config/qute-1pass.py;
+        executable = true;
       };
 
       xdg.mimeApps.defaultApplications = lib.genAttrs [
