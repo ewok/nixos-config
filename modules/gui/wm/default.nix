@@ -272,13 +272,13 @@ in
               {
                 block = "cpu";
                 interval = 5;
-                format = "{utilization}";
+                format = "{barchart}";
               }
               {
                 block = "memory";
                 display_type = "memory";
-                format_mem = "{mem_used;G}";
-                format_swap = "{swap_used;G}";
+                format_mem = "{mem_used_percents:1}";
+                format_swap = "{swap_used_percents:1}";
                 icons = true;
                 clickable = true;
                 interval = 10;
