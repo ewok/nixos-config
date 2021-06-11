@@ -331,7 +331,8 @@ in
             "<Ctrl-y>" = "insert-text -- {clipboard}";
             "<Alt-Shift-u>" = "spawn --userscript qute_1pass --cache-session fill_username";
             "<Alt-Shift-p>" = "spawn --userscript qute_1pass --cache-session fill_password";
-            "<Alt-Shift-t>" = "spawn --userscript qute_1pass --cache-session fill_totp";
+            "<Alt-Shift-t>" = "spawn ykman-otp";
+            # "<Alt-Shift-t>" = "spawn --userscript qute_1pass --cache-session fill_totp";
           };
           command = {
             "<Ctrl-j>" = "completion-item-focus --history next";

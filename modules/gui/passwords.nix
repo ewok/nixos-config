@@ -9,6 +9,31 @@ let
       localSystem = { system = "x86_64-linux"; };
     }
   );
+
+  ykmanOtp = pkgs.writeShellScriptBin "ykman-otp" ''
+    PASS=""
+
+    if [ ! "$(ykman info)" ]
+    then
+        rofi -dmenu -mesg "Yubikey not detected." -a "rofi-ykman"
+        exit 1
+    else
+        PASS_ENABLED=$(ykman oath info | grep "Password protection" | awk '{print $3}')
+        if [ "$PASS_ENABLED" == "enabled" ]
+        then
+            PASS="-p $(rofi -password -dmenu -p 'Vault Password' -l 0 -sidebar -width 20)"
+        fi
+    fi
+
+
+    OPTIONS=$(ykman oath accounts list $PASS)
+    LAUNCHER="rofi -dmenu -i -p YubikeyOATH"
+
+    option=`echo "''${OPTIONS/, TOTP/\n}" | $LAUNCHER`
+    code=$(ykman oath accounts code $PASS "$option")
+    IFS=', ' read -r -a code <<< "$code"
+    echo "''${code[-1]}" | xclip -selection clipboard
+  '';
 in
 {
   config = mkIf gui.enable {
@@ -39,6 +64,7 @@ in
         pkgs.yubico-pam
         pkgs.yubikey-agent
         pkgs.yubioath-desktop
+        ykmanOtp
 
         (pkgs.writeShellScriptBin "yubikey-reset" ''
           set -euo pipefail
