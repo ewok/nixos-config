@@ -34,6 +34,7 @@ in
     virtualisation.enableVirtualbox = true;
     terraform.enable = true;
     aws.enable = true;
+    emacs.enable = true;
   };
 
   environment.variables = {

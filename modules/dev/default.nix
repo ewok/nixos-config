@@ -3,6 +3,7 @@ with lib;
 {
   imports = [
     ./aws.nix
+    ./emacs.nix
     ./db.nix
     ./direnv.nix
     ./docker.nix
