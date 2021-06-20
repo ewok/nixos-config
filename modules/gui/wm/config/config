@@ -7,6 +7,7 @@ set $mod_c Control
 
 ################################################################################################
 # Settings
+
 ################################################################################################
 
 gaps inner 7
@@ -76,7 +77,7 @@ for_window [class="vlc"] floating enable
 ################################################################################################
 #
 # hide/unhide i3status bar
-bindsym $mod+m bar mode toggle
+# bindsym $mod+$mod_c+m bar mode toggle
 
 # start a terminal
 bindsym $mod+Return exec alacritty
@@ -92,13 +93,13 @@ bindsym $mod+d exec --no-startup-id "xkb-switch -s us; rofi_run -show combi -com
 bindsym $mod_a+l exec --no-startup-id "loginctl lock-session"
 
 # reload the configuration file
-bindsym $mod+Shift+c reload
+bindsym $mod_a+Shift+c reload
 
 # restart i3 inplace (preserves your layout/session, can be used to upgrade i3)
-bindsym $mod+Shift+r restart
+bindsym $mod_a+Shift+r restart
 
 # exit i3 (logs you out of your X session)
-bindsym $mod+Shift+e exec "i3-nagbar -t warning -m 'You pressed the exit shortcut. Do you really want to exit i3? This will end your X session.' -b 'Yes, exit i3' 'i3-msg exit'"
+# bindsym $mod+Shift+e exec "i3-nagbar -t warning -m 'You pressed the exit shortcut. Do you really want to exit i3? This will end your X session.' -b 'Yes, exit i3' 'i3-msg exit'"
 
 # Choose keyboard
 bindsym $mod_a+k mode "$mode_keyb"
@@ -145,7 +146,7 @@ bindsym $mod_c+XF86MonBrightnessDown exec "/run/current-system/sw/bin/light -U 1
 
 # Screenshots
 bindsym Print exec --no-startup-id flameshot full -p ~/Pictures/Screenshots/
-bindsym $mod_a+Print exec --no-startup-id flameshot screen -p ~/Pictures/Screenshots/
+#bindsym $mod_a+Print exec --no-startup-id flameshot screen -p ~/Pictures/Screenshots/
 bindsym $mod_c+Print exec --no-startup-id flameshot gui -p ~/Pictures/Screenshots/
 
 # Other
@@ -156,21 +157,30 @@ bindsym Shift+space exec "xkb-switch -s us; todofi.sh -a"
 # bindsym Control+period exec --no-startup-id "/opt/enpass/Enpass showassistant"
 bindsym --release F12 exec --no-startup-id dunstctl history-pop
 
+set $mode_opts (k)eyboard,
+mode "$mode_opts" {
+    bindsym k mode "$mode_keyb"
+
+    # exit resize mode: Enter or Escape
+    bindsym Return mode "default"
+    bindsym Escape mode "default"
+    bindsym Ctrl+m mode "default"
+}
+
 # Start Applications
-bindsym $mod_a+Return exec --no-startup-id qutebrowser
+#bindsym $mod_a+Return exec --no-startup-id qutebrowser
 
 bindsym $mod_a+o mode "$mode_apps"
-set $mode_apps (b)luetooth,(c)alc,(C)ryptomator,Ca(l)endar,(e)xplorer,(k)ill menu,(m)ail,(p)avucontrol,(t)odo
+set $mode_apps (b)luetooth,(c)alc,(e)xplorer,(k)ill menu,(m)ail,(p)avucontrol,(t)odo,(o)ptions
 mode "$mode_apps" {
     bindsym b exec --no-startup-id rofi-bluetooth, mode "default"
-    bindsym Shift+c exec cryptomator, mode "default"
     bindsym c exec --no-startup-id calc, mode "default"
-    bindsym l exec qutebrowser --target window "https://calendar.google.com", mode "default"
     bindsym e exec pcmanfm, mode "default"
     bindsym k exec --no-startup-id "xkb-switch -s us; dmkill", mode "default"
     bindsym m exec --no-startup-id mailspring, mode "default"
     bindsym p exec --no-startup-id pavucontrol-qt, mode "default"
     bindsym t exec --no-startup-id "xkb-switch -s us; todofi.sh", mode "default"
+    bindsym o mode "$mode_opts"
 
     # exit resize mode: Enter or Escape
     bindsym Return mode "default"
@@ -198,23 +208,32 @@ bindsym $mod+q split toggle
 # enter fullscreen mode for the focused container
 bindsym $mod+f fullscreen
 
-# change container layout (stacked, tabbed, toggle split)
-bindsym $mod+s layout stacking
-bindsym $mod+t layout tabbed
-bindsym $mod+e layout toggle split
-
-# toggle tiling / floating
-bindsym $mod+Shift+space floating toggle
-
 # change focus between tiling / floating windows
 bindsym $mod+space focus mode_toggle
 
 # toggle sticky
-bindsym $mod+p sticky toggle,exec notify-send 'sticky'
+# bindsym $mod+p sticky toggle,exec notify-send 'sticky'
 
 # focus the parent container
 bindsym $mod+a focus parent
 
+bindsym $mod_a+w mode "$mode_win"
+set $mode_win (p)in,(f)loating,(s)tacking,(t)abbed,(e)split,(r)esize,re(n)ame
+mode "$mode_win" {
+        bindsym p sticky toggle, exec notify-send 'sticky', mode "default"
+        bindsym f floating toggle, mode "default"
+        bindsym s layout stacking, mode "default"
+        bindsym t layout tabbed, mode "default"
+        bindsym e layout toggle split, mode "default"
+        bindsym r mode "resize"
+        bindsym n exec i3-input -F 'rename workspace to "%s"' -P 'New name: ', mode "default"
+
+        # exit resize mode: Enter or Escape
+        bindsym Return mode "default"
+        bindsym Escape mode "default"
+        bindsym Ctrl+m mode "default"
+        bindsym Ctrl+[ mode "default"
+}
 ################################################################################################
 # Scratchpad
 ################################################################################################
@@ -229,10 +248,10 @@ bindsym $mod+minus scratchpad show
 # Workspaces
 ################################################################################################
 bindsym $mod_a+r exec "autorandr -c; sleep 2; systemctl --user start random-background.service"
-bindsym $mod_a+Up  exec bash ~/.config/i3/rotate.sh inverted
-bindsym $mod_a+Down  exec bash ~/.config/i3/rotate.sh normal
-bindsym $mod_a+Left  exec bash ~/.config/i3/rotate.sh left
-bindsym $mod_a+Right  exec bash ~/.config/i3/rotate.sh right
+# bindsym $mod_a+Up  exec bash ~/.config/i3/rotate.sh inverted
+# bindsym $mod_a+Down  exec bash ~/.config/i3/rotate.sh normal
+# bindsym $mod_a+Left  exec bash ~/.config/i3/rotate.sh left
+# bindsym $mod_a+Right  exec bash ~/.config/i3/rotate.sh right
 
 #navigate workspaces next / previous
 bindsym $mod+n workspace next
@@ -280,7 +299,7 @@ bindsym $mod+Shift+8 move container to workspace 8
 bindsym $mod+Shift+9 move container to workspace 9
 
 # Set shut down, restart and locking features
-bindsym $mod+$mod_a+0 mode "$mode_system"
+bindsym $mod_a+0 mode "$mode_system"
 set $mode_system (l)ock, (e)xit, switch_(u)ser, (s)uspend, (h)ibernate, (r)eboot, (Shift+s)hutdown
 mode "$mode_system" {
     bindsym l exec --no-startup-id "i3exit lock", mode "default"
@@ -319,7 +338,7 @@ mode "resize" {
 }
 
 # Rename
-bindsym $mod_a+m exec i3-input -F 'rename workspace to "%s"' -P 'New name: '
+#bindsym $mod+m exec i3-input -F 'rename workspace to "%s"' -P 'New name: '
 
 ################################################################################################
 # Colors
