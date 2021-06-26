@@ -21,7 +21,13 @@ in
 
   modules.backup = {
     enable = true;
-    rslsync.enable = true;
+    rslsync = {
+      enable = true;
+      enableWebUI = true;
+      httpListenAddr = "127.0.0.1";
+      httpListenPort = 8888;
+    };
+
     restic = {
       repo = properties.backup.repo;
       excludePaths = properties.backup.excludePaths;
