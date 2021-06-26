@@ -217,7 +217,7 @@ bindsym $mod+space focus mode_toggle
 # focus the parent container
 bindsym $mod+a focus parent
 
-bindsym $mod_a+w mode "$mode_win"
+bindsym $mod+w mode "$mode_win"
 set $mode_win (p)in,(f)loating,(s)tacking,(t)abbed,(e)split,(r)esize,re(n)ame
 mode "$mode_win" {
         bindsym p sticky toggle, exec notify-send 'sticky', mode "default"
