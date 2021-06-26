@@ -281,11 +281,18 @@ in
                 format_swap = "{swap_used_percents:1}";
                 icons = true;
                 clickable = true;
-                interval = 10;
+                interval = 20;
                 warning_mem = 80;
                 warning_swap = 80;
                 critical_mem = 95;
                 critical_swap = 95;
+              }
+              {
+                block = "net";
+                format = "{speed_down;K*b}{speed_up;K*b}";
+                interval = 10;
+                hide_inactive = true;
+                hide_missing = true;
               }
               {
                 block = "networkmanager";
@@ -300,13 +307,6 @@ in
                 ap_format = "{ssid^3}";
                 device_format = "{icon}{name:0^4}";
               }
-              # {
-              #   block = "net";
-              #   format = "{speed_down;K*b}{speed_up;K*b}";
-              #   interval = 10;
-              #   hide_inactive = true;
-              #   hide_missing = true;
-              # }
               {
                 block = "sound";
                 step_width = 5;

@@ -365,7 +365,7 @@ bar {
     i3bar_command i3bar
     tray_output primary
     # font pango:DejaVu Sans Mono, FontAwesome 11
-    font pango:FiraCode Nerd Font Mono 11
+    font pango:FiraCode Nerd Font Mono 10
     position top
     status_command i3status-rs ~/.config/i3status-rust/config-default.toml
     colors {
