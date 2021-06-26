@@ -369,6 +369,7 @@
     }
   },{
     noremap = true,
+    silent = false,
   })
 
   wkmap({
@@ -407,7 +408,7 @@
   map('n', 'J', 'mzJ`z', { noremap = true })
 
   -- [S]plit line (sister to [J]oin lines) S is covered by cc.
-  map('n', 'S', 'mzi<CR><ESC>`z', { noremap = true })
+  map('n', 'gS', 'mzi<CR><ESC>`z', { noremap = true })
 
   -- Don't move cursor when searching via *
   map('n', '*', ':let stay_star_view = winsaveview()<cr>*:call winrestview(stay_star_view)<CR>', { noremap = true, silent = true })
@@ -709,6 +710,7 @@
         ['<leader>w'] = {
           name = '+Wiki',
           b = {'<cmd>VimwikiBacklinks<cr>', 'Update wiki backlinks'},
+          c = {':VimwikiColorize<space>', 'Colorize'},
           d = {'<cmd>VimwikiDeleteFile<CR>', 'Delete page'},
           r = {'<cmd>VimwikiRenameFile<CR>', 'Rename page'},
           T = {'<cmd>VimwikiRebuildTags!<cr>:VimwikiGenerateTagLinks<cr><c-l>', 'Rebuild tags'},
@@ -1058,6 +1060,20 @@
     augroups({ft_qf=ft_qf})
     _G.load_qf_ft = function()
       bmap('n', 'q', ':cclose<CR>', {})
+      wkmap({
+          r = {':lua require("replacer").run()<cr>', '+Replace'}
+      },{
+        buffer = api.nvim_get_current_buf()
+      })
+    end
+
+    -- Replacer
+    local ft_replacer = {
+      {[[ FileType replacer lua load_qf_replacer() ]]};
+    }
+    augroups({ft_replacer=ft_replacer})
+    _G.load_qf_replacer = function()
+      bmap('n', 'q', ':q<CR>', {})
     end
   -- }}}
   -- Yaml {{{
@@ -1221,24 +1237,41 @@
       end,
     }
     packer.use {
-      'joshdick/onedark.vim',
-      as = 'onedark',
+      'NTBBloodbath/doom-one.nvim',
       opt = true,
+      as = 'doom-one',
       setup = function ()
+        vim.g.terminal_colors = true
+        vim.g.italic_comments = true
+
         vim.api.nvim_exec([[
           " Mark 80-th character
           hi! OverLength ctermbg=168 guibg=${color_14} ctermfg=250 guifg=${color_0}
           call matchadd('OverLength', '\%81v', 100)
-
-          " Change cursor color to make it more visible
-          hi! Cursor ctermbg=140 guibg=${color_5}
-          hi! Search ctermfg=236 ctermbg=74 guifg=${color_0} guibg=${color_4}
-          hi! AutoHiWord cterm=bold ctermbg=red guibg=${color_0}
         ]] % colors, true)
-      end,
+      end
     }
-    vim.cmd [[ packadd onedark ]]
-    vim.cmd [[ colorscheme onedark ]]
+    vim.cmd [[ packadd doom-one ]]
+    vim.cmd [[ colorscheme doom-one]]
+    -- packer.use {
+    --   'joshdick/onedark.vim',
+    --   as = 'onedark',
+    --   opt = true,
+    --   setup = function ()
+    --     vim.api.nvim_exec([[
+    --       " Mark 80-th character
+    --       hi! OverLength ctermbg=168 guibg=${color_14} ctermfg=250 guifg=${color_0}
+    --       call matchadd('OverLength', '\%81v', 100)
+
+    --       " Change cursor color to make it more visible
+    --       hi! Cursor ctermbg=140 guibg=${color_5}
+    --       hi! Search ctermfg=236 ctermbg=74 guifg=${color_0} guibg=${color_4}
+    --       hi! AutoHiWord cterm=bold ctermbg=red guibg=${color_0}
+    --     ]] % colors, true)
+    --   end,
+    -- }
+    -- vim.cmd [[ packadd onedark ]]
+    -- vim.cmd [[ colorscheme onedark ]]
   -- }}}
   -- Telescope {{{
     packer.use {
@@ -1339,6 +1372,12 @@
     }
   -- }}}
   -- Indent-guides {{{
+    -- packer.use {
+    --   'Yggdroot/indentLine',
+    --   config = function()
+    --     vim.g.indentLine_char = '¦'
+    --   end,
+    -- }
     packer.use {
       'glepnir/indent-guides.nvim',
       as = 'indent-guides',
@@ -2227,6 +2266,48 @@
       end,
     }
   -- }}}
+  -- Org {{{
+    -- packer.use {
+    --   'vhyrro/neorg',
+    --   requires = { 'nvim-lua/plenary.nvim' },
+    --   config = function()
+    --     require('neorg').setup {
+    --       load = {
+    --         ["core.defaults"] = {}, -- Load all the default modules
+    --         ["core.norg.concealer"] = {} -- Enhances the text editing experience by using icons
+    --       },
+
+    --       -- Tells neorg where to load community provided modules. If unspecified, this is the default
+    --       community_module_path = vim.fn.stdpath("cache") .. "/neorg_community_modules"
+    --     }
+    --     -- This sets the leader for all Neorg keybinds. It is separate from the regular <Leader>,
+    --     -- And allows you to shove every Neorg keybind under one "umbrella".
+    --     local neorg_leader = "<Leader>i" -- You may also want to set this to <Leader>o for "organization"
+
+    --     -- Require the user callbacks module, which allows us to tap into the core of Neorg
+    --     local neorg_callbacks = require('neorg.callbacks')
+
+    --     -- Listen for the enable_keybinds event, which signals a "ready" state meaning we can bind keys.
+    --     -- This hook will be called several times, e.g. whenever the Neorg Mode changes or an event that
+    --     -- needs to reevaluate all the bound keys is invoked
+    --     neorg_callbacks.on_event("core.keybinds.events.enable_keybinds", function(_, keybinds)
+
+    --       -- Map all the below keybinds only when the "norg" mode is active
+    --       keybinds.map_event_to_mode("norg", {
+    --         n = { -- Bind keys in normal mode
+
+    --         -- Keys for managing TODO items and setting their states
+    --         { "gtd", "core.norg.qol.todo_items.todo.task_done" },
+    --         { "gtu", "core.norg.qol.todo_items.todo.task_undone" },
+    --         { "gtp", "core.norg.qol.todo_items.todo.task_pending" },
+    --         { "gtt", "core.norg.qol.todo_items.todo.task_cycle" }
+
+    --       },
+    --     }, { silent = true, noremap = true })
+
+    --   end)
+    -- end}
+    -- }}}
   -- Vista {{{
     packer.use {
       'liuchengxu/vista.vim',
@@ -2299,9 +2380,11 @@
         { 'rafamadriz/friendly-snippets', },
         { 'hrsh7th/vim-vsnip', },
         { 'norcalli/snippets.nvim',
+
         config=function()
           local U = require'snippets.utils'
           _G.sep = function () return string.gsub(vim.bo.commentstring, "%%s", "") end
+
           require'snippets'.snippets = {
             _global = {
               ["date_ymd"]   = "${=os.date('%Y-%m-%d')}",
@@ -2316,7 +2399,9 @@
             vimwiki = {
               code  = "```\n$0\n```",
               code_shell = "```sh\n$0\n```",
+              code_shell_result = "<!-- target: out -->\n```sh\n$0\n```\n<!-- name: out -->\n```\n```",
               code_python = "```python\n$0\n```",
+              code_python_result = "<!-- target: out -->\n```python\n$0\n```\n<!-- name: out -->\n```\n```",
             };
           }
         end,},
@@ -2631,18 +2716,30 @@
   -- }}}
   -- FAR {{{
     packer.use {
-    'wincent/ferret',
-    config = function()
-      vim.g.FerretMap = 0
+      'gabrielpoca/replacer.nvim',
+      config = function()
       wkmap({
-        ['<leader>fr'] = {
-          name = '+Replace',
-          ['<space>'] = {'<Plug>(FerretAck)', 'Search'},
-          ['<CR>'] = {'<Plug>(FerretAcks)', 'Replace'}
+        ['<leader>'] = {
+          fr = {':lua require("replacer").run()<cr>', '+Replace'}
         }
       })
-    end,
+      end,
     }
+    -- packer.use {
+    -- 'wincent/ferret',
+    -- config = function()
+    --   vim.g.FerretMap = 0
+    --   wkmap({
+    --     ['<leader>fr'] = {
+    --       name = '+Replace',
+    --       ['<space>'] = {'<Plug>(FerretAck)', 'Search'},
+    --       ['<CR>'] = {'<Plug>(FerretAcks)', 'Replace'}
+    --     }
+    --   }, {
+    --     silent = false,
+    --   })
+    -- end,
+    -- }
   -- }}}
   -- GIT {{{
     -- vim.g.fugitive_gitlab_domains = ['https://my.gitlab.com']
@@ -2706,24 +2803,55 @@
 
       end,
     }
-    -- Gitgutter
+
     packer.use {
-      'airblade/vim-gitgutter',
+      'lewis6991/gitsigns.nvim',
+      requires = {
+        'nvim-lua/plenary.nvim'
+      },
       config = function()
-        vim.g.gitgutter_map_keys = 0
-        vim.g.gitgutter_override_sign_column_highlight = 0
+        require('gitsigns').setup {
+          signs = {
+            -- add          = {hl = 'GitSignsAdd'   , text = '¦', numhl='GitSignsAddNr'   , linehl='GitSignsAddLn'},
+            add          = {hl = 'GitSignsAdd'   , text = '|', numhl='GitSignsAddNr'   , linehl='GitSignsAddLn'},
+            change       = {hl = 'GitSignsChange', text = '|', numhl='GitSignsChangeNr', linehl='GitSignsChangeLn'},
+            delete       = {hl = 'GitSignsDelete', text = '_', numhl='GitSignsDeleteNr', linehl='GitSignsDeleteLn'},
+            topdelete    = {hl = 'GitSignsDelete', text = '‾', numhl='GitSignsDeleteNr', linehl='GitSignsDeleteLn'},
+            changedelete = {hl = 'GitSignsChange', text = '~', numhl='GitSignsChangeNr', linehl='GitSignsChangeLn'},
+          },
+          numhl = false,
+          linehl = false,
+          keymaps = {
+            noremap = true,
+            buffer = true,
+
+            -- Text objects
+            ['o ih'] = ':<C-U>lua require"gitsigns.actions".select_hunk()<CR>',
+            ['x ih'] = ':<C-U>lua require"gitsigns.actions".select_hunk()<CR>'
+          },
+        }
 
         wkmap({
-          [']g'] = {'<Plug>(GitGutterNextHunk)', 'Next Git Hunk'},
-          ['[g'] = {'<Plug>(GitGutterPrevHunk)', 'Previous Git Hunk'},
+          [']g'] = {'<cmd>lua require"gitsigns.actions".next_hunk()<CR>', 'Next Git Hunk'},
+          ['[g'] = {'<cmd>lua require"gitsigns.actions".prev_hunk()<CR>', 'Previous Git Hunk'},
           ['<leader>gh'] = {
-            s = {'<cmd>GitGutterStageHunk<CR>', 'Hunk Stage'},
-            r = {'<cmd>GitGutterUndoHunk<CR>', 'Hunk Revert'},
-            p = {'<cmd>GitGutterPreviewHunk<CR>', 'Hunk Preview'},
+            b = {'<cmd>lua require"gitsigns".blame_line(true)<CR>', 'Hunk Blame'},
+            p = {'<cmd>lua require"gitsigns".preview_hunk()<CR>', 'Hunk Preview'},
+            r = {'<cmd>lua require"gitsigns".reset_hunk()<CR>', 'Hunk Revert'},
+            s = {'<cmd>lua require"gitsigns".stage_hunk()<CR>', 'Hunk Stage'},
+            u = {'<cmd>lua require"gitsigns".undo_stage_hunk()<CR>', 'Hunk Undo'},
           }
         })
 
-      end,
+        wkmap({
+          ['<leader>gh'] = {
+            r = {'<cmd>lua require"gitsigns".reset_hunk({vim.fn.line("."), vim.fn.line("v")})<CR>', 'Hunk Revert'},
+            s = {'<cmd>lua require"gitsigns".stage_hunk({vim.fn.line("."), vim.fn.line("v")})<CR>', 'Hunk Stage'},
+          }
+        },{
+          mode = 'v',
+        })
+      end
     }
     -- Gitv
     packer.use {
@@ -2872,13 +3000,29 @@
       }
     }
   -- }}}
-  -- Quick Scope {{{
+  -- Sneak {{{
     packer.use {
-      'unblevable/quick-scope',
+      'justinmk/vim-sneak',
       config = function()
-        vim.g.qs_buftype_blacklist = { 'terminal', 'nofile', 'nerdtree', 'nvimtree' }
+        for _, m in ipairs{'n', 'o', 'x'} do
+          map(m, 'f', '<Plug>Sneak_f',{})
+          map(m, 'F', '<Plug>Sneak_F',{})
+          map(m, 't', '<Plug>Sneak_t',{})
+          map(m, 'T', '<Plug>Sneak_T',{})
+          map(m, 's', '<Plug>Sneak_s',{})
+          map(m, 'S', '<Plug>Sneak_S',{})
+        end
+        vim.g['sneak#s_next'] = 1
       end,
     }
+  -- }}}
+  -- [Off]Quick Scope {{{
+    -- packer.use {
+    --   'unblevable/quick-scope',
+    --   config = function()
+    --     vim.g.qs_buftype_blacklist = { 'terminal', 'nofile', 'nerdtree', 'nvimtree' }
+    --   end,
+    -- }
   -- }}}
   -- Word motion {{{
     packer.use 'chaoren/vim-wordmotion'
