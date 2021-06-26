@@ -156,11 +156,11 @@ in
             then
               systemctl --state=failed --no-legend --no-pager &
               systemctl --user --state=failed --no-legend --no-pager &
-              if ! pgrep zoom > /dev/null;then
+              #if ! pgrep zoom > /dev/null;then
                 # if [[ $(t lsp | tee /dev/stderr | wc -l) -eq 0 ]];then
                   t ls
                 # fi
-              fi
+              #fi
             else
               SESS=$(tmux list-sessions | grep -v attached | cut -d: -f1 | head -n 1)
               if [[ -n "$SESS" ]]
@@ -174,19 +174,19 @@ in
         in
           ''
             # {readFile ./config/functions/ssh-agent.fish}
-            set -Ux FZF_LEGACY_KEYBINDINGS 0
-            set -Ux OPEN_CMD open
             bind \cw backward-kill-word
-            set -Ux ABBR_TIPS_PROMPT "\n💡 \e[1m{{ .abbr }}\e[0m => {{ .cmd }}"
-            set -Ux ABBR_TIPS_ALIAS_WHITELIST # Not set
-            set -Ux ABBR_TIPS_REGEXES '(^(\w+\s+)+(-{1,2})\w+)(\s\S+)' '(^( ?\w+){3}).*' '(^( ?\w+){2}).*' '(^( ?\w+){1}).*'
             ${startup-script}
           '';
 
         loginShellInit = ''
-          set -U fish_greeting
-          __git.reset
-          __abbr_tips_init
+        set -Ux ABBR_TIPS_PROMPT "\n💡 \e[1m{{ .abbr }}\e[0m => {{ .cmd }}"
+        set -Ux ABBR_TIPS_ALIAS_WHITELIST # Not set
+        set -Ux ABBR_TIPS_REGEXES '(^(\w+\s+)+(-{1,2})\w+)(\s\S+)' '(^( ?\w+){3}).*' '(^( ?\w+){2}).*' '(^( ?\w+){1}).*'
+        set -Ux FZF_LEGACY_KEYBINDINGS 0
+        set -Ux OPEN_CMD open
+        set -U fish_greeting
+        __git.reset
+        __abbr_tips_init
         '';
       };
 
