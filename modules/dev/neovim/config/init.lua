@@ -1279,15 +1279,17 @@
       requires = {
         {'nvim-lua/popup.nvim'},
         {'nvim-lua/plenary.nvim'},
-        {'nvim-telescope/telescope-fzy-native.nvim'},
+        -- {'nvim-telescope/telescope-fzy-native.nvim'},
+        {'nvim-telescope/telescope-fzf-writer.nvim'},
       },
       config = function()
 
         wkmap({
           ['<leader>'] = {
             f = {
-              f = {'<cmd>Telescope live_grep<CR>', 'Find in Files'},
-              o = {'<cmd>Telescope find_files<CR>', 'Find File'},
+              f = {'<cmd>Telescope fzf_writer grep<CR>', 'Find in Files'},
+              ['/'] = {'<cmd>Telescope current_buffer_fuzzy_find<CR>', 'Find in buffer'},
+              o = {'<cmd>Telescope fzf_writer files<CR>', 'Find File'},
               b = {'<cmd>Telescope buffers<CR>', 'Find Buffers'},
               m = {'<cmd>Telescope marks<CR>', 'Find Marks'},
             },
@@ -1341,7 +1343,7 @@
             },
           }
         }
-        require('telescope').load_extension('fzy_native')
+        -- require('telescope').load_extension('fzy_native')
 
       end,
     }
