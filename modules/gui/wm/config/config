@@ -93,10 +93,10 @@ bindsym $mod+d exec --no-startup-id "xkb-switch -s us; rofi_run -show combi -com
 bindsym $mod_a+l exec --no-startup-id "loginctl lock-session"
 
 # reload the configuration file
-bindsym $mod_a+Shift+c reload
+bindsym $mod+Shift+c reload
 
 # restart i3 inplace (preserves your layout/session, can be used to upgrade i3)
-bindsym $mod_a+Shift+r restart
+bindsym $mod+Shift+r restart
 
 # exit i3 (logs you out of your X session)
 # bindsym $mod+Shift+e exec "i3-nagbar -t warning -m 'You pressed the exit shortcut. Do you really want to exit i3? This will end your X session.' -b 'Yes, exit i3' 'i3-msg exit'"
@@ -106,7 +106,7 @@ bindsym $mod_a+k mode "$mode_keyb"
 set $mode_keyb (1)laptop,(2)external or default
 mode "$mode_keyb" {
         bindsym 1 exec keyb-layout 1, mode "default"
-        bindsym 2 exec keyb-layout, mode "default"
+#        bindsym 2 exec keyb-layout, mode "default"
 
         # exit resize mode: Enter or Escape
         bindsym Return mode "default"
@@ -168,7 +168,7 @@ mode "$mode_opts" {
 }
 
 # Start Applications
-#bindsym $mod_a+Return exec --no-startup-id qutebrowser
+bindsym $mod_a+Return exec --no-startup-id qutebrowser
 
 bindsym $mod_a+o mode "$mode_apps"
 set $mode_apps (b)luetooth,(c)alc,(e)xplorer,(k)ill menu,(m)ail,(p)avucontrol,(t)odo,(o)ptions
@@ -177,7 +177,7 @@ mode "$mode_apps" {
     bindsym c exec --no-startup-id calc, mode "default"
     bindsym e exec pcmanfm, mode "default"
     bindsym k exec --no-startup-id "xkb-switch -s us; dmkill", mode "default"
-    bindsym m exec --no-startup-id mailspring, mode "default"
+    bindsym m exec --no-startup-id thunderbird, mode "default"
     bindsym p exec --no-startup-id pavucontrol-qt, mode "default"
     bindsym t exec --no-startup-id "xkb-switch -s us; todofi.sh", mode "default"
     bindsym o mode "$mode_opts"
@@ -256,11 +256,14 @@ bindsym $mod_a+r exec "autorandr -c; sleep 2; systemctl --user start random-back
 #navigate workspaces next / previous
 bindsym $mod+n workspace next
 bindsym $mod+b workspace prev
-# bindsym $mod_a+n exec i3-display-swap.sh right
-# bindsym $mod_a+b exec i3-display-swap.sh left
+bindsym $mod+p workspace prev
+bindsym $mod_a+n exec i3-display-swap.sh right
+bindsym $mod_a+b exec i3-display-swap.sh left
+bindsym $mod_a+p exec i3-display-swap.sh left
 
 bindsym $mod+Shift+n move workspace to output right
 bindsym $mod+Shift+b move workspace to output left
+bindsym $mod+Shift+p move workspace to output left
 
 # Workspace names
 # to display names or symbols instead of plain workspace numbers you can use
@@ -318,7 +321,7 @@ mode "$mode_system" {
 }
 
 # Resize window (you can also use the mouse for that)
-bindsym $mod+r mode "resize"
+#bindsym $mod+r mode "resize"
 mode "resize" {
         # These bindings trigger as soon as you enter the resize mode
         # Pressing left will shrink the window’s width.
