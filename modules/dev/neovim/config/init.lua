@@ -1233,7 +1233,7 @@
     packer.use {
       "chrisbra/Colorizer",
       config = function ()
-        wkmap({['<leader>oc'] = {'<cmd>ColorToggle<CR>', 'Toggle Colors showing'}})
+        wkmap({['<leader>tc'] = {'<cmd>ColorToggle<CR>', 'Toggle Colors showing'}})
       end,
     }
     packer.use {
@@ -1241,8 +1241,8 @@
       opt = true,
       as = 'doom-one',
       setup = function ()
-        vim.g.terminal_colors = true
-        vim.g.italic_comments = true
+        vim.g.doom_one_terminal_colors = true
+        vim.g.doom_one_italic_comments = true
 
         vim.api.nvim_exec([[
           " Mark 80-th character
@@ -2045,11 +2045,11 @@
       ['<F7>'] = {function() toggle_spell() end, 'Toggle Spelling'},
       ['<leader>'] = {
         t = {
-          name = '+Text',
-          t = {'<cmd>Goyo<CR>', 'Goyo'},
+          name = '+Text/+Toggle',
+          t = {'<cmd>Goyo<CR>', 'Toggle Goyo'},
           s = {function() toggle_spell() end, 'Toggle Spelling'},
           f = {
-            name = '+Fix'
+            name = '+Fix-Text'
           }
         }
       }
@@ -2127,7 +2127,7 @@
       'dhruvasagar/vim-zoom'
     }
 
-    wkmap({['<leader>Z'] = {function() zoom_toggle() end, 'Toggle Zoom'}})
+    wkmap({['<leader>tz'] = {function() zoom_toggle() end, 'Toggle Zoom'}})
 
     _G.zoom_toggle = function()
 
