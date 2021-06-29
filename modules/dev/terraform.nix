@@ -1,8 +1,14 @@
-{ config, lib, pkgs, ... }:
+{ config, lib, pkgs, inputs, ... }:
 with lib;
 let
   dev = config.modules.dev;
   username = config.properties.user.name;
+  master = import inputs.master (
+    {
+      config = config.nixpkgs.config;
+      localSystem = { system = "x86_64-linux"; };
+    }
+  );
 in
 {
   options.modules.dev = {
@@ -12,7 +18,7 @@ in
   };
   config = mkIf (dev.enable) {
     home-manager.users."${username}" = {
-      home.packages = [ pkgs.terraform ];
+      home.packages = [ master.terraform ];
     };
   };
 }

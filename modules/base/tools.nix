@@ -21,9 +21,11 @@ in
       openssl
       ntfs3g
       usbutils
+      gnumake
 
       exa
       bat
+      fd
 
       curl
       wget
@@ -33,6 +35,7 @@ in
       jq
 
       trash-cli
+      wipe
 
       git
       git-crypt
