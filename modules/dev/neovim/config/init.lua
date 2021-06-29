@@ -1289,7 +1289,23 @@
             f = {
               f = {'<cmd>Telescope fzf_writer grep<CR>', 'Find in Files'},
               ['/'] = {'<cmd>Telescope current_buffer_fuzzy_find<CR>', 'Find in buffer'},
-              o = {'<cmd>Telescope fzf_writer files<CR>', 'Find File'},
+              o = {
+                function ()
+                  local find_command={
+                    'rg',
+                    '--ignore',
+                    '--hidden',
+                    '--files',
+                    '--iglob',
+                    '!.git',
+                    '--ignore-vcs',
+                    '--ignore-file',
+                    '~/.config/git/gitexcludes',
+                  }
+                  require('telescope.builtin').find_files({find_command=find_command})
+                end,
+                'Find File'},
+              -- o = {'<cmd>Telescope find_files<CR>', 'Find File'},
               b = {'<cmd>Telescope buffers<CR>', 'Find Buffers'},
               m = {'<cmd>Telescope marks<CR>', 'Find Marks'},
             },
@@ -1315,6 +1331,22 @@
         local actions = require('telescope.actions')
         require('telescope').setup{
           defaults = {
+            vimgrep_arguments = {
+              'rg',
+              '--color=never',
+              '--no-heading',
+              '--with-filename',
+              '--line-number',
+              '--column',
+              '--smart-case',
+              '--hidden',
+              '--ignore',
+              '--iglob',
+              '!.git',
+              '--ignore-vcs',
+              '--ignore-file',
+              '~/.config/git/gitexcludes',
+            },
             file_ignore_patterns = {},
             width = 0.75,
             prompt_position = "top",
