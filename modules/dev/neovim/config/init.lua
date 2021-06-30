@@ -2422,8 +2422,8 @@
           require'snippets'.snippets = {
             _global = {
               ["date_ymd"]   = "${=os.date('%Y-%m-%d')}",
-              ["date_ymdHM"]   = "${=os.date('%Y-%m-%d %H-%M')}",
-              ["date_ymdHMS"]   = "${=os.date('%Y-%m-%d %H-%M-%S')}",
+              ["date_ymdHM"]   = "${=os.date('%Y-%m-%d %H:%M')}",
+              ["date_ymdHMS"]   = "${=os.date('%Y-%m-%d %H:%M:%S')}",
 
               ["todo"] = U.match_indentation (
               "${=sep()} TODO(${=io.popen('id -un'):read'*l'}): $0\n"..
