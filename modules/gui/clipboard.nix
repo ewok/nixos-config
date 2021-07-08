@@ -46,6 +46,23 @@ in
 
         Install = { WantedBy = [ "graphical-session.target" ]; };
       };
+
+      systemd.user.services.autocutseld-restart = {
+        Unit = { Description = "restart autocutseld"; };
+        Service = {
+          Type = "simple";
+          ExecStart = "/run/current-system/sw/bin/systemctl --user --no-block restart autocutseld.service";
+        };
+      };
+      systemd.user.timers.autocutseld-restart = {
+        Unit = { Description = "restart autocutseld"; };
+        Timer = {
+          Unit = "autocutseld-restart.service";
+          OnCalendar = "daily";
+          Persistent = true;
+        };
+        Install = { WantedBy = [ "timers.target" ]; };
+      };
       # xdg.configFile."clipit/clipitrc" = {
       #   text = ''
       #     [rc]

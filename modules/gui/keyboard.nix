@@ -31,6 +31,24 @@ in
           Control_L = "Escape";
         };
       };
+
+      systemd.user.services.xcape-restart = {
+        Unit = { Description = "restart xcape"; };
+        Service = {
+          Type = "simple";
+          ExecStart = "/run/current-system/sw/bin/systemctl --user --no-block restart xcape.service";
+        };
+      };
+      systemd.user.timers.xcape-restart = {
+        Unit = { Description = "restart xcape"; };
+        Timer = {
+          Unit = "xcape-restart.service";
+          OnCalendar = "daily";
+          Persistent = true;
+        };
+        Install = { WantedBy = [ "timers.target" ]; };
+      };
+
     };
 
     # services.udev.extraRules = ''
