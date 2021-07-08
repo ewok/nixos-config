@@ -10,7 +10,7 @@
     # rnix.url = "github:nix-community/rnix-lsp/master";
     # rnix.url = "https://github.com/nix-community/rnix-lsp/archive/master.tar.gz";
     home-manager = {
-      url = "github:rycee/home-manager";
+      url = "github:rycee/home-manager/release-21.05";
       inputs.nixpkgs.follows = "nixpkgs";
     };
   };
