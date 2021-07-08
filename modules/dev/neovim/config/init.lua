@@ -408,7 +408,8 @@
   map('n', 'J', 'mzJ`z', { noremap = true })
 
   -- [S]plit line (sister to [J]oin lines) S is covered by cc.
-  map('n', 'gS', 'mzi<CR><ESC>`z', { noremap = true })
+  map('n', 'gs', 'mzi<CR><ESC>`z', { noremap = true })
+  map('n', 'gj', 'gJ', { noremap = true })
 
   -- Don't move cursor when searching via *
   map('n', '*', ':let stay_star_view = winsaveview()<cr>*:call winrestview(stay_star_view)<CR>', { noremap = true, silent = true })
@@ -765,6 +766,16 @@
       reg_auto_save()
     end
   -- }}}
+  -- ORG {{{
+    local ft_org = {
+      {[[ FileType org lua load_org_ft() ]]}
+    }
+    augroups({ft_org=ft_org})
+    _G.load_org_ft = function()
+      reg_highlight_cword()
+      reg_auto_save()
+    end
+    -- }}}
   -- Python {{{
     packer.use {
       'jmcantrell/vim-virtualenv',
@@ -1348,8 +1359,8 @@
               '~/.config/git/gitexcludes',
             },
             file_ignore_patterns = {},
-            width = 0.75,
-            prompt_position = "top",
+            -- width = 0.75,
+            -- prompt_position = "top",
             sorting_strategy = "ascending",
             set_env = { ['COLORTERM'] = 'truecolor' },
             -- file_sorter =  require'telescope.sorters'.get_fzy_sorter,
@@ -1832,75 +1843,75 @@
       end,
     }
   -- }}}
-  -- NvimTree {{{
-    packer.use {
-      'kyazdani42/nvim-tree.lua',
-      requires = {{'kyazdani42/nvim-web-devicons'}},
-      config = function ()
-        vim.g.nvim_tree_width = 40
-        vim.g.nvim_tree_auto_close = 1
-        -- vim.g.nvim_tree_quit_on_open = 1
-        -- vim.g.nvim_tree_follow = 1
-        -- Forgets state
-        vim.g.nvim_tree_tab_open = 0
-        vim.g.nvim_tree_group_empty = 1
-        vim.g.nvim_tree_disable_netrw = 0
-        vim.g.nvim_tree_auto_ignore_ft = {'startify', 'dashboard'}
-        vim.g.nvim_tree_quit_on_open = 1
-        vim.g.nvim_tree_lsp_diagnostics = 1
-        vim.g.nvim_tree_highlight_opened_files = 1
+  -- -- NvimTree {{{
+  --   packer.use {
+  --     'kyazdani42/nvim-tree.lua',
+  --     requires = {{'kyazdani42/nvim-web-devicons'}},
+  --     config = function ()
+  --       vim.g.nvim_tree_width = 40
+  --       vim.g.nvim_tree_auto_close = 1
+  --       -- vim.g.nvim_tree_quit_on_open = 1
+  --       -- vim.g.nvim_tree_follow = 1
+  --       -- Forgets state
+  --       vim.g.nvim_tree_tab_open = 0
+  --       vim.g.nvim_tree_group_empty = 1
+  --       vim.g.nvim_tree_disable_netrw = 0
+  --       vim.g.nvim_tree_auto_ignore_ft = {'startify', 'dashboard'}
+  --       vim.g.nvim_tree_quit_on_open = 1
+  --       vim.g.nvim_tree_lsp_diagnostics = 1
+  --       vim.g.nvim_tree_highlight_opened_files = 1
 
-        wkmap({
-          ['<leader>'] = {
-            oE = {'<cmd>NvimTreeToggle<CR>', 'Open Explorer'},
-            fP = {'<cmd>NvimTreeFindFile<CR>', 'Find file in Path'}
-          }
-        },{
-          noremap = true,
-          silent = true
-        })
+  --       wkmap({
+  --         ['<leader>'] = {
+  --           oE = {'<cmd>NvimTreeToggle<CR>', 'Open Explorer'},
+  --           fP = {'<cmd>NvimTreeFindFile<CR>', 'Find file in Path'}
+  --         }
+  --       },{
+  --         noremap = true,
+  --         silent = true
+  --       })
 
-        local tree_cb = require'nvim-tree.config'.nvim_tree_callback
-        vim.g.nvim_tree_bindings = {
-          -- ["<CR>"] = ":YourVimFunction()<cr>",
-          -- ["u"] = ":lua require'some_module'.some_function()<cr>",
+  --       local tree_cb = require'nvim-tree.config'.nvim_tree_callback
+  --       vim.g.nvim_tree_bindings = {
+  --         -- ["<CR>"] = ":YourVimFunction()<cr>",
+  --         -- ["u"] = ":lua require'some_module'.some_function()<cr>",
 
-          -- default mappings
-          ["<CR>"]           = tree_cb("edit"),
-          ["o"]              = tree_cb("edit"),
-          ["<C-]>"]          = tree_cb("cd"),
-          ["C"]              = tree_cb("cd"),
-          ["v"]              = tree_cb("vsplit"),
-          ["s"]              = tree_cb("split"),
-          ["t"]              = tree_cb("tabnew"),
-          ["<BS>"]           = tree_cb("close_node"),
-          ["<S-CR>"]         = tree_cb("close_node"),
-          ["<Tab>"]          = tree_cb("preview"),
-          ["I"]              = tree_cb("toggle_ignored"),
-          ["H"]              = tree_cb("toggle_dotfiles"),
-          ["r"]              = tree_cb("refresh"),
-          ["R"]              = tree_cb("refresh"),
-          ["a"]              = tree_cb("create"),
-          ["d"]              = tree_cb("remove"),
-          ["m"]              = tree_cb("rename"),
-          ["M"]          = tree_cb("full_rename"),
-          ["x"]              = tree_cb("cut"),
-          ["c"]              = tree_cb("copy"),
-          ["p"]              = tree_cb("paste"),
-          ["[g"]             = tree_cb("prev_git_item"),
-          ["]g"]             = tree_cb("next_git_item"),
-          ["u"]              = tree_cb("dir_up"),
-          ["q"]              = tree_cb("close"),
-        }
+  --         -- default mappings
+  --         ["<CR>"]           = tree_cb("edit"),
+  --         ["o"]              = tree_cb("edit"),
+  --         ["<C-]>"]          = tree_cb("cd"),
+  --         ["C"]              = tree_cb("cd"),
+  --         ["v"]              = tree_cb("vsplit"),
+  --         ["s"]              = tree_cb("split"),
+  --         ["t"]              = tree_cb("tabnew"),
+  --         ["<BS>"]           = tree_cb("close_node"),
+  --         ["<S-CR>"]         = tree_cb("close_node"),
+  --         ["<Tab>"]          = tree_cb("preview"),
+  --         ["I"]              = tree_cb("toggle_ignored"),
+  --         ["H"]              = tree_cb("toggle_dotfiles"),
+  --         ["r"]              = tree_cb("refresh"),
+  --         ["R"]              = tree_cb("refresh"),
+  --         ["a"]              = tree_cb("create"),
+  --         ["d"]              = tree_cb("remove"),
+  --         ["m"]              = tree_cb("rename"),
+  --         ["M"]          = tree_cb("full_rename"),
+  --         ["x"]              = tree_cb("cut"),
+  --         ["c"]              = tree_cb("copy"),
+  --         ["p"]              = tree_cb("paste"),
+  --         ["[g"]             = tree_cb("prev_git_item"),
+  --         ["]g"]             = tree_cb("next_git_item"),
+  --         ["u"]              = tree_cb("dir_up"),
+  --         ["q"]              = tree_cb("close"),
+  --       }
 
-        vim.g.nvim_tree_icons = {
-          default = '',
-          symlink = '',
-        }
+  --       vim.g.nvim_tree_icons = {
+  --         default = '',
+  --         symlink = '',
+  --       }
 
-      end,
-    }
-  -- }}}
+  --     end,
+  --   }
+  -- -- }}}
   -- Rooter {{{
     packer.use {
       'airblade/vim-rooter',
@@ -2301,6 +2312,50 @@
     }
   -- }}}
   -- Org {{{
+    packer.use {
+      'kristijanhusak/orgmode.nvim',
+      config = function()
+        require('orgmode').setup({
+          org_agenda_files = {'~/Notes/org/*'},
+          org_default_notes_file = '~/Notes/org/inbox.org',
+          org_todo_keywords = {'TODO', 'ACTIVE', '|', 'DONE'},
+          org_hide_emphasis_markers = true,
+          org_hide_leading_stars = true,
+          org_agenda_templates = {
+            t = { description = 'Task', template = '* TODO %?\n  %t' }
+          },
+          mappings = {
+            global = {
+              org_agenda = '<leader>a',
+              org_capture = '<leader>b'
+            },
+            capture = {
+              org_capture_kill = '<C-g>',
+              org_capture_refile = 'R',
+            },
+            org = {
+              org_refile = 'R',
+              org_todo = '>T',
+              org_todo_prev = '<T',
+              org_open_at_point = 'go',
+              org_archive_subtree = '<CR>A',
+              org_set_tags_command = 'cit',
+              org_toggle_archive_tag = '<CR>a',
+              org_promote_subtree = '<S',
+              org_demote_subtree = '>S',
+              org_meta_return = '<CR><CR>',
+              org_insert_heading_respect_content = '<CR>h',
+              org_insert_todo_heading = '<leader>riT',
+              org_insert_todo_heading_respect_content = '<CR>t',
+              org_move_subtree_up = 'gk',
+              org_move_subtree_down = 'gj',
+              org_cycle = '<leader><leader>',
+              org_global_cycle = '<leader><Tab>'
+            }
+          }
+        })
+      end
+    }
     -- packer.use {
     --   'vhyrro/neorg',
     --   requires = { 'nvim-lua/plenary.nvim' },
@@ -2410,6 +2465,9 @@
   -- Completor {{{
     packer.use {
       'hrsh7th/nvim-compe',
+      -- after = {
+      --   'orgmode.nvim'
+      -- },
       requires = {
         { 'rafamadriz/friendly-snippets', },
         { 'hrsh7th/vim-vsnip', },
@@ -2469,8 +2527,10 @@
             spell = true;
             tags = true;
             snippets_nvim = true;
-            nvim_treesitter = true;
+            treesitter = true;
             emoji = true;
+            orgmode = {priority=100};
+            luasnip = true;
           };
         }
 
@@ -2487,8 +2547,8 @@
           end
         end
 
-        _G.tab_complete = function(a_key)
-          local key = a_key or "<Tab>"
+        _G.cn_complete = function(a_key)
+          local key = a_key or "<C-n>"
           if vim.fn.pumvisible() == 1 then
             return t "<C-n>"
           elseif vim.fn.call("vsnip#available", {1}) == 1 then
@@ -2499,8 +2559,9 @@
             return vim.fn['compe#complete']()
           end
         end
-        _G.s_tab_complete = function(a_key)
-          local key = a_key or "<S-Tab>"
+
+        _G.cp_complete = function(a_key)
+          local key = a_key or "<C-p>"
           if vim.fn.pumvisible() == 1 then
             return t "<C-p>"
           elseif vim.fn.call("vsnip#jumpable", {-1}) == 1 then
@@ -2510,15 +2571,33 @@
           end
         end
 
-        map("i", "<Tab>", "v:lua.tab_complete()", {expr = true})
-        map("s", "<Tab>", "v:lua.tab_complete()", {expr = true})
-        map("i", "<S-Tab>", "v:lua.s_tab_complete()", {expr = true})
-        map("s", "<S-Tab>", "v:lua.s_tab_complete()", {expr = true})
+        _G.snip_next_field = function(a_key)
+          local key = a_key or "<Tab>"
+          if vim.fn.call("vsnip#jumpable", {1}) == 1 then
+            return t "<Plug>(vsnip-jump-next)"
+          else
+            return t(key)
+          end
+        end
 
-        map("i", "<C-n>", "v:lua.tab_complete('<C-n>')", {expr = true})
-        map("s", "<C-n>", "v:lua.tab_complete('<C-n>')", {expr = true})
-        map("i", "<C-p>", "v:lua.s_tab_complete('<C-p>')", {expr = true})
-        map("s", "<C-p>", "v:lua.s_tab_complete('<C-p>')", {expr = true})
+        _G.snip_prev_field = function(a_key)
+          local key = a_key or "<S-Tab>"
+          if vim.fn.call("vsnip#jumpable", {-1}) == 1 then
+            return t "<Plug>(vsnip-jump-prev)"
+          else
+            return t(key)
+          end
+        end
+
+        map("i", "<Tab>", "v:lua.snip_next_field()", {expr = true})
+        map("s", "<Tab>", "v:lua.snip_next_field()", {expr = true})
+        map("i", "<S-Tab>", "v:lua.snip_prev_field()", {expr = true})
+        map("s", "<S-Tab>", "v:lua.snip_prev_field()", {expr = true})
+
+        map("i", "<C-n>", "v:lua.cn_complete('<C-n>')", {expr = true})
+        map("s", "<C-n>", "v:lua.cn_complete('<C-n>')", {expr = true})
+        map("i", "<C-p>", "v:lua.cp_complete('<C-p>')", {expr = true})
+        map("s", "<C-p>", "v:lua.cp_complete('<C-p>')", {expr = true})
 
         map("i", "<C-y>", [[pumvisible() ? "\<C-y>\<C-y>"  : "\<C-y>"]], {expr = true, noremap = true})
         map("s", "<C-y>", [[pumvisible() ? "\<C-y>\<C-y>"  : "\<C-y>"]], {expr = true, noremap = true})
@@ -2611,7 +2690,7 @@
               D = {function() vim.lsp.buf.declaration() end, 'Goto Declaration'},
               r = {function() vim.lsp.buf.references() end, 'Goto References'},
               i = {function() vim.lsp.buf.implementation() end, 'Goto Implementation'},
-              T = {function() vim.lsp.buf.type_definition() end, 'Goto Type Definition'}
+              y = {function() vim.lsp.buf.type_definition() end, 'Goto Type Definition'}
             },
             ['<leader>W'] = {
               name = '+Workspace',
@@ -2927,8 +3006,8 @@
       end,
       config = function()
         wkmap({
-          gs = {'<cmd>SplitjoinSplit<CR>', 'Magic Split'},
-          gj = {'<cmd>SplitjoinJoin<CR>', 'Magic Join'}
+          gS = {'<cmd>SplitjoinSplit<CR>', 'Magic Split'},
+          gJ = {'<cmd>SplitjoinJoin<CR>', 'Magic Join'}
         })
       end,
     }
@@ -3237,7 +3316,7 @@
       },
       l = {
         name = '+Location',
-        q = {'<Plug>(qfix_LToggle)', 'Toggle'},
+        l = {'<Plug>(qfix_LToggle)', 'Toggle'},
         o = {'<Plug>(qfix_LOpen)', 'Open'},
         c = {'<Plug>(qfix_LClose)', 'Close'},
         n = {'<Plug>(qfix_LQNext)', 'Next'},
