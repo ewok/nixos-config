@@ -17,9 +17,13 @@ let
     fi
   '';
 
+  nvim = pkgs.writeShellScriptBin "nvim" ''
+    LC_TIME=en_US.UTF-8 ${pkgs.neovim-nightly}/bin/nvim $@
+  '';
+
   my-nvim = pkgs.symlinkJoin {
     name = "my-neovim";
-    paths = [ pkgs.neovim-nightly ];
+    paths = [ nvim ];
     postBuild = ''
       ln -s $out/bin/nvim $out/bin/vim
       ln -s $out/bin/nvim $out/bin/vi
@@ -82,6 +86,37 @@ in
       ] ++ [
         jrnl
       ];
+
+      # Sync notes service
+      systemd.user.services.notes-sync = {
+        Unit = { Description = "Sync notes"; };
+        Service = {
+          CPUSchedulingPolicy = "idle";
+          IOSchedulingClass = "idle";
+          Environment = "SSH_AUTH_SOCK=/run/user/1000/gnupg/S.gpg-agent.ssh";
+          ExecStart = toString (
+            pkgs.writeShellScript "notes-sync" ''
+              set -e
+              ${pkgs.busybox}/bin/nc -z github.com 22
+              DATE=$(${pkgs.coreutils}/bin/date)
+              ${pkgs.git}/bin/git -C ~/Notes pull
+              ${pkgs.git}/bin/git -C ~/Notes add .
+              ${pkgs.git}/bin/git -C ~/Notes commit -m "Auto commit + push. $DATE" || exit 0
+              ${pkgs.git}/bin/git -C ~/Notes push
+            ''
+          );
+        };
+      };
+
+      systemd.user.timers.notes-sync = {
+        Unit = { Description = "Sync notes"; };
+        Timer = {
+          Unit = "notes-sync.service";
+          OnCalendar = "hourly";
+          Persistent = true;
+        };
+        Install = { WantedBy = [ "timers.target" ]; };
+      };
 
       xdg.configFile."nvim/init.lua".text = replaceStrings [
         ''color_0 = "#282c34"''

@@ -2218,7 +2218,7 @@
       branch = 'dev',
       requires = {
         { 'michal-h21/vim-zettel' },
-        { 'ewok/vimwiki-sync' },
+        -- { 'ewok/vimwiki-sync' },
         { 'fzf.vim' },
         { 'fzf' },
       },
