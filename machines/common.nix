@@ -36,7 +36,7 @@ in
     createHome = false;
   };
 
-  users.defaultUserShell = pkgs.fish;
+  users.defaultUserShell = pkgs.zsh;
 
   services.openssh.enable = true;
 

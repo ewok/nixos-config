@@ -6,7 +6,8 @@ let
 in
 {
   imports = [
-    ./fish
+    # ./fish
+    ./zsh
     ./tmux
     ./vifm
     ./starship.nix

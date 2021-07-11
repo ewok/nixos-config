@@ -15,7 +15,8 @@ in
 
       programs.fzf = {
         enable = true;
-        enableFishIntegration = true;
+        # enableFishIntegration = true;
+        enableZshIntegration = true;
         defaultCommand = "rg --hidden --no-ignore --files";
       };
     };

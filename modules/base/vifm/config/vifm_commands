@@ -28,9 +28,9 @@ command! j :execute 'cd' system('autojump %a')
 command! jd !!autojump -d %a
 command! ji !!autojump -i %a
 
-command! vim vim %a
-command! nvim nvim %a
-command! vimr vimr %a
+command! vim vim "%a"
+command! nvim nvim "%a"
+command! vimr vimr "%a"
 
 command! code code %a
 
