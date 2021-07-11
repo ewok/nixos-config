@@ -17,13 +17,9 @@ let
     fi
   '';
 
-  nvim = pkgs.writeShellScriptBin "nvim" ''
-    LC_TIME=en_US.UTF-8 ${pkgs.neovim-nightly}/bin/nvim $@
-  '';
-
   my-nvim = pkgs.symlinkJoin {
     name = "my-neovim";
-    paths = [ nvim ];
+    paths = [ pkgs.neovim-nightly ];
     postBuild = ''
       ln -s $out/bin/nvim $out/bin/vim
       ln -s $out/bin/nvim $out/bin/vi

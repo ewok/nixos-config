@@ -857,7 +857,6 @@
       vim.b.ale_python_vulture_executable = 'vulture'
 
       require'lspconfig'.pyright.autostart()
-      vim.fn.matchadd('OverLength', '\\%81v', 100)
 
       reg_auto_save()
       reg_dap_keys()
@@ -1255,11 +1254,11 @@
         vim.g.doom_one_terminal_colors = true
         vim.g.doom_one_italic_comments = true
 
-        vim.api.nvim_exec([[
-          " Mark 80-th character
-          hi! OverLength ctermbg=168 guibg=${color_14} ctermfg=250 guifg=${color_0}
-          call matchadd('OverLength', '\%81v', 100)
-        ]] % colors, true)
+        -- vim.api.nvim_exec([[
+        --   " Mark 80-th character
+        --   hi! OverLength ctermbg=168 guibg=${color_14} ctermfg=250 guifg=${color_0}
+        --   call matchadd('OverLength', '\%81v', 100)
+        -- ]] % colors, true)
       end
     }
     vim.cmd [[ packadd doom-one ]]
@@ -2311,7 +2310,7 @@
       end,
     }
   -- }}}
-  -- Org {{{
+  -- Orgmode {{{
     packer.use {
       'kristijanhusak/orgmode.nvim',
       config = function()
@@ -2350,7 +2349,8 @@
               org_move_subtree_up = 'gk',
               org_move_subtree_down = 'gj',
               org_cycle = '<leader><leader>',
-              org_global_cycle = '<leader><Tab>'
+              org_global_cycle = '<leader><Tab>',
+              org_export = '<leader>re',
             }
           }
         })
