@@ -1416,29 +1416,30 @@
     }
   -- }}}
   -- Indent-guides {{{
-    -- packer.use {
-    --   'Yggdroot/indentLine',
-    --   config = function()
-    --     vim.g.indentLine_char = '¦'
-    --   end,
-    -- }
     packer.use {
-      'glepnir/indent-guides.nvim',
-      as = 'indent-guides',
+      'lukas-reineke/indent-blankline.nvim',
       config = function()
-        require('indent_guides').setup({
-          indent_levels = 30;
-          indent_guide_size = 1;
-          indent_start_level = 2;
-          indent_space_guides = true;
-          indent_tab_guides = false;
-          indent_soft_pattern = '\\s';
-          exclude_filetypes = {'help','dashboard','dashpreview','nerdtree','vista','sagahover','which_key', 'nvimtree'};
-          even_colors = { fg ='#AAAAAA',bg=colors.color_10 };
-          odd_colors = {fg='#AAAAAA',bg=colors.color_10};
-        })
+        -- vim.g.indentLine_char = '|'
+        vim.gindent_blankline_char_list = { '|', '¦', '┆', '┊' }
       end,
     }
+    -- packer.use {
+    --   'glepnir/indent-guides.nvim',
+    --   as = 'indent-guides',
+    --   config = function()
+    --     require('indent_guides').setup({
+    --       indent_levels = 30;
+    --       indent_guide_size = 1;
+    --       indent_start_level = 2;
+    --       indent_space_guides = true;
+    --       indent_tab_guides = false;
+    --       indent_soft_pattern = '\\s';
+    --       exclude_filetypes = {'help','dashboard','dashpreview','nerdtree','vista','sagahover','which_key', 'nvimtree'};
+    --       even_colors = { fg ='#AAAAAA',bg=colors.color_10 };
+    --       odd_colors = {fg='#AAAAAA',bg=colors.color_10};
+    --     })
+    --   end,
+    -- }
   -- }}}
   -- Galaxyline {{{
     packer.use {
@@ -1995,7 +1996,7 @@
   -- }}}
   -- Texting {{{
     packer.use {
-      'junegunn/goyo.vim',
+      "folke/zen-mode.nvim",
       requires = {
         {
           'junegunn/limelight.vim',
@@ -2003,21 +2004,52 @@
           cmd = { 'Limelight' },
         }
       },
-      cmd = { 'Goyo' },
-      setup = function ()
-        vim.g.goyo_loaded = 1
-        vim.g.goyo_width = 120
-        vim.g.goyo_height = "90%"
-      end,
+      config = function()
+        require("zen-mode").setup {
+          window = {
+            backdrop = 0.95,
+            width = 120,
+            height = 1,
+            options = {
+              signcolumn = "no", -- disable signcolumn
+              number = false, -- disable number column
+              relativenumber = false, -- disable relative numbers
+              cursorline = false, -- disable cursorline
+              cursorcolumn = false, -- disable cursor column
+              foldcolumn = "0", -- disable fold column
+              list = false, -- disable whitespace characters
+            },
+          },
+          plugins = {
+            gitsigns = { enabled = false }, -- disables git signs
+            tmux = { enabled = false }, -- disables the tmux statusline
+          },
+          on_open = function() text_enter() end,
+          on_close = function()  text_leave() end,
+        }
+      end
     }
+
+    -- packer.use {
+    --   'junegunn/goyo.vim',
+    --   requires = {
+    --     {
+    --       'junegunn/limelight.vim',
+    --       opt = true,
+    --       cmd = { 'Limelight' },
+    --     }
+    --   },
+    --   cmd = { 'Goyo' },
+    --   setup = function ()
+    --     vim.g.goyo_loaded = 1
+    --     vim.g.goyo_width = 120
+    --     vim.g.goyo_height = "90%"
+    --   end,
+    -- }
 
     vim.cmd[[packadd limelight.vim]]
 
-    _G.goyo_enter = function()
-      if fn.executable('tmux') == 1 and fn.exists('$TMUX') == 1 then
-        execute '!tmux set status off'
-        execute([[!tmux list-panes -F '\#F' | grep -q Z || tmux resize-pane -Z]])
-      end
+    _G.text_enter = function()
       require('galaxyline').disable_galaxyline()
       vim.defer_fn(function()
         vim.wo.statusline = ''
@@ -2025,16 +2057,16 @@
         vim.o.showcmd = false
         vim.o.scrolloff = 999
         vim.wo.wrap = true
-        vim.cmd('IndentGuidesDisable')
+        vim.cmd('IndentBlanklineDisable')
         vim.cmd('Limelight')
       end, 1000)
+      if fn.executable('tmux') == 1 and fn.exists('$TMUX') == 1 then
+        execute 'silent !tmux set status off'
+        execute([[silent !tmux list-panes -F '\#F' | grep -q Z || tmux resize-pane -Z]])
+      end
     end
 
-    _G.goyo_leave = function()
-      if fn.executable('tmux') == 1 and fn.exists('$TMUX') == 1 then
-        execute '!tmux set status on'
-        execute [[!tmux list-panes -F '\#F' | grep -q Z && tmux resize-pane -Z]]
-      end
+    _G.text_leave = function()
       require('galaxyline').load_galaxyline()
       require('galaxyline').galaxyline_augroup()
       vim.defer_fn(function()
@@ -2042,16 +2074,14 @@
         vim.o.showcmd = true
         vim.o.scrolloff = 5
         vim.wo.wrap = false
-        vim.cmd('IndentGuidesEnable')
+        vim.cmd('IndentBlanklineEnable')
         vim.cmd('Limelight!')
       end, 1000)
+      if fn.executable('tmux') == 1 and fn.exists('$TMUX') == 1 then
+        execute 'silent !tmux set status on'
+        execute [[silent !tmux list-panes -F '\#F' | grep -q Z && tmux resize-pane -Z]]
+      end
     end
-
-    local au_goyo = {
-      { 'User GoyoEnter nested silent lua goyo_enter()' };
-      { 'User GoyoLeave nested silent lua goyo_leave()' };
-    }
-    augroups({au_goyo=au_goyo})
 
     -- Spelling
     vim.g.myLangList = { 'nospell', 'en_us', 'ru_ru' }
@@ -2088,7 +2118,7 @@
       ['<leader>'] = {
         t = {
           name = '+Text/+Toggle',
-          t = {'<cmd>Goyo<CR>', 'Toggle Goyo'},
+          t = {'<cmd>ZenMode<CR>', 'Toggle Goyo'},
           s = {function() toggle_spell() end, 'Toggle Spelling'},
           f = {
             name = '+Fix-Text'
@@ -2313,6 +2343,16 @@
   -- Orgmode {{{
     packer.use {
       'kristijanhusak/orgmode.nvim',
+      requires = {
+        {
+          'akinsho/org-bullets.nvim',
+          config = function()
+            require("org-bullets").setup {
+              symbols = { "◉", "○", "✸", "✿" }
+            }
+          end
+        }
+      },
       config = function()
         require('orgmode').setup({
           org_agenda_files = {'~/Notes/org/*'},
@@ -2356,46 +2396,6 @@
         })
       end
     }
-    -- packer.use {
-    --   'vhyrro/neorg',
-    --   requires = { 'nvim-lua/plenary.nvim' },
-    --   config = function()
-    --     require('neorg').setup {
-    --       load = {
-    --         ["core.defaults"] = {}, -- Load all the default modules
-    --         ["core.norg.concealer"] = {} -- Enhances the text editing experience by using icons
-    --       },
-
-    --       -- Tells neorg where to load community provided modules. If unspecified, this is the default
-    --       community_module_path = vim.fn.stdpath("cache") .. "/neorg_community_modules"
-    --     }
-    --     -- This sets the leader for all Neorg keybinds. It is separate from the regular <Leader>,
-    --     -- And allows you to shove every Neorg keybind under one "umbrella".
-    --     local neorg_leader = "<Leader>i" -- You may also want to set this to <Leader>o for "organization"
-
-    --     -- Require the user callbacks module, which allows us to tap into the core of Neorg
-    --     local neorg_callbacks = require('neorg.callbacks')
-
-    --     -- Listen for the enable_keybinds event, which signals a "ready" state meaning we can bind keys.
-    --     -- This hook will be called several times, e.g. whenever the Neorg Mode changes or an event that
-    --     -- needs to reevaluate all the bound keys is invoked
-    --     neorg_callbacks.on_event("core.keybinds.events.enable_keybinds", function(_, keybinds)
-
-    --       -- Map all the below keybinds only when the "norg" mode is active
-    --       keybinds.map_event_to_mode("norg", {
-    --         n = { -- Bind keys in normal mode
-
-    --         -- Keys for managing TODO items and setting their states
-    --         { "gtd", "core.norg.qol.todo_items.todo.task_done" },
-    --         { "gtu", "core.norg.qol.todo_items.todo.task_undone" },
-    --         { "gtp", "core.norg.qol.todo_items.todo.task_pending" },
-    --         { "gtt", "core.norg.qol.todo_items.todo.task_cycle" }
-
-    --       },
-    --     }, { silent = true, noremap = true })
-
-    --   end)
-    -- end}
     -- }}}
   -- Vista {{{
     packer.use {
@@ -2659,7 +2659,10 @@
           wkmap({
             gk = {function() require('lspsaga.signaturehelp').signature_help() end, 'Signature Help[lspsaga]'}
           })
-        end, }
+        end, },
+        {
+          'ray-x/lsp_signature.nvim'
+        }
       },
       as = 'lspconfig',
       config = function()
@@ -2713,6 +2716,8 @@
           if client.resolved_capabilities.document_formatting then
             wkmap({['<leader>cf'] = {function() vim.lsp.buf.formatting() end, 'Formatting'}})
           end
+
+          require "lsp_signature".on_attach()
 
         end
 
