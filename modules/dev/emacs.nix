@@ -27,6 +27,7 @@ in
       };
 
       xdg.configFile."emacs/init.el".source = ./emacs/init.el;
+      xdg.configFile."emacs/emacs.org".source = ./emacs/emacs.org;
     };
   };
 }

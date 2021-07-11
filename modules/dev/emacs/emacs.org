@@ -4,33 +4,33 @@
 * Basic configuration
 
 #+begin_src emacs-lisp
-  
+
     (setq-default custom-file null-device)
-  
+
     ;; Answering just 'y' or 'n' will do
     (defalias 'yes-or-no-p 'y-or-n-p)
-  
+
     ;; Keep all backup and auto-save files in one directory
     (setq backup-directory-alist '(("." . "~/.emacs_backups")))
     (setq auto-save-file-name-transforms '((".*" "~/.emacs_save/" t)))
-  
+
     ;; UTF-8 please
     (setq locale-coding-system 'utf-8) ; pretty
     (set-terminal-coding-system 'utf-8) ; pretty
     (set-keyboard-coding-system 'utf-8) ; pretty
     (set-selection-coding-system 'utf-8) ; please
     (prefer-coding-system 'utf-8) ; with sugar on top
-  
+
     ;; Turn off the blinking cursor
     (blink-cursor-mode -1)
-  
+
     (setq-default indent-tabs-mode nil)
     (setq-default indicate-empty-lines t)
-  
+
   ;; Don't count two spaces after a period as the end of a sentence.
   ;; Just one space is needed.
   (setq sentence-end-double-space nil)
-  
+
 #+end_src
 
 Attempt to configure smooth scroll:
@@ -94,7 +94,7 @@ Attempt to configure smooth scroll:
   (setq uniquify-buffer-name-style 'forward)
 
   ;; Don't beep at me
-  (setq visible-bell t)
+  ;;(setq visible-bell t)
 #+end_src
 
 ** Font Configuration
@@ -110,7 +110,7 @@ Attempt to configure smooth scroll:
     (set-face-attribute 'fixed-pitch nil :font view/default-font :height view/default-font-size)
 
   ;; Set the variable pitch face
-  (set-face-attribute 'variable-pitch nil :font "Cantarell" :height view/default-font-size :weight 'regular)
+  ;;(set-face-attribute 'variable-pitch nil :font "Cantarell" :height view/default-font-size :weight 'regular)
 
 #+end_src
 
@@ -286,7 +286,8 @@ Attempt to configure smooth scroll:
                     (org-level-6 . 1.1)
                     (org-level-7 . 1.1)
                     (org-level-8 . 1.1)))
-      (set-face-attribute (car face) nil :font "Cantarell" :weight 'regular :height (cdr face)))
+      ;;(set-face-attribute (car face) nil :font "Cantarell" :weight 'regular :height (cdr face))
+      )
 
     ;; Ensure that anything that should be fixed-pitch in Org files appears that way
     (set-face-attribute 'org-block nil :foreground nil :inherit 'fixed-pitch)
@@ -316,8 +317,11 @@ Attempt to configure smooth scroll:
     (setq org-log-done 'time)
     (setq org-log-into-drawer t)
 
-    (setq org-agenda-files '("~/Notes/tasks.org"
-                             "~/Notes/birthdays.org"))
+    (setq org-agenda-files '("~/Notes/org/tasks.org"
+                             "~/Notes/org/birthdays.org"
+                             "~/Notes/org/inbox.org"
+                             "~/Notes/org/work.org"
+                             ))
 
     (require 'org-habit)
     (add-to-list 'org-modules 'org-habit)
@@ -398,7 +402,7 @@ Attempt to configure smooth scroll:
 
     (setq org-capture-templates
           `(("t" "Tasks / Projects")
-            ("tt" "Task" entry (file+olp "~/Notes/tasks.org" "Inbox")
+            ("tt" "Task" entry (file+olp "~/Notes/org/inbox.org" "Inbox")
              "* TODO %?\n  %U\n  %a\n  %i" :empty-lines 1)
 
             ("j" "Journal Entries")
@@ -431,8 +435,8 @@ Attempt to configure smooth scroll:
 ** Keybindings
 
 #+begin_src emacs-lisp
-  (leaders/main 
-    "oa" 'org-agenda 
+  (leaders/main
+    "oa" 'org-agenda
     "oc" 'org-capture)
 
   (use-package evil-org
