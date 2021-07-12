@@ -16,6 +16,17 @@ let
     '';
   };
 
+  gitIgnoreNix = pkgs.writeShellScriptBin "git-ignore-nix" ''
+    ${pkgs.git}/bin/git config --local --add core.excludesfile ${hm.xdg.configHome}/git/exclude_nix
+  '';
+
+  ignoreCommon = ''
+    .direnv/
+    .mypy_cache/
+    .out/
+    .tmp/
+  '';
+
 in
 {
   config = mkIf dev.enable {
@@ -33,6 +44,7 @@ in
         gitAndTools.pass-git-helper
         gitAndTools.gh
         gitEnv
+        gitIgnoreNix
       ];
     home-manager.users."${user.name}" = {
 
@@ -41,10 +53,14 @@ in
       ];
 
       xdg.configFile."git/gitexcludes".text = ''
-        .direnv/
-        .mypy_cache/
-        .out/
-        .tmp/
+      ${ignoreCommon}
+      '';
+
+      xdg.configFile."git/exclude_nix".text = ''
+        .envrc
+        shell.nix
+        default.nix
+        ${ignoreCommon}
       '';
 
       # FIX: If not enable don't include
