@@ -56,7 +56,7 @@ in
 {
   config = mkIf gui.enable {
 
-    services.gnome3.gnome-keyring.enable = true;
+    services.gnome.gnome-keyring.enable = true;
     programs.seahorse.enable = true;
     security.pam.services.lightdm.enableGnomeKeyring = true;
 
@@ -94,10 +94,10 @@ in
 
           for DIR in $(find /sys/bus/usb/devices/ -maxdepth 1 -type l); do
             if [[ -f $DIR/idVendor && -f $DIR/idProduct &&
-                  $(cat $DIR/idVendor) == $VENDOR && $(cat $DIR/idProduct) == $PRODUCT ]]; then
-              echo 0 | sudo tee -a $DIR/authorized
+                  $(${pkgs.coreutils}/bin/cat $DIR/idVendor) == $VENDOR && $(${pkgs.coreutils}/bin/cat $DIR/idProduct) == $PRODUCT ]]; then
+              echo 0 | /run/wrappers/bin/sudo tee -a $DIR/authorized
               sleep 0.5
-              echo 1 | sudo tee -a $DIR/authorized
+              echo 1 | /run/wrappers/bin/sudo tee -a $DIR/authorized
             fi
           done
         '')

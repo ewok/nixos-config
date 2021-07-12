@@ -19,7 +19,7 @@ let
 
   my-nvim = pkgs.symlinkJoin {
     name = "my-neovim";
-    paths = [ pkgs.neovim-nightly ];
+    paths = [ pkgs.neovim ];
     postBuild = ''
       ln -s $out/bin/nvim $out/bin/vim
       ln -s $out/bin/nvim $out/bin/vi

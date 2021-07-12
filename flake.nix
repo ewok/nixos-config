@@ -6,11 +6,11 @@
     stable.url = "github:NixOS/nixpkgs/nixos-20.09";
     master.url = "github:nixos/nixpkgs/master";
     nixos-hardware.url = "github:NixOS/nixos-hardware";
-    neovim-nightly-overlay.url = "github:nix-community/neovim-nightly-overlay";
+    # neovim-nightly-overlay.url = "github:nix-community/neovim-nightly-overlay";
     # rnix.url = "github:nix-community/rnix-lsp/master";
     # rnix.url = "https://github.com/nix-community/rnix-lsp/archive/master.tar.gz";
     home-manager = {
-      url = "github:rycee/home-manager/release-21.05";
+      url = "github:rycee/home-manager";
       inputs.nixpkgs.follows = "nixpkgs";
     };
   };
@@ -39,7 +39,7 @@
                   {
                     nixpkgs.overlays = [
                       nixpkgs
-                      inputs.neovim-nightly-overlay.overlay
+                      # inputs.neovim-nightly-overlay.overlay
                       (import ./overlays)
                     ];
                   }

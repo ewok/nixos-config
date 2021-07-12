@@ -56,7 +56,7 @@ let
   '';
 
   nix-update-flakes = writeShellScriptBin "nix-my-update-flakes" ''
-    for flake in stable unstable master nixos-hardware neovim-nightly-overlay home-manager;
+    for flake in stable nixpkgs master nixos-hardware neovim-nightly-overlay home-manager;
     do
       nix flake update --update-input $flake
     done
