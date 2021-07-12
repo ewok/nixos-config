@@ -1283,53 +1283,146 @@
     -- vim.cmd [[ packadd onedark ]]
     -- vim.cmd [[ colorscheme onedark ]]
   -- }}}
-  -- Telescope {{{
+  -- -- Telescope {{{
+  --   packer.use {
+  --     'nvim-telescope/telescope.nvim',
+  --     requires = {
+  --       {'nvim-lua/popup.nvim'},
+  --       {'nvim-lua/plenary.nvim'},
+  --       {'nvim-telescope/telescope-fzy-native.nvim'},
+  --       -- {'nvim-telescope/telescope-fzf-writer.nvim'},
+  --     },
+  --     config = function()
+
+  --       wkmap({
+  --         ['<leader>'] = {
+  --           f = {
+  --             f = {'<cmd>Telescope live_grep<CR>', 'Find in Files'},
+  --             ['/'] = {'<cmd>Telescope current_buffer_fuzzy_find<CR>', 'Find in buffer'},
+  --             o = {
+  --               function ()
+  --                 local find_command={
+  --                   'rg',
+  --                   '--ignore',
+  --                   '--hidden',
+  --                   '--files',
+  --                   '--iglob',
+  --                   '!.git',
+  --                   '--ignore-vcs',
+  --                   '--ignore-file',
+  --                   '~/.config/git/gitexcludes',
+  --                 }
+  --                 require('telescope.builtin').find_files({find_command=find_command})
+  --               end,
+  --               'Find File'},
+  --             -- o = {'<cmd>Telescope find_files<CR>', 'Find File'},
+  --             b = {'<cmd>Telescope buffers<CR>', 'Find Buffers'},
+  --             m = {'<cmd>Telescope marks<CR>', 'Find Marks'},
+  --           },
+  --           o = {
+  --             o = {'<cmd>Telescope vim_options<CR>', 'Open options'},
+  --             h = {'<cmd>Telescope help_tags<CR>', 'Open Help'},
+  --             s = {
+  --               name = '+Set',
+  --               a = {'<cmd>Telescope autocommands<CR>', 'Autocommands'},
+  --               c = {'<cmd>Telescope commands<CR>', 'Commands'},
+  --               f = {'<cmd>Telescope filetypes<CR>', 'Filetypes'},
+  --               i = {'<cmd>Telescope highlights<CR>', 'Highlights'},
+  --               k = {'<cmd>Telescope keymaps<CR>', 'Keymaps'},
+  --               s = {'<cmd>Telescope colorscheme<CR>', 'Colorschemes'},
+  --             }
+  --           },
+  --         }
+  --       },{
+  --         noremap = true,
+  --         silent = true
+  --       })
+
+  --       local actions = require('telescope.actions')
+  --       require('telescope').setup{
+  --         defaults = {
+  --           vimgrep_arguments = {
+  --             'rg',
+  --             '--color=never',
+  --             '--no-heading',
+  --             '--with-filename',
+  --             '--line-number',
+  --             '--column',
+  --             '--smart-case',
+  --             '--hidden',
+  --             '--ignore',
+  --             '--iglob',
+  --             '!.git',
+  --             '--ignore-vcs',
+  --             '--ignore-file',
+  --             '~/.config/git/gitexcludes',
+  --           },
+  --           file_ignore_patterns = {},
+  --           -- width = 0.75,
+  --           -- prompt_position = "top",
+  --           sorting_strategy = "ascending",
+  --           set_env = { ['COLORTERM'] = 'truecolor' },
+  --           -- file_sorter =  require'telescope.sorters'.get_fzy_sorter,
+  --           -- generic_sorter =  require'telescope.sorters'.get_fzy_sorter,
+  --           mappings = {
+  --             i = {
+  --               ["<c-j>"] = actions.move_selection_next,
+  --               ["<c-k>"] = actions.move_selection_previous,
+
+  --               ["<C-s>"] = actions.select_horizontal,
+  --               ["<C-v>"] = actions.select_vertical,
+  --               ["<C-t>"] = actions.select_tab,
+  --               ["<C-q>"] = actions.smart_send_to_qflist + actions.open_qflist,
+
+  --               ["<C-Space>"] = actions.toggle_selection + actions.move_selection_next,
+
+  --               -- ["<CR>"] = actions.select_default + actions.center,
+  --               ["<esc>"] = actions.close,
+  --             },
+  --             n = {
+  --               ["<esc>"] = actions.close,
+  --             },
+  --           },
+  --         }
+  --       }
+  --       -- require('telescope').load_extension('fzy_native')
+
+  --     end,
+  --   }
     packer.use {
-      'nvim-telescope/telescope.nvim',
-      requires = {
-        {'nvim-lua/popup.nvim'},
-        {'nvim-lua/plenary.nvim'},
-        -- {'nvim-telescope/telescope-fzy-native.nvim'},
-        {'nvim-telescope/telescope-fzf-writer.nvim'},
-      },
+      'junegunn/fzf.vim',
+      requires = { 'junegunn/fzf', as = 'fzf' },
+      as = 'fzf.vim',
       config = function()
+
+        -- wkmap({['<leader>ghf'] = {'<cmd>BCommits<CR>', 'File History'}},{noremap=true})
 
         wkmap({
           ['<leader>'] = {
             f = {
-              f = {'<cmd>Telescope fzf_writer grep<CR>', 'Find in Files'},
-              ['/'] = {'<cmd>Telescope current_buffer_fuzzy_find<CR>', 'Find in buffer'},
-              o = {
-                function ()
-                  local find_command={
-                    'rg',
-                    '--ignore',
-                    '--hidden',
-                    '--files',
-                    '--iglob',
-                    '!.git',
-                    '--ignore-vcs',
-                    '--ignore-file',
-                    '~/.config/git/gitexcludes',
-                  }
-                  require('telescope.builtin').find_files({find_command=find_command})
-                end,
-                'Find File'},
-              -- o = {'<cmd>Telescope find_files<CR>', 'Find File'},
-              b = {'<cmd>Telescope buffers<CR>', 'Find Buffers'},
-              m = {'<cmd>Telescope marks<CR>', 'Find Marks'},
+              f = {'<cmd>Rg<CR>', 'Find in Files'},
+              ['/'] = {'<cmd>BLines<CR>', 'Find in Files'},
+              o = {'<cmd>Files<CR>', 'Find File'},
+              b = {'<cmd>Buffers<CR>', 'Find Buffers'},
+              m = {'<cmd>Marks<CR>', 'Find Marks'},
+            },
+            g = {
+              h = {
+                f = {'<cmd>BCommits<CR>', 'File History'},
+                h = {'<cmd>Commits<CR>', 'History'}
+              }
             },
             o = {
-              o = {'<cmd>Telescope vim_options<CR>', 'Open options'},
-              h = {'<cmd>Telescope help_tags<CR>', 'Open Help'},
+              -- o = {'<cmd>Telescope vim_options<CR>', 'Open options'},
+              h = {'<cmd>Helptags<CR>', 'Open Help'},
               s = {
                 name = '+Set',
-                a = {'<cmd>Telescope autocommands<CR>', 'Autocommands'},
-                c = {'<cmd>Telescope commands<CR>', 'Commands'},
-                f = {'<cmd>Telescope filetypes<CR>', 'Filetypes'},
-                i = {'<cmd>Telescope highlights<CR>', 'Highlights'},
-                k = {'<cmd>Telescope keymaps<CR>', 'Keymaps'},
-                s = {'<cmd>Telescope colorscheme<CR>', 'Colorschemes'},
+                -- a = {'<cmd>Telescope autocommands<CR>', 'Autocommands'},
+                c = {'<cmd>Commands<CR>', 'Commands'},
+                f = {'<cmd>Filetypes<CR>', 'Filetypes'},
+                -- i = {'<cmd>Telescope highlights<CR>', 'Highlights'},
+                k = {'<cmd>Maps<CR>', 'Keymaps'},
+                s = {'<cmd>Colors<CR>', 'Colorschemes'},
               }
             },
           }
@@ -1338,65 +1431,6 @@
           silent = true
         })
 
-        local actions = require('telescope.actions')
-        require('telescope').setup{
-          defaults = {
-            vimgrep_arguments = {
-              'rg',
-              '--color=never',
-              '--no-heading',
-              '--with-filename',
-              '--line-number',
-              '--column',
-              '--smart-case',
-              '--hidden',
-              '--ignore',
-              '--iglob',
-              '!.git',
-              '--ignore-vcs',
-              '--ignore-file',
-              '~/.config/git/gitexcludes',
-            },
-            file_ignore_patterns = {},
-            -- width = 0.75,
-            -- prompt_position = "top",
-            sorting_strategy = "ascending",
-            set_env = { ['COLORTERM'] = 'truecolor' },
-            -- file_sorter =  require'telescope.sorters'.get_fzy_sorter,
-            -- generic_sorter =  require'telescope.sorters'.get_fzy_sorter,
-            mappings = {
-              i = {
-                ["<c-j>"] = actions.move_selection_next,
-                ["<c-k>"] = actions.move_selection_previous,
-
-                ["<C-s>"] = actions.select_horizontal,
-                ["<C-v>"] = actions.select_vertical,
-                ["<C-t>"] = actions.select_tab,
-                ["<C-q>"] = actions.smart_send_to_qflist + actions.open_qflist,
-
-                ["<C-Space>"] = actions.toggle_selection + actions.move_selection_next,
-
-                -- ["<CR>"] = actions.select_default + actions.center,
-                ["<esc>"] = actions.close,
-              },
-              n = {
-                ["<esc>"] = actions.close,
-              },
-            },
-          }
-        }
-        -- require('telescope').load_extension('fzy_native')
-
-      end,
-    }
-    packer.use {
-      'junegunn/fzf.vim',
-      requires = { 'junegunn/fzf', as = 'fzf' },
-      as = 'fzf.vim',
-      config = function()
-
-        wkmap({['<leader>ghf'] = {'<cmd>BCommits<CR>', 'File History'}},{noremap=true})
-
     --     vim.g.fzf_tags_command = 'ctags -R --exclude=.git --exclude=.idea --exclude=log'
         local fzf_action = {}
     --     -- vim.g.fzf_action['ctrl-q'] = 'tab split'
@@ -1404,6 +1438,8 @@
         fzf_action['ctrl-s'] = 'split'
         fzf_action['ctrl-v'] = 'vsplit'
         vim.g.fzf_action = fzf_action
+
+        vim.g.fzf_layout = { window = { width= 0.9, height= 0.9, relative = true } }
 
         vim.env.FZF_DEFAULT_OPTS = '--bind=ctrl-a:toggle-all,ctrl-space:toggle+down,ctrl-alt-a:deselect-all'
         vim.env.FZF_DEFAULT_COMMAND = 'rg --iglob !.git --files --hidden --ignore-vcs --ignore-file ~/.config/git/gitexcludes'
@@ -2971,16 +3007,16 @@
         })
       end
     }
-    -- Gitv
-    packer.use {
-      'junegunn/gv.vim',
-      config = function()
-        vim.g.Gitv_DoNotMapCtrlKey = 1
-        wkmap({
-          ['<leader>ghh'] = {'<cmd>GV<CR>', 'History All'}
-        })
-      end,
-    }
+    -- -- Gitv
+    -- packer.use {
+    --   'junegunn/gv.vim',
+    --   config = function()
+    --     vim.g.Gitv_DoNotMapCtrlKey = 1
+    --     wkmap({
+    --       ['<leader>ghh'] = {'<cmd>GV<CR>', 'History All'}
+    --     })
+    --   end,
+    -- }
   -- }}}
   -- Speeddating {{{
     packer.use {
@@ -3095,8 +3131,8 @@
         o = {function() require"dap".step_out() end, 'Step Out'},
         S = {function() require"dap".stop() end, 'Stop'},
         r = {function() require"dap".repl.open() end, 'REPL'},
-        B = {'<cmd>Telescope dap list_breakpoints<CR>', 'Breakpoints List'},
-        v = {'<cmd>Telescope dap variables<CR>', 'Variables'},
+        -- B = {'<cmd>Telescope dap list_breakpoints<CR>', 'Breakpoints List'},
+        -- v = {'<cmd>Telescope dap variables<CR>', 'Variables'},
       },{
         prefix = '<leader>d',
         silent = false,
