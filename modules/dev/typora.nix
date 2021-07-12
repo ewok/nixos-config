@@ -9,7 +9,7 @@ in
   config = mkIf (dev.enable && gui.enable) {
 
     home-manager.users."${username}" = {
-      home.packages = [ pkgs.typora ];
+      home.packages = [ pkgs.typora pkgs.obsidian ];
 
       xdg.configFile."Typora/conf/conf.user.json".text = builtins.toJSON {
         "defaultFontFamily" = {
