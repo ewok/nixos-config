@@ -58,7 +58,7 @@ in
     displayProfiles = properties.displayProfiles;
     longitude = properties.longitude;
     latitude = properties.latitude;
-    day = 5000;
+    day = 5500;
     night = 3500;
 
     office.enable = true;
@@ -93,4 +93,8 @@ in
     enable = true;
     thunderbird.enable = true;
   };
+
+  # modules.antivirus = {
+  #   enable = true;
+  # };
 }
