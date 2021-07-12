@@ -34,6 +34,24 @@ let
     IFS=', ' read -r -a code <<< "$code"
     echo "''${code[-1]}" | xclip -selection clipboard
   '';
+
+  opSession = pkgs.writeShellScriptBin "op-session" ''
+    ${pkgs.coreutils}/bin/mkdir -p /tmp/qute_1pass
+
+    export OP_SESSION_my=$(${pkgs.coreutils}/bin/cat /tmp/qute_1pass/session)
+
+    if [ "$1" == "signin" ]; then
+      ${master._1password}/bin/op $*
+    else
+      if ! ${master._1password}/bin/op get account &> /dev/null; then
+        export OP_SESSION_my=$(${master._1password}/bin/op signin my --raw)
+        echo $OP_SESSION_my > /tmp/qute_1pass/session
+      fi
+      ${master._1password}/bin/op $*
+    fi
+
+  '';
+
 in
 {
   config = mkIf gui.enable {
@@ -57,6 +75,7 @@ in
 
         master._1password
         master._1password-gui
+        opSession
 
         master.yubikey-manager
         master.yubikey-manager-qt
@@ -133,6 +152,37 @@ in
         ExcludedChars=
         Logograms=true
       '';
+
+
+      # Ping op
+      systemd.user.services.ping-op = {
+        Unit = { Description = "Ping op"; };
+
+        Service = {
+          CPUSchedulingPolicy = "idle";
+          IOSchedulingClass = "idle";
+          ExecStart = toString (
+            pkgs.writeShellScript "ping-op" ''
+              set -e
+              ${opSession}/bin/op-session get account
+              ${pkgs.coreutils}/bin/touch /tmp/qute_1pass/session
+            ''
+          );
+        };
+      };
+
+      systemd.user.timers.ping-op = {
+        Unit = { Description = "Ping op"; };
+
+        Timer = {
+          Unit = "ping-op.service";
+          OnCalendar = "*:0/20";
+          Persistent = true;
+        };
+
+        Install = { WantedBy = [ "timers.target" ]; };
+      };
+
     };
   };
 }
