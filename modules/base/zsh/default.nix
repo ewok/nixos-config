@@ -128,11 +128,10 @@ in
             SESS=$(tmux list-sessions | grep -v attached | cut -d: -f1 | head -n 1)
             if [[ -n "$SESS" ]]
             then
-              tmux attach -t $SESS
+              tmux attach -t $SESS && exit
             else
-              tmux new
+              tmux new && exit
             fi
-            exit
           fi
         '';
 
