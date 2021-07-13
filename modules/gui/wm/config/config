@@ -7,9 +7,7 @@ set $mod_c Control
 
 ################################################################################################
 # Settings
-
 ################################################################################################
-
 gaps inner 7
 # gaps outer 7
 smart_gaps on
@@ -30,6 +28,7 @@ floating_modifier $mod
 
 popup_during_fullscreen leave_fullscreen
 
+focus_follows_mouse yes
 
 ################################################################################################
 # Window Settings
@@ -70,7 +69,7 @@ for_window [title="Unlock Vault"] floating enable
 for_window [class="vlc"] floating enable
 # switch to workspace with urgent window automatically
 # for_window [urgent=latest] focus
-
+for_window [class=.*] ; exec --no-startup-id center-mouse
 
 ################################################################################################
 # Keybindings
@@ -192,24 +191,24 @@ mode "$mode_apps" {
 # Windows control
 ################################################################################################
 # change focus
-bindsym $mod+h focus left
-bindsym $mod+j focus down
-bindsym $mod+k focus up
-bindsym $mod+l focus right
-bindsym $mod+Shift+h move left
-bindsym $mod+Shift+j move down
-bindsym $mod+Shift+k move up
-bindsym $mod+Shift+l move right
+bindsym $mod+h focus left; exec --no-startup-id center-mouse
+bindsym $mod+j focus down; exec --no-startup-id center-mouse
+bindsym $mod+k focus up; exec --no-startup-id center-mouse
+bindsym $mod+l focus right; exec --no-startup-id center-mouse
+bindsym $mod+Shift+h move left; exec --no-startup-id center-mouse
+bindsym $mod+Shift+j move down; exec --no-startup-id center-mouse
+bindsym $mod+Shift+k move up; exec --no-startup-id center-mouse
+bindsym $mod+Shift+l move right; exec --no-startup-id center-mouse
 
 workspace_auto_back_and_forth no
 
 bindsym $mod+q split toggle
 
 # enter fullscreen mode for the focused container
-bindsym $mod+f fullscreen
+bindsym $mod+f fullscreen; exec --no-startup-id center-mouse
 
 # change focus between tiling / floating windows
-bindsym $mod+space focus mode_toggle
+bindsym $mod+space focus mode_toggle; exec --no-startup-id center-mouse
 
 # toggle sticky
 # bindsym $mod+p sticky toggle,exec notify-send 'sticky'
@@ -254,16 +253,16 @@ bindsym $mod_a+r exec "autorandr -c; sleep 2; systemctl --user start random-back
 # bindsym $mod_a+Right  exec bash ~/.config/i3/rotate.sh right
 
 #navigate workspaces next / previous
-bindsym $mod+n workspace next
-bindsym $mod+b workspace prev
-bindsym $mod+p workspace prev
+bindsym $mod+n workspace next; exec --no-startup-id center-mouse
+bindsym $mod+b workspace prev; exec --no-startup-id center-mouse
+bindsym $mod+p workspace prev; exec --no-startup-id center-mouse
 bindsym $mod_a+n exec i3-display-swap.sh right
 bindsym $mod_a+b exec i3-display-swap.sh left
 bindsym $mod_a+p exec i3-display-swap.sh left
 
-bindsym $mod+Shift+n move workspace to output right
-bindsym $mod+Shift+b move workspace to output left
-bindsym $mod+Shift+p move workspace to output left
+bindsym $mod+Shift+n move workspace to output right; exec --no-startup-id center-mouse
+bindsym $mod+Shift+b move workspace to output left; exec --no-startup-id center-mouse
+bindsym $mod+Shift+p move workspace to output left; exec --no-startup-id center-mouse
 
 # Workspace names
 # to display names or symbols instead of plain workspace numbers you can use
@@ -280,26 +279,26 @@ set $ws8 8
 set $ws9 9
 
 # switch to workspace
-bindsym $mod+1 workspace 1
-bindsym $mod+2 workspace 2
-bindsym $mod+3 workspace 3
-bindsym $mod+4 workspace 4
-bindsym $mod+5 workspace 5
-bindsym $mod+6 workspace 6
-bindsym $mod+7 workspace 7
-bindsym $mod+8 workspace 8
-bindsym $mod+9 workspace 9
+bindsym $mod+1 workspace 1; exec --no-startup-id center-mouse
+bindsym $mod+2 workspace 2; exec --no-startup-id center-mouse
+bindsym $mod+3 workspace 3; exec --no-startup-id center-mouse
+bindsym $mod+4 workspace 4; exec --no-startup-id center-mouse
+bindsym $mod+5 workspace 5; exec --no-startup-id center-mouse
+bindsym $mod+6 workspace 6; exec --no-startup-id center-mouse
+bindsym $mod+7 workspace 7; exec --no-startup-id center-mouse
+bindsym $mod+8 workspace 8; exec --no-startup-id center-mouse
+bindsym $mod+9 workspace 9; exec --no-startup-id center-mouse
 
 # move focused container to workspace
-bindsym $mod+Shift+1 move container to workspace 1
-bindsym $mod+Shift+2 move container to workspace 2
-bindsym $mod+Shift+3 move container to workspace 3
-bindsym $mod+Shift+4 move container to workspace 4
-bindsym $mod+Shift+5 move container to workspace 5
-bindsym $mod+Shift+6 move container to workspace 6
-bindsym $mod+Shift+7 move container to workspace 7
-bindsym $mod+Shift+8 move container to workspace 8
-bindsym $mod+Shift+9 move container to workspace 9
+bindsym $mod+Shift+1 move container to workspace 1; exec --no-startup-id center-mouse
+bindsym $mod+Shift+2 move container to workspace 2; exec --no-startup-id center-mouse
+bindsym $mod+Shift+3 move container to workspace 3; exec --no-startup-id center-mouse
+bindsym $mod+Shift+4 move container to workspace 4; exec --no-startup-id center-mouse
+bindsym $mod+Shift+5 move container to workspace 5; exec --no-startup-id center-mouse
+bindsym $mod+Shift+6 move container to workspace 6; exec --no-startup-id center-mouse
+bindsym $mod+Shift+7 move container to workspace 7; exec --no-startup-id center-mouse
+bindsym $mod+Shift+8 move container to workspace 8; exec --no-startup-id center-mouse
+bindsym $mod+Shift+9 move container to workspace 9; exec --no-startup-id center-mouse
 
 # Set shut down, restart and locking features
 bindsym $mod_a+0 mode "$mode_system"
@@ -334,10 +333,9 @@ mode "resize" {
         bindsym l resize grow width 1 px or 1 ppt
 
         # exit resize mode: Enter or Escape
-        bindsym Return mode "default"
-        bindsym Escape mode "default"
-        bindsym Ctrl+m mode "default"
-        bindsym Ctrl+[ mode "default"
+        bindsym Return mode "default"; exec --no-startup-id center-mouse
+        bindsym Escape mode "default"; exec --no-startup-id center-mouse
+        bindsym Ctrl+m mode "default"; exec --no-startup-id center-mouse
 }
 
 # Rename

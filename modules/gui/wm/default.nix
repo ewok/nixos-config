@@ -11,13 +11,18 @@ let
       localSystem = { system = "x86_64-linux"; };
     }
   );
-  # blurlock = pkgs.writeShellScriptBin "blurlock" ''
-  #   ${pkgs.xkb-switch}/bin/xkb-switch -s us
-  #   RESOLUTION=$(${pkgs.xorg.xrandr}/bin/xrandr -q|sed -n 's/.*current[ ]\([0-9]*\) x \([0-9]*\),.*/\1x\2/p')
-  #   ${pkgs.imagemagick}/bin/import -silent -window root jpeg:- | ${pkgs.imagemagick}/bin/convert - -scale 20% -blur 0x2.5 -resize 500% RGB:- | \
-  #     ${pkgs.i3lock}/bin/i3lock --raw $RESOLUTION:rgb -i /dev/stdin -e $@
-  #     ${pkgs.i3lock}/bin/i3lock -c 121212
-  # '';
+  centerMouse = pkgs.writeShellScriptBin "center-mouse" ''
+    XDT=${pkgs.xdotool}/bin/xdotool
+
+    WINDOW=`$XDT getwindowfocus`
+
+    eval `${pkgs.xdotool}/bin/xdotool getwindowgeometry --shell $WINDOW`
+
+    TX=`expr $WIDTH / 2`
+    TY=`expr $HEIGHT / 2`
+
+    $XDT mousemove -window $WINDOW $TX $TY
+  '';
   blurlock = pkgs.writeShellScriptBin "blurlock" ''
     ${pkgs.xkb-switch}/bin/xkb-switch -s us
     ${pkgs.i3lock}/bin/i3lock -c 121212
@@ -106,6 +111,7 @@ in
 
         blurlock
         i3exit
+        centerMouse
 
         font-awesome
 
