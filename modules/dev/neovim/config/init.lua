@@ -360,11 +360,25 @@
       -- Packer
       p = {
         name = '+Packer',
-        u = {'<cmd>PackerUpdate<CR>', 'Update'},
-        C = {'<cmd>PackerClean<CR>', 'Clean'},
-        c = {'<cmd>PackerCompile<CR>', 'Compile'},
-        i = {'<cmd>PackerInstall<CR>', 'Install'},
-        s = {'<cmd>PackerSync<CR>', 'Sync'},
+        C = {function()
+          require'packer'.clean()
+          print("Packer: clean - finished")
+        end, 'Clean'},
+        c = {function()
+          require'packer'.compile()
+          print("Packer: compile - finished")
+        end, 'Compile'},
+        i = {function()
+          require'packer'.install()
+          print("Packer: install: - finished")
+        end, 'Install'},
+        u = {function()
+          require'packer'.sync()
+          print("Packer: install: - finished")
+        end, 'Update/Sync'},
+        s = {function()
+          require'packer'.status()
+        end, 'Status'},
       },
 
       o = {
@@ -822,10 +836,24 @@
         ['<leader>r'] = {
           name = '+Run[python]',
           b = {'ofrom pudb import set_trace; set_trace()<esc>', 'Breakpoint'},
-          r = {'<cmd>w|lua run_cmd("python " .. vim.fn.bufname("%"))<CR>', 'Run'},
-          t = {'<cmd>w|lua run_cmd("python -m unittest " .. vim.fn.bufname("%"))<CR>', 'Test'},
-          T = {'<cmd>w|lua run_cmd("python -m unittest")<CR>', 'Test All'},
+
+          r = {function ()
+            vim.cmd'w'
+            run_cmd("python " .. vim.fn.bufname("%"))
+          end, 'Run'},
+
+          t = {function ()
+            vim.cmd'w'
+            run_cmd("python -m unittest " .. vim.fn.bufname("%"))
+          end, 'Test'},
+
+          T = {function ()
+            vim.cmd'w'
+            run_cmd("python -m unittest")
+          end, 'Test All'},
+
           L = {'<cmd>:!pip install flake8 mypy pylint bandit pydocstyle pudb jedi<CR>:ALEInfo<CR>', 'Install Libs'},
+
           R = {
             name = '+Runner',
             Q = 'Closer Runner',
@@ -951,7 +979,12 @@
 
       wkmap({
         name = '+Run[shell]',
-        r = {'<cmd>w |lua run_cmd("bash " .. vim.fn.bufname("%"))<CR>', 'Run'},
+
+        r = {function ()
+          vim.cmd'w'
+          run_cmd("bash " .. vim.fn.bufname("%"))
+        end, 'Run'},
+
         R = {
           name = '+Runner',
           Q = 'Closer Runner',
@@ -1909,8 +1942,13 @@
 
         wkmap({
           ['<leader>'] = {
-            oe = {'<cmd>NvimTreeToggle<CR>', 'Open Explorer'},
-            fp = {'<cmd>NvimTreeFindFile<CR>', 'Find file in Path'}
+            oe = {function() require'nvim-tree'.open() end, 'Open Explorer'},
+            fp = {function()
+              require'nvim-tree'.find_file(true)
+              if not require'nvim-tree.view'.win_open() then
+                require'nvim-tree'.open()
+              end
+            end, 'Find file in Path'}
           }
         },{
           noremap = true,
@@ -1958,34 +1996,34 @@
       end,
     }
   -- }}}
-  -- Rooter {{{
-    packer.use {
-      'airblade/vim-rooter',
-      config = function ()
-        -- vim.g.rooter_silent_chdir = 1
-        vim.g.rooter_resolve_links = 1
-        vim.g.rooter_manual_only = 1
-        vim.g.rooter_cd_cmd = 'lcd'
+  -- -- Rooter {{{
+  --   packer.use {
+  --     'airblade/vim-rooter',
+  --     config = function ()
+  --       -- vim.g.rooter_silent_chdir = 1
+  --       vim.g.rooter_resolve_links = 1
+  --       vim.g.rooter_manual_only = 1
+  --       vim.g.rooter_cd_cmd = 'lcd'
 
-        wkmap({
-          ['<leader>or'] = {'<cmd>call RooterWithCWD()<CR>', 'Open RootDir'}
-        },{
-          noremap = true,
-          silent = true
-        })
+  --       wkmap({
+  --         ['<leader>or'] = {'<cmd>call RooterWithCWD()<CR>', 'Open RootDir'}
+  --       },{
+  --         noremap = true,
+  --         silent = true
+  --       })
 
-        vim.api.nvim_exec([[
-          function! RooterWithCWD()
-            Rooter
-            "NERDTreeCWD
-            NvimTreeRefresh
-            "NvimTreeClose
-            "NvimTreeOpen
-          endfunction
-        ]], true)
-      end,
-    }
-  -- }}}
+  --       vim.api.nvim_exec([[
+  --         function! RooterWithCWD()
+  --           Rooter
+  --           "NERDTreeCWD
+  --           NvimTreeRefresh
+  --           "NvimTreeClose
+  --           "NvimTreeOpen
+  --         endfunction
+  --       ]], true)
+  --     end,
+  --   }
+  -- -- }}}
   -- StartScreen and Sessions {{{
     packer.use {
       'mhinz/vim-startify',
