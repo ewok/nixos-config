@@ -341,8 +341,8 @@
     },
     ['<Space><Space>'] = {'za"{{{"', 'Toggle Fold'},
 
-    -- Yank
     ['<leader>'] = {
+      -- Yank
       y = {
         name = "+Yank",
         y = {'<cmd>.w! ~/.vbuf<CR>', 'Yank to ~/.vbuf'},
@@ -366,6 +366,14 @@
         i = {'<cmd>PackerInstall<CR>', 'Install'},
         s = {'<cmd>PackerSync<CR>', 'Sync'},
       },
+
+      o = {
+        p = {
+          name = '+Profiling',
+          s = {'<cmd>profile start /tmp/profile_vim.log|profile func *|profile file *<CR>', 'Start'},
+          t = {'<cmd>profile stop|e /tmp/profile_vim.log|nmap <buffer> q :!rm /tmp/profile_vim.log<CR>', 'Stop'}
+        }
+      }
     }
   },{
     noremap = true,
@@ -940,6 +948,7 @@
     augroups({ft_shell=ft_shell})
     _G.load_shell_ft = function()
 
+
       wkmap({
         name = '+Run[shell]',
         r = {'<cmd>w |lua run_cmd("bash " .. vim.fn.bufname("%"))<CR>', 'Run'},
@@ -1439,7 +1448,7 @@
         fzf_action['ctrl-v'] = 'vsplit'
         vim.g.fzf_action = fzf_action
 
-        vim.g.fzf_layout = { window = { width= 0.9, height= 0.9, relative = true } }
+        vim.g.fzf_layout = { window = { width= 0.9, height= 0.9 } }
 
         vim.env.FZF_DEFAULT_OPTS = '--bind=ctrl-a:toggle-all,ctrl-space:toggle+down,ctrl-alt-a:deselect-all'
         vim.env.FZF_DEFAULT_COMMAND = 'rg --iglob !.git --files --hidden --ignore-vcs --ignore-file ~/.config/git/gitexcludes'
@@ -1820,134 +1829,135 @@
       end,
     }
   -- }}}
-  -- NERDTree {{{
-    packer.use {
-      'preservim/nerdtree',
-      requires = {
-        {'Xuyuanp/nerdtree-git-plugin'},
-        {'ryanoasis/vim-devicons'}
-      },
-      config = function ()
-        vim.g.NERDTreeShowBookmarks=0
-        vim.g.NERDTreeChDirMode=2
-        vim.g.NERDTreeMouseMode=2
-        vim.g.nerdtree_tabs_focus_on_files=1
-        vim.g.nerdtree_tabs_open_on_gui_startup=0
-
-        vim.g.NERDTreeMinimalUI=1
-        vim.g.NERDTreeDirArrows=1
-        vim.g.NERDTreeWinSize=40
-        vim.g.NERDTreeIgnore={ '.pyc$' }
-        vim.g.NERDTreeShowHidden=1
-
-        vim.g.NERDTreeMapOpenVSplit='v'
-        vim.g.NERDTreeMapOpenSplit='s'
-        vim.g.NERDTreeMapJumpNextSibling=''
-        vim.g.NERDTreeMapJumpPrevSibling=''
-        vim.g.NERDTreeMapMenu='M'
-        vim.g.NERDTreeQuitOnOpen=1
-        vim.g.NERDTreeCustomOpenArgs={ file = {reuse = '', where = 'p', keepopen = 0, stay = 0 }}
-
-        wkmap({
-          ['<leader>'] = {
-            oe = {'<cmd>call NERDTreeToggleCWD()<CR>', 'Open Explorer'},
-            fp = {'<cmd>call FindPathOrShowNERDTree()<CR>', 'Find file in Path'}
-          }
-        },{
-          noremap = true,
-          silent = true
-        })
-
-        vim.api.nvim_exec ([[
-          function! NERDTreeToggleCWD()
-            NERDTreeToggle
-            let currentfile = expand('%')
-            if (currentfile == "") || !(currentfile !~? 'NERD')
-              NERDTreeCWD
-            endif
-          endfunction
-          function! FindPathOrShowNERDTree()
-            let currentfile = expand('%')
-            if (currentfile == "") || !(currentfile !~? 'NERD')
-              NERDTreeToggle
-            else
-              NERDTreeFind
-              NERDTreeCWD
-            endif
-          endfunction
-        ]], true)
-      end,
-    }
-  -- }}}
-  -- -- NvimTree {{{
+  -- -- NERDTree {{{
   --   packer.use {
-  --     'kyazdani42/nvim-tree.lua',
-  --     requires = {{'kyazdani42/nvim-web-devicons'}},
+  --     'preservim/nerdtree',
+  --     requires = {
+  --       {'Xuyuanp/nerdtree-git-plugin'},
+  --       -- {'ryanoasis/vim-devicons'}
+  --     },
   --     config = function ()
-  --       vim.g.nvim_tree_width = 40
-  --       vim.g.nvim_tree_auto_close = 1
-  --       -- vim.g.nvim_tree_quit_on_open = 1
-  --       -- vim.g.nvim_tree_follow = 1
-  --       -- Forgets state
-  --       vim.g.nvim_tree_tab_open = 0
-  --       vim.g.nvim_tree_group_empty = 1
-  --       vim.g.nvim_tree_disable_netrw = 0
-  --       vim.g.nvim_tree_auto_ignore_ft = {'startify', 'dashboard'}
-  --       vim.g.nvim_tree_quit_on_open = 1
-  --       vim.g.nvim_tree_lsp_diagnostics = 1
-  --       vim.g.nvim_tree_highlight_opened_files = 1
+  --       vim.g.NERDTreeShowBookmarks=0
+  --       vim.g.NERDTreeChDirMode=2
+  --       vim.g.NERDTreeMouseMode=2
+  --       vim.g.nerdtree_tabs_focus_on_files=1
+  --       vim.g.nerdtree_tabs_open_on_gui_startup=0
+
+  --       vim.g.NERDTreeMinimalUI=1
+  --       vim.g.NERDTreeDirArrows=1
+  --       vim.g.NERDTreeWinSize=40
+  --       vim.g.NERDTreeIgnore={ '.pyc$' }
+  --       vim.g.NERDTreeShowHidden=1
+
+  --       vim.g.NERDTreeMapOpenVSplit='v'
+  --       vim.g.NERDTreeMapOpenSplit='s'
+  --       vim.g.NERDTreeMapJumpNextSibling=''
+  --       vim.g.NERDTreeMapJumpPrevSibling=''
+  --       vim.g.NERDTreeMapMenu='M'
+  --       vim.g.NERDTreeQuitOnOpen=1
+  --       vim.g.NERDTreeCustomOpenArgs={ file = {reuse = '', where = 'p', keepopen = 0, stay = 0 }}
 
   --       wkmap({
   --         ['<leader>'] = {
-  --           oE = {'<cmd>NvimTreeToggle<CR>', 'Open Explorer'},
-  --           fP = {'<cmd>NvimTreeFindFile<CR>', 'Find file in Path'}
+  --           oE = {'<cmd>call NERDTreeToggleCWD()<CR>', 'Open Explorer'},
+  --           fP = {'<cmd>call FindPathOrShowNERDTree()<CR>', 'Find file in Path'}
   --         }
   --       },{
   --         noremap = true,
   --         silent = true
   --       })
 
-  --       local tree_cb = require'nvim-tree.config'.nvim_tree_callback
-  --       vim.g.nvim_tree_bindings = {
-  --         -- ["<CR>"] = ":YourVimFunction()<cr>",
-  --         -- ["u"] = ":lua require'some_module'.some_function()<cr>",
-
-  --         -- default mappings
-  --         ["<CR>"]           = tree_cb("edit"),
-  --         ["o"]              = tree_cb("edit"),
-  --         ["<C-]>"]          = tree_cb("cd"),
-  --         ["C"]              = tree_cb("cd"),
-  --         ["v"]              = tree_cb("vsplit"),
-  --         ["s"]              = tree_cb("split"),
-  --         ["t"]              = tree_cb("tabnew"),
-  --         ["<BS>"]           = tree_cb("close_node"),
-  --         ["<S-CR>"]         = tree_cb("close_node"),
-  --         ["<Tab>"]          = tree_cb("preview"),
-  --         ["I"]              = tree_cb("toggle_ignored"),
-  --         ["H"]              = tree_cb("toggle_dotfiles"),
-  --         ["r"]              = tree_cb("refresh"),
-  --         ["R"]              = tree_cb("refresh"),
-  --         ["a"]              = tree_cb("create"),
-  --         ["d"]              = tree_cb("remove"),
-  --         ["m"]              = tree_cb("rename"),
-  --         ["M"]          = tree_cb("full_rename"),
-  --         ["x"]              = tree_cb("cut"),
-  --         ["c"]              = tree_cb("copy"),
-  --         ["p"]              = tree_cb("paste"),
-  --         ["[g"]             = tree_cb("prev_git_item"),
-  --         ["]g"]             = tree_cb("next_git_item"),
-  --         ["u"]              = tree_cb("dir_up"),
-  --         ["q"]              = tree_cb("close"),
-  --       }
-
-  --       vim.g.nvim_tree_icons = {
-  --         default = '',
-  --         symlink = '',
-  --       }
-
+  --       vim.api.nvim_exec ([[
+  --         function! NERDTreeToggleCWD()
+  --           NERDTreeToggle
+  --           let currentfile = expand('%')
+  --           if (currentfile == "") || !(currentfile !~? 'NERD')
+  --             NERDTreeCWD
+  --           endif
+  --         endfunction
+  --         function! FindPathOrShowNERDTree()
+  --           let currentfile = expand('%')
+  --           if (currentfile == "") || !(currentfile !~? 'NERD')
+  --             NERDTreeToggle
+  --           else
+  --             NERDTreeFind
+  --             NERDTreeCWD
+  --           endif
+  --         endfunction
+  --       ]], true)
   --     end,
   --   }
   -- -- }}}
+  -- NvimTree {{{
+    packer.use {
+      'kyazdani42/nvim-tree.lua',
+      requires = {{'kyazdani42/nvim-web-devicons'}},
+      config = function ()
+        vim.g.nvim_tree_width = 40
+        vim.g.nvim_tree_auto_close = 1
+        -- vim.g.nvim_tree_follow = 1
+        -- Forgets state
+        vim.g.nvim_tree_tab_open = 0
+        vim.g.nvim_tree_group_empty = 1
+        vim.g.nvim_tree_disable_netrw = 0
+        -- vim.g.nvim_tree_auto_ignore_ft = {'startify', 'dashboard'}
+        vim.g.nvim_tree_quit_on_open = 0
+        vim.g.nvim_tree_lsp_diagnostics = 1
+        vim.g.nvim_tree_highlight_opened_files = 1
+        vim.g.nvim_tree_disable_window_picker = 1
+        vim.g.nvim_tree_update_cwd = 1
+
+        wkmap({
+          ['<leader>'] = {
+            oe = {'<cmd>NvimTreeToggle<CR>', 'Open Explorer'},
+            fp = {'<cmd>NvimTreeFindFile<CR>', 'Find file in Path'}
+          }
+        },{
+          noremap = true,
+          silent = true
+        })
+
+        local tree_cb = require'nvim-tree.config'.nvim_tree_callback
+        vim.g.nvim_tree_bindings = {
+          -- ["<CR>"] = ":YourVimFunction()<cr>",
+          -- ["u"] = ":lua require'some_module'.some_function()<cr>",
+
+          -- default mappings
+          { key = { "<CR>" },   cb = tree_cb("edit") },
+          { key = { "o" },      cb = tree_cb("edit") },
+          { key = { "<C-]>" },  cb = tree_cb("cd") },
+          { key = { "C" },      cb = tree_cb("cd") },
+          { key = { "v" },      cb = tree_cb("vsplit") },
+          { key = { "s" },      cb = tree_cb("split") },
+          { key = { "t" },      cb = tree_cb("tabnew") },
+          { key = { "<BS>" },   cb = tree_cb("close_node") },
+          { key = { "<S-CR>" }, cb = tree_cb("close_node") },
+          { key = { "<Tab>" },  cb = tree_cb("preview") },
+          { key = { "I" },      cb = tree_cb("toggle_ignored") },
+          { key = { "H" },      cb = tree_cb("toggle_dotfiles") },
+          { key = { "r" },      cb = tree_cb("refresh") },
+          { key = { "R" },      cb = tree_cb("refresh") },
+          { key = { "a" },      cb = tree_cb("create") },
+          { key = { "d" },      cb = tree_cb("remove") },
+          { key = { "m" },      cb = tree_cb("rename") },
+          { key = { "M" },      cb = tree_cb("full_rename") },
+          { key = { "x" },      cb = tree_cb("cut") },
+          { key = { "c" },      cb = tree_cb("copy") },
+          { key = { "p" },      cb = tree_cb("paste") },
+          { key = { "[g" },     cb = tree_cb("prev_git_item") },
+          { key = { "]g" },     cb = tree_cb("next_git_item") },
+          { key = { "u" },      cb = tree_cb("dir_up") },
+          { key = { "q" },      cb = tree_cb("close") },
+        }
+
+        vim.g.nvim_tree_icons = {
+          default = '',
+          symlink = '',
+        }
+
+      end,
+    }
+  -- }}}
   -- Rooter {{{
     packer.use {
       'airblade/vim-rooter',
@@ -1967,7 +1977,8 @@
         vim.api.nvim_exec([[
           function! RooterWithCWD()
             Rooter
-            NERDTreeCWD
+            "NERDTreeCWD
+            NvimTreeRefresh
             "NvimTreeClose
             "NvimTreeOpen
           endfunction
@@ -2563,7 +2574,7 @@
             spell = true;
             tags = true;
             snippets_nvim = true;
-            treesitter = true;
+            treesitter = false;
             emoji = true;
             orgmode = {priority=100};
             luasnip = true;
@@ -2687,15 +2698,9 @@
             })
           end,
         },
-        { 'glepnir/lspsaga.nvim',
-        config = function ()
-          map('n', 'K', [[<cmd>lua require('lspsaga.hover').render_hover_doc()<CR>]], { noremap = true, silent = true })
-          map('n', '<C-f>', [[<cmd>lua require('lspsaga.action').smart_scroll_with_saga(1)<CR>]], { noremap = true, silent = true })
-          map('n', '<C-b>', [[<cmd>lua require('lspsaga.action').smart_scroll_with_saga(-1)<CR>]], { noremap = true, silent = true })
-          wkmap({
-            gk = {function() require('lspsaga.signaturehelp').signature_help() end, 'Signature Help[lspsaga]'}
-          })
-        end, },
+        {
+          'glepnir/lspsaga.nvim',
+        },
         {
           'ray-x/lsp_signature.nvim'
         }
@@ -2722,6 +2727,9 @@
           end
 
           wkmap({
+            K = {function() require('lspsaga.hover').render_hover_doc() end, 'LSP Doc'},
+            ['<C-f>'] = {function() require('lspsaga.action').smart_scroll_with_saga(1) end, 'Scroll Down'},
+            ['<C-b>'] = {function() require('lspsaga.action').smart_scroll_with_saga(-1) end, 'Scroll Up'},
             ['[d'] = {function() vim.lsp.diagnostic.goto_prev() end, 'Previous Diagnostic Record'},
             [']d'] = {function() vim.lsp.diagnostic.goto_next() end, 'Next Diagnostic Record'},
             g = {
@@ -2729,7 +2737,8 @@
               D = {function() vim.lsp.buf.declaration() end, 'Goto Declaration'},
               r = {function() vim.lsp.buf.references() end, 'Goto References'},
               i = {function() vim.lsp.buf.implementation() end, 'Goto Implementation'},
-              y = {function() vim.lsp.buf.type_definition() end, 'Goto Type Definition'}
+              y = {function() vim.lsp.buf.type_definition() end, 'Goto Type Definition'},
+              k = {function() require('lspsaga.signaturehelp').signature_help() end, 'Signature Help[lspsaga]'}
             },
             ['<leader>W'] = {
               name = '+Workspace',
