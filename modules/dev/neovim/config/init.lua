@@ -2027,6 +2027,16 @@
   -- StartScreen and Sessions {{{
     packer.use {
       'mhinz/vim-startify',
+      requires = {
+        {
+          "folke/persistence.nvim",
+          event = "VimEnter",
+          module = "persistence",
+          config = function()
+            require("persistence").setup()
+          end,
+        }
+      },
       config = function()
         vim.g.startify_session_before_save = {
           'silent! tabdo NERDTreeClose',
@@ -2036,7 +2046,7 @@
           'silent! cclose',
         }
 
-        vim.g.startify_session_autoload = 1
+        vim.g.startify_session_autoload = 0
         vim.g.startify_session_persistence = 1
         vim.g.startify_change_to_dir = 1
 
@@ -2061,11 +2071,23 @@
           ['<leader>s'] = {
             name = '+Session',
             o = {'<cmd>SLoad<CR>', 'Load'},
-            u = {'<cmd>SLoad ' .. vim.g.current_session_name .. '<CR>', 'Load Current'},
+            u = {function() require("persistence").load() end, 'Load Current'},
+            -- u = {'<cmd>SLoad ' .. vim.g.current_session_name .. '<CR>', 'Load Current'},
             s = {':SSave ' .. vim.g.current_session_name, 'Save'},
-            c = {'<cmd>SClose<CR>', 'Close'},
-            q = {'<cmd>SClose<CR>:q<CR>', 'Save and Quit'},
-            d = {'<cmd>SDelete<CR>', 'Delete'}
+
+            c = {function ()
+              require'persistence'.stop()
+              vim.cmd'SClose'
+            end, 'Close'},
+
+            -- q = {'<cmd>SClose<CR>:q<CR>', 'Save and Quit'},
+            q = {'<cmd>wall|qall<CR>', 'Save and Quit'},
+
+            d = {function ()
+              require'persistence'.stop()
+              vim.cmd'SDelete'
+            end, 'Delete'},
+
           }
         },{
           silent = false
@@ -2076,18 +2098,13 @@
 
     vim.api.nvim_exec([[
       let g:current_session_name = fnamemodify(getcwd(), ':~:s?\~/??:gs?/?_?')
-      command! LoadSessionCurrent :call startify#session_load(0, g:current_session_name)
+      command! LoadSessionCurrent :lua require("persistence").load()
     ]], false)
   -- }}}
   -- Texting {{{
     packer.use {
       "folke/zen-mode.nvim",
       requires = {
-        -- {
-        --   'junegunn/limelight.vim',
-        --   opt = true,
-        --   cmd = { 'Limelight' },
-        -- },
         {
           "folke/twilight.nvim",
           config = function()
@@ -2121,8 +2138,6 @@
         }
       end
     }
-
-    vim.cmd[[packadd limelight.vim]]
 
     _G.text_enter = function()
       require('galaxyline').disable_galaxyline()

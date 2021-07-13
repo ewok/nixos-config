@@ -77,7 +77,7 @@ nnoremap <c-k> :!if [ -n "$TMUX" ]; tmux select-pane -U;end<cr>
 nnoremap <c-l> :!if [ -n "$TMUX" ]; tmux select-pane -R;end<cr>
 
 nnoremap i :vim<cr>
-nnoremap io :vim +'au VimEnter * call startify#session_load(0, g:current_session_name)'<cr>
+nnoremap io :vim +'au VimEnter * lua require("persistence").load()'<cr>
 nnoremap ii :vim %f<cr>
 nnoremap it :!if [ -n "$TMUX" ]; tmux new-window vim %f;end<CR>
 nnoremap is :!if [ -n "$TMUX" ]; tmux split-window -v -p 80 vim %f;end<CR>
