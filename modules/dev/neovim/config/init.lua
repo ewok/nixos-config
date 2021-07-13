@@ -2083,11 +2083,18 @@
     packer.use {
       "folke/zen-mode.nvim",
       requires = {
+        -- {
+        --   'junegunn/limelight.vim',
+        --   opt = true,
+        --   cmd = { 'Limelight' },
+        -- },
         {
-          'junegunn/limelight.vim',
-          opt = true,
-          cmd = { 'Limelight' },
-        }
+          "folke/twilight.nvim",
+          config = function()
+            require("twilight").setup {
+            }
+          end
+        },
       },
       config = function()
         require("zen-mode").setup {
@@ -2115,23 +2122,6 @@
       end
     }
 
-    -- packer.use {
-    --   'junegunn/goyo.vim',
-    --   requires = {
-    --     {
-    --       'junegunn/limelight.vim',
-    --       opt = true,
-    --       cmd = { 'Limelight' },
-    --     }
-    --   },
-    --   cmd = { 'Goyo' },
-    --   setup = function ()
-    --     vim.g.goyo_loaded = 1
-    --     vim.g.goyo_width = 120
-    --     vim.g.goyo_height = "90%"
-    --   end,
-    -- }
-
     vim.cmd[[packadd limelight.vim]]
 
     _G.text_enter = function()
@@ -2143,7 +2133,7 @@
         vim.o.scrolloff = 999
         vim.wo.wrap = true
         vim.cmd('IndentBlanklineDisable')
-        vim.cmd('Limelight')
+        require("twilight").enable()
       end, 1000)
       if fn.executable('tmux') == 1 and fn.exists('$TMUX') == 1 then
         execute 'silent !tmux set status off'
@@ -2160,7 +2150,7 @@
         vim.o.scrolloff = 5
         vim.wo.wrap = false
         vim.cmd('IndentBlanklineEnable')
-        vim.cmd('Limelight!')
+        require("twilight").disable()
       end, 1000)
       if fn.executable('tmux') == 1 and fn.exists('$TMUX') == 1 then
         execute 'silent !tmux set status on'
