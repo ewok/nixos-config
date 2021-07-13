@@ -2707,6 +2707,7 @@
       },
       as = 'lspconfig',
       config = function()
+        local util = require "lspconfig/util"
         -- Turn on snippets
         local capabilities = vim.lsp.protocol.make_client_capabilities()
         capabilities.textDocument.completion.completionItem.snippetSupport = true
@@ -2846,6 +2847,7 @@
           capabilities = capabilities,
           on_attach = common_on_attach,
           autostart = false,
+          root_dir = util.root_pattern(".terraform"),
         }
       end,
     }
