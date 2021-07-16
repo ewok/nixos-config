@@ -1494,30 +1494,30 @@
     }
   -- }}}
   -- Indent-guides {{{
-    packer.use {
-      'lukas-reineke/indent-blankline.nvim',
-      config = function()
-        -- vim.g.indentLine_char = '|'
-        vim.gindent_blankline_char_list = { '|', '¦', '┆', '┊' }
-      end,
-    }
     -- packer.use {
-    --   'glepnir/indent-guides.nvim',
-    --   as = 'indent-guides',
+    --   'lukas-reineke/indent-blankline.nvim',
     --   config = function()
-    --     require('indent_guides').setup({
-    --       indent_levels = 30;
-    --       indent_guide_size = 1;
-    --       indent_start_level = 2;
-    --       indent_space_guides = true;
-    --       indent_tab_guides = false;
-    --       indent_soft_pattern = '\\s';
-    --       exclude_filetypes = {'help','dashboard','dashpreview','nerdtree','vista','sagahover','which_key', 'nvimtree'};
-    --       even_colors = { fg ='#AAAAAA',bg=colors.color_10 };
-    --       odd_colors = {fg='#AAAAAA',bg=colors.color_10};
-    --     })
+    --     -- vim.g.indentLine_char = '|'
+    --     vim.gindent_blankline_char_list = { '|', '¦', '┆', '┊' }
     --   end,
     -- }
+    packer.use {
+      'glepnir/indent-guides.nvim',
+      as = 'indent-guides',
+      config = function()
+        require('indent_guides').setup({
+          indent_levels = 30;
+          indent_guide_size = 1;
+          indent_start_level = 2;
+          indent_space_guides = true;
+          indent_tab_guides = false;
+          indent_soft_pattern = '\\s';
+          exclude_filetypes = {'help','dashboard','dashpreview','nerdtree','vista','sagahover','which_key', 'nvimtree'};
+          even_colors = { fg ='#AAAAAA',bg=colors.color_10 };
+          odd_colors = {fg='#AAAAAA',bg=colors.color_10};
+        })
+      end,
+    }
   -- }}}
   -- Galaxyline {{{
     packer.use {
@@ -1934,7 +1934,7 @@
         vim.g.nvim_tree_group_empty = 1
         vim.g.nvim_tree_disable_netrw = 0
         -- vim.g.nvim_tree_auto_ignore_ft = {'startify', 'dashboard'}
-        vim.g.nvim_tree_quit_on_open = 0
+        vim.g.nvim_tree_quit_on_open = 1
         vim.g.nvim_tree_lsp_diagnostics = 1
         vim.g.nvim_tree_highlight_opened_files = 1
         vim.g.nvim_tree_disable_window_picker = 1
@@ -1942,7 +1942,7 @@
 
         wkmap({
           ['<leader>'] = {
-            oe = {function() require'nvim-tree'.open() end, 'Open Explorer'},
+            oe = {function() require'nvim-tree'.toggle() end, 'Open Explorer'},
             fp = {function()
               require'nvim-tree'.find_file(true)
               if not require'nvim-tree.view'.win_open() then
@@ -2033,7 +2033,9 @@
           event = "VimEnter",
           module = "persistence",
           config = function()
-            require("persistence").setup()
+            require("persistence").setup{
+              dir = vim.fn.expand(vim.fn.stdpath("data") .. "/session/")
+            }
           end,
         }
       },
@@ -2047,7 +2049,7 @@
         }
 
         vim.g.startify_session_autoload = 0
-        vim.g.startify_session_persistence = 1
+        vim.g.startify_session_persistence = 0
         vim.g.startify_change_to_dir = 1
 
         local startify_lists = {
@@ -2073,20 +2075,14 @@
             o = {'<cmd>SLoad<CR>', 'Load'},
             u = {function() require("persistence").load() end, 'Load Current'},
             -- u = {'<cmd>SLoad ' .. vim.g.current_session_name .. '<CR>', 'Load Current'},
-            s = {':SSave ' .. vim.g.current_session_name, 'Save'},
-
+            s = {'<cmd>SSave<CR>', 'Save'},
             c = {function ()
               require'persistence'.stop()
               vim.cmd'SClose'
             end, 'Close'},
-
             -- q = {'<cmd>SClose<CR>:q<CR>', 'Save and Quit'},
             q = {'<cmd>wall|qall<CR>', 'Save and Quit'},
-
-            d = {function ()
-              require'persistence'.stop()
-              vim.cmd'SDelete'
-            end, 'Delete'},
+            d = {'<cmd>SDelete<CR>', 'Delete'},
 
           }
         },{
@@ -2096,9 +2092,41 @@
       end,
     }
 
+    vim.g.sessiondir = vim.fn.expand(vim.fn.stdpath("data") .. "/session/")
+
     vim.api.nvim_exec([[
       let g:current_session_name = fnamemodify(getcwd(), ':~:s?\~/??:gs?/?_?')
       command! LoadSessionCurrent :lua require("persistence").load()
+
+      fun! ListSessions(A,L,P)
+        return system("ls " . g:sessiondir . ' | grep .vim | sed s/\.vim$//')
+      endfun
+
+      function! DeleteSession(file)
+
+        let file = a:file
+
+        if (file == "")
+          if (exists('g:sessionfile'))
+            let b:sessiondir = g:sessiondir
+            let file = g:sessionfile
+          else
+            let b:sessiondir = g:sessiondir . g:current_session_dir
+            let file = "session"
+          endif
+        else
+          let b:sessiondir = g:sessiondir
+        endif
+
+        let b:sessionfile = b:sessiondir . '/' . file . '.vim'
+        if (filereadable(b:sessionfile))
+          exe 'silent !rm -f ' b:sessionfile
+        else
+          echo "No session loaded."
+        endif
+      endfunction
+
+      command! -nargs=1 -range -complete=custom,ListSessions DeleteSession :call DeleteSession("<args>")
     ]], false)
   -- }}}
   -- Texting {{{
@@ -2147,7 +2175,7 @@
         vim.o.showcmd = false
         vim.o.scrolloff = 999
         vim.wo.wrap = true
-        vim.cmd('IndentBlanklineDisable')
+        vim.cmd('IndentGuidesDisable')
         require("twilight").enable()
       end, 1000)
       if fn.executable('tmux') == 1 and fn.exists('$TMUX') == 1 then
@@ -2164,7 +2192,7 @@
         vim.o.showcmd = true
         vim.o.scrolloff = 5
         vim.wo.wrap = false
-        vim.cmd('IndentBlanklineEnable')
+        vim.cmd('IndentGuidesEnable')
         require("twilight").disable()
       end, 1000)
       if fn.executable('tmux') == 1 and fn.exists('$TMUX') == 1 then
