@@ -160,6 +160,8 @@ in
       };
       # (readFile ./config/config);
       xdg.configFile."i3/rotate.sh".source = ./config/rotate.sh;
+      xdg.configFile."i3/i3-strict".source = ./config/i3-strict.sh;
+      xdg.configFile."i3/center-mouse".source = ./config/center-mouse.sh;
 
       programs.i3status-rust = {
         enable = true;
@@ -377,6 +379,7 @@ in
         lockCmd = "${blurlock}/bin/blurlock";
         inactiveInterval = 5;
       };
+
     };
   };
 }
