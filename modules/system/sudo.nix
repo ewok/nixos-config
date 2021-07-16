@@ -14,8 +14,8 @@ in
   };
 
   config = {
+    security.sudo.wheelNeedsPassword = cfg.askPass;
     security.sudo.extraConfig = ''
-      %wheel ALL=(ALL) ${optionalString (!cfg.askPass) "NOPASSWD:"} ALL, SETENV: ALL
       Defaults                    !tty_tickets
       Defaults                    timestamp_timeout=30
     '';

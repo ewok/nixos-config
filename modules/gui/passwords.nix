@@ -11,6 +11,8 @@ let
   );
 
   ykmanOtp = pkgs.writeShellScriptBin "ykman-otp" ''
+    set -euo pipefail
+    sudo ${yubikeyReset}/bin/yubikey-reset
     PASS=""
 
     if [ ! "$(ykman info)" ]
@@ -33,6 +35,23 @@ let
     code=$(ykman oath accounts code $PASS "$option")
     IFS=', ' read -r -a code <<< "$code"
     echo "''${code[-1]}" | xclip -selection clipboard
+  '';
+
+  yubikeyReset = pkgs.writeShellScriptBin "yubikey-reset" ''
+    set -euo pipefail
+    IFS=$'\n\t'
+
+    VENDOR="1050"
+    PRODUCT="0407"
+
+    for DIR in $(find /sys/bus/usb/devices/ -maxdepth 1 -type l); do
+      if [[ -f $DIR/idVendor && -f $DIR/idProduct &&
+            $(${pkgs.coreutils}/bin/cat $DIR/idVendor) == $VENDOR && $(${pkgs.coreutils}/bin/cat $DIR/idProduct) == $PRODUCT ]]; then
+        echo 0 | tee -a $DIR/authorized
+        sleep 0.5
+        echo 1 | tee -a $DIR/authorized
+      fi
+    done
   '';
 
   opSession = pkgs.writeShellScriptBin "op-session" ''
@@ -65,6 +84,18 @@ in
     ];
     services.pcscd.enable = true;
 
+    # Run yubikey-reset without password
+    security.sudo.extraRules = [
+      {
+        users = [ username ];
+        commands = [ { command = "${yubikeyReset}/bin/yubikey-reset"; options = [ "SETENV" "NOPASSWD" ]; } ];
+      }
+      {
+        users = [ username ];
+        commands = [ { command = "/home/${username}/.nix-profile/bin/yubikey-reset"; options = [ "SETENV" "NOPASSWD" ]; } ];
+      }
+    ];
+
     home-manager.users.${username} = {
       home.packages = [
         pkgs.enpass
@@ -85,23 +116,7 @@ in
         pkgs.yubioath-desktop
         ykmanOtp
 
-        (pkgs.writeShellScriptBin "yubikey-reset" ''
-          set -euo pipefail
-          IFS=$'\n\t'
-
-          VENDOR="1050"
-          PRODUCT="0407"
-
-          for DIR in $(find /sys/bus/usb/devices/ -maxdepth 1 -type l); do
-            if [[ -f $DIR/idVendor && -f $DIR/idProduct &&
-                  $(${pkgs.coreutils}/bin/cat $DIR/idVendor) == $VENDOR && $(${pkgs.coreutils}/bin/cat $DIR/idProduct) == $PRODUCT ]]; then
-              echo 0 | /run/wrappers/bin/sudo tee -a $DIR/authorized
-              sleep 0.5
-              echo 1 | /run/wrappers/bin/sudo tee -a $DIR/authorized
-            fi
-          done
-        '')
-
+        yubikeyReset
       ];
 
       programs.gpg = {
