@@ -18,7 +18,7 @@ in
 
     services.xserver = {
       layout = "us,ru";
-      xkbOptions = "ctrl:swapcaps,grp:win_space_toggle";
+      xkbOptions = "ctrl:swapcaps,grp:ctrl_shift_toggle";
       autoRepeatDelay = 200;
       autoRepeatInterval = 30;
     };
