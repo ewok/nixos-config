@@ -69,6 +69,7 @@ for_window [title="Unlock Vault"] floating enable
 for_window [class="vlc"] floating enable
 # switch to workspace with urgent window automatically
 # for_window [urgent=latest] focus
+for_window [title="TODO"] floating enable
 for_window [class=.*] exec bash ~/.config/i3/center-mouse
 
 ################################################################################################
@@ -151,7 +152,8 @@ bindsym $mod_c+Print exec --no-startup-id flameshot gui -p ~/Pictures/Screenshot
 # Other
 # bindsym Shift+space exec "szAnswer=$(zenity --entry --text \\"Todoist: Add Task\\" --entry-text \\"\\"); td $szAnswer && dunstify \\"Task added\\" || dunstify -u critical \\"Error\\""
 #
-bindsym Shift+space exec "xkb-switch -s us; todofi.sh -a"
+bindsym Shift+space exec "xkb-switch -s us; alacritty --title TODO -e todo"
+# bindsym Shift+space exec "xkb-switch -s us; todofi.sh -a"
 
 # bindsym Control+period exec --no-startup-id "/opt/enpass/Enpass showassistant"
 bindsym --release F12 exec --no-startup-id dunstctl history-pop

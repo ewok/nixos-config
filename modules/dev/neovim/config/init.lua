@@ -674,23 +674,6 @@
     end
   -- }}}
   -- Markdown/VimWiki {{{
-    packer.use {
-      'shime/vim-livedown',
-      as = 'livedown',
-      ft = { 'markdown', 'vimwiki', 'mail' },
-      config = function ()
-        vim.g.livedown_browser = 'qutebrowser'
-        vim.g.livedown_port = 14545
-      end,
-    }
-    packer.use {
-      'gpanders/vim-medieval',
-      as = 'medieval',
-      ft = { 'markdown', 'vimwiki' },
-      config = function ()
-        vim.g.medieval_langs = { 'python=python3', 'ruby', 'sh', 'console=bash', 'bash', 'perl' }
-      end,
-    }
     local ft_md = {
       {[[ FileType mail lua load_md_ft() ]]};
       {[[ FileType vimwiki lua load_md_ft() ]]};
@@ -1447,6 +1430,7 @@
               o = {'<cmd>Files<CR>', 'Find File'},
               b = {'<cmd>Buffers<CR>', 'Find Buffers'},
               m = {'<cmd>Marks<CR>', 'Find Marks'},
+              t = {'<cmd>TwTodo<CR>', 'Find TODO'}
             },
             g = {
               h = {
@@ -1485,6 +1469,7 @@
 
         vim.env.FZF_DEFAULT_OPTS = '--bind=ctrl-a:toggle-all,ctrl-space:toggle+down,ctrl-alt-a:deselect-all'
         vim.env.FZF_DEFAULT_COMMAND = 'rg --iglob !.git --files --hidden --ignore-vcs --ignore-file ~/.config/git/gitexcludes'
+        vim.cmd[[command! -bang -nargs=* TwTodo call fzf#vim#grep( join(['rg --column --line-number --no-heading --color=always --smart-case -- '.shellescape('(-|\*|[0-9a-zA-Z]+.) \[[ .oO]\] (TODO|ACTIVE) .+'), '~/Notes']), 1, fzf#vim#with_preview(), <bang>0)]]
 
     --     vim.cmd [[tnoremap <expr> <Esc> (&filetype == "fzf") ? "<Esc>" : "<c-\><c-n>"]]
     --     vim.cmd([[ command! -bang -nargs=* Rg ]]..
@@ -2368,6 +2353,23 @@
         -- { 'ewok/vimwiki-sync' },
         { 'fzf.vim' },
         { 'fzf' },
+        {
+          'shime/vim-livedown',
+          as = 'livedown',
+          ft = { 'markdown', 'vimwiki', 'mail' },
+          config = function ()
+            vim.g.livedown_browser = 'qutebrowser'
+            vim.g.livedown_port = 14545
+          end,
+        },
+        {
+          'gpanders/vim-medieval',
+          as = 'medieval',
+          ft = { 'markdown', 'vimwiki' },
+          config = function ()
+            vim.g.medieval_langs = { 'python=python3', 'ruby', 'sh', 'console=bash', 'bash', 'perl' }
+          end,
+        },
       },
       setup = function()
         vim.g.vimwiki_list = {
@@ -2524,7 +2526,7 @@
         wkmap({
           ['<leader>'] = {
             ov = {'<cmd>Vista<CR>', 'Open Vista'},
-            ft = {'<cmd>Vista finder<CR>', 'Find Tag in Vista'}
+            fv = {'<cmd>Vista finder<CR>', 'Find Tag in Vista'}
           }
         })
 

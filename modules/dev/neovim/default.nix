@@ -2,20 +2,29 @@
 with lib;
 let
   dev = config.modules.dev;
+  gui = config.modules.gui;
   colors = config.properties.theme.colors;
   username = config.properties.user.name;
 
-  jrnl = pkgs.writeScriptBin "jrnl" ''
-    #!${pkgs.bash}/bin/bash
+  jrnl = pkgs.writeShellScriptBin "jrnl" ''
     NOTE="$HOME/Notes/diary/$(date +%Y-%m-%d).md"
     if [ $# -ge 1 ]
     then
-    echo "[$(date +%H:%M)] $*" >> "$NOTE"
-    vim "$NOTE"
+      echo "[$(date +%H:%M)] $*" >> "$NOTE"
+      nvim -c '$' -c 'startinsert!' "$NOTE"
     else
-    vim +VimwikiMakeDiaryNote
+      nvim -c '$' -c 'startinsert!' "$NOTE"
     fi
   '';
+
+  todo = pkgs.writeShellScriptBin "todo" ''
+    set -e
+    NOTE="$HOME/Notes/diary/$(date +%Y-%m-%d).md"
+    echo >> "$NOTE"
+    echo "- [ ] TODO $*" >> "$NOTE"
+    nvim -c '$' -c 'startinsert!' "$NOTE"
+  '';
+
 
   my-nvim = pkgs.symlinkJoin {
     name = "my-neovim";
@@ -45,12 +54,14 @@ in
     home-manager.users."${username}" = {
 
       home.packages = with pkgs; [
+
+        my-nvim
+
         universal-ctags
         master.tree-sitter
-        my-nvim
         global
-        # Does not work again
-        # hadolint
+
+        hadolint
         gcc
         shellcheck
         silver-searcher
@@ -58,6 +69,7 @@ in
         yamllint
         par
         nodejs
+
         # All in python.nix
         # python3Packages.pynvim
         # python3Packages.msgpack
@@ -79,8 +91,11 @@ in
         nodePackages.yaml-language-server
         rnix-lsp
         gopls
-      ] ++ [
+
         jrnl
+        todo
+      ] ++ optionals (gui.enable) [
+        pkgs.libnotify
       ];
 
       # Sync notes service
@@ -103,7 +118,6 @@ in
           );
         };
       };
-
       systemd.user.timers.notes-sync = {
         Unit = { Description = "Sync notes"; };
         Timer = {
@@ -113,6 +127,25 @@ in
         };
         Install = { WantedBy = [ "timers.target" ]; };
       };
+
+      # # Orgmode notifications
+      # systemd.user.services.orgmode-notify = {
+      #   Unit = { Description = "notify orgmode"; };
+      #   Service = {
+      #     Type = "simple";
+      #     Environment = ''DISPLAY=:0 DBUS_SESSION_BUS_ADDRESS=unix:path=/run/user/1000/bus PATH="/home/${username}/.nix-profile/bin:/run/current-system/sw/bin"'';
+      #     ExecStart = ''${my-nvim}/bin/nvim -u NONE --noplugin --headless -c "lua require('orgmode').cron(require('partials.notify_org'))"'';
+      #   };
+      # };
+      # systemd.user.timers.orgmode-notify = {
+      #   Unit = { Description = "notify orgmode"; };
+      #   Timer = {
+      #     Unit = "orgmode-notify.service";
+      #     OnCalendar = "minutely";
+      #     Persistent = true;
+      #   };
+      #   Install = { WantedBy = [ "timers.target" ]; };
+      # };
 
       xdg.configFile."nvim/init.lua".text = replaceStrings [
         ''color_0 = "#282c34"''
@@ -149,14 +182,23 @@ in
         ''color_14 = "#${colors.color14}",''
         ''color_15 = "#${colors.color15}",''
       ] (readFile ./config/init.lua);
+      xdg.configFile."nvim/lua/partials/notify_org.lua".text = ''
+        return {
+            org_agenda_files = {'~/Notes/org/*'},
+            org_default_notes_file = '~/Notes/org/inbox.org',
+            notifications = {
+              reminder_time = {0, 5, 10},
+              repeater_reminder_time = true,
+          },
+        }
+      '';
       xdg.configFile."nvim/.gitignore".source = ./config/gitignore;
-      # home.file.".vim/vimrc".source = ./config/init.vim;
       home.file.".ctags".source = ./config/ctags;
       home.file.".vale.ini".source = ./config/vale.ini;
       home.sessionVariables = {
         EDITOR = "nvim";
         VISUAL = "nvim";
-        GUI_EDITOR = "/usr/bin/nvim";
+        GUI_EDITOR = "${my-nvim}/bin/nvim";
       };
     };
   };
