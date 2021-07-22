@@ -1,15 +1,9 @@
-{ config, lib, pkgs, inputs, ... }:
+{ config, lib, pkgs, ... }:
 with lib;
 let
   gui = config.modules.gui;
   username = config.properties.user.name;
   colors = config.properties.theme.colors;
-  master = import inputs.master (
-    {
-      config = config.nixpkgs.config;
-      localSystem = { system = "x86_64-linux"; };
-    }
-  );
 in
 {
   config = mkIf gui.enable {

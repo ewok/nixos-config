@@ -1,14 +1,8 @@
-{ config, lib, pkgs, inputs, ... }:
+{ config, lib, pkgs, ... }:
 with lib;
 let
   dev = config.modules.dev;
   username = config.properties.user.name;
-  master = import inputs.master (
-    {
-      config = config.nixpkgs.config;
-      localSystem = { system = "x86_64-linux"; };
-    }
-  );
 in
 {
   options.modules.dev = {
@@ -18,11 +12,11 @@ in
   };
   config = mkIf (dev.enable && dev.emacs.enable) {
     home-manager.users."${username}" = {
-      home.packages = [ master.emacs ];
+      home.packages = [ pkgs.emacs ];
 
       services.emacs = {
         enable = true;
-        package = master.emacs;
+        package = pkgs.emacs;
         client.enable = true;
       };
 

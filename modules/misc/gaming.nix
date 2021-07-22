@@ -1,15 +1,9 @@
-{ config, lib, pkgs, inputs, ... }:
+{ config, lib, pkgs, ... }:
 with lib;
 let
   gui = config.modules.gui;
   gaming = config.modules.gaming;
   username = config.properties.user.name;
-  master = import inputs.master (
-    {
-      config = config.nixpkgs.config;
-      localSystem = { system = "x86_64-linux"; };
-    }
-  );
 in
 {
   options.modules.gaming = {
@@ -18,7 +12,7 @@ in
 
   config = mkIf (gui.enable && gaming.enable) {
     home-manager.users.${username} = {
-      home.packages = with master; [
+      home.packages = with pkgs; [
         steam
       ];
     };

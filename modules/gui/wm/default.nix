@@ -1,16 +1,10 @@
-{ config, lib, pkgs, inputs, ... }:
+{ config, lib, pkgs, ... }:
 with lib;
 let
   gui = config.modules.gui;
   colors = config.properties.theme.colors;
   terminal = config.properties.defaultTerminal;
   username = config.properties.user.name;
-  master = import inputs.master (
-    {
-      config = config.nixpkgs.config;
-      localSystem = { system = "x86_64-linux"; };
-    }
-  );
   centerMouse = pkgs.writeShellScriptBin "center-mouse" ''
     XDT=${pkgs.xdotool}/bin/xdotool
 
@@ -117,7 +111,7 @@ in
 
         lm_sensors
 
-      ] ++ [ master.xkb-switch-i3 ];
+      ] ++ [ pkgs.xkb-switch-i3 ];
 
       xdg.configFile."i3/config" = {
         text = replaceStrings [
@@ -165,7 +159,7 @@ in
 
       programs.i3status-rust = {
         enable = true;
-        package = master.i3status-rust;
+        package = pkgs.i3status-rust;
         bars = {
           default = {
             settings = {

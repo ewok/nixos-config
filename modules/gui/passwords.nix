@@ -1,14 +1,8 @@
-{ config, lib, inputs, pkgs, ... }:
+{ config, lib, pkgs, ... }:
 with lib;
 let
   gui = config.modules.gui;
   username = config.properties.user.name;
-  master = import inputs.master (
-    {
-      config = config.nixpkgs.config;
-      localSystem = { system = "x86_64-linux"; };
-    }
-  );
 
   ykmanOtp = pkgs.writeShellScriptBin "ykman-otp" ''
     set -euo pipefail
@@ -60,13 +54,13 @@ let
     export OP_SESSION_my=$(${pkgs.coreutils}/bin/cat /tmp/qute_1pass/session)
 
     if [ "$1" == "signin" ]; then
-      ${master._1password}/bin/op $*
+      ${pkgs._1password}/bin/op $*
     else
-      if ! ${master._1password}/bin/op get account &> /dev/null; then
-        export OP_SESSION_my=$(${master._1password}/bin/op signin my --raw)
+      if ! ${pkgs._1password}/bin/op get account &> /dev/null; then
+        export OP_SESSION_my=$(${pkgs._1password}/bin/op signin my --raw)
         echo $OP_SESSION_my > /tmp/qute_1pass/session
       fi
-      ${master._1password}/bin/op $*
+      ${pkgs._1password}/bin/op $*
     fi
 
   '';
@@ -99,18 +93,18 @@ in
     home-manager.users.${username} = {
       home.packages = [
         pkgs.enpass
-        master.keepassxc
+        pkgs.keepassxc
         pkgs.pinentry
 
         pkgs.lastpass-cli
 
-        master._1password
-        master._1password-gui
+        pkgs._1password
+        pkgs._1password-gui
         opSession
 
-        master.yubikey-manager
-        master.yubikey-manager-qt
-        master.yubikey-personalization-gui
+        pkgs.yubikey-manager
+        pkgs.yubikey-manager-qt
+        pkgs.yubikey-personalization-gui
         pkgs.yubico-pam
         pkgs.yubikey-agent
         pkgs.yubioath-desktop

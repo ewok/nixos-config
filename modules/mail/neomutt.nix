@@ -1,4 +1,4 @@
-{ config, lib, pkgs, inputs, ... }:
+{ config, lib, pkgs, ... }:
 with lib;
 let
   cfg = config.modules.mail;
@@ -43,12 +43,12 @@ let
     ${davmail-start}/bin/davmail-start
   '';
 
-  stable = import inputs.stable (
-    {
-      config = config.nixpkgs.config;
-      localSystem = { system = "x86_64-linux"; };
-    }
-  );
+  # stable = import inputs.stable (
+  #   {
+  #     config = config.nixpkgs.config;
+  #     localSystem = { system = "x86_64-linux"; };
+  #   }
+  # );
 in
 {
   config = mkIf (cfg.enable && cfg.neomutt.enable) {
@@ -80,7 +80,7 @@ in
 
       programs.mbsync = {
         enable = true;
-        package = stable.isync;
+        package = pkgs.isync;
       };
       services.mbsync = {
         enable = true;

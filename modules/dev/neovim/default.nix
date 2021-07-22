@@ -1,4 +1,4 @@
-{ config, lib, pkgs, inputs, ... }:
+{ config, lib, pkgs, ... }:
 with lib;
 let
   dev = config.modules.dev;
@@ -28,19 +28,12 @@ let
 
   my-nvim = pkgs.symlinkJoin {
     name = "my-neovim";
-    paths = [ pkgs.neovim-nightly ];
+    paths = [ pkgs.neovim ];
     postBuild = ''
       ln -s $out/bin/nvim $out/bin/vim
       ln -s $out/bin/nvim $out/bin/vi
     '';
   };
-
-  master = import inputs.master (
-    {
-      config = config.nixpkgs.config;
-      localSystem = { system = "x86_64-linux"; };
-    }
-  );
 
   # rnix = import inputs.rnix ({
   #   config = config.nixpkgs.config;
@@ -58,7 +51,7 @@ in
         my-nvim
 
         universal-ctags
-        master.tree-sitter
+        tree-sitter
         global
 
         hadolint
