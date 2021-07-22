@@ -42,7 +42,6 @@ assign [class="Cawbird"] $ws3
 for_window [class="albert"] move position center
 for_window [class="Blueman-manager"] floating enable
 for_window [class="Cawbird"] move right,move right,move right, resize set 20 ppt
-for_window [title=".* https://calendar.google.com/calendar/.*"] move container to workspace 3, floating disable,  move left,move left,move left, resize set 80 ppt
 for_window [title="Enpass Assistant"] floating enable, move position mouse
 for_window [class="GParted"] floating enable border normal, move position center
 for_window [class="Insync"] floating enable, move position center
@@ -255,13 +254,13 @@ bindsym $mod_a+r exec "autorandr -c; sleep 2; systemctl --user start random-back
 # bindsym $mod_a+Right  exec bash ~/.config/i3/rotate.sh right
 
 #navigate workspaces next / previous
-bindsym $mod+n workspace next, exec bash ~/.config/i3/i3-strict workspace-move
-bindsym $mod+b workspace prev, exec bash ~/.config/i3/i3-strict workspace-move
+bindsym $mod+n workspace next
+bindsym $mod+b workspace prev
 bindsym $mod_a+n exec i3-display-swap.sh right
 bindsym $mod_a+b exec i3-display-swap.sh left
 
-bindsym $mod+Shift+n move workspace to output right, exec bash ~/.config/i3/i3-strict workspace-move
-bindsym $mod+Shift+b move workspace to output left, exec bash ~/.config/i3/i3-strict workspace-move
+bindsym $mod+Shift+n move workspace to output right
+bindsym $mod+Shift+b move workspace to output left
 
 # Workspace names
 # to display names or symbols instead of plain workspace numbers you can use
@@ -278,26 +277,26 @@ set $ws8 8
 set $ws9 9
 
 # switch to workspace
-bindsym $mod+1 workspace 1, exec bash ~/.config/i3/i3-strict workspace-move
-bindsym $mod+2 workspace 2, exec bash ~/.config/i3/i3-strict workspace-move
-bindsym $mod+3 workspace 3, exec bash ~/.config/i3/i3-strict workspace-move
-bindsym $mod+4 workspace 4, exec bash ~/.config/i3/i3-strict workspace-move
-bindsym $mod+5 workspace 5, exec bash ~/.config/i3/i3-strict workspace-move
-bindsym $mod+6 workspace 6, exec bash ~/.config/i3/i3-strict workspace-move
-bindsym $mod+7 workspace 7, exec bash ~/.config/i3/i3-strict workspace-move
-bindsym $mod+8 workspace 8, exec bash ~/.config/i3/i3-strict workspace-move
-bindsym $mod+9 workspace 9, exec bash ~/.config/i3/i3-strict workspace-move
+bindsym $mod+1 workspace 1
+bindsym $mod+2 workspace 2
+bindsym $mod+3 workspace 3
+bindsym $mod+4 workspace 4
+bindsym $mod+5 workspace 5
+bindsym $mod+6 workspace 6
+bindsym $mod+7 workspace 7
+bindsym $mod+8 workspace 8
+bindsym $mod+9 workspace 9
 
 # move focused container to workspace
-bindsym $mod+Shift+1 move container to workspace 1, exec bash ~/.config/i3/i3-strict workspace-move
-bindsym $mod+Shift+2 move container to workspace 2, exec bash ~/.config/i3/i3-strict workspace-move
-bindsym $mod+Shift+3 move container to workspace 3, exec bash ~/.config/i3/i3-strict workspace-move
-bindsym $mod+Shift+4 move container to workspace 4, exec bash ~/.config/i3/i3-strict workspace-move
-bindsym $mod+Shift+5 move container to workspace 5, exec bash ~/.config/i3/i3-strict workspace-move
-bindsym $mod+Shift+6 move container to workspace 6, exec bash ~/.config/i3/i3-strict workspace-move
-bindsym $mod+Shift+7 move container to workspace 7, exec bash ~/.config/i3/i3-strict workspace-move
-bindsym $mod+Shift+8 move container to workspace 8, exec bash ~/.config/i3/i3-strict workspace-move
-bindsym $mod+Shift+9 move container to workspace 9, exec bash ~/.config/i3/i3-strict workspace-move
+bindsym $mod+Shift+1 move container to workspace 1
+bindsym $mod+Shift+2 move container to workspace 2
+bindsym $mod+Shift+3 move container to workspace 3
+bindsym $mod+Shift+4 move container to workspace 4
+bindsym $mod+Shift+5 move container to workspace 5
+bindsym $mod+Shift+6 move container to workspace 6
+bindsym $mod+Shift+7 move container to workspace 7
+bindsym $mod+Shift+8 move container to workspace 8
+bindsym $mod+Shift+9 move container to workspace 9
 
 # Set shut down, restart and locking features
 bindsym $mod_a+0 mode "$mode_system"
