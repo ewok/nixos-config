@@ -221,8 +221,8 @@
   -- }}}
   -- cursorline {{{
     local au_cline = {
-      {'WinLeave,InsertEnter * set nocursorline'};
-      {'WinEnter,InsertLeave * set cursorline'};
+      {'InsertEnter * set nocursorline'};
+      {'InsertLeave * set cursorline'};
     }
     augroups({au_cline=au_cline})
   -- }}}
@@ -1018,16 +1018,15 @@
       {[[ BufRead,BufNewFile *.todo,TODO.md setf todo ]]};
       {[[ FileType todo lua load_todo_ft() ]]};
     }
+        -- hi TODO guifg=Yellow ctermfg=Yellow term=Bold
+        -- hi FIXME guifg=Red ctermfg=Red term=Bold
     augroups({ft_todo=ft_todo})
     _G.load_todo_ft = function()
       exec([[
-        hi TODO guifg=Yellow ctermfg=Yellow term=Bold
-        hi FIXME guifg=Red ctermfg=Red term=Bold
-        syn match TODO "TODO\|@todo\|@today"
-        syn match FIXME "FIXME\|@fixme\|@error"
+        syn match Todo "TODO\|ACTIVE\|@todo\|@today"
+        syn match ErrorMsg "FIXME\|@fixme\|@error"
 
-        hi TASK guifg=Yellow ctermfg=Yellow term=Bold
-        syn match TASK "\s\w\{1,10}-\d\{1,6}[ :]"
+        syn match WarningMsg "\s\w\{1,10}-\d\{1,6}[ :]"
 
         " hi P1 guifg=Red ctermfg=Red term=Bold
         " hi P2 guifg=LightRed ctermfg=LightRed term=Bold
@@ -1051,10 +1050,10 @@
         hi P3 guifg=LightYellow ctermfg=LightYellow term=Bold
         hi P4 guifg=LightGrey ctermfg=Grey term=Italic
 
-        syn match P1 ".*\[[^X]\]\s\+[pP]1.*$" contains=TODO,FIXME,TASK,DT
-        syn match P2 ".*\[[^X]\]\s\+[pP]2.*$" contains=TODO,FIXME,TASK,DT
-        syn match P3 ".*\[[^X]\]\s\+[pP]3.*$" contains=TODO,FIXME,TASK,DT
-        syn match P4 ".*\[[^X]\]\s\+[pP]4.*$" contains=TODO,FIXME,TASK,DT
+        syn match P1 ".*\[[^X]\]\s\+[pP]1.*$" contains=Todo,ErrorMsg,WarningMsg,DT
+        syn match P2 ".*\[[^X]\]\s\+[pP]2.*$" contains=Todo,ErrorMsg,WarningMsg,DT
+        syn match P3 ".*\[[^X]\]\s\+[pP]3.*$" contains=Todo,ErrorMsg,WarningMsg,DT
+        syn match P4 ".*\[[^X]\]\s\+[pP]4.*$" contains=Todo,ErrorMsg,WarningMsg,DT
 
         hi DONE guifg=DarkGreen ctermfg=Grey term=Italic
         syn match DONE ".*\[[X]\]\s.*$" contains=NONE
@@ -1138,10 +1137,10 @@
 
 -- Plugins {{{
 -- Workflow
-  -- Autoread {{{
-    packer.use {
-      'djoshea/vim-autoread',
-    }
+  -- -- Autoread {{{
+  --   packer.use {
+  --     'djoshea/vim-autoread',
+  --   }
   -- }}}
   -- Yank/Paste {{{
     packer.use {
@@ -1497,7 +1496,7 @@
           indent_space_guides = true;
           indent_tab_guides = false;
           indent_soft_pattern = '\\s';
-          exclude_filetypes = {'help','dashboard','dashpreview','nerdtree','vista','sagahover','which_key', 'nvimtree'};
+          exclude_filetypes = {'help','dashboard','dashpreview','nerdtree','vista','sagahover','which_key', 'NvimTree'};
           even_colors = { fg ='#AAAAAA',bg=colors.color_10 };
           odd_colors = {fg='#AAAAAA',bg=colors.color_10};
         })
@@ -1913,7 +1912,7 @@
       config = function ()
         vim.g.nvim_tree_width = 40
         vim.g.nvim_tree_auto_close = 1
-        -- vim.g.nvim_tree_follow = 1
+        vim.g.nvim_tree_follow = 1
         -- Forgets state
         vim.g.nvim_tree_tab_open = 0
         vim.g.nvim_tree_group_empty = 1
@@ -1921,9 +1920,13 @@
         -- vim.g.nvim_tree_auto_ignore_ft = {'startify', 'dashboard'}
         vim.g.nvim_tree_quit_on_open = 1
         vim.g.nvim_tree_lsp_diagnostics = 1
-        vim.g.nvim_tree_highlight_opened_files = 1
+        vim.g.nvim_tree_highlight_opened_files = 3
         vim.g.nvim_tree_disable_window_picker = 1
         vim.g.nvim_tree_update_cwd = 1
+
+        vim.api.nvim_exec([[
+          hi NvimTreeCursorLine cterm=bold ctermbg=white guifg=${color_2}
+        ]] % colors, false)
 
         wkmap({
           ['<leader>'] = {
@@ -2038,9 +2041,9 @@
         vim.g.startify_change_to_dir = 1
 
         local startify_lists = {
-          -- { type = 'files',     header = {'   MRU'}            },
-          { type = 'sessions',  header = {'   Sessions'}       },
+          -- { type = 'sessions',  header = {'   Sessions'}       },
           { type = 'dir',       header = {'   MRU '.. vim.fn.getcwd()} },
+          { type = 'files',     header = {'   MRU'}            },
           { type = 'bookmarks', header = {'   Bookmarks'}      },
           { type = 'commands',  header = {'   Commands'}       },
         }
