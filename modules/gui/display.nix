@@ -17,6 +17,9 @@ in
         profiles = builtins.fromJSON gui.displayProfiles;
       };
     };
+
+    services.xserver.dpi = gui.fonts.dpi;
+
     services.udev.extraRules = ''
       ACTION=="change", SUBSYSTEM=="drm", RUN+="${pkgs.autorandr}/bin/autorandr --batch --change"
     '';

@@ -2,7 +2,6 @@
 with lib;
 let
   gui = config.modules.gui;
-  monospaceFont = last (reverseList gui.fonts.monospaceFont);
   username = config.properties.user.name;
   colors = config.properties.theme.colors;
   terminal = config.properties.defaultTerminal;
@@ -20,7 +19,7 @@ in
           };
           font = {
             normal = {
-              family = monospaceFont;
+              family = gui.fonts.monospaceFont;
               style = "Regular";
             };
             size = gui.fonts.monospaceFontSize;
@@ -76,7 +75,7 @@ in
       programs.kitty = {
         enable = (terminal == "kitty");
         settings = {
-          font_family = monospaceFont;
+          font_family = gui.fonts.monospaceFont;
           font_size = gui.fonts.monospaceFontSize;
           cursor_shape = "block";
           scrollback_lines = 100000;
@@ -129,7 +128,7 @@ in
         mouseAutohide = true;
         scrollOnKeystroke = true;
         urgentOnBell = true;
-        font = "${monospaceFont} ${toString gui.fonts.monospaceFontSize}";
+        font = "${gui.fonts.monospaceFont} ${toString gui.fonts.monospaceFontSize}";
         fullscreen = true;
         dynamicTitle = true;
         scrollbackLines = 100000;

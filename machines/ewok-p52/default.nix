@@ -51,7 +51,7 @@ in
   modules.gui = {
     enable = true;
     fonts = {
-      dpi = 102;
+      dpi = 110;
     };
     displayProfiles = properties.displayProfiles;
     longitude = properties.longitude;

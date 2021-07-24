@@ -132,6 +132,10 @@ in
           "set $base0E #000000"
           "set $base0F #000000"
           "alacritty"
+          "%REGULAR_FONT%"
+          "%REGULAR_FONT_SIZE%"
+          "%MONO_FONT%"
+          "%MONO_FONT_SIZE%"
         ] [
           "set $base00 #${colors.color0}"
           "set $base01 #${colors.color10}"
@@ -150,6 +154,10 @@ in
           "set $base0E #${colors.color5}"
           "set $base0F #${colors.color14}"
           "${terminal}"
+          "${gui.fonts.regularFont}"
+          "${toString gui.fonts.regularFontSize}"
+          "${gui.fonts.monospaceFont}"
+          "${toString (gui.fonts.monospaceFontSize - 3)}"
         ] (readFile ./config/config);
       };
       # (readFile ./config/config);
@@ -342,7 +350,7 @@ in
       gtk = {
         enable = true;
         font = {
-          name = "FiraCode Nerd Font Mono 10";
+          name = "${gui.fonts.regularFont} ${toString gui.fonts.regularFontSize}";
         };
         iconTheme = {
           name = "Papirus";

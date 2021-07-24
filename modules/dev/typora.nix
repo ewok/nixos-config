@@ -16,7 +16,7 @@ in
           "standard" = null;
           "serif" = null;
           "sansSerif" = null;
-          "monospace" = last (reverseList gui.fonts.monospaceFont);
+          "monospace" = gui.fonts.monospaceFont;
         };
 
         "autoHideMenuBar" = false;

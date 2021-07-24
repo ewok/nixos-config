@@ -12,9 +12,19 @@ in
       default = 115;
       description = "Font DPI.";
     };
+    regularFont = mkOption {
+      type = types.str;
+      default = "FiraCode Nerd Font";
+      description = "Default regular font.";
+    };
+    regularFontSize = mkOption {
+      type = types.int;
+      default = 10;
+      description = "Default regular font size.";
+    };
     monospaceFont = mkOption {
-      type = types.listOf types.str;
-      default = [ "FiraCode Nerd Font Mono" ];
+      type = types.str;
+      default = "FiraCode Nerd Font Mono";
       description = "Default monospace font.";
     };
     monospaceFontSize = mkOption {
@@ -36,7 +46,7 @@ in
         enable = true;
         antialias = true;
         dpi = cfg.dpi;
-        defaultFonts.monospace = cfg.monospaceFont;
+        defaultFonts.monospace = [ cfg.monospaceFont ];
       };
 
       fontDir.enable = true;

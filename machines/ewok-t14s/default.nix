@@ -42,13 +42,11 @@ in
     emacs.enable = true;
   };
 
-  environment.variables = {
-    GDK_SCALE = "1.1";
-    GDK_DPI_SCALE = "1.1";
-    _JAVA_OPTIONS = "-Dsun.java2d.uiScale=1.1";
-  };
-
-  services.xserver.dpi = 115;
+  # environment.variables = {
+  #   GDK_SCALE = "1.1";
+  #   GDK_DPI_SCALE = "1.1";
+  #   _JAVA_OPTIONS = "-Dsun.java2d.uiScale=1.1";
+  # };
 
   modules.gui = {
     enable = true;
