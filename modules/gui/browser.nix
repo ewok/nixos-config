@@ -13,7 +13,7 @@ let
   '';
 
   chooseBrowser = pkgs.writeShellScriptBin "choose-browser" ''
-    CMD=$(echo "qutebrowser|google-chrome-stable|firefox" | rofi_run -dmenu -i -l 20 -p "Open url in:" -sep "|")
+    CMD=$(echo "firefox|qutebrowser|google-chrome-stable" | rofi_run -dmenu -i -l 20 -p "Open url in:" -sep "|")
     $CMD "$1"
   '';
 
