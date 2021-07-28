@@ -10,11 +10,17 @@ in
     default = "{}";
   };
 
+  options.modules.gui.displayHooks = mkOption {
+    type = types.lines;
+    default = "{}";
+  };
+
   config = mkIf gui.enable {
     home-manager.users.${username} = {
       programs.autorandr = {
         enable = true;
         profiles = builtins.fromJSON gui.displayProfiles;
+        hooks = builtins.fromJSON gui.displayHooks;
       };
     };
 
