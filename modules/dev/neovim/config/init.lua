@@ -1,6 +1,8 @@
 -- vim: ts=2 sw=2 sts=2
 
 -- Helpers {{{
+  _G.Utils = {}
+
   _G.augroups = function(definitions)
     for group_name, definition in pairs(definitions) do
       vim.api.nvim_command('augroup '..group_name)
@@ -500,8 +502,6 @@
         --            'callback': 'ale_linters#ansible#ansible_lint#Handle',
         --         })
         -- ]], true)
-
-        require'lspconfig'.yamlls.autostart()
       end,
     }
     local ft_ansible = {
@@ -538,7 +538,6 @@
     }
     augroups({ft_dockerfile=ft_dockerfile})
     _G.load_dockerfile_ft = function()
-      require('lspconfig').dockerls.autostart()
       reg_highlight_cword()
       reg_auto_save()
     end
@@ -591,7 +590,6 @@
     }
     augroups({ft_json=ft_json})
     _G.load_json_ft = function()
-      require('lspconfig').jsonls.autostart()
       reg_highlight_cword()
       reg_auto_save()
     end
@@ -645,7 +643,6 @@
     augroups({ft_lua=ft_lua})
     _G.load_lua_ft = function()
       vim.wo.foldmethod = 'marker'
-      require'lspconfig'.sumneko_lua.autostart()
       reg_auto_save()
     end
   -- }}}
@@ -765,7 +762,6 @@
     }
     augroups({ft_nix=ft_nix})
     _G.load_nix_ft = function()
-      require('lspconfig').rnix.autostart()
       reg_smart_cr()
       reg_highlight_cword()
       reg_auto_save()
@@ -875,8 +871,6 @@
       vim.b.ale_python_pydocstyle_executable = 'pydocstyle'
       vim.b.ale_python_vulture_executable = 'vulture'
 
-      require'lspconfig'.pyright.autostart()
-
       reg_auto_save()
       reg_dap_keys()
     end
@@ -922,7 +916,6 @@
       'rust-lang/rust.vim',
       ft = { 'rust' },
       config = function ()
-        require('lspconfig').rust_analyzer.autostart()
       end,
     }
     local ft_rust = {
@@ -978,7 +971,6 @@
         buffer = api.nvim_get_current_buf()
       })
 
-      require('lspconfig').bashls.autostart()
       reg_highlight_cword()
       reg_auto_save()
     end
@@ -1008,8 +1000,7 @@
     }
     augroups({ft_terraform=ft_terraform})
     _G.load_terraform_ft = function()
-      require'lspconfig'.terraformls.autostart()
-      -- reg_highlight_cword()
+      reg_highlight_cword()
       reg_auto_save()
     end
   -- }}}
@@ -1192,6 +1183,7 @@
             show_buffer_close_icons = false,
             show_close_icon = false,
             show_tab_indicators = true,
+            sort_by = "directory",
             persist_buffer_sort = true,
             always_show_bufferline = true,
             offsets = {
@@ -1234,9 +1226,9 @@
       config = function()
         require('bqf').setup({
           func_map = {
-            tab = 't',
-            vsplit = 'v',
-            split = 's'
+            tab = '<C-t>',
+            vsplit = '<C-v>',
+            split = '<C-s>'
           },
           filter = {
             fzf = {
@@ -1846,143 +1838,165 @@
       end,
     }
   -- }}}
-  -- -- NERDTree {{{
-  --   packer.use {
-  --     'preservim/nerdtree',
-  --     requires = {
-  --       {'Xuyuanp/nerdtree-git-plugin'},
-  --       -- {'ryanoasis/vim-devicons'}
-  --     },
-  --     config = function ()
-  --       vim.g.NERDTreeShowBookmarks=0
-  --       vim.g.NERDTreeChDirMode=2
-  --       vim.g.NERDTreeMouseMode=2
-  --       vim.g.nerdtree_tabs_focus_on_files=1
-  --       vim.g.nerdtree_tabs_open_on_gui_startup=0
-
-  --       vim.g.NERDTreeMinimalUI=1
-  --       vim.g.NERDTreeDirArrows=1
-  --       vim.g.NERDTreeWinSize=40
-  --       vim.g.NERDTreeIgnore={ '.pyc$' }
-  --       vim.g.NERDTreeShowHidden=1
-
-  --       vim.g.NERDTreeMapOpenVSplit='v'
-  --       vim.g.NERDTreeMapOpenSplit='s'
-  --       vim.g.NERDTreeMapJumpNextSibling=''
-  --       vim.g.NERDTreeMapJumpPrevSibling=''
-  --       vim.g.NERDTreeMapMenu='M'
-  --       vim.g.NERDTreeQuitOnOpen=1
-  --       vim.g.NERDTreeCustomOpenArgs={ file = {reuse = '', where = 'p', keepopen = 0, stay = 0 }}
-
-  --       wkmap({
-  --         ['<leader>'] = {
-  --           oE = {'<cmd>call NERDTreeToggleCWD()<CR>', 'Open Explorer'},
-  --           fP = {'<cmd>call FindPathOrShowNERDTree()<CR>', 'Find file in Path'}
-  --         }
-  --       },{
-  --         noremap = true,
-  --         silent = true
-  --       })
-
-  --       vim.api.nvim_exec ([[
-  --         function! NERDTreeToggleCWD()
-  --           NERDTreeToggle
-  --           let currentfile = expand('%')
-  --           if (currentfile == "") || !(currentfile !~? 'NERD')
-  --             NERDTreeCWD
-  --           endif
-  --         endfunction
-  --         function! FindPathOrShowNERDTree()
-  --           let currentfile = expand('%')
-  --           if (currentfile == "") || !(currentfile !~? 'NERD')
-  --             NERDTreeToggle
-  --           else
-  --             NERDTreeFind
-  --             NERDTreeCWD
-  --           endif
-  --         endfunction
-  --       ]], true)
-  --     end,
-  --   }
-  -- -- }}}
-  -- NvimTree {{{
+  -- NERDTree {{{
     packer.use {
-      'kyazdani42/nvim-tree.lua',
-      requires = {{'kyazdani42/nvim-web-devicons'}},
+      'preservim/nerdtree',
+      requires = {
+        {'Xuyuanp/nerdtree-git-plugin'},
+        {'ryanoasis/vim-devicons'},
+      },
       config = function ()
-        vim.g.nvim_tree_width = 40
-        vim.g.nvim_tree_auto_close = 1
-        vim.g.nvim_tree_follow = 1
-        -- Forgets state
-        vim.g.nvim_tree_tab_open = 0
-        vim.g.nvim_tree_group_empty = 1
-        vim.g.nvim_tree_disable_netrw = 0
-        -- vim.g.nvim_tree_auto_ignore_ft = {'startify', 'dashboard'}
-        vim.g.nvim_tree_quit_on_open = 1
-        vim.g.nvim_tree_lsp_diagnostics = 1
-        vim.g.nvim_tree_highlight_opened_files = 3
-        vim.g.nvim_tree_disable_window_picker = 1
-        vim.g.nvim_tree_update_cwd = 1
+        vim.g.NERDTreeShowBookmarks=0
+        vim.g.NERDTreeChDirMode=2
+        vim.g.NERDTreeMouseMode=2
+        vim.g.nerdtree_tabs_focus_on_files=1
+        vim.g.nerdtree_tabs_open_on_gui_startup=0
 
-        vim.api.nvim_exec([[
-          hi NvimTreeCursorLine cterm=bold ctermbg=white guifg=${color_2}
-        ]] % colors, false)
+        vim.g.NERDTreeMinimalUI=1
+        vim.g.NERDTreeDirArrows=1
+        vim.g.NERDTreeWinSize=40
+        vim.g.NERDTreeIgnore={ '.pyc$' }
+        vim.g.NERDTreeShowHidden=1
+        vim.g.NERDTreeHighlightCursorline = 1
+
+        vim.g.NERDTreeMapOpenVSplit='v'
+        vim.g.NERDTreeMapOpenSplit='s'
+        vim.g.NERDTreeMapJumpNextSibling=''
+        vim.g.NERDTreeMapJumpPrevSibling=''
+        vim.g.NERDTreeMapMenu='m'
+        vim.g.NERDTreeQuitOnOpen=1
+        vim.g.NERDTreeCustomOpenArgs={ file = {reuse = '', where = 'p', keepopen = 0, stay = 0 }}
 
         wkmap({
           ['<leader>'] = {
-            oe = {function() require'nvim-tree'.toggle() end, 'Open Explorer'},
-            fp = {function()
-              require'nvim-tree'.find_file(true)
-              if not require'nvim-tree.view'.win_open() then
-                require'nvim-tree'.open()
-              end
-            end, 'Find file in Path'}
+            oe = {'<cmd>call NERDTreeToggleCWD()<CR>', 'Open Explorer'},
+            fp = {'<cmd>call FindPathOrShowNERDTree()<CR>', 'Find file in Path'}
           }
         },{
           noremap = true,
           silent = true
         })
 
-        local tree_cb = require'nvim-tree.config'.nvim_tree_callback
-        vim.g.nvim_tree_bindings = {
-          -- ["<CR>"] = ":YourVimFunction()<cr>",
-          -- ["u"] = ":lua require'some_module'.some_function()<cr>",
+        vim.api.nvim_exec ([[
+          function! IsNERDTreeOpen()
+            return exists("t:NERDTreeBufName") && (bufwinnr(t:NERDTreeBufName) != -1)
+          endfunction
+          function! SyncTree()
+            if &modifiable && IsNERDTreeOpen()  && strlen(expand('%')) > 0 && !&diff && bufname('%') !~# 'NERD_tree'
+              try
+                NERDTreeFind
+                if bufname('%') =~# 'NERD_tree'
+                  setlocal cursorline
+                  wincmd p
+                endif
+              endtry
+            endif
+          endfunction
 
-          -- default mappings
-          { key = { "<CR>" },   cb = tree_cb("edit") },
-          { key = { "o" },      cb = tree_cb("edit") },
-          { key = { "<C-]>" },  cb = tree_cb("cd") },
-          { key = { "C" },      cb = tree_cb("cd") },
-          { key = { "v" },      cb = tree_cb("vsplit") },
-          { key = { "s" },      cb = tree_cb("split") },
-          { key = { "t" },      cb = tree_cb("tabnew") },
-          { key = { "<BS>" },   cb = tree_cb("close_node") },
-          { key = { "<S-CR>" }, cb = tree_cb("close_node") },
-          { key = { "<Tab>" },  cb = tree_cb("preview") },
-          { key = { "I" },      cb = tree_cb("toggle_ignored") },
-          { key = { "H" },      cb = tree_cb("toggle_dotfiles") },
-          { key = { "r" },      cb = tree_cb("refresh") },
-          { key = { "R" },      cb = tree_cb("refresh") },
-          { key = { "a" },      cb = tree_cb("create") },
-          { key = { "d" },      cb = tree_cb("remove") },
-          { key = { "m" },      cb = tree_cb("rename") },
-          { key = { "M" },      cb = tree_cb("full_rename") },
-          { key = { "x" },      cb = tree_cb("cut") },
-          { key = { "c" },      cb = tree_cb("copy") },
-          { key = { "p" },      cb = tree_cb("paste") },
-          { key = { "[g" },     cb = tree_cb("prev_git_item") },
-          { key = { "]g" },     cb = tree_cb("next_git_item") },
-          { key = { "u" },      cb = tree_cb("dir_up") },
-          { key = { "q" },      cb = tree_cb("close") },
-        }
+          autocmd BufEnter * silent! call SyncTree()
 
-        vim.g.nvim_tree_icons = {
-          default = '',
-          symlink = '',
-        }
-
+          function! NERDTreeToggleCWD()
+            NERDTreeToggle
+            let currentfile = expand('%')
+            if (currentfile == "") || !(currentfile !~? 'NERD')
+              NERDTreeCWD
+              wincmd p
+            endif
+          endfunction
+          function! FindPathOrShowNERDTree()
+            let currentfile = expand('%')
+            if (currentfile == "") || !(currentfile !~? 'NERD')
+              NERDTreeToggle
+            else
+              NERDTreeFind
+              NERDTreeCWD
+            endif
+          endfunction
+        ]], true)
       end,
     }
+  -- }}}
+  -- NvimTree {{{
+    -- packer.use {
+    --   'kyazdani42/nvim-tree.lua',
+    --   requires = {{'kyazdani42/nvim-web-devicons'}},
+    --   config = function ()
+    --     vim.g.nvim_tree_width = 40
+    --     vim.g.nvim_tree_width_allow_resize = 1
+    --     vim.g.nvim_tree_auto_close = 0
+    --     vim.g.nvim_tree_follow = 1
+    --     -- Forgets state
+    --     vim.g.nvim_tree_tab_open = 0
+    --     vim.g.nvim_tree_group_empty = 1
+    --     vim.g.nvim_tree_disable_netrw = 0
+    --     -- vim.g.nvim_tree_auto_ignore_ft = {'startify', 'dashboard'}
+    --     vim.g.nvim_tree_quit_on_open = 0
+    --     vim.g.nvim_tree_lsp_diagnostics = 1
+    --     vim.g.nvim_tree_highlight_opened_files = 3
+    --     vim.g.nvim_tree_disable_window_picker = 1
+    --     vim.g.nvim_tree_update_cwd = 1
+    --     vim.g.nvim_tree_disable_default_keybindings = 1
+    --     vim.g.nvim_tree_hijack_cursor = 0
+
+    --     vim.api.nvim_exec([[
+    --       hi NvimTreeCursorLine cterm=bold ctermbg=white guifg=${color_2}
+    --     ]] % colors, false)
+
+    --     wkmap({
+    --       ['<leader>'] = {
+    --         oe = {function() require'nvim-tree'.toggle() end, 'Open Explorer'},
+    --         fp = {function()
+    --           require'nvim-tree'.find_file(true)
+    --           if not require'nvim-tree.view'.win_open() then
+    --             require'nvim-tree'.open()
+    --           end
+    --         end, 'Find file in Path'}
+    --       }
+    --     },{
+    --       noremap = true,
+    --       silent = true
+    --     })
+
+    --     local tree_cb = require'nvim-tree.config'.nvim_tree_callback
+    --     vim.g.nvim_tree_bindings = {
+    --       -- ["<CR>"] = ":YourVimFunction()<cr>",
+    --       -- ["u"] = ":lua require'some_module'.some_function()<cr>",
+
+    --       -- default mappings
+    --       { key = { "<CR>" },   cb = tree_cb("edit") },
+    --       { key = { "o" },      cb = tree_cb("edit") },
+    --       { key = { "<C-]>" },  cb = tree_cb("cd") },
+    --       { key = { "C" },      cb = tree_cb("cd") },
+    --       { key = { "v" },      cb = tree_cb("vsplit") },
+    --       { key = { "s" },      cb = tree_cb("split") },
+    --       { key = { "t" },      cb = tree_cb("tabnew") },
+    --       { key = { "<BS>" },   cb = tree_cb("close_node") },
+    --       { key = { "<S-CR>" }, cb = tree_cb("close_node") },
+    --       { key = { "<Tab>" },  cb = tree_cb("preview") },
+    --       { key = { "I" },      cb = tree_cb("toggle_ignored") },
+    --       { key = { "H" },      cb = tree_cb("toggle_dotfiles") },
+    --       { key = { "r" },      cb = tree_cb("refresh") },
+    --       { key = { "R" },      cb = tree_cb("refresh") },
+    --       { key = { "a" },      cb = tree_cb("create") },
+    --       { key = { "d" },      cb = tree_cb("remove") },
+    --       { key = { "m" },      cb = tree_cb("rename") },
+    --       { key = { "M" },      cb = tree_cb("full_rename") },
+    --       { key = { "x" },      cb = tree_cb("cut") },
+    --       { key = { "c" },      cb = tree_cb("copy") },
+    --       { key = { "p" },      cb = tree_cb("paste") },
+    --       { key = { "[g" },     cb = tree_cb("prev_git_item") },
+    --       { key = { "]g" },     cb = tree_cb("next_git_item") },
+    --       { key = { "u" },      cb = tree_cb("dir_up") },
+    --       { key = { "q" },      cb = tree_cb("close") },
+    --     }
+
+    --     vim.g.nvim_tree_icons = {
+    --       default = '',
+    --       symlink = '',
+    --     }
+
+    --   end,
+    -- }
   -- }}}
   -- -- Rooter {{{
   --   packer.use {
@@ -2070,7 +2084,11 @@
             end, 'Close'},
             -- q = {'<cmd>SClose<CR>:q<CR>', 'Save and Quit'},
             q = {'<cmd>wall|qall<CR>', 'Save and Quit'},
-            d = {'<cmd>SDelete<CR>', 'Delete'},
+            -- d = {'<cmd>SDelete<CR>', 'Delete'},
+            d = {function ()
+              require'persistence'.stop()
+              vim.cmd'SDelete'
+            end, 'Close'},
 
           }
         },{
@@ -2643,17 +2661,29 @@
           source = {
             path = true;
             buffer = true;
-            calc = true;
+            calc = {filetypes={
+              'markdown',
+              'vimwiki'
+            }};
             vsnip = true;
             nvim_lsp = true;
             nvim_lua = true;
             spell = true;
-            tags = true;
+            tags = false;
             snippets_nvim = true;
             treesitter = false;
-            emoji = true;
-            orgmode = {priority=100};
-            luasnip = true;
+            emoji = {filetypes={
+              'markdown',
+              'lua',
+              'vimwiki'
+            }};
+            orgmode = {
+              priority=100,
+              filetypes={
+                'org',
+                'orgagenda',
+              },
+            };
           };
         }
 
@@ -2787,7 +2817,13 @@
         -- Turn on snippets
         local capabilities = vim.lsp.protocol.make_client_capabilities()
         capabilities.textDocument.completion.completionItem.snippetSupport = true
-
+        capabilities.textDocument.completion.completionItem.resolveSupport = {
+          properties = {
+            'documentation',
+            'detail',
+            'additionalTextEdits',
+          }
+        }
         local function common_on_attach(client, bufnr)
 
           if client.resolved_capabilities.document_highlight then
@@ -2853,7 +2889,7 @@
         require'lspconfig'.bashls.setup{
           capabilities = capabilities,
           on_attach = common_on_attach,
-          autostart = false,
+          autostart = true,
           root_dir = function(fname)
             return require'lspconfig'.util.find_git_ancestor(fname) or require'lspconfig'.util.path.dirname(fname)
           end;
@@ -2861,17 +2897,18 @@
         require'lspconfig'.rust_analyzer.setup{
           capabilities = capabilities,
           on_attach = common_on_attach,
-          autostart = false,
+          autostart = true,
         }
         require'lspconfig'.pyright.setup{
           capabilities = capabilities,
           on_attach = common_on_attach,
-          autostart = false,
+          autostart = true,
         }
         require'lspconfig'.jsonls.setup{
           capabilities = capabilities,
           on_attach = common_on_attach,
-          autostart = false,
+          autostart = true,
+          cmd = { "vscode-json-languageserver", "--stdio" },
           root_dir = function(fname)
             return require'lspconfig'.util.find_git_ancestor(fname) or require'lspconfig'.util.path.dirname(fname)
           end;
@@ -2880,7 +2917,7 @@
           capabilities = capabilities,
           on_attach = common_on_attach,
           filetypes = { "yaml", "yaml.ansible", "helm"},
-          autostart = false,
+          autostart = true,
           root_dir = function(fname)
             return require'lspconfig'.util.find_git_ancestor(fname) or require'lspconfig'.util.path.dirname(fname)
           end;
@@ -2888,7 +2925,7 @@
         require'lspconfig'.sumneko_lua.setup{
           capabilities = capabilities,
           on_attach = common_on_attach,
-          autostart = false,
+          autostart = true,
           cmd = {os.getenv("HOME") .. "/.nix-profile/bin/lua-language-server"};
           settings = {
             Lua = {
@@ -2903,12 +2940,12 @@
         require'lspconfig'.rnix.setup{
           capabilities = capabilities,
           on_attach = common_on_attach,
-          autostart = false,
+          autostart = true,
         }
         require'lspconfig'.gopls.setup{
           capabilities = capabilities,
           on_attach = common_on_attach,
-          autostart = false,
+          autostart = true,
           cmd = {"gopls", "serve"},
           settings = {
             gopls = {
@@ -2922,7 +2959,7 @@
         require'lspconfig'.terraformls.setup{
           capabilities = capabilities,
           on_attach = common_on_attach,
-          autostart = false,
+          autostart = true,
           root_dir = util.root_pattern(".terraform"),
         }
       end,
@@ -2934,7 +2971,21 @@
       run = ':TSUpdate',
       config = function ()
         require'nvim-treesitter.configs'.setup {
-          ensure_installed = { 'comment', 'python', 'regex', 'yaml', 'rust', 'bash', 'json', 'lua', 'nix', 'go' },
+          ensure_installed = {
+            'bash',
+            'comment',
+            'dockerfile',
+            'go',
+            'haskell',
+            'hcl',
+            'json',
+            'lua',
+            'nix',
+            'python',
+            'regex',
+            'rust',
+            'yaml',
+          },
           highlight = {
             enable = true,
           },
@@ -3153,6 +3204,7 @@
         vim.g.zv_file_types = zv_file_types
 
         wkmap({
+          ["<F1>"] = {'<Plug>Zeavim', 'Find in Zeal'},
           gzz = {'<Plug>Zeavim', 'Find in Zeal'},
           gZ = {'<Plug>ZVKeyDocset<CR>', 'Find Docset'},
           gz = {'<Plug>ZVOperator', 'Zeal in...'}
@@ -3254,6 +3306,7 @@
           map(m, 'S', '<Plug>Sneak_S',{})
         end
         vim.g['sneak#s_next'] = 1
+        vim.g['sneak#use_ic_scs'] = 1
       end,
     }
   -- }}}
