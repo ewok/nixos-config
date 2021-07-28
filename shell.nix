@@ -55,8 +55,15 @@ let
     fi
   '';
 
-  nix-update-flakes = writeShellScriptBin "nix-my-update-flakes" ''
+  nix-update-all = writeShellScriptBin "nix-my-update-all" ''
     for flake in stable nixpkgs master nixos-hardware neovim-nightly-overlay home-manager;
+    do
+      nix flake update --update-input $flake
+    done
+  '';
+
+  nix-update-nix = writeShellScriptBin "nix-my-update-nix" ''
+    for flake in stable nixpkgs master home-manager;
     do
       nix flake update --update-input $flake
     done
@@ -96,7 +103,8 @@ pkgs.mkShell {
     nix-boot
     nix-clean-result
     nix-clean-store
-    nix-update-flakes
+    nix-update-all
+    nix-update-nix
     nix-test
 
     nvim-test
