@@ -91,7 +91,13 @@ in
     ];
 
     home-manager.users.${username} = {
+
+      services.keybase.enable = true;
+      services.kbfs.enable = true;
+
       home.packages = [
+        pkgs.keybase-gui
+
         pkgs.enpass
         pkgs.keepassxc
         pkgs.pinentry
