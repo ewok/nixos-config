@@ -173,8 +173,11 @@ in
           ExecStart = toString (
             pkgs.writeShellScript "ping-op" ''
               set -e
-              ${opSession}/bin/op-session get account
-              ${pkgs.coreutils}/bin/touch /tmp/qute_1pass/session
+              if ${opSession}/bin/op-session get account;then
+                ${pkgs.coreutils}/bin/touch /tmp/qute_1pass/session
+              else
+                ${pkgs.coreutils}/bin/rm -f /tmp/qute_1pass/session
+              fi
             ''
           );
         };
