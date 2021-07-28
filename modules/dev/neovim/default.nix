@@ -1,4 +1,4 @@
-{ config, lib, pkgs, ... }:
+{ config, lib, pkgs, inputs, ... }:
 with lib;
 let
   dev = config.modules.dev;
@@ -35,6 +35,11 @@ let
     '';
   };
 
+  master = import inputs.master ({
+    config = config.nixpkgs.config;
+    localSystem = { system = "x86_64-linux"; };
+  });
+
   # rnix = import inputs.rnix ({
   #   config = config.nixpkgs.config;
   #   localSystem = { system = "x86_64-linux"; };
@@ -70,7 +75,7 @@ in
         # python3Packages.debugpy
         rust-analyzer
 
-        terraform-ls
+        master.terraform-ls
         tflint
 
         sumneko-lua-language-server
