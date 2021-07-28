@@ -17,6 +17,11 @@ let
     $CMD "$1"
   '';
 
+  master = import inputs.master ({
+    config = config.nixpkgs.config;
+    localSystem = { system = "x86_64-linux"; };
+  });
+
 in
 {
   config = mkIf gui.enable {
@@ -131,6 +136,7 @@ in
 
       programs.qutebrowser = {
         enable = true;
+        package = master.qutebrowser;
         aliases = {
           jsd = "set content.javascript.enabled false";
           jse = "set content.javascript.enabled true";

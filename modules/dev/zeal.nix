@@ -1,16 +1,35 @@
-{ config, lib, pkgs, ... }:
+{ config, lib, pkgs, inputs, ... }:
 with lib;
 let
   dev = config.modules.dev;
   gui = config.modules.gui;
   username = config.properties.user.name;
   dataHome = config.home-manager.users.${username}.xdg.dataHome;
+  configHome = config.home-manager.users.${username}.xdg.configHome;
+
+  master = import inputs.master ({
+    config = config.nixpkgs.config;
+    localSystem = { system = "x86_64-linux"; };
+  });
+
 in
 {
   config = mkIf (dev.enable && gui.enable) {
 
     home-manager.users."${username}" = {
-      home.packages = [ pkgs.zeal ];
+      home.packages = [ master.zeal ];
+
+      xdg.configFile."Zeal/Zeal.css".text = ''
+        iframe {
+            -webkit-filter: invert()
+        }
+        html { 
+            -webkit-filter: invert() hue-rotate(180deg) contrast(80%) brightness(120%) contrast(85%); 
+        }
+        html img[src*=\"jpg\"], html img[src*=\"jpeg\"], html img[src*=\"jpg\"], html img[src*=\"jpeg\"] { 
+            -webkit-filter: brightness(100%) contrast(100%); 
+        }
+      '';
 
       xdg.configFile."Zeal/Zeal.conf".text = ''
         [General]
@@ -21,7 +40,7 @@ in
         start_minimized=false
 
         [content]
-        custom_css_file=
+        custom_css_file=${configHome}/Zeal/Zeal.css
         dark_mode=true
         default_fixed_font_size=${toString gui.fonts.monospaceFontSize}
         default_font_family=serif
