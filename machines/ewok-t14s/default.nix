@@ -36,7 +36,7 @@ in
     docker.enable = true;
     docker.autoPrune = true;
     k8s.enable = true;
-    virtualisation.enableVirtualbox = true;
+    # virtualisation.enableVirtualbox = true;
     terraform.enable = true;
     aws.enable = true;
     emacs.enable = true;
