@@ -7,18 +7,26 @@ let
   hm = config.home-manager.users.${user.name};
   homeDirectory = hm.home.homeDirectory;
 
+  gitSignRebase = pkgs.writeShellScriptBin "git-sign-rebase" ''
+    if [ "$#" -eq 0 ]; then
+      echo "Insert commit to rebase"
+      exit 2
+    fi
+    git rebase --exec 'git commit --amend --no-edit -n -S' -i $1
+  '';
+
+  gitIgnoreNix = pkgs.writeShellScriptBin "git-ignore-nix" ''
+    ${pkgs.git}/bin/git config --local --add core.excludesfile ${hm.xdg.configHome}/git/exclude_nix
+  '';
+
   gitEnv = pkgs.symlinkJoin {
     name = "git-env";
-    paths = with pkgs; [ gomp gitstats ];
+    paths = with pkgs; [ gomp gitstats gitSignRebase gitIgnoreNix ];
     postBuild = ''
       ln -s $out/bin/gomp $out/bin/git-diff-branch
       ln -s $out/bin/gitstats $out/bin/git-stats
     '';
   };
-
-  gitIgnoreNix = pkgs.writeShellScriptBin "git-ignore-nix" ''
-    ${pkgs.git}/bin/git config --local --add core.excludesfile ${hm.xdg.configHome}/git/exclude_nix
-  '';
 
   ignoreCommon = ''
     .direnv/
@@ -33,10 +41,10 @@ in
 
     environment.systemPackages = with pkgs;
       [
-        gitAndTools.git-absorb
+        # gitAndTools.git-absorb
         gitAndTools.git-crypt
         gitAndTools.git-extras
-        gitAndTools.git-filter-repo
+        # gitAndTools.git-filter-repo
         gitAndTools.git-machete
         gitAndTools.git-octopus
         gitAndTools.git-reparent
@@ -44,7 +52,6 @@ in
         gitAndTools.pass-git-helper
         gitAndTools.gh
         gitEnv
-        gitIgnoreNix
       ];
     home-manager.users."${user.name}" = {
 
