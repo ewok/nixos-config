@@ -123,6 +123,7 @@ bindsym $mod_a+space exec "xkb-switch -n; pkill -SIGRTMIN+4 i3status-rs"
 
 bindsym XF86AudioRaiseVolume exec ponymix increase 5
 bindsym XF86AudioLowerVolume exec ponymix decrease 5
+# bindsym XF86AudioLowerVolume exec ponymix toggle --input
 bindsym XF86AudioMute exec ponymix toggle
 #exec --no-startup-id pa-applet
 #bindsym $mod+Ctrl+m exec pavucontrol
@@ -151,8 +152,8 @@ bindsym $mod_c+Print exec --no-startup-id flameshot gui -p ~/Pictures/Screenshot
 # Other
 # bindsym Shift+space exec "szAnswer=$(zenity --entry --text \\"Todoist: Add Task\\" --entry-text \\"\\"); td $szAnswer && dunstify \\"Task added\\" || dunstify -u critical \\"Error\\""
 #
-bindsym Shift+space exec "xkb-switch -s us; alacritty --title TODO -e todo"
-# bindsym Shift+space exec "xkb-switch -s us; todofi.sh -a"
+# bindsym Shift+space exec "xkb-switch -s us; alacritty --title TODO -e todo"
+bindsym Shift+space exec "xkb-switch -s us; todofi.sh -a"
 
 # bindsym Control+period exec --no-startup-id "/opt/enpass/Enpass showassistant"
 bindsym --release F12 exec --no-startup-id dunstctl history-pop

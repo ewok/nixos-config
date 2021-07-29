@@ -36,7 +36,7 @@ in
     docker.enable = true;
     docker.autoPrune = true;
     k8s.enable = true;
-    # virtualisation.enableVirtualbox = true;
+    virtualisation.enableVirtualbox = true;
     terraform.enable = true;
     aws.enable = true;
     emacs.enable = true;
@@ -70,14 +70,14 @@ in
 
   modules.communication = {
     enable = true;
-    enableTwitter = false;
+    enableTwitter = true;
     enableElement = false;
     enableSignal = false;
     enableSkype = false;
     enableSlack = true;
     enableTelegram = true;
     enableZoom = true;
-    enableDiscord = false;
+    enableDiscord = true;
   };
 
   modules.system.powermanagement = {

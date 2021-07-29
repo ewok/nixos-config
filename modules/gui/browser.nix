@@ -149,7 +149,7 @@ in
             session = true;
           };
           zoom = {
-            default = "140%";
+            default = "100%";
             levels = [
               "25%"
               "33%"

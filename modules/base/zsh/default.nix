@@ -121,7 +121,7 @@ in
             systemctl --user --state=failed --no-legend --no-pager
             #if ! pgrep zoom > /dev/null;then
               # if [[ $(t lsp | tee /dev/stderr | wc -l) -eq 0 ]];then
-              #  t ls
+               t ls
               # fi
             #fi
           else
