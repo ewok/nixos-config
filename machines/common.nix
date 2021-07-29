@@ -17,10 +17,13 @@ in
       dates = "weekly";
       options = "--delete-older-than 10d";
     };
+    binaryCaches = ["s3://store?endpoint=http://nas:9000"];
+    # I am using local cache on NAS
+    requireSignedBinaryCaches = false;
     extraOptions = ''
       keep-outputs = true
       keep-derivations = true
-      experimental-features = nix-command flakes
+      experimental-features = nix-command flakes ca-references
     '';
   };
 

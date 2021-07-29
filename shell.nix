@@ -10,37 +10,17 @@ let
     fi
   '';
 
-  nix-switch = writeShellScriptBin "nix-my-switch" ''
+  nixosMy = writeShellScriptBin "n" ''
     if [ "$#" -eq 0 ]; then
-      sudo nixos-rebuild switch --flake "."
+      echo "Provide a command as a first argument please."
+    elif [ "$#" -eq 1 ]; then
+      sudo nixos-rebuild $1 --flake "." --verbose
     else
-      sudo nixos-rebuild switch --flake ".#$1" $2
+      sudo nixos-rebuild $1 --flake ".#$2" $3 --verbose
     fi
+    ${nix-copy-nas}/bin/nix-copy-nas /run/current-system
   '';
 
-  nix-boot = writeShellScriptBin "nix-my-boot" ''
-    if [ "$#" -eq 0 ]; then
-      sudo nixos-rebuild boot --flake "."
-    else
-      sudo nixos-rebuild boot --flake ".#$1" $2
-    fi
-  '';
-
-  nix-rebuild = writeShellScriptBin "nix-my-rebuild" ''
-    if [ "$#" -eq 0 ]; then
-      sudo nixos-rebuild build --flake "."
-    else
-      sudo nixos-rebuild build --flake ".#$1" $2
-    fi
-  '';
-
-  nix-rebuild-vm = writeShellScriptBin "nix-my-rebuild-vm" ''
-    if [ "$#" -eq 0 ]; then
-      sudo nixos-rebuild build-vm --flake "."
-    else
-      sudo nixos-rebuild build-vm --flake ".#$1" $2
-    fi
-  '';
 
   nix-clean-result = writeShellScriptBin "nix-my-clean-result" ''
     if [  "$1" == "-f" ]
@@ -69,10 +49,9 @@ let
     done
   '';
 
-  nix = writeShellScriptBin "nix" ''
-    # ${pkgs.nixFlakes}/bin/nix "nix-command flakes ca-references" "$@"
-    ${pkgs.nixFlakes}/bin/nix --option experimental-features "nix-command flakes ca-references" "$@"
-  '';
+  # nix = writeShellScriptBin "nix" ''
+  #   ${pkgs.nixFlakes}/bin/nix --option experimental-features "nix-command flakes ca-references" "$@"
+  # '';
 
   git-crypt-status = writeShellScriptBin "git-crypt-status" ''
     git-crypt status | grep -v not
@@ -89,6 +68,10 @@ let
     nvim -u ./modules/dev/neovim/config/init.lua $@
   '';
 
+  nix-copy-nas = writeShellScriptBin "nix-copy-nas" ''
+    nix copy --to 's3://store?endpoint=http://nas:9000' "$@"
+  '';
+
 in
 pkgs.mkShell {
   nativeBuildInputs = with pkgs; [
@@ -96,22 +79,20 @@ pkgs.mkShell {
     git-crypt
     git-crypt-status
 
-    nix
-    nix-switch
-    nix-rebuild
-    nix-rebuild-vm
-    nix-boot
+    nixFlakes
+    nixosMy
     nix-clean-result
     nix-clean-store
     nix-update-all
     nix-update-nix
     nix-test
+    nix-copy-nas
 
     nvim-test
   ];
 
   shellHook = ''
-    PATH=${nix}/bin:$PATH
+    # PATH=${nix}/bin:$PATH
     git-crypt-status
   '';
 }
