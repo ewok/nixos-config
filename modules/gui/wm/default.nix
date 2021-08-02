@@ -315,7 +315,7 @@ in
                 ];
                 interface_name_include = [];
                 ap_format = "{ssid^3}";
-                device_format = "{icon}{name:0^4}";
+                device_format = "{icon}";
               }
               {
                 block = "sound";
