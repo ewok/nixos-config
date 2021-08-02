@@ -59,14 +59,18 @@ in
         tree-sitter
         global
 
-        hadolint
         gcc
-        shellcheck
+        par
         silver-searcher
+
+        # Linters
+        hadolint
+        languagetool
+        luaPackages.luacheck
+        shellcheck
+        tflint
         vale
         yamllint
-        par
-        nodejs
 
         # All in python.nix
         # python3Packages.pynvim
@@ -75,10 +79,10 @@ in
         # python3Packages.debugpy
         rust-analyzer
 
+        # LSP
         master.terraform-ls
-        tflint
-
         sumneko-lua-language-server
+        nodejs
         nodePackages.bash-language-server
         nodePackages.dockerfile-language-server-nodejs
         nodePackages.livedown
@@ -92,6 +96,7 @@ in
 
         jrnl
         todo
+
       ] ++ optionals (gui.enable) [
         pkgs.libnotify
       ];
