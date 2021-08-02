@@ -30,6 +30,7 @@ in
     repo = properties.backup.repo;
     excludePaths = properties.backup.excludePaths;
     pass = properties.backup.backupPass;
+    paths = properties.backup.paths;
   };
 
   modules.dev = {
@@ -51,7 +52,7 @@ in
     fonts = {
       dpi = 118;
     };
-    displayProfiles = properties.displayProfiles;
+    displayProfiles = "{}";
     longitude = properties.longitude;
     latitude = properties.latitude;
     day = 4500;

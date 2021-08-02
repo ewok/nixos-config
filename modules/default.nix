@@ -44,6 +44,10 @@ with lib;
     };
   };
   options.properties.backup = {
+    paths = mkOption {
+      description = "Backup directories.";
+      type = types.listOf types.str;
+    };
     repo = mkOption {
       type = types.str;
       default = "";
@@ -68,10 +72,6 @@ with lib;
       type = types.str;
     };
     ssh.config = mkOption {
-      type = types.lines;
-      default = "";
-    };
-    displayProfiles = mkOption {
       type = types.lines;
       default = "";
     };
