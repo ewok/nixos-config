@@ -107,6 +107,9 @@ filetype *.bmp,*.jpg,*.jpeg,*.png,*.gif,*.xpm
 "        \ %pc
 "        \ kitty icat --clear --silent %pd
 
+fileviewer *.bmp,*.jpg,*.jpeg,*.png,*.xpm
+  \ env -u COLORTERM viu -w %pw -h %ph -s %c
+
 " MD5
 filetype *.md5
        \ {Check MD5 hash sum}

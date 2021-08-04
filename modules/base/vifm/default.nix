@@ -20,6 +20,7 @@ in
             ts
             archivemount
             dpkg
+            viu
           ];
 
           xdg.configFile."vifm/vifmrc".text = ''
