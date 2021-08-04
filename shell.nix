@@ -6,7 +6,7 @@ let
   nixosMy = writeShellScriptBin "n" ''
     if [ "$#" -eq 0 ]; then
       echo "Provide a command as a first argument please."
-      echo "Usual nixos-rebuild commands + clean, clean-result"
+      echo "Usual nixos-rebuild commands + clean, clean-result, update-nix, update-all"
 
     elif [ "$#" -eq 1 ]; then
 
