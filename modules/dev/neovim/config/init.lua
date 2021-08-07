@@ -1,5 +1,43 @@
 -- vim: ts=2 sw=2 sts=2
 
+-- Switchers
+  _G.enabled = {}
+
+  -- FileTypes
+  enabled.puppet = false
+  enabled.ansible = false
+  enabled.go = false
+  enabled.java = false
+  enabled.helm = true
+  enabled.rust = true
+
+  -- Options
+  enabled.overlength = false
+
+  -- Plugins
+  -- NvimTree/NERDTree
+  enabled.nvimtree = true
+  enabled.nerdtree = false
+
+  -- Telescope/FZF
+  enabled.telescope = false
+  enabled.fzf = true
+
+  -- BlankLine/Guides
+  enabled.blanklines = true
+  enabled.guides = false
+
+  -- Show Marks
+  enabled.marks = false
+
+  -- Linters
+  enabled.ale = true
+  enabled.nvim_lint = false
+
+  -- GitGutter/GitSigns
+  enabled.gitgutter = false
+  enabled.gitsigns = true
+
 -- Helpers {{{
   _G.Utils = {}
 
@@ -432,8 +470,7 @@
   map('n', 'J', 'mzJ`z', { noremap = true })
 
   -- [S]plit line (sister to [J]oin lines) S is covered by cc.
-  map('n', 'gs', 'mzi<CR><ESC>`z', { noremap = true })
-  map('n', 'gj', 'gJ', { noremap = true })
+  map('n', 'S', 'mzi<CR><ESC>`z', { noremap = true })
 
   -- Don't move cursor when searching via *
   map('n', '*', ':let stay_star_view = winsaveview()<cr>*:call winrestview(stay_star_view)<CR>', { noremap = true, silent = true })
@@ -441,6 +478,10 @@
   -- Keep search matches in the middle of the window.
   map('n', 'n', 'nzzzv', { noremap = true })
   map('n', 'N', 'Nzzzv', { noremap = true })
+
+  -- -- Jumplist updates
+  -- map('n', 'k', [[(v:count > 5 ? "m'" . v:count : "") . 'k']], {noremap = true, expr = true})
+  -- map('n', 'j', [[(v:count > 5 ? "m'" . v:count : "") . 'j']], {noremap = true, expr = true})
 
   -- Smart start line
   _G.start_line = function(mode)
@@ -472,47 +513,48 @@
 
 -- Filetypes {{{
   -- Ansible {{{
-    packer.use {
-      'pearofducks/ansible-vim',
-      ft = { 'ansible', 'yaml.ansible' },
-      after = 'ale',
-      config = function()
-        local ansible_template_syntaxes = {}
-        ansible_template_syntaxes['*.rb.j2'] = 'ruby'
-        ansible_template_syntaxes['*.py.j2'] = 'python'
-        vim.g.ansible_template_syntaxes = ansible_template_syntaxes
-        vim.g.ansible_unindent_after_newline = 1
-        vim.g.ansible_attribute_highlight = 'ob'
-        vim.g.ansible_extra_keywords_highlight = 1
-        vim.g.ansible_normal_keywords_highlight = 'Constant'
-        vim.g.ansible_with_keywords_highlight = 'Constant'
+    if enabled.ansible then
+      packer.use {
+        'pearofducks/ansible-vim',
+        ft = { 'ansible', 'yaml.ansible' },
+        config = function()
+          local ansible_template_syntaxes = {}
+          ansible_template_syntaxes['*.rb.j2'] = 'ruby'
+          ansible_template_syntaxes['*.py.j2'] = 'python'
+          vim.g.ansible_template_syntaxes = ansible_template_syntaxes
+          vim.g.ansible_unindent_after_newline = 1
+          vim.g.ansible_attribute_highlight = 'ob'
+          vim.g.ansible_extra_keywords_highlight = 1
+          vim.g.ansible_normal_keywords_highlight = 'Constant'
+          vim.g.ansible_with_keywords_highlight = 'Constant'
 
-        -- TODO: Fix error popping up
-        -- vim.fn['ale#linter#Define']('ansible', {
-        --            name = 'ansible_custom',
-        --            executable = vim.fn['ale_linters#ansible#ansible_lint#GetExecutable'],
-        --            command = '%e %s',
-        --            callback=  'ale_linters#ansible#ansible_lint#Handle',
-        -- })
-        -- exec([[
-        --   call ale#linter#Define('ansible', {
-        --            'name': 'ansible_custom',
-        --            'executable': function('ale_linters#ansible#ansible_lint#GetExecutable'),
-        --            'command': '%e %s',
-        --            'callback': 'ale_linters#ansible#ansible_lint#Handle',
-        --         })
-        -- ]], true)
-      end,
-    }
-    local ft_ansible = {
-      {[[ BufNewFile,BufRead */\(playbooks\|roles\|tasks\|handlers\|defaults\|vars\)/*.\(yaml\|yml\) set filetype=yaml.ansible ]]};
-      {[[ FileType yaml.ansible lua load_ansible_ft() ]]}
-    }
-    augroups({ft_ansible=ft_ansible})
-    _G.load_ansible_ft = function()
-      vim.bo.commentstring = [[# %s]]
-      reg_highlight_cword()
-      reg_auto_save()
+          -- TODO: Fix error popping up
+          -- vim.fn['ale#linter#Define']('ansible', {
+          --            name = 'ansible_custom',
+          --            executable = vim.fn['ale_linters#ansible#ansible_lint#GetExecutable'],
+          --            command = '%e %s',
+          --            callback=  'ale_linters#ansible#ansible_lint#Handle',
+          -- })
+          -- exec([[
+          --   call ale#linter#Define('ansible', {
+          --            'name': 'ansible_custom',
+          --            'executable': function('ale_linters#ansible#ansible_lint#GetExecutable'),
+          --            'command': '%e %s',
+          --            'callback': 'ale_linters#ansible#ansible_lint#Handle',
+          --         })
+          -- ]], true)
+        end,
+      }
+      local ft_ansible = {
+        {[[ BufNewFile,BufRead */\(playbooks\|roles\|tasks\|handlers\|defaults\|vars\)/*.\(yaml\|yml\) set filetype=yaml.ansible ]]};
+        {[[ FileType yaml.ansible lua load_ansible_ft() ]]}
+      }
+      augroups({ft_ansible=ft_ansible})
+      _G.load_ansible_ft = function()
+        vim.bo.commentstring = [[# %s]]
+        reg_highlight_cword()
+        reg_auto_save()
+      end
     end
   -- }}}
   -- CSV {{{
@@ -549,40 +591,44 @@
     augroups({ft_gitignore=ft_gitignore})
   -- }}}
   -- Go {{{
-    local ft_go = {
-      {[[ FileType go lua load_go_ft() ]]}
-    }
-    augroups({ft_go=ft_go})
-    _G.load_go_ft = function()
+    if enabled.go then
+      local ft_go = {
+        {[[ FileType go lua load_go_ft() ]]}
+      }
+      augroups({ft_go=ft_go})
+      _G.load_go_ft = function()
 
-      wkmap({
-        name = '+Run[go]',
-        r = {'<cmd>GoRun<CR>', 'Run'},
-        t = {'<cmd>GoTest<CR>', 'Test'},
-        b = {'<cmd>GoBuild<CR>', 'Build'},
-        c = {'<cmd>GoCoverageToggle<CR>', 'Coverage Toggle'},
-      },{
-        prefix = '<leader>r',
-        silent = false,
-        noremap = true,
-        buffer = api.nvim_get_current_buf()
-      })
+        wkmap({
+          name = '+Run[go]',
+          r = {'<cmd>GoRun<CR>', 'Run'},
+          t = {'<cmd>GoTest<CR>', 'Test'},
+          b = {'<cmd>GoBuild<CR>', 'Build'},
+          c = {'<cmd>GoCoverageToggle<CR>', 'Coverage Toggle'},
+        },{
+          prefix = '<leader>r',
+          silent = false,
+          noremap = true,
+          buffer = api.nvim_get_current_buf()
+        })
 
-      reg_highlight_cword()
-      reg_auto_save()
+        reg_highlight_cword()
+        reg_auto_save()
+      end
     end
   -- }}}
   -- Java {{{
-    packer.use{
-      'mfussenegger/nvim-jdtls',
-      -- config = function()
-      --   require('jdtls').start_or_attach({
-      --     on_attach = require'lsp'.common_on_attach,
-      --     cmd = {JAVA_LS_EXECUTABLE},
-      --     root_dir = require('jdtls.setup').find_root({'gradle.build', 'pom.xml'})
-      --   })
-      -- end,
-    }
+    if enabled.java then
+      packer.use{
+        'mfussenegger/nvim-jdtls',
+        -- config = function()
+        --   require('jdtls').start_or_attach({
+        --     on_attach = require'lsp'.common_on_attach,
+        --     cmd = {JAVA_LS_EXECUTABLE},
+        --     root_dir = require('jdtls.setup').find_root({'gradle.build', 'pom.xml'})
+        --   })
+        -- end,
+      }
+    end
   -- }}}
   -- Json {{{
     local ft_json = {
@@ -595,35 +641,37 @@
     end
   -- }}}
   -- Helm {{{
-    packer.use {
-      'towolf/vim-helm',
-      ft = { 'helm' },
-    }
-    local ft_helm = {
-      {[[ BufRead,BufNewFile */templates/*.yaml,*/templates/*.tpl,Chart.yaml,values.yaml set ft=helm ]]};
-      {[[ FileType helm lua load_helm_ft() ]]}
-    }
-    augroups({ft_helm=ft_helm})
+    if enabled.helm then
+      packer.use {
+        'towolf/vim-helm',
+        ft = { 'helm' },
+      }
+      local ft_helm = {
+        {[[ BufRead,BufNewFile */templates/*.yaml,*/templates/*.tpl,Chart.yaml,values.yaml set ft=helm ]]};
+        {[[ FileType helm lua load_helm_ft() ]]}
+      }
+      augroups({ft_helm=ft_helm})
 
-    _G.render_helm = function()
-      cmd [[write]]
-      execute '!helm template ./ --output-dir .out'
-    end
+      _G.render_helm = function()
+        cmd [[write]]
+        execute '!helm template ./ --output-dir .out'
+      end
 
-    _G.load_helm_ft = function()
+      _G.load_helm_ft = function()
 
-      wkmap({
-        name = '+Run[helm]',
-        r = {function() render_helm() end, 'Render'},
-      },{
-        prefix = '<leader>r',
-        silent = true,
-        noremap = true,
-        buffer = api.nvim_get_current_buf()
-      })
+        wkmap({
+          name = '+Run[helm]',
+          r = {function() render_helm() end, 'Render'},
+        },{
+          prefix = '<leader>r',
+          silent = true,
+          noremap = true,
+          buffer = api.nvim_get_current_buf()
+        })
 
-      reg_highlight_cword()
-      reg_auto_save()
+        reg_highlight_cword()
+        reg_auto_save()
+      end
     end
   -- }}}
   -- Log {{{
@@ -666,7 +714,7 @@
         buffer = api.nvim_get_current_buf()
       })
 
-      vim.g.livedown_browser = 'qutebrowser'
+      vim.g.livedown_browser = 'firefox'
       vim.g.livedown_port = 14545
     end
   -- }}}
@@ -831,7 +879,7 @@
             run_cmd("python -m unittest")
           end, 'Test All'},
 
-          L = {'<cmd>:!pip install flake8 mypy pylint bandit pydocstyle pudb jedi<CR>:ALEInfo<CR>', 'Install Libs'},
+          L = {'<cmd>:!pip install flake8 mypy pylint bandit pydocstyle pudb jedi<CR>', 'Install Libs'},
 
           R = {
             name = '+Runner',
@@ -855,94 +903,102 @@
       bmap('x', 'if', '<Plug>(textobj-python-function-i)', {})
       bmap('o', 'if', '<Plug>(textobj-python-function-i)', {})
 
-      vim.b.ale_linters = { 'flake8', 'mypy', 'pylint', 'bandit', 'pydocstyle' }
-      vim.b.ale_fixers = {python = { 'remove_trailing_lines', 'trim_whitespace', 'autopep8'}}
-      vim.b.ale_python_flake8_executable = 'flake8'
-      vim.b.ale_python_flake8_options = '--ignore E501'
-      vim.b.ale_python_flake8_use_global = 0
-      vim.b.ale_python_mypy_executable = 'mypy'
-      vim.b.ale_python_mypy_options = ''
-      vim.b.ale_python_mypy_use_global = 0
-      vim.b.ale_python_pylint_executable = 'pylint'
-      vim.b.ale_python_pylint_options = '--disable C0301,C0111,C0103'
-      vim.b.ale_python_pylint_use_global = 0
-      vim.b.ale_python_bandit_executable = 'bandit'
-      vim.b.ale_python_isort_executable = 'isort'
-      vim.b.ale_python_pydocstyle_executable = 'pydocstyle'
-      vim.b.ale_python_vulture_executable = 'vulture'
+      if enabled.ale then
+        vim.b.ale_linters = { 'flake8', 'mypy', 'pylint', 'bandit', 'pydocstyle' }
+        vim.b.ale_fixers = {python = { 'remove_trailing_lines', 'trim_whitespace', 'autopep8'}}
+        vim.b.ale_python_flake8_executable = 'flake8'
+        vim.b.ale_python_flake8_options = '--ignore E501'
+        vim.b.ale_python_flake8_use_global = 0
+        vim.b.ale_python_mypy_executable = 'mypy'
+        vim.b.ale_python_mypy_options = ''
+        vim.b.ale_python_mypy_use_global = 0
+        vim.b.ale_python_pylint_executable = 'pylint'
+        vim.b.ale_python_pylint_options = '--disable C0301,C0111,C0103'
+        vim.b.ale_python_pylint_use_global = 0
+        vim.b.ale_python_bandit_executable = 'bandit'
+        vim.b.ale_python_isort_executable = 'isort'
+        vim.b.ale_python_pydocstyle_executable = 'pydocstyle'
+        vim.b.ale_python_vulture_executable = 'vulture'
+      end
 
       reg_auto_save()
       reg_dap_keys()
     end
   -- }}}
   -- Puppet {{{
-    packer.use {
-      'rodjek/vim-puppet',
-      ft = { 'puppet' },
-      config = function ()
-        vim.g.puppet_align_hashes = 0
-      end,
-    }
-    local ft_puppet = {
-      {[[ BufNewFile,BufRead *.pp set filetype=puppet ]]};
-      {[[ FileType puppet lua load_puppet_ft() ]]};
-    }
-    augroups({ft_puppet=ft_puppet})
-    _G.load_puppet_ft = function()
-      vim.bo.commentstring = '# %s'
+    if enabled.puppet then
+      packer.use {
+        'rodjek/vim-puppet',
+        ft = { 'puppet' },
+        config = function ()
+          vim.g.puppet_align_hashes = 0
+        end,
+      }
+      local ft_puppet = {
+        {[[ BufNewFile,BufRead *.pp set filetype=puppet ]]};
+        {[[ FileType puppet lua load_puppet_ft() ]]};
+      }
+      augroups({ft_puppet=ft_puppet})
+      _G.load_puppet_ft = function()
+        vim.bo.commentstring = '# %s'
 
-      wkmap({
-        name = '+Run[puppet]',
-        r = {'<cmd>w |lua run_cmd("puppet " .. vim.fn.bufname("%"))<CR>', 'Run'},
-        t = {'<cmd>w |lua run_cmd("puppet parser validate")<CR>', 'Test'},
-        L = {'<cmd>!gem install puppet puppet-lint r10k yaml-lint<CR>:ALEInfo<CR>', 'Install Libs'},
-        R = {
-          name = '+Runner',
-          Q = 'Closer Runner',
-          X = 'Interrupt'
-        }
-      },{
-        prefix = '<leader>r',
-        silent = true,
-        buffer = api.nvim_get_current_buf()
-      })
+        wkmap({
+          name = '+Run[puppet]',
+          r = {'<cmd>w |lua run_cmd("puppet " .. vim.fn.bufname("%"))<CR>', 'Run'},
+          t = {'<cmd>w |lua run_cmd("puppet parser validate")<CR>', 'Test'},
+          L = {'<cmd>!gem install puppet puppet-lint r10k yaml-lint<CR>', 'Install Libs'},
+          R = {
+            name = '+Runner',
+            Q = 'Closer Runner',
+            X = 'Interrupt'
+          }
+        },{
+          prefix = '<leader>r',
+          silent = true,
+          buffer = api.nvim_get_current_buf()
+        })
 
-      reg_highlight_cword()
-      reg_auto_save()
+        reg_highlight_cword()
+        reg_auto_save()
+      end
     end
   -- }}}
   -- Rust {{{
-    packer.use {
-      'rust-lang/rust.vim',
-      ft = { 'rust' },
-      config = function ()
-      end,
-    }
-    local ft_rust = {
-      {[[ FileType rust lua load_rust_ft() ]]};
-    }
-    augroups({ft_rust=ft_rust})
-    _G.load_rust_ft = function()
+    if enabled.rust then
+      packer.use {
+        'rust-lang/rust.vim',
+        ft = { 'rust' },
+        config = function ()
+        end,
+      }
+      local ft_rust = {
+        {[[ FileType rust lua load_rust_ft() ]]};
+      }
+      augroups({ft_rust=ft_rust})
+      _G.load_rust_ft = function()
 
-      wkmap({
-        name = '+Run[rust]',
-        r = {'<cmd>RustRun<CR>', 'Run'},
-        t = {'<cmd>RustTest<CR>', 'Test'},
-        L = {'<cmd>RustFmr<CR>', 'Install Libs'},
-        R = {
-          name = '+Runner',
-          Q = 'Closer Runner',
-          X = 'Interrupt'
-        }
-      },{
-        prefix = '<leader>r',
-        silent = false,
-        buffer = api.nvim_get_current_buf()
-      })
+        wkmap({
+          name = '+Run[rust]',
+          r = {'<cmd>RustRun<CR>', 'Run'},
+          t = {'<cmd>RustTest<CR>', 'Test'},
+          L = {'<cmd>RustFmr<CR>', 'Install Libs'},
+          R = {
+            name = '+Runner',
+            Q = 'Closer Runner',
+            X = 'Interrupt'
+          }
+        },{
+          prefix = '<leader>r',
+          silent = false,
+          buffer = api.nvim_get_current_buf()
+        })
 
-      reg_smart_cr()
-      reg_auto_save()
-      vim.b.ale_enabled = 0
+        reg_smart_cr()
+        reg_auto_save()
+        if enabled.ale then
+          vim.b.ale_enabled = 0
+        end
+      end
     end
   -- }}}
   -- Shell {{{
@@ -1107,8 +1163,10 @@
     }
     augroups({ft_yaml=ft_yaml})
     _G.load_yaml_ft = function()
-      vim.b.ale_yaml_yamllint_executable = 'yamllint_custom'
-      vim.b.ale_linters = { 'yamllint' }
+      if enabled.ale then
+        vim.b.ale_yaml_yamllint_executable = 'yamllint_custom'
+        vim.b.ale_linters = { 'yamllint' }
+      end
       reg_highlight_cword()
       reg_auto_save()
     end
@@ -1127,12 +1185,6 @@
 -- }}}
 
 -- Plugins {{{
--- Workflow
-  -- -- Autoread {{{
-  --   packer.use {
-  --     'djoshea/vim-autoread',
-  --   }
-  -- }}}
   -- Yank/Paste {{{
     packer.use {
       'PeterRincker/vim-yankitute',
@@ -1144,7 +1196,16 @@
       end,
     }
   -- }}}
--- UI
+  -- Icons {{{
+    packer.use {
+      'kyazdani42/nvim-web-devicons',
+      config = function()
+        require'nvim-web-devicons'.setup {
+          default = true;
+        }
+      end
+    }
+  -- }}}
   -- BufferLine {{{
     packer.use {
       'akinsho/nvim-bufferline.lua',
@@ -1202,8 +1263,6 @@
         wkmap({
           ['<Tab>'] = {'<cmd>BufferLineCycleNext<CR>', 'Cycle Buffer'},
           ['<S-Tab>'] = {'<cmd>BufferLineCyclePrev<CR>', 'Cycle Back Buffer'},
-          ['g.'] = {'<cmd>BufferLineMoveNext<CR>', 'Move Buffer Next in Line'},
-          ['g,'] = {'<cmd>BufferLineMovePrev<CR>', 'Move Buffer Back in Line'},
           gb = {'<cmd>BufferLinePick<CR>', 'Buffer Pick'},
           ['<leader>'] = {
             o = {
@@ -1243,18 +1302,6 @@
       end,
     }
   -- }}}
-  -- Cheatsheet {{{
-    packer.use {
-      'RishabhRD/nvim-cheat.sh',
-      requires = {{
-        'RishabhRD/popfix'
-      }},
-      config = function()
-        vim.g.cheat_default_window_layout = 'vertical_split'
-        wkmap({['<leader>fc'] = {'<cmd>Cheat<CR>', 'Find Cheat in cheat.sh'}})
-      end,
-    }
-  -- }}}
   -- Colorscheme {{{
     packer.use {
       "chrisbra/Colorizer",
@@ -1270,230 +1317,221 @@
         vim.g.doom_one_terminal_colors = true
         vim.g.doom_one_italic_comments = true
 
-        -- vim.api.nvim_exec([[
-        --   " Mark 80-th character
-        --   hi! OverLength ctermbg=168 guibg=${color_14} ctermfg=250 guifg=${color_0}
-        --   call matchadd('OverLength', '\%81v', 100)
-        -- ]] % colors, true)
+        if enabled.overlength then
+          vim.api.nvim_exec([[
+            " Mark 80-th character
+            hi! OverLength ctermbg=168 guibg=${color_14} ctermfg=250 guifg=${color_0}
+            call matchadd('OverLength', '\%81v', 100)
+          ]] % colors, true)
+        end
       end
     }
     vim.cmd [[ packadd doom-one ]]
     vim.cmd [[ colorscheme doom-one]]
-    -- packer.use {
-    --   'joshdick/onedark.vim',
-    --   as = 'onedark',
-    --   opt = true,
-    --   setup = function ()
-    --     vim.api.nvim_exec([[
-    --       " Mark 80-th character
-    --       hi! OverLength ctermbg=168 guibg=${color_14} ctermfg=250 guifg=${color_0}
-    --       call matchadd('OverLength', '\%81v', 100)
-
-    --       " Change cursor color to make it more visible
-    --       hi! Cursor ctermbg=140 guibg=${color_5}
-    --       hi! Search ctermfg=236 ctermbg=74 guifg=${color_0} guibg=${color_4}
-    --       hi! AutoHiWord cterm=bold ctermbg=red guibg=${color_0}
-    --     ]] % colors, true)
-    --   end,
-    -- }
-    -- vim.cmd [[ packadd onedark ]]
-    -- vim.cmd [[ colorscheme onedark ]]
   -- }}}
-  -- -- Telescope {{{
-  --   packer.use {
-  --     'nvim-telescope/telescope.nvim',
-  --     requires = {
-  --       {'nvim-lua/popup.nvim'},
-  --       {'nvim-lua/plenary.nvim'},
-  --       {'nvim-telescope/telescope-fzy-native.nvim'},
-  --       -- {'nvim-telescope/telescope-fzf-writer.nvim'},
-  --     },
-  --     config = function()
+  -- Telescope/FZF {{{
+    if enabled.telescope then
+      packer.use {
+        'nvim-telescope/telescope.nvim',
+        requires = {
+          {'nvim-lua/popup.nvim'},
+          {'nvim-lua/plenary.nvim'},
+          {'nvim-telescope/telescope-fzy-native.nvim'},
+          -- {'nvim-telescope/telescope-fzf-writer.nvim'},
+        },
+        config = function()
 
-  --       wkmap({
-  --         ['<leader>'] = {
-  --           f = {
-  --             f = {'<cmd>Telescope live_grep<CR>', 'Find in Files'},
-  --             ['/'] = {'<cmd>Telescope current_buffer_fuzzy_find<CR>', 'Find in buffer'},
-  --             o = {
-  --               function ()
-  --                 local find_command={
-  --                   'rg',
-  --                   '--ignore',
-  --                   '--hidden',
-  --                   '--files',
-  --                   '--iglob',
-  --                   '!.git',
-  --                   '--ignore-vcs',
-  --                   '--ignore-file',
-  --                   '~/.config/git/gitexcludes',
-  --                 }
-  --                 require('telescope.builtin').find_files({find_command=find_command})
-  --               end,
-  --               'Find File'},
-  --             -- o = {'<cmd>Telescope find_files<CR>', 'Find File'},
-  --             b = {'<cmd>Telescope buffers<CR>', 'Find Buffers'},
-  --             m = {'<cmd>Telescope marks<CR>', 'Find Marks'},
-  --           },
-  --           o = {
-  --             o = {'<cmd>Telescope vim_options<CR>', 'Open options'},
-  --             h = {'<cmd>Telescope help_tags<CR>', 'Open Help'},
-  --             s = {
-  --               name = '+Set',
-  --               a = {'<cmd>Telescope autocommands<CR>', 'Autocommands'},
-  --               c = {'<cmd>Telescope commands<CR>', 'Commands'},
-  --               f = {'<cmd>Telescope filetypes<CR>', 'Filetypes'},
-  --               i = {'<cmd>Telescope highlights<CR>', 'Highlights'},
-  --               k = {'<cmd>Telescope keymaps<CR>', 'Keymaps'},
-  --               s = {'<cmd>Telescope colorscheme<CR>', 'Colorschemes'},
-  --             }
-  --           },
-  --         }
-  --       },{
-  --         noremap = true,
-  --         silent = true
-  --       })
+          wkmap({
+            ['<leader>'] = {
+              f = {
+                f = {'<cmd>Telescope live_grep<CR>', 'Find in Files'},
+                ['/'] = {'<cmd>Telescope current_buffer_fuzzy_find<CR>', 'Find in buffer'},
+                o = {
+                  function ()
+                    local find_command={
+                      'rg',
+                      '--ignore',
+                      '--hidden',
+                      '--files',
+                      '--iglob',
+                      '!.git',
+                      '--ignore-vcs',
+                      '--ignore-file',
+                      '~/.config/git/gitexcludes',
+                    }
+                    require('telescope.builtin').find_files({find_command=find_command})
+                  end,
+                  'Find File'},
+                -- o = {'<cmd>Telescope find_files<CR>', 'Find File'},
+                b = {'<cmd>Telescope buffers<CR>', 'Find Buffers'},
+                m = {'<cmd>Telescope marks<CR>', 'Find Marks'},
+              },
+              o = {
+                o = {'<cmd>Telescope vim_options<CR>', 'Open options'},
+                h = {'<cmd>Telescope help_tags<CR>', 'Open Help'},
+                s = {
+                  name = '+Set',
+                  a = {'<cmd>Telescope autocommands<CR>', 'Autocommands'},
+                  c = {'<cmd>Telescope commands<CR>', 'Commands'},
+                  f = {'<cmd>Telescope filetypes<CR>', 'Filetypes'},
+                  i = {'<cmd>Telescope highlights<CR>', 'Highlights'},
+                  k = {'<cmd>Telescope keymaps<CR>', 'Keymaps'},
+                  s = {'<cmd>Telescope colorscheme<CR>', 'Colorschemes'},
+                }
+              },
+            }
+          },{
+            noremap = true,
+            silent = true
+          })
 
-  --       local actions = require('telescope.actions')
-  --       require('telescope').setup{
-  --         defaults = {
-  --           vimgrep_arguments = {
-  --             'rg',
-  --             '--color=never',
-  --             '--no-heading',
-  --             '--with-filename',
-  --             '--line-number',
-  --             '--column',
-  --             '--smart-case',
-  --             '--hidden',
-  --             '--ignore',
-  --             '--iglob',
-  --             '!.git',
-  --             '--ignore-vcs',
-  --             '--ignore-file',
-  --             '~/.config/git/gitexcludes',
-  --           },
-  --           file_ignore_patterns = {},
-  --           -- width = 0.75,
-  --           -- prompt_position = "top",
-  --           sorting_strategy = "ascending",
-  --           set_env = { ['COLORTERM'] = 'truecolor' },
-  --           -- file_sorter =  require'telescope.sorters'.get_fzy_sorter,
-  --           -- generic_sorter =  require'telescope.sorters'.get_fzy_sorter,
-  --           mappings = {
-  --             i = {
-  --               ["<c-j>"] = actions.move_selection_next,
-  --               ["<c-k>"] = actions.move_selection_previous,
+          local actions = require('telescope.actions')
+          require('telescope').setup{
+            defaults = {
+              vimgrep_arguments = {
+                'rg',
+                '--color=never',
+                '--no-heading',
+                '--with-filename',
+                '--line-number',
+                '--column',
+                '--smart-case',
+                '--hidden',
+                '--ignore',
+                '--iglob',
+                '!.git',
+                '--ignore-vcs',
+                '--ignore-file',
+                '~/.config/git/gitexcludes',
+              },
+              file_ignore_patterns = {},
+              -- width = 0.75,
+              -- prompt_position = "top",
+              sorting_strategy = "ascending",
+              set_env = { ['COLORTERM'] = 'truecolor' },
+              -- file_sorter =  require'telescope.sorters'.get_fzy_sorter,
+              -- generic_sorter =  require'telescope.sorters'.get_fzy_sorter,
+              mappings = {
+                i = {
+                  ["<c-j>"] = actions.move_selection_next,
+                  ["<c-k>"] = actions.move_selection_previous,
 
-  --               ["<C-s>"] = actions.select_horizontal,
-  --               ["<C-v>"] = actions.select_vertical,
-  --               ["<C-t>"] = actions.select_tab,
-  --               ["<C-q>"] = actions.smart_send_to_qflist + actions.open_qflist,
+                  ["<C-s>"] = actions.select_horizontal,
+                  ["<C-v>"] = actions.select_vertical,
+                  ["<C-t>"] = actions.select_tab,
+                  ["<C-q>"] = actions.smart_send_to_qflist + actions.open_qflist,
 
-  --               ["<C-Space>"] = actions.toggle_selection + actions.move_selection_next,
+                  ["<C-Space>"] = actions.toggle_selection + actions.move_selection_next,
 
-  --               -- ["<CR>"] = actions.select_default + actions.center,
-  --               ["<esc>"] = actions.close,
-  --             },
-  --             n = {
-  --               ["<esc>"] = actions.close,
-  --             },
-  --           },
-  --         }
-  --       }
-  --       -- require('telescope').load_extension('fzy_native')
-
-  --     end,
-  --   }
-    packer.use {
-      'junegunn/fzf.vim',
-      requires = { 'junegunn/fzf', as = 'fzf' },
-      as = 'fzf.vim',
-      config = function()
-
-        -- wkmap({['<leader>ghf'] = {'<cmd>BCommits<CR>', 'File History'}},{noremap=true})
-
-        wkmap({
-          ['<leader>'] = {
-            f = {
-              f = {'<cmd>Rg<CR>', 'Find in Files'},
-              ['/'] = {'<cmd>BLines<CR>', 'Find in Files'},
-              o = {'<cmd>Files<CR>', 'Find File'},
-              b = {'<cmd>Buffers<CR>', 'Find Buffers'},
-              m = {'<cmd>Marks<CR>', 'Find Marks'},
-              t = {'<cmd>TwTodo<CR>', 'Find TODO'}
-            },
-            g = {
-              h = {
-                f = {'<cmd>BCommits<CR>', 'File History'},
-                h = {'<cmd>Commits<CR>', 'History'}
-              }
-            },
-            o = {
-              -- o = {'<cmd>Telescope vim_options<CR>', 'Open options'},
-              h = {'<cmd>Helptags<CR>', 'Open Help'},
-              s = {
-                name = '+Set',
-                -- a = {'<cmd>Telescope autocommands<CR>', 'Autocommands'},
-                c = {'<cmd>Commands<CR>', 'Commands'},
-                f = {'<cmd>Filetypes<CR>', 'Filetypes'},
-                -- i = {'<cmd>Telescope highlights<CR>', 'Highlights'},
-                k = {'<cmd>Maps<CR>', 'Keymaps'},
-                s = {'<cmd>Colors<CR>', 'Colorschemes'},
-              }
-            },
+                  -- ["<CR>"] = actions.select_default + actions.center,
+                  ["<esc>"] = actions.close,
+                },
+                n = {
+                  ["<esc>"] = actions.close,
+                },
+              },
+            }
           }
-        },{
-          noremap = true,
-          silent = true
-        })
+          -- require('telescope').load_extension('fzy_native')
 
-    --     vim.g.fzf_tags_command = 'ctags -R --exclude=.git --exclude=.idea --exclude=log'
-        local fzf_action = {}
-    --     -- vim.g.fzf_action['ctrl-q'] = 'tab split'
-        fzf_action['ctrl-t'] = 'tab split'
-        fzf_action['ctrl-s'] = 'split'
-        fzf_action['ctrl-v'] = 'vsplit'
-        vim.g.fzf_action = fzf_action
+        end,
+      }
+    end
+    if enabled.fzf then
+      packer.use {
+        'junegunn/fzf.vim',
+        requires = { 'junegunn/fzf', as = 'fzf' },
+        as = 'fzf.vim',
+        config = function()
 
-        vim.g.fzf_layout = { window = { width= 0.9, height= 0.9 } }
+          -- wkmap({['<leader>ghf'] = {'<cmd>BCommits<CR>', 'File History'}},{noremap=true})
 
-        vim.env.FZF_DEFAULT_OPTS = '--bind=ctrl-a:toggle-all,ctrl-space:toggle+down,ctrl-alt-a:deselect-all'
-        vim.env.FZF_DEFAULT_COMMAND = 'rg --iglob !.git --files --hidden --ignore-vcs --ignore-file ~/.config/git/gitexcludes'
-        vim.cmd[[command! -bang -nargs=* TwTodo call fzf#vim#grep( join(['rg --column --line-number --no-heading --color=always --smart-case -- '.shellescape('(-|\*|[0-9a-zA-Z]+.) \[[ .oO]\] (TODO|ACTIVE) .+'), '~/Notes']), 1, fzf#vim#with_preview(), <bang>0)]]
+          wkmap({
+            ['<leader>'] = {
+              f = {
+                f = {'<cmd>Rg<CR>', 'Find in Files'},
+                ['/'] = {'<cmd>BLines<CR>', 'Find in Files'},
+                o = {'<cmd>Files<CR>', 'Find File'},
+                b = {'<cmd>Buffers<CR>', 'Find Buffers'},
+                m = {'<cmd>Marks<CR>', 'Find Marks'},
+                t = {'<cmd>TwTodo<CR>', 'Find TODO'}
+              },
+              g = {
+                h = {
+                  f = {'<cmd>BCommits<CR>', 'File History'},
+                  h = {'<cmd>Commits<CR>', 'History'}
+                }
+              },
+              o = {
+                -- o = {'<cmd>Telescope vim_options<CR>', 'Open options'},
+                h = {'<cmd>Helptags<CR>', 'Open Help'},
+                s = {
+                  name = '+Set',
+                  -- a = {'<cmd>Telescope autocommands<CR>', 'Autocommands'},
+                  c = {'<cmd>Commands<CR>', 'Commands'},
+                  f = {'<cmd>Filetypes<CR>', 'Filetypes'},
+                  -- i = {'<cmd>Telescope highlights<CR>', 'Highlights'},
+                  k = {'<cmd>Maps<CR>', 'Keymaps'},
+                  s = {'<cmd>Colors<CR>', 'Colorschemes'},
+                }
+              },
+            }
+          },{
+            noremap = true,
+            silent = true
+          })
 
-    --     vim.cmd [[tnoremap <expr> <Esc> (&filetype == "fzf") ? "<Esc>" : "<c-\><c-n>"]]
-    --     vim.cmd([[ command! -bang -nargs=* Rg ]]..
-    --     [[ call fzf#vim#grep("rg --column --line-number --no-heading --color=always --smart-case ".shellescape(<q-args>),]]..
-    --     [[ 1, fzf#vim#with_preview({'options': '--delimiter : --nth 4..'}), <bang>0)]])
-      end,
-    }
+      --     vim.g.fzf_tags_command = 'ctags -R --exclude=.git --exclude=.idea --exclude=log'
+          local fzf_action = {}
+      --     -- vim.g.fzf_action['ctrl-q'] = 'tab split'
+          fzf_action['ctrl-t'] = 'tab split'
+          fzf_action['ctrl-s'] = 'split'
+          fzf_action['ctrl-v'] = 'vsplit'
+          vim.g.fzf_action = fzf_action
+
+          vim.g.fzf_layout = { window = { width= 0.9, height= 0.9 } }
+
+          vim.env.FZF_DEFAULT_OPTS = '--bind=ctrl-a:toggle-all,ctrl-space:toggle+down,ctrl-alt-a:deselect-all'
+          vim.env.FZF_DEFAULT_COMMAND = 'rg --iglob !.git --files --hidden --ignore-vcs --ignore-file ~/.config/git/gitexcludes'
+          vim.cmd[[command! -bang -nargs=* TwTodo call fzf#vim#grep( join(['rg --column --line-number --no-heading --color=always --smart-case -- '.shellescape('(-|\*|[0-9a-zA-Z]+.) \[[ .oO]\] (TODO|ACTIVE) .+'), '~/Notes']), 1, fzf#vim#with_preview(), <bang>0)]]
+
+      --     vim.cmd [[tnoremap <expr> <Esc> (&filetype == "fzf") ? "<Esc>" : "<c-\><c-n>"]]
+      --     vim.cmd([[ command! -bang -nargs=* Rg ]]..
+      --     [[ call fzf#vim#grep("rg --column --line-number --no-heading --color=always --smart-case ".shellescape(<q-args>),]]..
+      --     [[ 1, fzf#vim#with_preview({'options': '--delimiter : --nth 4..'}), <bang>0)]])
+        end,
+      }
+    end
   -- }}}
   -- Indent-guides {{{
-    -- packer.use {
-    --   'lukas-reineke/indent-blankline.nvim',
-    --   config = function()
-    --     -- vim.g.indentLine_char = '|'
-    --     vim.gindent_blankline_char_list = { '|', '¦', '┆', '┊' }
-    --   end,
-    -- }
-    packer.use {
-      'glepnir/indent-guides.nvim',
-      as = 'indent-guides',
-      config = function()
-        require('indent_guides').setup({
-          indent_levels = 30;
-          indent_guide_size = 1;
-          indent_start_level = 2;
-          indent_space_guides = true;
-          indent_tab_guides = false;
-          indent_soft_pattern = '\\s';
-          exclude_filetypes = {'help','dashboard','dashpreview','nerdtree','vista','sagahover','which_key', 'NvimTree'};
-          even_colors = { fg ='#AAAAAA',bg=colors.color_10 };
-          odd_colors = {fg='#AAAAAA',bg=colors.color_10};
-        })
-      end,
-    }
+    if enabled.blanklines then
+      packer.use {
+        'lukas-reineke/indent-blankline.nvim',
+        config = function()
+          -- vim.g.indentLine_char = '|'
+          vim.gindent_blankline_char_list = { '|', '¦', '┆', '┊' }
+        end,
+      }
+    end
+    if enabled.guides then
+      packer.use {
+        'glepnir/indent-guides.nvim',
+        as = 'indent-guides',
+        config = function()
+          require('indent_guides').setup({
+            indent_levels = 30;
+            indent_guide_size = 1;
+            indent_start_level = 2;
+            indent_space_guides = true;
+            indent_tab_guides = false;
+            indent_soft_pattern = '\\s';
+            exclude_filetypes = {'help','dashboard','dashpreview','nerdtree','vista','sagahover','which_key', 'NvimTree'};
+            even_colors = { fg ='#AAAAAA',bg=colors.color_10 };
+            odd_colors = {fg='#AAAAAA',bg=colors.color_10};
+          })
+        end,
+      }
+    end
   -- }}}
   -- Galaxyline {{{
     packer.use {
@@ -1612,28 +1650,39 @@
               highlight = {colors.base01, colors.base01}
             }
           },
+          -- {
+          --   FileIcon = {
+          --     provider = fileinfo.get_file_icon,
+          --     condition = condition.buffer_not_empty,
+          --     highlight = {
+          --       fileinfo.get_file_icon_color,
+          --       colors.base01
+          --     },
+          --   },
+          -- },
           {
-            FileIcon = {
-              provider = fileinfo.get_file_icon,
-              condition = condition.buffer_not_empty,
-              highlight = {
-                fileinfo.get_file_icon_color,
-                colors.base01
-              },
-            },
-          },
-          {
-            FileName = {
+            FileSize = {
               provider = function()
-                return string.format('%s| %s ',
-                fileinfo.get_file_size(),
-                fileinfo.get_current_file_name()
+                return string.format('%s ',
+                fileinfo.get_file_size()
                 )
               end,
               condition = condition.buffer_not_empty,
               highlight = {colors.base0C, colors.base01}
             }
           },
+          -- {
+          --   FileName = {
+          --     provider = function()
+          --       return string.format('%s| %s ',
+          --       fileinfo.get_file_size(),
+          --       fileinfo.get_current_file_name()
+          --       )
+          --     end,
+          --     condition = condition.buffer_not_empty,
+          --     highlight = {colors.base0C, colors.base01}
+          --   }
+          -- },
           {
             Blank = {
               provider = function() return '' end,
@@ -1793,239 +1842,218 @@
     }
   -- }}}
   -- Marks {{{
-    packer.use {
-      'kshenoy/vim-signature',
-      config = function ()
-        vim.g.SignatureForceRemoveGlobal = 0
-        vim.g.SignatureMap = {
-          Leader             =  "m",
-          PlaceNextMark      =  "",
-          ToggleMarkAtLine   =  "mm",
-          PurgeMarksAtLine   =  "m-",
-          DeleteMark         =  "",
-          PurgeMarks         =  "",
-          PurgeMarkers       =  "m<BS>",
-          GotoNextLineAlpha  =  "",
-          GotoPrevLineAlpha  =  "",
-          GotoNextSpotAlpha  =  "]'",
-          GotoPrevSpotAlpha  =  "['",
-          GotoNextLineByPos  =  "",
-          GotoPrevLineByPos  =  "",
-          GotoNextSpotByPos  =  "",
-          GotoPrevSpotByPos  =  "",
-          GotoNextMarker     =  "",
-          GotoPrevMarker     =  "",
-          GotoNextMarkerAny  =  "",
-          GotoPrevMarkerAny  =  "",
-          ListBufferMarks    =  "m/",
-          ListBufferMarkers  =  ""
-        }
-
-        wkmap({
-          ['<leader>'] = {
-            o = {
-              m = {
-                name = '+Marks',
-                c = {[[:call signature#mark#Purge('all')|wshada!<CR>]], 'Clear All'},
-              },
-            }
+    if enabled.marks then
+      packer.use {
+        'kshenoy/vim-signature',
+        config = function ()
+          vim.g.SignatureForceRemoveGlobal = 0
+          vim.g.SignatureMap = {
+            Leader             =  "m",
+            PlaceNextMark      =  "",
+            ToggleMarkAtLine   =  "mm",
+            PurgeMarksAtLine   =  "m-",
+            DeleteMark         =  "",
+            PurgeMarks         =  "",
+            PurgeMarkers       =  "m<BS>",
+            GotoNextLineAlpha  =  "",
+            GotoPrevLineAlpha  =  "",
+            GotoNextSpotAlpha  =  "]'",
+            GotoPrevSpotAlpha  =  "['",
+            GotoNextLineByPos  =  "",
+            GotoPrevLineByPos  =  "",
+            GotoNextSpotByPos  =  "",
+            GotoPrevSpotByPos  =  "",
+            GotoNextMarker     =  "",
+            GotoPrevMarker     =  "",
+            GotoNextMarkerAny  =  "",
+            GotoPrevMarkerAny  =  "",
+            ListBufferMarks    =  "m/",
+            ListBufferMarkers  =  ""
           }
-        },{
-          noremap = true,
-          silent = true
-        })
 
-      end,
-    }
+          wkmap({
+            ['<leader>'] = {
+              o = {
+                m = {
+                  name = '+Marks',
+                  c = {[[:call signature#mark#Purge('all')|wshada!<CR>]], 'Clear All'},
+                },
+              }
+            }
+          },{
+            noremap = true,
+            silent = true
+          })
+
+        end,
+      }
+    end
   -- }}}
   -- NERDTree {{{
-    packer.use {
-      'preservim/nerdtree',
-      requires = {
-        {'Xuyuanp/nerdtree-git-plugin'},
-        {'ryanoasis/vim-devicons'},
-      },
-      config = function ()
-        vim.g.NERDTreeShowBookmarks=0
-        vim.g.NERDTreeChDirMode=2
-        vim.g.NERDTreeMouseMode=2
-        vim.g.nerdtree_tabs_focus_on_files=1
-        vim.g.nerdtree_tabs_open_on_gui_startup=0
+    if enabled.nerdtree then
+      packer.use {
+        'preservim/nerdtree',
+        requires = {
+          {'Xuyuanp/nerdtree-git-plugin'},
+          {'ryanoasis/vim-devicons'},
+        },
+        config = function ()
+          vim.g.NERDTreeShowBookmarks=0
+          vim.g.NERDTreeChDirMode=2
+          vim.g.NERDTreeMouseMode=2
+          vim.g.nerdtree_tabs_focus_on_files=1
+          vim.g.nerdtree_tabs_open_on_gui_startup=0
 
-        vim.g.NERDTreeMinimalUI=1
-        vim.g.NERDTreeDirArrows=1
-        vim.g.NERDTreeWinSize=40
-        vim.g.NERDTreeIgnore={ '.pyc$' }
-        vim.g.NERDTreeShowHidden=1
-        vim.g.NERDTreeHighlightCursorline = 1
+          vim.g.NERDTreeMinimalUI=1
+          vim.g.NERDTreeDirArrows=1
+          vim.g.NERDTreeWinSize=40
+          vim.g.NERDTreeIgnore={ '.pyc$' }
+          vim.g.NERDTreeShowHidden=1
+          vim.g.NERDTreeHighlightCursorline = 1
 
-        vim.g.NERDTreeMapOpenVSplit='v'
-        vim.g.NERDTreeMapOpenSplit='s'
-        vim.g.NERDTreeMapJumpNextSibling=''
-        vim.g.NERDTreeMapJumpPrevSibling=''
-        vim.g.NERDTreeMapMenu='m'
-        vim.g.NERDTreeQuitOnOpen=1
-        vim.g.NERDTreeCustomOpenArgs={ file = {reuse = '', where = 'p', keepopen = 0, stay = 0 }}
+          vim.g.NERDTreeMapOpenVSplit='v'
+          vim.g.NERDTreeMapOpenSplit='s'
+          vim.g.NERDTreeMapJumpNextSibling=''
+          vim.g.NERDTreeMapJumpPrevSibling=''
+          vim.g.NERDTreeMapMenu='m'
+          vim.g.NERDTreeMapPreview='<Tab>'
+          vim.g.NERDTreeCustomOpenArgs={ file = {reuse = '', where = 'p', keepopen = 1, stay = 0 }}
 
-        wkmap({
-          ['<leader>'] = {
-            oe = {'<cmd>call NERDTreeToggleCWD()<CR>', 'Open Explorer'},
-            fp = {'<cmd>call FindPathOrShowNERDTree()<CR>', 'Find file in Path'}
-          }
-        },{
-          noremap = true,
-          silent = true
-        })
+          wkmap({
+            ['<leader>'] = {
+              oe = {'<cmd>call NERDTreeToggleCWD()<CR>', 'Open Explorer'},
+              fp = {'<cmd>call FindPathOrShowNERDTree()<CR>', 'Find file in Path'}
+            }
+          },{
+            noremap = true,
+            silent = true
+          })
 
-        vim.api.nvim_exec ([[
-          function! IsNERDTreeOpen()
-            return exists("t:NERDTreeBufName") && (bufwinnr(t:NERDTreeBufName) != -1)
-          endfunction
-          function! SyncTree()
-            if &modifiable && IsNERDTreeOpen()  && strlen(expand('%')) > 0 && !&diff && bufname('%') !~# 'NERD_tree'
-              try
-                NERDTreeFind
-                if bufname('%') =~# 'NERD_tree'
-                  setlocal cursorline
-                  wincmd p
-                endif
-              endtry
-            endif
-          endfunction
+          vim.api.nvim_exec ([[
+            "function! IsNERDTreeOpen()
+            "  return exists("t:NERDTreeBufName") && (bufwinnr(t:NERDTreeBufName) != -1)
+            "endfunction
 
-          autocmd BufEnter * silent! call SyncTree()
+            "function! SyncTree()
+            "  if &modifiable && IsNERDTreeOpen()  && strlen(expand('%')) > 0 && !&diff && bufname('%') !~# 'NERD_tree'
+            "    try
+            "      NERDTreeFind
+            "      if bufname('%') =~# 'NERD_tree'
+            "        setlocal cursorline
+            "        wincmd p
+            "      endif
+            "    endtry
+            "  endif
+            "endfunction
 
-          function! NERDTreeToggleCWD()
-            NERDTreeToggle
-            let currentfile = expand('%')
-            if (currentfile == "") || !(currentfile !~? 'NERD')
-              NERDTreeCWD
-              wincmd p
-            endif
-          endfunction
-          function! FindPathOrShowNERDTree()
-            let currentfile = expand('%')
-            if (currentfile == "") || !(currentfile !~? 'NERD')
+            "autocmd BufEnter * silent! call SyncTree()
+
+            function! NERDTreeToggleCWD()
               NERDTreeToggle
-            else
-              NERDTreeFind
-              NERDTreeCWD
-            endif
-          endfunction
-        ]], true)
-      end,
-    }
+              let currentfile = expand('%')
+              if (currentfile == "") || !(currentfile !~? 'NERD')
+                NERDTreeCWD
+                wincmd p
+              endif
+            endfunction
+            function! FindPathOrShowNERDTree()
+              let currentfile = expand('%')
+              if (currentfile == "") || !(currentfile !~? 'NERD')
+                NERDTreeToggle
+              else
+                NERDTreeFind
+                NERDTreeCWD
+              endif
+            endfunction
+          ]], true)
+        end,
+      }
+    end
   -- }}}
   -- NvimTree {{{
-    -- packer.use {
-    --   'kyazdani42/nvim-tree.lua',
-    --   requires = {{'kyazdani42/nvim-web-devicons'}},
-    --   config = function ()
-    --     vim.g.nvim_tree_width = 40
-    --     vim.g.nvim_tree_width_allow_resize = 1
-    --     vim.g.nvim_tree_auto_close = 0
-    --     vim.g.nvim_tree_follow = 1
-    --     -- Forgets state
-    --     vim.g.nvim_tree_tab_open = 0
-    --     vim.g.nvim_tree_group_empty = 1
-    --     vim.g.nvim_tree_disable_netrw = 0
-    --     -- vim.g.nvim_tree_auto_ignore_ft = {'startify', 'dashboard'}
-    --     vim.g.nvim_tree_quit_on_open = 0
-    --     vim.g.nvim_tree_lsp_diagnostics = 1
-    --     vim.g.nvim_tree_highlight_opened_files = 3
-    --     vim.g.nvim_tree_disable_window_picker = 1
-    --     vim.g.nvim_tree_update_cwd = 1
-    --     vim.g.nvim_tree_disable_default_keybindings = 1
-    --     vim.g.nvim_tree_hijack_cursor = 0
+    if enabled.nvimtree then
+      packer.use {
+        'kyazdani42/nvim-tree.lua',
+        requires = {{'kyazdani42/nvim-web-devicons'}},
+        config = function ()
+          vim.g.nvim_tree_width = 40
+          vim.g.nvim_tree_width_allow_resize = 1
+          vim.g.nvim_tree_auto_close = 0
+          vim.g.nvim_tree_follow = 1
+          -- Forgets state
+          vim.g.nvim_tree_tab_open = 0
+          vim.g.nvim_tree_group_empty = 1
+          vim.g.nvim_tree_disable_netrw = 0
+          -- vim.g.nvim_tree_auto_ignore_ft = {'startify', 'dashboard'}
+          vim.g.nvim_tree_quit_on_open = 0
+          vim.g.nvim_tree_lsp_diagnostics = 1
+          vim.g.nvim_tree_highlight_opened_files = 3
+          vim.g.nvim_tree_disable_window_picker = 1
+          vim.g.nvim_tree_update_cwd = 1
+          vim.g.nvim_tree_disable_default_keybindings = 1
+          vim.g.nvim_tree_hijack_cursor = 0
 
-    --     vim.api.nvim_exec([[
-    --       hi NvimTreeCursorLine cterm=bold ctermbg=white guifg=${color_2}
-    --     ]] % colors, false)
+          vim.api.nvim_exec([[
+            hi NvimTreeCursorLine cterm=bold ctermbg=white guifg=${color_2}
+          ]] % colors, false)
 
-    --     wkmap({
-    --       ['<leader>'] = {
-    --         oe = {function() require'nvim-tree'.toggle() end, 'Open Explorer'},
-    --         fp = {function()
-    --           require'nvim-tree'.find_file(true)
-    --           if not require'nvim-tree.view'.win_open() then
-    --             require'nvim-tree'.open()
-    --           end
-    --         end, 'Find file in Path'}
-    --       }
-    --     },{
-    --       noremap = true,
-    --       silent = true
-    --     })
+          wkmap({
+            ['<leader>'] = {
+              oe = {function() require'nvim-tree'.toggle() end, 'Open Explorer'},
+              fp = {function()
+                require'nvim-tree'.find_file(true)
+                if not require'nvim-tree.view'.win_open() then
+                  require'nvim-tree'.open()
+                end
+              end, 'Find file in Path'}
+            }
+          },{
+            noremap = true,
+            silent = true
+          })
 
-    --     local tree_cb = require'nvim-tree.config'.nvim_tree_callback
-    --     vim.g.nvim_tree_bindings = {
-    --       -- ["<CR>"] = ":YourVimFunction()<cr>",
-    --       -- ["u"] = ":lua require'some_module'.some_function()<cr>",
+          local tree_cb = require'nvim-tree.config'.nvim_tree_callback
+          vim.g.nvim_tree_bindings = {
+            -- ["<CR>"] = ":YourVimFunction()<cr>",
+            -- ["u"] = ":lua require'some_module'.some_function()<cr>",
 
-    --       -- default mappings
-    --       { key = { "<CR>" },   cb = tree_cb("edit") },
-    --       { key = { "o" },      cb = tree_cb("edit") },
-    --       { key = { "<C-]>" },  cb = tree_cb("cd") },
-    --       { key = { "C" },      cb = tree_cb("cd") },
-    --       { key = { "v" },      cb = tree_cb("vsplit") },
-    --       { key = { "s" },      cb = tree_cb("split") },
-    --       { key = { "t" },      cb = tree_cb("tabnew") },
-    --       { key = { "<BS>" },   cb = tree_cb("close_node") },
-    --       { key = { "<S-CR>" }, cb = tree_cb("close_node") },
-    --       { key = { "<Tab>" },  cb = tree_cb("preview") },
-    --       { key = { "I" },      cb = tree_cb("toggle_ignored") },
-    --       { key = { "H" },      cb = tree_cb("toggle_dotfiles") },
-    --       { key = { "r" },      cb = tree_cb("refresh") },
-    --       { key = { "R" },      cb = tree_cb("refresh") },
-    --       { key = { "a" },      cb = tree_cb("create") },
-    --       { key = { "d" },      cb = tree_cb("remove") },
-    --       { key = { "m" },      cb = tree_cb("rename") },
-    --       { key = { "M" },      cb = tree_cb("full_rename") },
-    --       { key = { "x" },      cb = tree_cb("cut") },
-    --       { key = { "c" },      cb = tree_cb("copy") },
-    --       { key = { "p" },      cb = tree_cb("paste") },
-    --       { key = { "[g" },     cb = tree_cb("prev_git_item") },
-    --       { key = { "]g" },     cb = tree_cb("next_git_item") },
-    --       { key = { "u" },      cb = tree_cb("dir_up") },
-    --       { key = { "q" },      cb = tree_cb("close") },
-    --     }
+            -- default mappings
+            { key = { "<CR>" },   cb = tree_cb("edit") },
+            { key = { "o" },      cb = tree_cb("edit") },
+            { key = { "<C-]>" },  cb = tree_cb("cd") },
+            { key = { "C" },      cb = tree_cb("cd") },
+            { key = { "v" },      cb = tree_cb("vsplit") },
+            { key = { "s" },      cb = tree_cb("split") },
+            { key = { "t" },      cb = tree_cb("tabnew") },
+            { key = { "<BS>" },   cb = tree_cb("close_node") },
+            { key = { "<S-CR>" }, cb = tree_cb("close_node") },
+            { key = { "<Tab>" },  cb = tree_cb("preview") },
+            { key = { "I" },      cb = tree_cb("toggle_ignored") },
+            { key = { "H" },      cb = tree_cb("toggle_dotfiles") },
+            { key = { "r" },      cb = tree_cb("refresh") },
+            { key = { "R" },      cb = tree_cb("refresh") },
+            { key = { "a" },      cb = tree_cb("create") },
+            { key = { "d" },      cb = tree_cb("remove") },
+            { key = { "m" },      cb = tree_cb("rename") },
+            { key = { "M" },      cb = tree_cb("full_rename") },
+            { key = { "x" },      cb = tree_cb("cut") },
+            { key = { "c" },      cb = tree_cb("copy") },
+            { key = { "p" },      cb = tree_cb("paste") },
+            { key = { "[g" },     cb = tree_cb("prev_git_item") },
+            { key = { "]g" },     cb = tree_cb("next_git_item") },
+            { key = { "u" },      cb = tree_cb("dir_up") },
+            { key = { "q" },      cb = tree_cb("close") },
+          }
 
-    --     vim.g.nvim_tree_icons = {
-    --       default = '',
-    --       symlink = '',
-    --     }
+          vim.g.nvim_tree_icons = {
+            default = '',
+            symlink = '',
+          }
 
-    --   end,
-    -- }
+        end,
+      }
+    end
   -- }}}
-  -- -- Rooter {{{
-  --   packer.use {
-  --     'airblade/vim-rooter',
-  --     config = function ()
-  --       -- vim.g.rooter_silent_chdir = 1
-  --       vim.g.rooter_resolve_links = 1
-  --       vim.g.rooter_manual_only = 1
-  --       vim.g.rooter_cd_cmd = 'lcd'
-
-  --       wkmap({
-  --         ['<leader>or'] = {'<cmd>call RooterWithCWD()<CR>', 'Open RootDir'}
-  --       },{
-  --         noremap = true,
-  --         silent = true
-  --       })
-
-  --       vim.api.nvim_exec([[
-  --         function! RooterWithCWD()
-  --           Rooter
-  --           "NERDTreeCWD
-  --           NvimTreeRefresh
-  --           "NvimTreeClose
-  --           "NvimTreeOpen
-  --         endfunction
-  --       ]], true)
-  --     end,
-  --   }
-  -- -- }}}
   -- StartScreen and Sessions {{{
     packer.use {
       'mhinz/vim-startify',
@@ -2181,7 +2209,18 @@
         vim.o.showcmd = false
         vim.o.scrolloff = 999
         vim.wo.wrap = true
-        vim.cmd('IndentGuidesDisable')
+
+        if enabled.guides then
+          vim.cmd('IndentGuidesDisable')
+        end
+        if enabled.blanklines then
+          vim.cmd('IndentBlanklineDisable')
+        end
+
+        if enabled.gitgutter then
+          vim.cmd('GitGutterSignsDisable')
+        end
+
         require("twilight").enable()
       end, 1000)
       if fn.executable('tmux') == 1 and fn.exists('$TMUX') == 1 then
@@ -2198,7 +2237,18 @@
         vim.o.showcmd = true
         vim.o.scrolloff = 5
         vim.wo.wrap = false
-        vim.cmd('IndentGuidesEnable')
+
+        if enabled.guides then
+          vim.cmd('IndentGuidesEnable')
+        end
+        if enabled.blanklines then
+          vim.cmd('IndentBlanklineEnable')
+        end
+
+        if enabled.gitgutter then
+          vim.cmd('GitGutterSignsEnable')
+        end
+
         require("twilight").disable()
       end, 1000)
       if fn.executable('tmux') == 1 and fn.exists('$TMUX') == 1 then
@@ -2298,11 +2348,10 @@
   -- }}}
   -- Undo {{{
     packer.use {
-      'mbbill/undotree',
+      'simnalamburt/vim-mundo',
     }
 
-    wkmap({['<leader>u'] = {'<cmd>UndotreeToggle<CR>', 'Undo Tree'}})
-
+    wkmap({['<leader>u'] = {'<cmd>MundoToggle<CR>', 'Undo Tree'}})
   -- }}}
   -- Xkb {{{
     packer.use {
@@ -2379,7 +2428,7 @@
           as = 'livedown',
           ft = { 'markdown', 'vimwiki', 'mail' },
           config = function ()
-            vim.g.livedown_browser = 'qutebrowser'
+            vim.g.livedown_browser = 'firefox'
             vim.g.livedown_port = 14545
           end,
         },
@@ -2481,6 +2530,43 @@
       end,
     }
   -- }}}
+  -- NeOrgmode {{{
+    packer.use {
+      'vhyrro/neorg',
+      branch = 'unstable',
+      config = function()
+        require('neorg').setup {
+          load = {
+            ['core.defaults'] = {},
+            ['core.norg.concealer'] = {},
+            ['core.norg.dirman'] = {
+              config = {
+                workspaces = {
+                  my_workspace = '~/Notes'
+                }
+              }
+            }
+          },
+          hook = function()
+            local neorg_leader = "<Leader>n"
+            local neorg_callbacks = require('neorg.callbacks')
+            neorg_callbacks.on_event("core.keybinds.events.enable_keybinds", function(_, keybinds)
+              keybinds.map_event_to_mode("norg", {
+                n = {
+                  { "gtd", "core.norg.qol.todo_items.todo.task_done" },
+                  { "gtu", "core.norg.qol.todo_items.todo.task_undone" },
+                  { "gtp", "core.norg.qol.todo_items.todo.task_pending" },
+                  { "<C-Space>", "core.norg.qol.todo_items.todo.task_cycle" },
+                  { "<CR>", "core.norg.esupports.goto_link" },
+                },
+              }, { silent = true, noremap = true })
+            end)
+          end
+        }
+      end,
+      requires = "nvim-lua/plenary.nvim"
+    }
+  -- }}}
   -- Orgmode {{{
     packer.use {
       'kristijanhusak/orgmode.nvim',
@@ -2570,28 +2656,80 @@
       end,
     }
   -- }}}
--- Code
+  -- Linter {{{
+    if enabled.nvim_lint then
+      packer.use {
+        'mfussenegger/nvim-lint',
+        config = function()
+          require('lint').linters_by_ft = {
+            markdown = {'vale', 'languagetool'},
+            vimwiki = {'vale', 'languagetool'},
+            sh = {'shellcheck'},
+            zsh = {'shellcheck'},
+            ansible = {'ansible_lint'},
+            python = {'mypy', 'pylint'},
+            go = {'golangcilint'},
+            dockerfile = {'hadolint'},
+            text = {'languagetool'},
+            lua = {'luacheck'},
+            nix = {'nix'},
+            -- terraform = {'tflint'},
+            -- yaml = {'yamllint'}
+            --'bandit', 'flake8', 'mypy', 'pydocstyle', 'pylint'
+          }
+
+          -- -- mdl
+          -- local mdl_pattern = '(.*):(%d+):(%d+) (.*)'
+          -- local mdl_groups  = { '_', 'line', 'start_col', 'message'}
+          -- require('lint').linters.mdl = {
+          --   cmd = 'mdl',
+          --   ignore_exitcode = true,
+          --   stream = 'stderr',
+          --   parser =  require('lint.parser').from_pattern(mdl_pattern, mdl_groups, nil, {
+          --     ['source'] = 'mdl',
+          --     ['severity'] = vim.lsp.protocol.DiagnosticSeverity.Warning,
+          --   })
+          -- }
+
+          -- -- tflint
+          -- local tflint_pattern = '(.*):(%d+):(%d+) (.*)'
+          -- local tflint_groups  = { '_', 'line', 'start_col', 'message'}
+          -- require('lint').linters.mdl = {
+          --   cmd = 'mdl',
+          --   ignore_exitcode = true,
+          --   stream = 'stderr',
+          --   parser =  require('lint.parser').from_pattern(tflint_pattern, tflint_groups, nil, {
+          --     ['source'] = 'mdl',
+          --     ['severity'] = vim.lsp.protocol.DiagnosticSeverity.Warning,
+          --   })
+          -- }
+        end
+      }
+    end
+  -- }}}
   -- ALE {{{
-    packer.use {
-      'w0rp/ale',
-      ft = {'sh', 'zsh', 'bash', 'c',
-      'cpp', 'cmake', 'html', 'markdown',
-      'racket', 'vim', 'text', 'ansible', 'yaml',
-      'yaml.ansible', 'dockerfile', 'python', 'terraform',
-      'hcl'},
-      as = 'ale',
-      cmd = 'ALEEnable',
-      opt = true,
-      setup = function ()
-        vim.g.ale_sign_error = '!!'
-        vim.g.ale_sign_warning = '..'
-        vim.g.ale_completion_enabled = 0
-        vim.g.ale_disable_lsp = 1
-      end,
-      config = function ()
-        vim.cmd[[ALEEnable]]
-      end,
-    }
+    if enabled.ale then
+      packer.use {
+        'w0rp/ale',
+        ft = {'sh', 'zsh', 'bash', 'c',
+        'cpp', 'cmake', 'html', 'markdown', 'vimwiki',
+        'racket', 'vim', 'text', 'ansible', 'yaml',
+        'yaml.ansible', 'dockerfile', 'python', 'terraform',
+        'hcl'},
+        as = 'ale',
+        cmd = 'ALEEnable',
+        opt = true,
+        setup = function ()
+          vim.g.ale_sign_error = '!!'
+          vim.g.ale_sign_warning = '..'
+          vim.g.ale_completion_enabled = 0
+          vim.g.ale_disable_lsp = 1
+        end,
+        config = function ()
+          vim.cmd[[ALEEnable]]
+        end,
+      }
+    end
   -- }}}
   -- AutoIndent {{{
     packer.use {
@@ -2606,9 +2744,6 @@
   -- Completor {{{
     packer.use {
       'hrsh7th/nvim-compe',
-      -- after = {
-      --   'orgmode.nvim'
-      -- },
       requires = {
         { 'rafamadriz/friendly-snippets', },
         { 'hrsh7th/vim-vsnip', },
@@ -2677,6 +2812,7 @@
               'lua',
               'vimwiki'
             }};
+            neorg = true;
             orgmode = {
               priority=100,
               filetypes={
@@ -2861,9 +2997,18 @@
             },
             ['<leader>c'] = {
               c = {function() vim.lsp.buf.code_action() end, 'Code Action'},
-              d = {function() vim.lsp.diagnostic.show_line_diagnostics() end, 'Show Diagnostics'},
-              D = {function() vim.lsp.diagnostic.set_loclist() end, 'Show Diagnostics in LocList'},
+              -- d = {function() vim.lsp.diagnostic.show_line_diagnostics() end, 'Show Diagnostics'},
+              -- D = {function() vim.lsp.diagnostic.set_loclist() end, 'Show Diagnostics in LocList'},
               r = {function() vim.lsp.buf.rename() end, 'Rename'},
+              t = {
+                name = '+Trouble',
+                t = {'<cmd>TroubleToggle<cr>', 'Toggle'},
+                w = {'<cmd>Trouble lsp_workspace_diagnostics<cr>', 'Workspace'},
+                d = {'<cmd>Trouble lsp_document_diagnostics<cr>', 'Diagnostics'},
+                l = {'<cmd>Trouble loclist<cr>', 'Loclist'},
+                q = {'<cmd>Trouble quickfix<cr>', 'Quickfix'},
+                r = {'<cmd>Trouble lsp_references<cr>', 'Reference'}
+              }
             }
           },{
             silent = true,
@@ -2894,11 +3039,13 @@
             return require'lspconfig'.util.find_git_ancestor(fname) or require'lspconfig'.util.path.dirname(fname)
           end;
         }
-        require'lspconfig'.rust_analyzer.setup{
-          capabilities = capabilities,
-          on_attach = common_on_attach,
-          autostart = true,
-        }
+        if enabled.rust then
+          require'lspconfig'.rust_analyzer.setup{
+            capabilities = capabilities,
+            on_attach = common_on_attach,
+            autostart = true,
+          }
+        end
         require'lspconfig'.pyright.setup{
           capabilities = capabilities,
           on_attach = common_on_attach,
@@ -2942,20 +3089,22 @@
           on_attach = common_on_attach,
           autostart = true,
         }
-        require'lspconfig'.gopls.setup{
-          capabilities = capabilities,
-          on_attach = common_on_attach,
-          autostart = true,
-          cmd = {"gopls", "serve"},
-          settings = {
-            gopls = {
-              analyses = {
-                unusedparams = true,
-              },
-              staticcheck = true,
+        if enabled.go then
+          require'lspconfig'.gopls.setup{
+            capabilities = capabilities,
+            on_attach = common_on_attach,
+            autostart = true,
+            cmd = {"gopls", "serve"},
+            settings = {
+              gopls = {
+                analyses = {
+                  unusedparams = true,
+                },
+                staticcheck = true,
+              }
             }
           }
-        }
+        end
         require'lspconfig'.terraformls.setup{
           capabilities = capabilities,
           on_attach = common_on_attach,
@@ -2970,6 +3119,16 @@
       'nvim-treesitter/nvim-treesitter',
       run = ':TSUpdate',
       config = function ()
+        local parser_configs = require('nvim-treesitter.parsers').get_parser_configs()
+
+        parser_configs.norg = {
+          install_info = {
+            url = "https://github.com/vhyrro/tree-sitter-norg",
+            files = { "src/parser.c" },
+            branch = "main"
+          },
+        }
+
         require'nvim-treesitter.configs'.setup {
           ensure_installed = {
             'bash',
@@ -2985,6 +3144,7 @@
             'regex',
             'rust',
             'yaml',
+            'norg'
           },
           highlight = {
             enable = true,
@@ -3096,70 +3256,83 @@
       end,
     }
 
+    if enabled.gitsigns then
+      packer.use {
+        'lewis6991/gitsigns.nvim',
+        requires = {
+          'nvim-lua/plenary.nvim'
+        },
+        config = function()
+          require('gitsigns').setup {
+            signs = {
+              -- add          = {hl = 'GitSignsAdd'   , text = '¦', numhl='GitSignsAddNr'   , linehl='GitSignsAddLn'},
+              add          = {hl = 'GitSignsAdd'   , text = '|', numhl='GitSignsAddNr'   , linehl='GitSignsAddLn'},
+              change       = {hl = 'GitSignsChange', text = '|', numhl='GitSignsChangeNr', linehl='GitSignsChangeLn'},
+              delete       = {hl = 'GitSignsDelete', text = '_', numhl='GitSignsDeleteNr', linehl='GitSignsDeleteLn'},
+              topdelete    = {hl = 'GitSignsDelete', text = '‾', numhl='GitSignsDeleteNr', linehl='GitSignsDeleteLn'},
+              changedelete = {hl = 'GitSignsChange', text = '~', numhl='GitSignsChangeNr', linehl='GitSignsChangeLn'},
+            },
+            numhl = false,
+            linehl = false,
+            keymaps = {
+              noremap = true,
+              buffer = true,
+
+              -- Text objects
+              ['o ih'] = ':<C-U>lua require"gitsigns.actions".select_hunk()<CR>',
+              ['x ih'] = ':<C-U>lua require"gitsigns.actions".select_hunk()<CR>'
+            },
+          }
+
+          wkmap({
+            [']g'] = {'<cmd>lua require"gitsigns.actions".next_hunk()<CR>', 'Next Git Hunk'},
+            ['[g'] = {'<cmd>lua require"gitsigns.actions".prev_hunk()<CR>', 'Previous Git Hunk'},
+            ['<leader>gh'] = {
+              b = {'<cmd>lua require"gitsigns".blame_line(true)<CR>', 'Hunk Blame'},
+              p = {'<cmd>lua require"gitsigns".preview_hunk()<CR>', 'Hunk Preview'},
+              r = {'<cmd>lua require"gitsigns".reset_hunk()<CR>', 'Hunk Revert'},
+              s = {'<cmd>lua require"gitsigns".stage_hunk()<CR>', 'Hunk Stage'},
+              u = {'<cmd>lua require"gitsigns".undo_stage_hunk()<CR>', 'Hunk Undo'},
+            }
+          })
+
+          wkmap({
+            ['<leader>gh'] = {
+              r = {'<cmd>lua require"gitsigns".reset_hunk({vim.fn.line("."), vim.fn.line("v")})<CR>', 'Hunk Revert'},
+              s = {'<cmd>lua require"gitsigns".stage_hunk({vim.fn.line("."), vim.fn.line("v")})<CR>', 'Hunk Stage'},
+            }
+          },{
+            mode = 'v',
+          })
+        end
+      }
+    end
+
+  -- Gitgutter
+  if enabled.gitgutter then
     packer.use {
-      'lewis6991/gitsigns.nvim',
-      requires = {
-        'nvim-lua/plenary.nvim'
-      },
+      'airblade/vim-gitgutter',
       config = function()
-        require('gitsigns').setup {
-          signs = {
-            -- add          = {hl = 'GitSignsAdd'   , text = '¦', numhl='GitSignsAddNr'   , linehl='GitSignsAddLn'},
-            add          = {hl = 'GitSignsAdd'   , text = '|', numhl='GitSignsAddNr'   , linehl='GitSignsAddLn'},
-            change       = {hl = 'GitSignsChange', text = '|', numhl='GitSignsChangeNr', linehl='GitSignsChangeLn'},
-            delete       = {hl = 'GitSignsDelete', text = '_', numhl='GitSignsDeleteNr', linehl='GitSignsDeleteLn'},
-            topdelete    = {hl = 'GitSignsDelete', text = '‾', numhl='GitSignsDeleteNr', linehl='GitSignsDeleteLn'},
-            changedelete = {hl = 'GitSignsChange', text = '~', numhl='GitSignsChangeNr', linehl='GitSignsChangeLn'},
-          },
-          numhl = false,
-          linehl = false,
-          keymaps = {
-            noremap = true,
-            buffer = true,
-
-            -- Text objects
-            ['o ih'] = ':<C-U>lua require"gitsigns.actions".select_hunk()<CR>',
-            ['x ih'] = ':<C-U>lua require"gitsigns.actions".select_hunk()<CR>'
-          },
-        }
+        vim.g.gitgutter_map_keys = 0
+        vim.g.gitgutter_override_sign_column_highlight = 0
 
         wkmap({
-          [']g'] = {'<cmd>lua require"gitsigns.actions".next_hunk()<CR>', 'Next Git Hunk'},
-          ['[g'] = {'<cmd>lua require"gitsigns.actions".prev_hunk()<CR>', 'Previous Git Hunk'},
+          [']g'] = {'<Plug>(GitGutterNextHunk)', 'Next Git Hunk'},
+          ['[g'] = {'<Plug>(GitGutterPrevHunk)', 'Previous Git Hunk'},
           ['<leader>gh'] = {
-            b = {'<cmd>lua require"gitsigns".blame_line(true)<CR>', 'Hunk Blame'},
-            p = {'<cmd>lua require"gitsigns".preview_hunk()<CR>', 'Hunk Preview'},
-            r = {'<cmd>lua require"gitsigns".reset_hunk()<CR>', 'Hunk Revert'},
-            s = {'<cmd>lua require"gitsigns".stage_hunk()<CR>', 'Hunk Stage'},
-            u = {'<cmd>lua require"gitsigns".undo_stage_hunk()<CR>', 'Hunk Undo'},
+            s = {'<cmd>GitGutterStageHunk<CR>', 'Hunk Stage'},
+            r = {'<cmd>GitGutterUndoHunk<CR>', 'Hunk Stage'},
+            p = {'<cmd>GitGutterPreviewHunk<CR>', 'Hunk Stage'},
           }
         })
-
-        wkmap({
-          ['<leader>gh'] = {
-            r = {'<cmd>lua require"gitsigns".reset_hunk({vim.fn.line("."), vim.fn.line("v")})<CR>', 'Hunk Revert'},
-            s = {'<cmd>lua require"gitsigns".stage_hunk({vim.fn.line("."), vim.fn.line("v")})<CR>', 'Hunk Stage'},
-          }
-        },{
-          mode = 'v',
-        })
-      end
+      end,
     }
-    -- -- Gitv
-    -- packer.use {
-    --   'junegunn/gv.vim',
-    --   config = function()
-    --     vim.g.Gitv_DoNotMapCtrlKey = 1
-    --     wkmap({
-    --       ['<leader>ghh'] = {'<cmd>GV<CR>', 'History All'}
-    --     })
-    --   end,
-    -- }
+  end
   -- }}}
   -- Speeddating {{{
     packer.use {
       'tpope/vim-speeddating',
-      ft = { 'mail', 'markdown', 'sh', 'todo', 'yaml' },
+      ft = { 'mail', 'markdown', 'sh', 'todo', 'yaml', 'vimwiki' },
     }
   -- }}}
   -- Surround {{{
@@ -3185,8 +3358,8 @@
       end,
       config = function()
         wkmap({
-          gS = {'<cmd>SplitjoinSplit<CR>', 'Magic Split'},
-          gJ = {'<cmd>SplitjoinJoin<CR>', 'Magic Join'}
+          gs = {'<cmd>SplitjoinSplit<CR>', 'Magic Split'},
+          gj = {'<cmd>SplitjoinJoin<CR>', 'Magic Join'}
         })
       end,
     }
@@ -3280,6 +3453,19 @@
       })
     end
   -- }}}
+  -- Trouble {{{
+    packer.use {
+      'folke/trouble.nvim',
+      requires = 'kyazdani42/nvim-web-devicons',
+      config = function()
+        require('trouble').setup {
+          action_keys = {
+            open_split = { '<c-s>' },
+          }
+        }
+      end
+    }
+    -- }}}
 -- Motion
   -- AutoPairs {{{
     packer.use 'jiangmiao/auto-pairs'
@@ -3293,30 +3479,14 @@
       }
     }
   -- }}}
-  -- Sneak {{{
+  -- Quick Scope {{{
     packer.use {
-      'justinmk/vim-sneak',
+      'unblevable/quick-scope',
       config = function()
-        for _, m in ipairs{'n', 'o', 'x'} do
-          map(m, 'f', '<Plug>Sneak_f',{})
-          map(m, 'F', '<Plug>Sneak_F',{})
-          map(m, 't', '<Plug>Sneak_t',{})
-          map(m, 'T', '<Plug>Sneak_T',{})
-          map(m, 's', '<Plug>Sneak_s',{})
-          map(m, 'S', '<Plug>Sneak_S',{})
-        end
-        vim.g['sneak#s_next'] = 1
-        vim.g['sneak#use_ic_scs'] = 1
+        vim.g.qs_buftype_blacklist = { 'terminal', 'nofile', 'nerdtree', 'nvimtree' }
+        vim.g.qs_lazy_highlight = 1
       end,
     }
-  -- }}}
-  -- [Off]Quick Scope {{{
-    -- packer.use {
-    --   'unblevable/quick-scope',
-    --   config = function()
-    --     vim.g.qs_buftype_blacklist = { 'terminal', 'nofile', 'nerdtree', 'nvimtree' }
-    --   end,
-    -- }
   -- }}}
   -- Word motion {{{
     packer.use 'chaoren/vim-wordmotion'
