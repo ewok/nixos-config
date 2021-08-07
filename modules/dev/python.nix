@@ -23,7 +23,7 @@ let
     ipython
 
     # For qutebrowser
-    pynacl
+    # pynacl
   ];
   python-with-my-packages = pkgs.python3.withPackages my-python-packages;
 in

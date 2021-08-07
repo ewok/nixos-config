@@ -169,7 +169,7 @@ mode "$mode_opts" {
 }
 
 # Start Applications
-bindsym $mod_a+Return exec --no-startup-id qutebrowser
+bindsym $mod_a+Return exec --no-startup-id firefox -new-window
 
 bindsym $mod_a+o mode "$mode_apps"
 set $mode_apps (b)luetooth,(c)alc,(e)xplorer,(k)ill menu,(m)ail,(p)avucontrol,(t)odo,(o)ptions
