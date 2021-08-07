@@ -117,6 +117,8 @@ in
         ykmanOtp
 
         yubikeyReset
+
+        pkgs.veracrypt
       ];
 
       programs.gpg = {
