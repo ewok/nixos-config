@@ -1,6 +1,6 @@
 -- vim: ts=2 sw=2 sts=2
 
--- Switchers
+-- Switchers/Vars {{{
   _G.enabled = {}
 
   -- FileTypes
@@ -38,6 +38,40 @@
   enabled.gitgutter = false
   enabled.gitsigns = true
 
+  _G.blacklist_bufftypes = {
+    'dashboard',
+    'dashpreview',
+    'help',
+    'nerdtree',
+    'nofile',
+    'nvimtree',
+    'NvimTree',
+    'sagahover',
+    'startify',
+    'terminal',
+    'vista',
+    'which_key',
+    'coc-explorer',
+    'packer',
+  }
+
+  _G.blacklist_filetypes = {
+    'dashboard',
+    'dashpreview',
+    'help',
+    'nerdtree',
+    'nofile',
+    'nvimtree',
+    'NvimTree',
+    'sagahover',
+    'startify',
+    'terminal',
+    'vista',
+    'which_key',
+    'coc-explorer',
+    'packer',
+  }
+-- }}}
 -- Helpers {{{
   _G.Utils = {}
 
@@ -130,7 +164,7 @@
   })
 -- }}}
 
--- Basic options {{{
+-- Basic NVIM options {{{
   vim.g.mapleader = ' '
   vim.g.maplocalleader = '\\'
 
@@ -1508,8 +1542,11 @@
       packer.use {
         'lukas-reineke/indent-blankline.nvim',
         config = function()
-          -- vim.g.indentLine_char = '|'
-          vim.gindent_blankline_char_list = { '|', '¦', '┆', '┊' }
+          require("indent_blankline").setup {
+            char_list = { '|', '¦', '┆', '┊' },
+            show_first_indent_level = false,
+            filetype_exclude = blacklist_filetypes
+          }
         end,
       }
     end
@@ -1525,7 +1562,7 @@
             indent_space_guides = true;
             indent_tab_guides = false;
             indent_soft_pattern = '\\s';
-            exclude_filetypes = {'help','dashboard','dashpreview','nerdtree','vista','sagahover','which_key', 'NvimTree'};
+            exclude_filetypes = blacklist_filetypes;
             even_colors = { fg ='#AAAAAA',bg=colors.color_10 };
             odd_colors = {fg='#AAAAAA',bg=colors.color_10};
           })
@@ -2358,7 +2395,7 @@
       'lyokha/vim-xkbswitch',
       config = function ()
         vim.g.XkbSwitchEnabled = 1
-        vim.g.XkbSwitchSkipFt = { 'nerdtree', 'coc-explorer', 'nvimtree' }
+        vim.g.XkbSwitchSkipFt = blacklist_filetypes
       end,
     }
     if fn.executable('nix-store') == 1 then
@@ -3483,7 +3520,7 @@
     packer.use {
       'unblevable/quick-scope',
       config = function()
-        vim.g.qs_buftype_blacklist = { 'terminal', 'nofile', 'nerdtree', 'nvimtree' }
+        vim.g.qs_buftype_blacklist = blacklist_bufftypes
         vim.g.qs_lazy_highlight = 1
       end,
     }
