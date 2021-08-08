@@ -164,4 +164,5 @@ in
   };
 
   modules.gaming.enable = false;
+  modules.misc.android.enable = true;
 }
