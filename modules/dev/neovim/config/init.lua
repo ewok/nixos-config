@@ -276,6 +276,9 @@
     " Dynamic timeoutlen
     au InsertEnter * set timeoutlen=1000
     au InsertLeave * set timeoutlen=500
+
+    " Autresize windows
+    autocmd VimResized * wincmd =
     ]], true)
   -- }}}
   -- Wildmenu completion {{{
@@ -1174,9 +1177,9 @@
     }
     augroups({ft_qf=ft_qf})
     _G.load_qf_ft = function()
-      bmap('n', 'q', ':cclose<CR>', {})
       wkmap({
-          r = {':lua require("replacer").run()<cr>', '+Replace'}
+        q = {':cclose<cr>', '+Close'},
+        r = {':lua require("replacer").run()<cr>', '+Replace'}
       },{
         buffer = api.nvim_get_current_buf()
       })
@@ -1189,6 +1192,15 @@
     augroups({ft_replacer=ft_replacer})
     _G.load_qf_replacer = function()
       bmap('n', 'q', ':q<CR>', {})
+    end
+  -- }}}
+  -- Trouble {{{
+    local fr_trouble = {
+      {[[ FileType trouble lua load_trouble_ft() ]]};
+    }
+    augroups({fr_trouble=fr_trouble})
+    _G.load_trouble_ft = function()
+      bmap('n', 'q', ':wincmd q<CR>', {})
     end
   -- }}}
   -- Yaml {{{
@@ -2699,21 +2711,24 @@
         'mfussenegger/nvim-lint',
         config = function()
           require('lint').linters_by_ft = {
-            markdown = {'vale', 'languagetool'},
-            vimwiki = {'vale', 'languagetool'},
-            sh = {'shellcheck'},
-            zsh = {'shellcheck'},
             ansible = {'ansible_lint'},
-            python = {'mypy', 'pylint'},
-            go = {'golangcilint'},
+            bash = {'shellcheck'},
             dockerfile = {'hadolint'},
-            text = {'languagetool'},
+            -- hcl = {?},
+            go = {'golangcilint'},
             lua = {'luacheck'},
+            markdown = {'languagetool'},
             nix = {'nix'},
+            python = {'mypy', 'pylint'}, --'bandit', 'flake8', 'mypy', 'pydocstyle', 'pylint'
+            sh = {'shellcheck'},
             -- terraform = {'tflint'},
+            text = {'languagetool'},
+            -- vim = {?},
+            vimwiki = {'languagetool'},
             -- yaml = {'yamllint'}
-            --'bandit', 'flake8', 'mypy', 'pydocstyle', 'pylint'
+            zsh = {'shellcheck'},
           }
+          vim.cmd[[au BufWritePost <buffer> lua require('lint').try_lint()]]
 
           -- -- mdl
           -- local mdl_pattern = '(.*):(%d+):(%d+) (.*)'
@@ -2748,11 +2763,26 @@
     if enabled.ale then
       packer.use {
         'w0rp/ale',
-        ft = {'sh', 'zsh', 'bash', 'c',
-        'cpp', 'cmake', 'html', 'markdown', 'vimwiki',
-        'racket', 'vim', 'text', 'ansible', 'yaml',
-        'yaml.ansible', 'dockerfile', 'python', 'terraform',
-        'hcl'},
+        ft = {
+          'ansible',
+          'bash',
+          'dockerfile',
+          'go',
+          'lua',
+          'hcl',
+          'markdown',
+          'nix',
+          'python',
+          'sh',
+          'terraform',
+          'text',
+          'vim',
+          'vimwiki',
+          'yaml',
+          'yaml.ansible',
+          'zsh',
+        },
+
         as = 'ale',
         cmd = 'ALEEnable',
         opt = true,
@@ -3039,11 +3069,8 @@
               r = {function() vim.lsp.buf.rename() end, 'Rename'},
               t = {
                 name = '+Trouble',
-                t = {'<cmd>TroubleToggle<cr>', 'Toggle'},
                 w = {'<cmd>Trouble lsp_workspace_diagnostics<cr>', 'Workspace'},
                 d = {'<cmd>Trouble lsp_document_diagnostics<cr>', 'Diagnostics'},
-                l = {'<cmd>Trouble loclist<cr>', 'Loclist'},
-                q = {'<cmd>Trouble quickfix<cr>', 'Quickfix'},
                 r = {'<cmd>Trouble lsp_references<cr>', 'Reference'}
               }
             }
@@ -3500,6 +3527,15 @@
             open_split = { '<c-s>' },
           }
         }
+        wkmap({
+          ['<leader>c'] = {
+            t = {
+              name = '+Trouble',
+              t = {'<cmd>TroubleToggle<cr>', 'Toggle'},
+              l = {'<cmd>Trouble loclist<cr>', 'Loclist'},
+              q = {'<cmd>Trouble quickfix<cr>', 'Quickfix'},
+            }
+          }})
       end
     }
     -- }}}
