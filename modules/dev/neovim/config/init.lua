@@ -2270,6 +2270,9 @@
           vim.cmd('GitGutterSignsDisable')
         end
 
+        vim.g.qs_enable = 0
+        vim.call('quick_scope#UnhighlightLine')
+
         require("twilight").enable()
       end, 1000)
       if fn.executable('tmux') == 1 and fn.exists('$TMUX') == 1 then
@@ -2297,6 +2300,9 @@
         if enabled.gitgutter then
           vim.cmd('GitGutterSignsEnable')
         end
+
+        vim.g.qs_enable = 1
+        vim.cmd[[doautocmd CursorMoved]]
 
         require("twilight").disable()
       end, 1000)
