@@ -65,7 +65,7 @@ in
             primary = true;
             position = "0x0";
             mode = "3440x1440";
-            gamma = "1.389:1.0:0.714";
+            gamma = "1.0:1.0:1.0";
             rate = "60.00";
           };
         };
@@ -82,7 +82,7 @@ in
             primary = true;
             position = "0x0";
             mode = "3440x1440";
-            gamma = "1.389:1.0:0.714";
+            gamma = "1.0:1.0:1.0";
             rate = "60.00";
           };
         };
@@ -96,7 +96,7 @@ in
         config = {
           eDP-1-1 = {
             enable = true;
-            gamma = "1.0:0.769:0.588";
+            gamma = "1.0:1.0:1.0";
             mode = "1920x1080";
             position = "3440x0";
             rate = "60.00";
@@ -107,7 +107,7 @@ in
             primary = true;
             position = "0x0";
             mode = "3440x1440";
-            gamma = "1.389:1.0:0.714";
+            gamma = "1.0:1.0:1.0";
             rate = "60.00";
           };
         };
@@ -120,7 +120,7 @@ in
         config = {
           eDP-1-1 = {
             enable = true;
-            gamma = "1.0:0.769:0.588";
+            gamma = "1.0:1.0:1.0";
             mode = "1920x1080";
             position = "3440x0";
             rate = "60.00";

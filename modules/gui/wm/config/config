@@ -249,19 +249,20 @@ bindsym $mod+minus scratchpad show
 # Workspaces
 ################################################################################################
 bindsym $mod_a+r exec "autorandr -c; sleep 2; systemctl --user start random-background.service"
-# bindsym $mod_a+Up  exec bash ~/.config/i3/rotate.sh inverted
-# bindsym $mod_a+Down  exec bash ~/.config/i3/rotate.sh normal
-# bindsym $mod_a+Left  exec bash ~/.config/i3/rotate.sh left
-# bindsym $mod_a+Right  exec bash ~/.config/i3/rotate.sh right
+
+bindsym $mod_a+Up  exec bash ~/.config/i3/rotate.sh inverted
+bindsym $mod_a+Down  exec bash ~/.config/i3/rotate.sh normal
+bindsym $mod_a+Left  exec bash ~/.config/i3/rotate.sh left
+bindsym $mod_a+Right  exec bash ~/.config/i3/rotate.sh right
 
 #navigate workspaces next / previous
 bindsym $mod+n workspace next
 bindsym $mod+b workspace prev
-bindsym $mod_a+n exec i3-display-swap.sh right
-bindsym $mod_a+b exec i3-display-swap.sh left
 
-bindsym $mod+Shift+n move workspace to output right
 bindsym $mod+Shift+b move workspace to output left
+bindsym $mod+$mod_a+n move workspace to output down
+bindsym $mod+$mod_a+b move workspace to output up
+bindsym $mod+Shift+n move workspace to output right
 
 # Workspace names
 # to display names or symbols instead of plain workspace numbers you can use
