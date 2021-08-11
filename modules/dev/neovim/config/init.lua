@@ -1555,7 +1555,7 @@
         'lukas-reineke/indent-blankline.nvim',
         config = function()
           require("indent_blankline").setup {
-            char_list = { '|', '¦', '┆', '┊' },
+            char_list = { '|', '┊', '┆', '¦' },
             show_first_indent_level = false,
             filetype_exclude = blacklist_filetypes
           }
