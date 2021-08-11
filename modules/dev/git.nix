@@ -2,6 +2,7 @@
 with lib;
 let
   dev = config.modules.dev;
+  gui = config.modules.gui;
   user = config.properties.user;
   work = config.properties.work_account;
   hm = config.home-manager.users.${user.name};
@@ -52,6 +53,9 @@ in
         gitAndTools.pass-git-helper
         gitAndTools.gh
         gitEnv
+      ] ++ optionals (gui.enable) [
+        meld
+        git-cola
       ];
     home-manager.users."${user.name}" = {
 
