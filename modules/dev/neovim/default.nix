@@ -62,6 +62,7 @@ in
         gcc
         par
         silver-searcher
+        lua
 
         # Linters
         hadolint
