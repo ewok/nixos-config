@@ -3580,15 +3580,33 @@
 
 -- Scripts {{{
   -- TODOs {{{
-    vim.api.nvim_exec([[
-      function! OpenToDo()
-        silent! vsplit TODO.md
-        nnoremap <buffer> q :x<CR>
-        setf todo
-      endfunction
-    ]], true)
+    vim.g.todo_project_name = vim.fn.expand('%:p:h:t')
+    wkmap({['<leader>ot'] = {function ()
+      local Job = require'plenary.job'
+      Job:new({
+        command = 'git',
+        args = { 'config', '--local', 'remote.origin.url' },
+        cwd = vim.fn.getcwd(),
+        on_exit = function(j, _)
+          local result = j:result()
 
-    wkmap({['<leader>ot'] = {'<cmd>call OpenToDo()<CR>', 'Open ToDO'}})
+          if result[1] ~= nil then
+
+            local git_project_name = string.gsub(string.gsub(result[1], '.*:.*/', ''), '.git', '')
+            if git_project_name ~= nil then
+              vim.g.todo_project_name = git_project_name
+            end
+
+          end
+
+        end,
+      }):sync()
+      vim.api.nvim_exec('silent! vsplit '..os.getenv('HOME')..'/Notes/projects/TODO_'..vim.g.todo_project_name.. '.md', true)
+      vim.api.nvim_exec([[
+          nnoremap <buffer> q :x<CR>
+          setf todo
+      ]], true)
+    end, 'Open ToDO'}})
   -- }}}
   -- FoldText {{{
     vim.api.nvim_exec([[
