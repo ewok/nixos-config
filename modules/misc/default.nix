@@ -6,6 +6,7 @@ with lib;
     ./books.nix
     ./edu.nix
     ./gaming.nix
+    ./ios.nix
     ./spotify.nix
     ./todo.nix
   ];
