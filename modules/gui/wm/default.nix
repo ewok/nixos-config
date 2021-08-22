@@ -196,32 +196,15 @@ in
               };
             };
             blocks = [
-              # {
-              #   block = "time";
-              #   interval = 60;
-              #   format = "📆 %a %d %b 🏠 %R";
-              #   timezone = "Europe/Moscow";
-              # }
-              # {
-              #   block = "time";
-              #   interval = 60;
-              #   format = "🌐 %R";
-              #   timezone = "UTC";
-              # }
-              # {
-              #   block = "time";
-              #   interval = 60;
-              #   format = "🌏 %R";
-              #   timezone = "Asia/Manila";
-              # }
 
               {
                 block = "custom";
                 command = pkgs.writeShellScript "show-date.sh" ''
-                  LOCAL=$(date +"📆 %a %d %b 🏠 %R")
+                  LOCAL=$(date +"📆 %a %d %b 🇷🇺 %R")
                   UTC=$(date -u +"🌐 %R")
-                  ASIA=$(TZ='Asia/Manila' date +"🌏 %R")
-                  echo "$LOCAL $UTC $ASIA"
+                  PHT=$(TZ='Asia/Manila' date +"🇵🇭 %R")
+                  KG=$(TZ='Asia/Bishkek' date +"🇰🇬 %R")
+                  echo "$LOCAL $UTC $KG $PHT"
                 '';
                 interval = 60;
               }
