@@ -200,11 +200,12 @@ in
               {
                 block = "custom";
                 command = pkgs.writeShellScript "show-date.sh" ''
-                  LOCAL=$(date +"📆 %a %d %b 🇷🇺 %R")
+                  DATE=$(date +"📆 %a %d %b")
+                  MSK=$(date +"🇷🇺 %R")
                   UTC=$(date -u +"🌐 %R")
                   PHT=$(TZ='Asia/Manila' date +"🇵🇭 %R")
                   KG=$(TZ='Asia/Bishkek' date +"🇰🇬 %R")
-                  echo "$LOCAL $UTC $KG $PHT"
+                  echo "$DATE $UTC $MSK $KG $PHT"
                 '';
                 interval = 60;
               }
