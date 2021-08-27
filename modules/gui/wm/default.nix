@@ -94,7 +94,6 @@ in
 
       xdg.mimeApps.enable = true;
       home.packages = with pkgs; [
-        imagemagick
         xdotool
         xorg.xrandr
         xorg.xwininfo

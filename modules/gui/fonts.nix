@@ -45,7 +45,7 @@ in
       fontconfig = {
         enable = true;
         antialias = true;
-        dpi = cfg.dpi;
+        # dpi = cfg.dpi;
         defaultFonts.monospace = [ cfg.monospaceFont ];
       };
 
