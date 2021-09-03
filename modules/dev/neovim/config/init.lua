@@ -1273,7 +1273,7 @@
       config = function()
         require'bufferline'.setup{
           options = {
-            mappings = false,
+            -- mappings = false,
             max_name_length = 18,
             max_prefix_length = 15,
             tab_size = 18,
@@ -2602,6 +2602,7 @@
               }
             }
           },
+
           hook = function()
             local neorg_leader = "<Leader>n"
             local neorg_callbacks = require('neorg.callbacks')
@@ -2816,167 +2817,122 @@
   -- }}}
   -- Completor {{{
     packer.use {
-      'hrsh7th/nvim-compe',
+      'hrsh7th/nvim-cmp',
       requires = {
-        { 'rafamadriz/friendly-snippets', },
-        { 'hrsh7th/vim-vsnip', },
-        { 'norcalli/snippets.nvim',
+        'hrsh7th/cmp-vsnip',
+        'hrsh7th/cmp-buffer',
+        'hrsh7th/cmp-nvim-lsp',
+        'hrsh7th/cmp-path',
+        'hrsh7th/cmp-nvim-lua',
+        'hrsh7th/cmp-calc',
+        'f3fora/cmp-spell',
+        'hrsh7th/cmp-emoji',
+        'rafamadriz/friendly-snippets',
+        'hrsh7th/vim-vsnip',
+        'cstrap/python-snippets',
+        'rust-lang/vscode-rust',
+        {
+          'norcalli/snippets.nvim',
+          config=function()
+            local U = require'snippets.utils'
+            _G.sep = function () return string.gsub(vim.bo.commentstring, "%%s", "") end
 
-        config=function()
-          local U = require'snippets.utils'
-          _G.sep = function () return string.gsub(vim.bo.commentstring, "%%s", "") end
+            require'snippets'.snippets = {
+              _global = {
+                ["date_ymd"]   = "${=os.date('%Y-%m-%d')}",
+                ["date_ymdHM"]   = "${=os.date('%Y-%m-%d %H:%M')}",
+                ["date_ymdHMS"]   = "${=os.date('%Y-%m-%d %H:%M:%S')}",
 
-          require'snippets'.snippets = {
-            _global = {
-              ["date_ymd"]   = "${=os.date('%Y-%m-%d')}",
-              ["date_ymdHM"]   = "${=os.date('%Y-%m-%d %H:%M')}",
-              ["date_ymdHMS"]   = "${=os.date('%Y-%m-%d %H:%M:%S')}",
+                ["todo"] = U.match_indentation (
+                "${=sep()} TODO(${=io.popen('id -un'):read'*l'}): $0\n"..
+                "${=sep()} ${=vim.fn.expand('%:h')}/${=vim.fn.expand('%:t')}:${=tostring(vim.fn.line('.'))}"),
 
-              ["todo"] = U.match_indentation (
-              "${=sep()} TODO(${=io.popen('id -un'):read'*l'}): $0\n"..
-              "${=sep()} ${=vim.fn.expand('%:h')}/${=vim.fn.expand('%:t')}:${=tostring(vim.fn.line('.'))}"),
-
-            };
-            vimwiki = {
-              code  = "```\n$0\n```",
-              code_shell = "```sh\n$0\n```",
-              code_shell_result = "<!-- target: out -->\n```sh\n$0\n```\n<!-- name: out -->\n```\n```",
-              code_python = "```python\n$0\n```",
-              code_python_result = "<!-- target: out -->\n```python\n$0\n```\n<!-- name: out -->\n```\n```",
-            };
-          }
-        end,},
-        { 'cstrap/python-snippets', },
-        { 'rust-lang/vscode-rust', },
+              };
+              vimwiki = {
+                code  = "```\n$0\n```",
+                code_shell = "```sh\n$0\n```",
+                code_shell_result = "<!-- target: out -->\n```sh\n$0\n```\n<!-- name: out -->\n```\n```",
+                code_python = "```python\n$0\n```",
+                code_python_result = "<!-- target: out -->\n```python\n$0\n```\n<!-- name: out -->\n```\n```",
+              };
+            }
+          end,
+        },
       },
       config = function ()
         vim.cmd [[set shortmess+=c]]
         vim.o.completeopt = "menuone,noselect"
-        require'compe'.setup {
-          enabled = true;
-          autocomplete = true;
-          debug = false;
-          min_length = 1;
-          preselect = 'enable';
-          throttle_time = 80;
-          source_timeout = 200;
-          incomplete_delay = 400;
-          max_abbr_width = 100;
-          max_kind_width = 100;
-          max_menu_width = 100;
-          documentation = true;
 
-          source = {
-            path = true;
-            buffer = true;
-            calc = {filetypes={
-              'markdown',
-              'vimwiki'
-            }};
-            vsnip = true;
-            nvim_lsp = true;
-            nvim_lua = true;
-            spell = true;
-            tags = false;
-            snippets_nvim = true;
-            treesitter = false;
-            emoji = {filetypes={
-              'markdown',
-              'lua',
-              'vimwiki'
-            }};
-            neorg = true;
-            orgmode = {
-              priority=100,
-              filetypes={
-                'org',
-                'orgagenda',
-              },
-            };
-          };
+        local cmp = require'cmp'
+
+        cmp.setup{
+          snippet = {
+            expand = function(args)
+              vim.fn["vsnip#anonymous"](args.body)
+            end,
+          },
+          mapping = {
+            ['<C-n>'] = cmp.mapping(cmp.mapping.select_next_item(), { 'i', 's' }),
+            ['<C-p>'] = cmp.mapping(cmp.mapping.select_prev_item(), { 'i', 's' }),
+            ['<C-j>'] = cmp.mapping.confirm({ select = true }),
+            ['<C-b>'] = cmp.mapping.scroll_docs(-4),
+            ['<C-f>'] = cmp.mapping.scroll_docs(4),
+            ['<C-Space>'] = cmp.mapping.complete(),
+            ['<C-e>'] = cmp.mapping.close(),
+            ['<CR>'] = cmp.mapping.confirm({
+              behavior = cmp.ConfirmBehavior.Replace,
+              select = true,
+            }),
+            ['<S-Tab>'] = function(fallback)
+              if vim.fn.call("vsnip#jumpable", {-1}) == 1 then
+                vim.fn.feedkeys(vim.api.nvim_replace_termcodes('<Plug>(vsnip-jump-prev)', true, true, true), '')
+              else
+                fallback()
+              end
+            end,
+            ['<Tab>'] = function(fallback)
+              if vim.fn.call("vsnip#jumpable", {1}) == 1 then
+                vim.fn.feedkeys(vim.api.nvim_replace_termcodes('<Plug>(vsnip-jump-next)', true, true, true), '')
+              else
+                fallback()
+              end
+            end
+          },
+          sources = {
+            { name = 'calc' },
+            { name = 'path' },
+            { name = 'orgmode' },
+            { name = 'neorg' },
+            { name = 'snippets_nvim' },
+            { name = 'vsnip' },
+            { name = 'nvim_lua' },
+            { name = 'nvim_lsp' },
+            { name = 'spell' },
+            { name = 'buffer' },
+            { name = 'emoji' },
+          },
+          formatting = {
+            format = function(entry, vim_item)
+              vim_item.kind = require("lspkind").presets.default[vim_item.kind] .. " " .. vim_item.kind
+
+              vim_item.menu = ({
+                buffer = "[Buffer]",
+                calc = "[Calc]",
+                emoji = "[Emoji]",
+                neorg = "[NOrg]",
+                nvim_lsp = "[LSP]",
+                nvim_lua = "[Lua]",
+                orgmode = "[Org]",
+                path = "[Path]",
+                snippets_nvim = "[Norc]",
+                spell = "[Spell]",
+                vsnip = "[Vsnip]",
+              })[entry.source.name]
+              return vim_item
+            end,
+          },
         }
-
-        local t = function(str)
-          return vim.api.nvim_replace_termcodes(str, true, true, true)
-        end
-
-        local check_back_space = function()
-          local col = vim.fn.col('.') - 1
-          if col == 0 or vim.fn.getline('.'):sub(col, col):match('%s') then
-            return true
-          else
-            return false
-          end
-        end
-
-        _G.cn_complete = function(a_key)
-          local key = a_key or "<C-n>"
-          if vim.fn.pumvisible() == 1 then
-            return t "<C-n>"
-          elseif vim.fn.call("vsnip#available", {1}) == 1 then
-            return t "<Plug>(vsnip-expand-or-jump)"
-          elseif check_back_space() then
-            return t(key)
-          else
-            return vim.fn['compe#complete']()
-          end
-        end
-
-        _G.cp_complete = function(a_key)
-          local key = a_key or "<C-p>"
-          if vim.fn.pumvisible() == 1 then
-            return t "<C-p>"
-          elseif vim.fn.call("vsnip#jumpable", {-1}) == 1 then
-            return t "<Plug>(vsnip-jump-prev)"
-          else
-            return t(key)
-          end
-        end
-
-        _G.snip_next_field = function(a_key)
-          local key = a_key or "<Tab>"
-          if vim.fn.call("vsnip#jumpable", {1}) == 1 then
-            return t "<Plug>(vsnip-jump-next)"
-          else
-            return t(key)
-          end
-        end
-
-        _G.snip_prev_field = function(a_key)
-          local key = a_key or "<S-Tab>"
-          if vim.fn.call("vsnip#jumpable", {-1}) == 1 then
-            return t "<Plug>(vsnip-jump-prev)"
-          else
-            return t(key)
-          end
-        end
-
-        map("i", "<Tab>", "v:lua.snip_next_field()", {expr = true})
-        map("s", "<Tab>", "v:lua.snip_next_field()", {expr = true})
-        map("i", "<S-Tab>", "v:lua.snip_prev_field()", {expr = true})
-        map("s", "<S-Tab>", "v:lua.snip_prev_field()", {expr = true})
-
-        map("i", "<C-n>", "v:lua.cn_complete('<C-n>')", {expr = true})
-        map("s", "<C-n>", "v:lua.cn_complete('<C-n>')", {expr = true})
-        map("i", "<C-p>", "v:lua.cp_complete('<C-p>')", {expr = true})
-        map("s", "<C-p>", "v:lua.cp_complete('<C-p>')", {expr = true})
-
-        map("i", "<C-y>", [[pumvisible() ? "\<C-y>\<C-y>"  : "\<C-y>"]], {expr = true, noremap = true})
-        map("s", "<C-y>", [[pumvisible() ? "\<C-y>\<C-y>"  : "\<C-y>"]], {expr = true, noremap = true})
-
-        map("i", "<C-e>", [[pumvisible() ? "\<C-y>\<C-e>"  : "\<Esc>a\<C-e>"]], {expr = true, noremap = true})
-        map("s", "<C-e>", [[pumvisible() ? "\<C-y>\<C-e>"  : "\<Esc>a\<C-e>"]], {expr = true, noremap = true})
-
-        map("i", "<C-Space>", "compe#complete()", {expr = true})
-        map("i", "<CR>", "compe#confirm('<CR>')", {expr = true})
-        map("i", "<C-j>", "compe#confirm('<C-j>')", {expr = true})
-
-        -- map("i", "<C-e>", "compe#close('<C-e>')", {expr = true})
-        -- map("i", "<C-e>", "compe#close('<C-e>')", {expr = true})
-
-        map("i", "<C-f>", "compe#scroll({ 'delta': +4 })", {expr = true})
-        map("i", "<C-b>", "compe#scroll({ 'delta': -4 })", {expr = true})
-      end,
+      end
     }
   -- }}}
   -- LSP {{{
