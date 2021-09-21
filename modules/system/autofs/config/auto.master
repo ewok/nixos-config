@@ -1,6 +1,0 @@
-# Provided by ansible
-/mnt/nas1 /etc/autofs/auto.nas1 --timeout=60 --ghost
-/mnt/nas2 /etc/autofs/auto.nas2 --timeout=60 --ghost
-/mnt/ssh /etc/autofs/auto.ssh --timeout=60 --ghost
-/mnt/net -hosts
-+auto.master

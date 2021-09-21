@@ -4,13 +4,15 @@ in
 {
   imports =
     [
+      "${inputs.nixos-hardware}/common/pc/ssd"
+      "${inputs.nixos-hardware}/lenovo/thinkpad/t14s"
       (modulesPath + "/installer/scan/not-detected.nix")
     ];
 
   boot.initrd.availableKernelModules = [ "xhci_pci" "nvme" "usb_storage" "sr_mod" "sdhci_pci" ];
-  boot.initrd.kernelModules = [ ];
+  boot.initrd.kernelModules = [];
   boot.kernelModules = [ "kvm-intel" ];
-  boot.extraModulePackages = [ ];
+  boot.extraModulePackages = [];
 
   fileSystems."/" =
     {
