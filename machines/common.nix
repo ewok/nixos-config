@@ -33,6 +33,7 @@ in
 
   home-manager = {
     useGlobalPkgs = true;
+    backupFileExtension = "backup";
   };
 
   environment.pathsToLink = [ "/libexec" ];

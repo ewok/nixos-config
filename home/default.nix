@@ -4,7 +4,6 @@ with lib;
   imports = map (n: ./modules + "/${n}") (builtins.attrNames (builtins.readDir ./modules));
 
   options.home = {
-
     user = {
       name = mkOption {
         description = "Username.";
@@ -461,4 +460,5 @@ with lib;
       gaming.enable = mkEnableOption "Enable gaming soft.";
     };
   };
+
 }

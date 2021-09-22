@@ -35,11 +35,11 @@ let
         done
 
       else
-        sudo nixos-rebuild $1 --verbose --flake "."
+        sudo nixos-rebuild $1 --show-trace --verbose --flake "."
       fi
 
     else
-      sudo nixos-rebuild $1 --verbose --flake ".#$2" $3
+      sudo nixos-rebuild $1 --show-trace --verbose --flake ".#$2" $3
     fi
     ${nix-copy-nas}/bin/nix-copy-nas /run/current-system
   '';
