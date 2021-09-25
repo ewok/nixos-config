@@ -5,6 +5,6 @@ let
 in
 {
   config = mkIf (dev.enable) {
-    home.packages = [ pkgs.awscli2 ];
+    home.packages = [ pkgs.awscli ];
   };
 }

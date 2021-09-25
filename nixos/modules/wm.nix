@@ -40,7 +40,8 @@ in
       style = "adwaita-dark";
     };
 
-    services.dbus.packages = [ pkgs.gnome3.dconf ];
+    programs.dconf.enable = true;
+    # services.dbus.packages = [ pkgs.gnome.dconf ];
 
   };
 }
