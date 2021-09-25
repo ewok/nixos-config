@@ -34,6 +34,9 @@ let
           nix flake update --update-input $flake
         done
 
+      elif [ "$1" == "switch" ];then
+        sudo nixos-rebuild $1 --show-trace --verbose --flake "."
+        ${nix-copy-nas}/bin/nix-copy-nas /run/current-system
       else
         sudo nixos-rebuild $1 --show-trace --verbose --flake "."
       fi
@@ -41,7 +44,6 @@ let
     else
       sudo nixos-rebuild $1 --show-trace --verbose --flake ".#$2" $3
     fi
-    ${nix-copy-nas}/bin/nix-copy-nas /run/current-system
   '';
 
   # nix = writeShellScriptBin "nix" ''
