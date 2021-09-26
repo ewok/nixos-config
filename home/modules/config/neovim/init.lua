@@ -2025,22 +2025,71 @@
         'kyazdani42/nvim-tree.lua',
         requires = {{'kyazdani42/nvim-web-devicons'}},
         config = function ()
-          vim.g.nvim_tree_width = 40
-          vim.g.nvim_tree_width_allow_resize = 1
-          vim.g.nvim_tree_auto_close = 0
-          vim.g.nvim_tree_follow = 1
-          -- Forgets state
-          vim.g.nvim_tree_tab_open = 0
-          vim.g.nvim_tree_group_empty = 1
-          vim.g.nvim_tree_disable_netrw = 0
-          vim.g.nvim_tree_auto_ignore_ft = blacklist_filetypes
-          vim.g.nvim_tree_quit_on_open = 0
-          vim.g.nvim_tree_lsp_diagnostics = 1
-          vim.g.nvim_tree_highlight_opened_files = 3
+          local tree_cb = require'nvim-tree.config'.nvim_tree_callback
+          require'nvim-tree'.setup {
+            disable_netrw       = false,
+            hijack_netrw        = false,
+            open_on_setup       = false,
+            ignore_ft_on_setup  = blacklist_filetypes,
+            auto_close          = false,
+            open_on_tab         = false,
+            hijack_cursor       = false,
+            update_cwd          = true,
+            lsp_diagnostics     = true,
+
+            update_focused_file = {
+              enable      = true,
+              update_cwd  = false,
+              ignore_list = blacklist_bufftypes
+            },
+
+            system_open = {
+              cmd  = nil,
+              args = {}
+            },
+
+            view = {
+              width = 40,
+              side = 'left',
+              auto_resize = true,
+
+              mappings = {
+                custom_only = true,
+                list = {
+                  { key = { "<CR>" },   cb = tree_cb("edit") },
+                  { key = { "o" },      cb = tree_cb("edit") },
+                  { key = { "<C-]>" },  cb = tree_cb("cd") },
+                  { key = { "C" },      cb = tree_cb("cd") },
+                  { key = { "v" },      cb = tree_cb("vsplit") },
+                  { key = { "s" },      cb = tree_cb("split") },
+                  { key = { "t" },      cb = tree_cb("tabnew") },
+                  { key = { "<BS>" },   cb = tree_cb("close_node") },
+                  { key = { "<S-CR>" }, cb = tree_cb("close_node") },
+                  { key = { "<Tab>" },  cb = tree_cb("preview") },
+                  { key = { "I" },      cb = tree_cb("toggle_ignored") },
+                  { key = { "H" },      cb = tree_cb("toggle_dotfiles") },
+                  { key = { "r" },      cb = tree_cb("refresh") },
+                  { key = { "R" },      cb = tree_cb("refresh") },
+                  { key = { "a" },      cb = tree_cb("create") },
+                  { key = { "d" },      cb = tree_cb("remove") },
+                  { key = { "m" },      cb = tree_cb("rename") },
+                  { key = { "M" },      cb = tree_cb("full_rename") },
+                  { key = { "x" },      cb = tree_cb("cut") },
+                  { key = { "c" },      cb = tree_cb("copy") },
+                  { key = { "p" },      cb = tree_cb("paste") },
+                  { key = { "[g" },     cb = tree_cb("prev_git_item") },
+                  { key = { "]g" },     cb = tree_cb("next_git_item") },
+                  { key = { "u" },      cb = tree_cb("dir_up") },
+                  { key = { "q" },      cb = tree_cb("close") },
+                }
+              }
+            }
+          }
+
           vim.g.nvim_tree_disable_window_picker = 1
-          vim.g.nvim_tree_update_cwd = 1
-          vim.g.nvim_tree_disable_default_keybindings = 1
-          vim.g.nvim_tree_hijack_cursor = 0
+          vim.g.nvim_tree_group_empty = 1
+          vim.g.nvim_tree_highlight_opened_files = 3
+          vim.g.nvim_tree_quit_on_open = 0
 
           vim.api.nvim_exec([[
             hi NvimTreeCursorLine cterm=bold ctermbg=white guifg=${color_2}
@@ -2060,39 +2109,6 @@
             noremap = true,
             silent = true
           })
-
-          local tree_cb = require'nvim-tree.config'.nvim_tree_callback
-          vim.g.nvim_tree_bindings = {
-            -- ["<CR>"] = ":YourVimFunction()<cr>",
-            -- ["u"] = ":lua require'some_module'.some_function()<cr>",
-
-            -- default mappings
-            { key = { "<CR>" },   cb = tree_cb("edit") },
-            { key = { "o" },      cb = tree_cb("edit") },
-            { key = { "<C-]>" },  cb = tree_cb("cd") },
-            { key = { "C" },      cb = tree_cb("cd") },
-            { key = { "v" },      cb = tree_cb("vsplit") },
-            { key = { "s" },      cb = tree_cb("split") },
-            { key = { "t" },      cb = tree_cb("tabnew") },
-            { key = { "<BS>" },   cb = tree_cb("close_node") },
-            { key = { "<S-CR>" }, cb = tree_cb("close_node") },
-            { key = { "<Tab>" },  cb = tree_cb("preview") },
-            { key = { "I" },      cb = tree_cb("toggle_ignored") },
-            { key = { "H" },      cb = tree_cb("toggle_dotfiles") },
-            { key = { "r" },      cb = tree_cb("refresh") },
-            { key = { "R" },      cb = tree_cb("refresh") },
-            { key = { "a" },      cb = tree_cb("create") },
-            { key = { "d" },      cb = tree_cb("remove") },
-            { key = { "m" },      cb = tree_cb("rename") },
-            { key = { "M" },      cb = tree_cb("full_rename") },
-            { key = { "x" },      cb = tree_cb("cut") },
-            { key = { "c" },      cb = tree_cb("copy") },
-            { key = { "p" },      cb = tree_cb("paste") },
-            { key = { "[g" },     cb = tree_cb("prev_git_item") },
-            { key = { "]g" },     cb = tree_cb("next_git_item") },
-            { key = { "u" },      cb = tree_cb("dir_up") },
-            { key = { "q" },      cb = tree_cb("close") },
-          }
 
           vim.g.nvim_tree_icons = {
             default = '',
@@ -3501,7 +3517,6 @@
       end
     }
     -- }}}
--- Motion
   -- AutoPairs {{{
     packer.use 'jiangmiao/auto-pairs'
   -- }}}
