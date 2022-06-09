@@ -3,9 +3,7 @@ let
   username = config.username;
 in
 {
-  imports = [
-    ../nixos
-  ];
+  imports = map (n: ../modules + "/${n}") (builtins.attrNames (builtins.readDir ../modules));
 
   nixpkgs.config = {
     allowUnfree = true;
@@ -21,13 +19,13 @@ in
       dates = "weekly";
       options = "--delete-older-than 10d";
     };
-    binaryCaches = ["s3://store?endpoint=http://nas:9000"];
+    # binaryCaches = ["s3://store?endpoint=http://nas:9000"];
     # I am using local cache on NAS
-    requireSignedBinaryCaches = false;
+    # requireSignedBinaryCaches = false;
     extraOptions = ''
       keep-outputs = true
       keep-derivations = true
-      experimental-features = nix-command flakes ca-references
+      experimental-features = nix-command flakes
     '';
   };
 
@@ -44,9 +42,14 @@ in
     createHome = false;
   };
 
-  users.defaultUserShell = pkgs.zsh;
+  users.defaultUserShell = pkgs.fish;
 
   services.openssh.enable = true;
+
+  hardware.bluetooth.enable = true;
+  services.blueman.enable = true;
+  services.xserver.libinput.enable = true;
+  services.xserver.libinput.touchpad.naturalScrolling = true;
 
   environment.systemPackages = with pkgs; [
     git

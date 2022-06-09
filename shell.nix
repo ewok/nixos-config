@@ -22,23 +22,23 @@ let
         nix-store --gc
         sudo nix-store --gc
 
-      elif [ "$1" == "update-nix" ];then
-        for flake in stable nixpkgs master home-manager;
-        do
-          nix flake update --update-input $flake
-        done
+      # elif [ "$1" == "update-nix" ];then
+      #   for flake in stable nixpkgs master home-manager;
+      #   do
+      #     nix flake update --update-input $flake
+      #   done
 
       elif [ "$1" == "update-all" ];then
-        for flake in stable nixpkgs master nixos-hardware neovim-nightly-overlay home-manager;
-        do
-          nix flake update --update-input $flake
-        done
+        # for flake in stable nixpkgs master nixos-hardware neovim-nightly-overlay home-manager;
+        # do
+          nix flake update
+        # done
 
       elif [ "$1" == "switch" ];then
         sudo nixos-rebuild $1 --show-trace --verbose --flake "."
-        ${nix-copy-nas}/bin/nix-copy-nas /run/current-system
+        # ${nix-copy-nas}/bin/nix-copy-nas /run/current-system
       else
-        sudo nixos-rebuild $1 --show-trace --verbose --flake "."
+        sudo nixos-rebuild $1 --verbose --flake "."
       fi
 
     else
@@ -46,9 +46,9 @@ let
     fi
   '';
 
-  # nix = writeShellScriptBin "nix" ''
-  #   ${pkgs.nixFlakes}/bin/nix --option experimental-features "nix-command flakes ca-references" "$@"
-  # '';
+  nix = writeShellScriptBin "nix" ''
+    ${pkgs.nixFlakes}/bin/nix --option experimental-features "nix-command flakes" "$@"
+  '';
 
   git-crypt-status = writeShellScriptBin "git-crypt-status" ''
     git-crypt status | grep -v not
@@ -69,11 +69,14 @@ pkgs.mkShell {
     git-crypt
     git-crypt-status
 
-    nixFlakes
+    # nixFlakes
     nixosMy
     nix-copy-nas
 
     nvim-test
+    neovim
+    nix
+    rnix-lsp
   ];
 
   shellHook = ''

@@ -2,8 +2,8 @@
   description = "ewoks envs";
 
   inputs = rec {
-    nixpkgs.url = "github:nixos/nixpkgs/nixos-unstable";
-    stable.url = "github:NixOS/nixpkgs/nixos-20.09";
+    # nixpkgs.url = "github:nixos/nixpkgs/nixos-unstable";
+    stable.url = "github:NixOS/nixpkgs/nixos-22.05";
     master.url = "github:nixos/nixpkgs/master";
     nixos-hardware.url = "github:NixOS/nixos-hardware";
     # neovim-nightly-overlay.url = "github:nix-community/neovim-nightly-overlay";
@@ -11,16 +11,16 @@
     # rnix.url = "https://github.com/nix-community/rnix-lsp/archive/master.tar.gz";
     home-manager = {
       url = "github:rycee/home-manager";
-      inputs.nixpkgs.follows = "nixpkgs";
+      inputs.nixpkgs.follows = "stable";
     };
   };
 
   outputs = { self, ... }@inputs:
     let
-      lib = inputs.nixpkgs.lib;
+      lib = inputs.stable.lib;
       system = "x86_64-linux";
       nixpkgs = final: prev: {
-        nixpkgs = import inputs.nixpkgs {
+        nixpkgs = import inputs.stable {
           config.allowUnfree = true;
           inherit system;
         };
@@ -45,7 +45,7 @@
                   }
                   (import (./. + "/machines/${name}"))
                   inputs.home-manager.nixosModules.home-manager
-                  inputs.nixpkgs.nixosModules.notDetected
+                  inputs.stable.nixosModules.notDetected
                 ];
                 specialArgs = { inherit inputs; };
               };
