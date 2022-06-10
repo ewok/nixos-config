@@ -17,6 +17,7 @@ in
       office = mkOption { type = types.bool; };
       video = mkOption { type = types.bool; };
       zeal = mkOption { type = types.bool; };
+      vpn = mkOption { type = types.bool; };
 
       fonts = {
         dpi = mkOption {
@@ -71,6 +72,9 @@ in
             ] ++
             optionals (cfg.video) [
               vlc
+            ] ++
+            optionals (cfg.vpn) [
+              mullvad-vpn
             ];
           };
         })

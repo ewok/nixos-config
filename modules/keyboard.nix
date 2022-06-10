@@ -7,7 +7,7 @@ let
     #!${pkgs.bash}/bin/bash
     LAYOUT=''${1:-0}
     if [ $LAYOUT -eq 1 ]; then
-      setxkbmap -rules "evdev" -model "pc105" -layout "us,ru" -option "ctrl:swapcaps"
+      setxkbmap -rules "evdev" -model "pc105" -layout "us,ru" -option "grp:win_space_toggle,ctrl:swapcaps,altwin:swap_alt_win"
     else
       setxkbmap -rules "evdev" -model "pc105" -layout "us,ru" -option
     fi
@@ -22,7 +22,7 @@ in
 
     services.xserver = {
       layout = "us,ru";
-      xkbOptions = "ctrl:swapcaps,grp:ctrl_shift_toggle";
+      xkbOptions = "grp:win_space_toggle,ctrl:swapcaps,altwin:swap_alt_win";
       autoRepeatDelay = 200;
       autoRepeatInterval = 30;
     };

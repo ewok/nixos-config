@@ -1,8 +1,8 @@
 # I3 config ${lib}
 # Please see http://i3wm.org/docs/userguide.html for a complete reference!
 
-set $mod Mod1
-set $mod_a Mod4
+set $mod Mod4
+set $mod_a Mod1
 set $mod_c Control
 
 # Direction keys
@@ -59,7 +59,7 @@ for_window [class="Qtconfig-qt4"] floating enable sticky enable border normal
 for_window [class="Simple-scan"] floating enable border normal
 for_window [class="Spotify"]  move container to workspace 8
 for_window [class="Syncthing GTK"] floating enable sticky enable move position center
-for_window [class="TelegramDesktop"] border pixel, move right,move right,move right, resize set 20 ppt
+for_window [class="TelegramDesktop"] border pixel, move right,move right,move right, resize set 30 ppt
 for_window [class="Timeset-gui"] floating enable border normal
 for_window [class="trayer"] floating enable
 for_window [title="alsamixer"] floating enable border pixel 1

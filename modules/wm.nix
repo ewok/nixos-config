@@ -195,7 +195,7 @@ in
         autoLogin = { enable = true; user = "${cfg.username}"; };
         defaultSession = "none+i3";
         sessionCommands = ''
-          setxkbmap -rules "evdev" -model "pc105" -layout "us,ru" -option "ctrl:swapcaps"
+          setxkbmap -rules "evdev" -model "pc105" -layout "us,ru" -option "grp:win_space_toggle,ctrl:swapcaps,altwin:swap_alt_win"
         '';
       };
     };
