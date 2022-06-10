@@ -13,6 +13,16 @@ in
   config = mkIf cfg.enable {
     home-manager.users.${cfg.username} = {
       home.packages = with pkgs; [ subversionClient svnRmRm ];
+
+      home.file.".subversion/config".text = ''
+        [auth]
+        [helpers]
+        [tunnels]
+        [miscellany]
+        global-ignores = *.o *.lo *.la *.al .libs *.so *.so.[0-9]* *.a *.pyc *.pyo __pycache__ .terraform .direnv .venv .vscode .clj-kondo .lsp .nrepl-port iced_stdout target
+        [auto-props]
+        [working-copy]
+        '';
     };
   };
 }
