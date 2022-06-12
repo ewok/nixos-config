@@ -238,7 +238,9 @@ in
       enableGhostscriptFonts = true;
       enableDefaultFonts = true;
 
-      fonts = with pkgs; [ nerdfonts ];
+      fonts = with pkgs; [
+          (nerdfonts.override { fonts = [ "FiraCode" "FiraMono" ]; })
+      ];
     };
 
     console = {
@@ -470,19 +472,19 @@ in
               hide_inactive = true;
               hide_missing = true;
             }
-            {
-              block = "networkmanager";
-              on_click = "${cfg.terminal} -e nmtui";
-              interface_name_exclude = [
-                "br\\-[0-9a-f]{12}"
-                "docker\\d+"
-                "wlp[0-9a-f]+"
-                "enp[0-9a-f]+"
-              ];
-              interface_name_include = [];
-              ap_format = "{ssid^3}";
-              device_format = "{icon}";
-            }
+            # {
+            #   block = "networkmanager";
+            #   on_click = "${cfg.terminal} -e nmtui";
+            #   interface_name_exclude = [
+            #     "br\\-[0-9a-f]{12}"
+            #     "docker\\d+"
+            #     "wlp[0-9a-f]+"
+            #     "enp[0-9a-f]+"
+            #   ];
+            #   interface_name_include = [];
+            #   ap_format = "{ssid^3}";
+            #   device_format = "{icon}";
+            # }
             {
               block = "sound";
               step_width = 5;

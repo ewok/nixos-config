@@ -9,9 +9,11 @@ in
       enable = mkOption { type = types.bool; };
       username = mkOption { type = types.str; };
 
-      books = mkOption { type = types.bool; };
+      booksGui = mkOption { type = types.bool; };
+      booksCli = mkOption { type = types.bool; };
       db = mkOption { type = types.bool; };
-      edu = mkOption { type = types.bool; };
+      anki = mkOption { type = types.bool; };
+      dict = mkOption { type = types.bool; };
       gaming = mkOption { type = types.bool; };
       music = mkOption { type = types.bool; };
       office = mkOption { type = types.bool; };
@@ -52,15 +54,19 @@ in
           home-manager.users."${cfg.username}" = {
             home.packages = with pkgs; [
             ] ++
-            optionals (cfg.books) [
+            optionals (cfg.booksGui) [
               calibre
+            ] ++
+            optionals (cfg.booksCli) [
               epr
             ] ++
             optionals (cfg.db) [
               dbeaver
             ] ++
-            optionals (cfg.edu) [
+            optionals (cfg.anki) [
               anki
+            ] ++
+            optionals (cfg.dict) [
               goldendict
             ] ++
             optionals (cfg.gaming) [
