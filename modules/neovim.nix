@@ -135,6 +135,9 @@ in
     home-manager.users.${cfg.username} = {
       home.packages = with pkgs; [
 
+        cargo
+        cl
+        gcc
         global
         jrnl
         my-nvim
@@ -142,9 +145,11 @@ in
         ripgrep
         rnix-lsp
         silver-searcher
+        sumneko-lua-language-server
         todo
         tree-sitter
         yaml-language-server
+        zig
         zk
 
       ] ++ optionals (cfg.gui) [
@@ -170,41 +175,41 @@ in
       #   Install = { WantedBy = [ "timers.target" ]; };
       # };
 
-      xdg.configFile."nvim/init.lua".text = replaceStrings [
-        ''color_0 = "#282c34"''
-        ''color_1 = "#e06c75",''
-        ''color_2 = "#98c379",''
-        ''color_3 = "#e5c07b",''
-        ''color_4 = "#61afef",''
-        ''color_5 = "#c678dd",''
-        ''color_6 = "#56b6c2",''
-        ''color_7 = "#abb2bf",''
-        ''color_8 = "#545862",''
-        ''color_9 = "#d19a66",''
-        ''color_10 = "#353b45",''
-        ''color_11 = "#3e4451",''
-        ''color_12 = "#565c64",''
-        ''color_13 = "#b6bdca",''
-        ''color_14 = "#be5046",''
-        ''color_15 = "#c8ccd4",''
-      ] [
-        ''color_0 = "#${colors.color0}"''
-        ''color_1 = "#${colors.color1}",''
-        ''color_2 = "#${colors.color2}",''
-        ''color_3 = "#${colors.color3}",''
-        ''color_4 = "#${colors.color4}",''
-        ''color_5 = "#${colors.color5}",''
-        ''color_6 = "#${colors.color6}",''
-        ''color_7 = "#${colors.color7}",''
-        ''color_8 = "#${colors.color8}",''
-        ''color_9 = "#${colors.color9}",''
-        ''color_10 = "#${colors.color10}",''
-        ''color_11 = "#${colors.color11}",''
-        ''color_12 = "#${colors.color12}",''
-        ''color_13 = "#${colors.color13}",''
-        ''color_14 = "#${colors.color14}",''
-        ''color_15 = "#${colors.color15}",''
-      ] (readFile ./config/neovim/init.lua);
+      # xdg.configFile."nvim/init.lua".text = replaceStrings [
+      #   ''color_0 = "#282c34"''
+      #   ''color_1 = "#e06c75",''
+      #   ''color_2 = "#98c379",''
+      #   ''color_3 = "#e5c07b",''
+      #   ''color_4 = "#61afef",''
+      #   ''color_5 = "#c678dd",''
+      #   ''color_6 = "#56b6c2",''
+      #   ''color_7 = "#abb2bf",''
+      #   ''color_8 = "#545862",''
+      #   ''color_9 = "#d19a66",''
+      #   ''color_10 = "#353b45",''
+      #   ''color_11 = "#3e4451",''
+      #   ''color_12 = "#565c64",''
+      #   ''color_13 = "#b6bdca",''
+      #   ''color_14 = "#be5046",''
+      #   ''color_15 = "#c8ccd4",''
+      # ] [
+      #   ''color_0 = "#${colors.color0}"''
+      #   ''color_1 = "#${colors.color1}",''
+      #   ''color_2 = "#${colors.color2}",''
+      #   ''color_3 = "#${colors.color3}",''
+      #   ''color_4 = "#${colors.color4}",''
+      #   ''color_5 = "#${colors.color5}",''
+      #   ''color_6 = "#${colors.color6}",''
+      #   ''color_7 = "#${colors.color7}",''
+      #   ''color_8 = "#${colors.color8}",''
+      #   ''color_9 = "#${colors.color9}",''
+      #   ''color_10 = "#${colors.color10}",''
+      #   ''color_11 = "#${colors.color11}",''
+      #   ''color_12 = "#${colors.color12}",''
+      #   ''color_13 = "#${colors.color13}",''
+      #   ''color_14 = "#${colors.color14}",''
+      #   ''color_15 = "#${colors.color15}",''
+      # ] (readFile ./config/neovim/init.lua);
 
       # xdg.configFile."nvim/lua/partials/notify_org.lua".text = ''
       #   return {
@@ -216,6 +221,10 @@ in
       #     },
       #   }
       # '';
+
+      xdg.configFile."nvim/init.lua".source = ./config/neovim/nvim/init.lua;
+      xdg.configFile."nvim/lua".source = ./config/neovim/nvim/lua;
+
 
       xdg.configFile."nvim/.gitignore".source = ./config/neovim/gitignore;
       home.file.".ctags".source = ./config/neovim/ctags;
