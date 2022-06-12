@@ -12,19 +12,27 @@ let
         -i -nb darkred -sb red -sf black -nf gray)" = 'Yes' ] && $2
   '';
 
-  dmcalc = pkgs.writeShellScriptBin "calc" ''
-    dmenucmd="${rofi_run}/bin/rofi_run -dmenu -p Calc $@"
-
-    while : ; do
-        result=$(${pkgs.xsel}/bin/xsel -o -b | $dmenucmd | xargs echo | ${pkgs.bc}/bin/bc -l 2>&1)
-        if [[ $result ]]; then
-            printf "$result" | ${pkgs.xsel}/bin/xsel -b
-        fi
-        [[ $result ]] || break
-    done
+  rofiCalc = pkgs.writeShellScriptBin "rofi-calc" ''
+    ${rofi_run}/bin/rofi_run -show calc -modi calc -no-show-match -no-sort
   '';
 
-  dmkill = pkgs.writeShellScriptBin "dmkill" ''
+  rofiEmoji = pkgs.writeShellScriptBin "rofi-emoji" ''
+    ${rofi_run}/bin/rofi_run -show emoji -modi emoji
+  '';
+
+  # dmcalc = pkgs.writeShellScriptBin "calc" ''
+  #   dmenucmd="${rofi_run}/bin/rofi_run -dmenu -p Calc $@"
+  #
+  #   while : ; do
+  #       result=$(${pkgs.xsel}/bin/xsel -o -b | $dmenucmd | xargs echo | ${pkgs.bc}/bin/bc -l 2>&1)
+  #       if [[ $result ]]; then
+  #           printf "$result" | ${pkgs.xsel}/bin/xsel -b
+  #       fi
+  #       [[ $result ]] || break
+  #   done
+  # '';
+
+  rofiKill = pkgs.writeShellScriptBin "rofi-kill" ''
     export selected_k="$(ps --user "$(id -u)" -F | \
                 ${rofi_run}/bin/rofi_run -dmenu -i -l 20 -p "Search for process to kill:" | \
                 awk '{print $2" "$11}')";
@@ -39,7 +47,7 @@ let
     fi
   '';
 
-  dmmyip = pkgs.writeShellScriptBin "myip" ''
+  rofiIP = pkgs.writeShellScriptBin "myip" ''
     dmenucmd="${rofi_run}/bin/rofi_run -dmenu -p MyIP: $@"
 
     while : ; do
@@ -52,8 +60,15 @@ let
 
   '';
 
+  rofiWithPlugins = pkgs.rofi.override {
+      plugins = with pkgs; [
+          rofi-calc
+          rofi-emoji
+      ];
+  };
+
   rofi_run = pkgs.writeShellScriptBin "rofi_run" ''
-    ${pkgs.rofi}/bin/rofi -icon-theme "Papirus" -show-icons -terminal ${terminal} -theme default $@
+    ${rofiWithPlugins}/bin/rofi -icon-theme "Papirus" -show-icons -terminal ${terminal} -theme default $@
   '';
 
   #rofiBluetoothThemed = pkgs.writeShellScriptBin "rofi-bluetooth" ''
@@ -178,11 +193,12 @@ in
     home-manager.users.${cfg.username} = {
       home.packages = with pkgs; [
         bc
-        dmcalc
-        dmkill
-        dmmyip
+        rofiCalc
+        rofiEmoji
+        rofiKill
+        rofiIP
         dmprompt
-        rofi
+        # rofi
         rofi_run
         # rofiBluetoothThemed
         # rofi-bluetooth

@@ -178,14 +178,14 @@ mode "$mode_opts" {
 }
 
 bindsym $mod+o mode "$mode_apps"
-set $mode_apps (b)luetooth,(c)alc,(d)ict,(e)xplorer,(k)ill,(p)avucontrol,(o)options,(1)password,(t)odo,(p)pavucontrol
+set $mode_apps (b)luetooth,(c)alc,(d)ict,(e)moji,(k)ill,(p)avucontrol,(o)options,(1)password,(t)odo,(p)pavucontrol
 mode "$mode_apps" {
-    bindsym 1 exec rofi_run -modi 1pass:rofi-1pass -show 1pass, mode "default"
+    bindsym 1 exec 1password, mode "default"
     bindsym b exec --no-startup-id blueman-manager, mode "default"
-    bindsym c exec --no-startup-id calc, mode "default"
+    bindsym c exec --no-startup-id rofi-calc, mode "default"
     bindsym d exec goldendict, mode "default"
-    bindsym e exec pcmanfm, mode "default"
-    bindsym k exec --no-startup-id "xkb-switch -s us; dmkill", mode "default"
+    bindsym k exec --no-startup-id "xkb-switch -s us; rofi-kill", mode "default"
+    bindsym e exec --no-startup-id "xkb-switch -s us; rofi-emoji", mode "default"
     bindsym o mode "$mode_opts"
     bindsym p exec --no-startup-id pavucontrol-qt, mode "default"
     bindsym t exec --no-startup-id "xkb-switch -s us; todofi.sh", mode "default"
