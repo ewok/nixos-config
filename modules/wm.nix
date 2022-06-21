@@ -282,7 +282,8 @@ in
         font-awesome
 
         lm_sensors
-        nerdfonts
+        # nerdfonts
+          (nerdfonts.override { fonts = [ "FiraCode" "FiraMono" ]; })
 
         pcmanfm
         caffeine-ng

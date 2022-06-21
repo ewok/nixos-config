@@ -2,7 +2,7 @@
 with lib;
 let
   cfg = config.opt.apps;
-  hm = config.home-manager.users."${cfg.username}";
+  #hm = config.home-manager.users."${cfg.username}";
 in
   {
     options.opt.apps = {
@@ -109,7 +109,7 @@ in
               start_minimized=false
 
               [content]
-              custom_css_file=${hm.xdg.configHome}/Zeal/Zeal.css
+              custom_css_file=${config.xdg.configHome}/Zeal/Zeal.css
               dark_mode=true
               default_fixed_font_size=${toString cfg.fonts.monospaceFontSize}
               default_font_family=serif
@@ -124,7 +124,7 @@ in
               smooth_scrolling=false
 
               [docsets]
-              path=${hm.xdg.dataHome}/Zeal/Zeal/docsets
+              path=${config.xdg.dataHome}/Zeal/Zeal/docsets
 
               [internal]
               install_id=aab172e7-f1ab-468c-8a41-b3f92a5cd578

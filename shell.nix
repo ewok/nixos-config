@@ -55,7 +55,7 @@ let
   '';
 
   nvim-test = writeShellScriptBin "nvim-test" ''
-    nvim -u ./home/dev/neovim/config/init.lua $@
+    nvim -u ./modules/config/neovim/nvim/init.lua $@
   '';
 
   nix-copy-nas = writeShellScriptBin "nix-copy-nas" ''
@@ -81,6 +81,7 @@ pkgs.mkShell {
 
   shellHook = ''
     # PATH=${nix}/bin:$PATH
+    export NIXPKGS_ALLOW_UNFREE=1
     git-crypt-status
   '';
 }
