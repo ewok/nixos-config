@@ -120,7 +120,47 @@ in
   };
 
   config = mkIf cfg.enable {
-      # home.packages = with pkgs; [ (nerdfonts.override { fonts = [ "FiraCode" "FiraMono" ]; }) ];
+      home.packages = with pkgs; [ (nerdfonts.override { fonts = [ "FiraCode" "FiraMono" ]; }) ];
+      programs.foot = {
+        enable = (terminal == "foot");
+        settings = 
+        # https://codeberg.org/dnkl/foot/src/branch/master/foot.ini
+        {
+            main = {
+                term = "screen-256color";
+                font = "${fonts.monospaceFont}:size=${toString fonts.monospaceFontSize}";
+                dpi-aware = "no";
+                box-drawings-uses-font-glyphs = "yes";
+                initial-window-size-pixels = "1920x1080";
+            };
+            mouse = {
+                hide-when-typing = "yes";
+            };
+            scrollback = {
+              lines = 100000;
+            };
+            colors = {
+              background = "${colors.background}";
+              foreground = "${colors.foreground}";
+              regular0 = "${colors.color0}";  # black
+              regular1 = "${colors.color1}";  # red
+              regular2 = "${colors.color2}";  # green
+              regular3 = "${colors.color3}";  # yellow
+              regular4 = "${colors.color4}";  # blue
+              regular5 = "${colors.color5}";  # magenta
+              regular6 = "${colors.color6}";  # cyan
+              regular7 = "${colors.color7}";  # white
+              bright0 = "${colors.color8}";
+              bright1 = "${colors.color9}";
+              bright2 = "${colors.color10}";
+              bright3 = "${colors.color11}";
+              bright4 = "${colors.color12}";
+              bright5 = "${colors.color13}";
+              bright6 = "${colors.color14}";
+              bright7 = "${colors.color15}";
+            };
+        };
+      };
       programs.alacritty = {
         enable = (terminal == "alacritty");
         settings = {

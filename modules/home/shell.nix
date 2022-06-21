@@ -197,9 +197,10 @@ in
 
       interactiveShellInit = ''
 
-          if functions -vq -- fenv
-            fenv source ~/.profile
-          end
+          # set -l fish_trace on
+          # if functions -vq -- fenv
+          #   fenv source ~/.profile
+          # end
 
           # {readFile ./config/fish/functions/ssh-agent.fish}
           bind \cw backward-kill-word
@@ -252,6 +253,10 @@ in
 
           if command -vq -- bat
             alias cat "bat"
+          end
+
+          function set-gpg-sock
+            set -gx SSH_AUTH_SOCK (gpgconf --list-dirs agent-ssh-socket)
           end
       '';
 
