@@ -2,6 +2,25 @@
 with lib;
 let
   # apt-get install gnupg2 gpg-agent pcscd scdaemon
+
+  # gpg-agent.conf:
+  # enable-ssh-support
+  # default-cache-ttl 34560000
+  # max-cache-ttl 34560000
+  # allow-loopback-pinentry
+  # pinentry-program /usr/bin/pinentry
+
+  # gpg.conf
+  # keyserver hkp://keys.gnupg.net
+  # no-tty
+  # use-agent
+  # trust-model tofu+pgp
+
+  # scdaemon.conf
+  # disable-ccid
+  # card-timeout 1
+  # reader-port Yubico Yubi
+
   cfg = config.opt.security;
 
   ykmanOtp = pkgs.writeShellScriptBin "ykman-otp" ''
@@ -144,6 +163,18 @@ in
             pkgs.yubioath-desktop
             ykmanOtp
             yubikeyReset
+
+              (
+                pkgs.makeDesktopItem {
+                  name = "org.my.ykman-otp";
+                  type = "Application";
+                  exec = "${ykmanOtp}/bin/ykman-otp";
+                  comment = "Ykman OTP + rofi/wofi";
+                  desktopName = "YkmanOTP";
+                  categories = [ "Utility" ];
+                }
+              )
+
           ];
       })
       (mkIf (cfg.enable && cfg.onep.enable) {

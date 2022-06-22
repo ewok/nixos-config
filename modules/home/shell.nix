@@ -139,10 +139,6 @@ in
             egrep = "egrep --color=always";
           };
 
-          shellAliases = {
-            exit = "sync;sync;sync;clear;builtin exit";
-        };
-
         functions = {
           "vifm" = {
             body = ''
@@ -258,12 +254,19 @@ in
           function set-gpg-sock
             set -gx SSH_AUTH_SOCK (gpgconf --list-dirs agent-ssh-socket)
           end
+
+          if functions -vq -- fenv
+            if test -e $HOME/.nix-profile/etc/profile.d/hm-session-vars.sh
+              fenv source $HOME/.nix-profile/etc/profile.d/hm-session-vars.sh
+            end
+          end
       '';
 
       loginShellInit = ''
-         if functions -vq -- fenv
-           fenv source ~/.profile
-         end
+        if functions -vq -- fenv
+          fenv source ~/.profile
+        end
+        set -g XDG_DATA_DIRS $HOME/.nix-profile/share:$HOME/.share:$XDG_DATA_DIRS
 
         set -Ux ABBR_TIPS_PROMPT "\n💡 \e[1m{{ .abbr }}\e[0m => {{ .cmd }}"
         set -Ux ABBR_TIPS_ALIAS_WHITELIST # Not set

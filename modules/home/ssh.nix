@@ -8,7 +8,7 @@ in
   options.opt.ssh.username = mkOption {type = types.str;};
 
   config = {
-      home.packages = [ pkgs.sshuttle pkgs.sshpass ];
+      home.packages = [ pkgs.sshuttle pkgs.sshpass pkgs.openssh ];
 
       programs.ssh = {
         enable = true;
@@ -22,8 +22,10 @@ in
         extraOptionOverrides = {
           "StrictHostKeyChecking" = "no";
         };
-
+        extraConfig = ''
+          AddKeysToAgent yes
+        '';
         matchBlocks = builtins.fromJSON cfg.config;
       };
-    };
+  };
 }

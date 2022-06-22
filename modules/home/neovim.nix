@@ -140,6 +140,7 @@ in
         global
         jrnl
         my-nvim
+        nodejs
         python3Packages.pynvim
         ripgrep
         rnix-lsp
