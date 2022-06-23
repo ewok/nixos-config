@@ -51,9 +51,11 @@ in
         pkgs.zoom-us
       ];
 
-    # xdg.mimeApps.defaultApplications = lib.genAttrs [
-    #   "x-scheme-handler/tg"
-    # ] (_: [ "telegramdesktop.desktop" ]);
+    xdg.mimeApps.defaultApplications = lib.genAttrs [
+      "x-scheme-handler/tg"
+    ] (_: [ "telegramdesktop.desktop" ]) // lib.genAttrs [
+      "x-scheme-handler/slack"
+    ] (_: [ "slack.desktop" ]);
     };
   };
 }

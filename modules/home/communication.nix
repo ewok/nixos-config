@@ -35,6 +35,18 @@ in
       ] ++
       optionals (cfg.slack.enable) [
         pkgs.slack
+          (
+            pkgs.makeDesktopItem {
+              name = "Slack";
+              type = "Application";
+              exec = "${pkgs.slack}/bin/slack %U";
+              icon = "${pkgs.slack}/share/pixmaps/slack.png";
+              comment = "Slack";
+              desktopName = "ChooseBrowser";
+              categories = [ "Network" "GNOME" "GTK" "InstantMessaging" ];
+              mimeTypes = [ "x-scheme-handler/slack" ];
+            }
+          )
       ] ++
       optionals (cfg.telegram.enable) [
         pkgs.tdesktop
@@ -49,8 +61,10 @@ in
         pkgs.zoom-us
       ];
 
-    # xdg.mimeApps.defaultApplications = lib.genAttrs [
-    #   "x-scheme-handler/tg"
-    # ] (_: [ "telegramdesktop.desktop" ]);
+        xdg.mimeApps.defaultApplications = lib.genAttrs [
+          "x-scheme-handler/tg"
+        ] (_: [ "telegramdesktop.desktop" ]) // lib.genAttrs [
+          "x-scheme-handler/slack"
+        ] (_: [ "Slack.desktop" ]);
     };
 }

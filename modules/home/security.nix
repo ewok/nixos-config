@@ -29,7 +29,7 @@ let
     PASS=""
     if [ ! "$(ykman info)" ]
     then
-        ${pkgs.wofi}/bin/wofi --dmenu --mesg "Yubikey not detected." -a "rofi-ykman"
+        rofi_run -dmenu -mesg "Yubikey not detected." -a "rofi-ykman"
         exit 1
     else
         PASS_ENABLED=$(ykman oath info | grep "Password protection" | awk '{print $3}')
@@ -38,13 +38,13 @@ let
         then
             if [ "$PASS_REMEMBERED" == "1" ]
             then
-              PASS="-p $(${pkgs.wofi}/bin/wofi --password --dmenu -p 'Vault Password' -l 0)"
+              PASS="-p $(rofi_run -password -dmenu -p 'Vault Password' -l 0)"
             fi
         fi
     fi
 
     OPTIONS=$(ykman oath accounts list $PASS)
-    LAUNCHER="${pkgs.wofi}/bin/wofi --dmenu -i -p YubikeyOATH"
+    LAUNCHER="rofi_run -dmenu -i -p YubikeyOATH"
 
     option=`echo "''${OPTIONS/, TOTP/\n}" | $LAUNCHER`
     code=$(ykman oath accounts code $PASS "$option")
@@ -59,9 +59,9 @@ let
     if [ $? -eq 0 ]; then
       echo "Sudo priveleges available."
     elif echo $prompt | grep -q '^sudo:'; then
-      echo "$(${pkgs.wofi}/bin/wofi --password --dmenu -p 'Sudo password' -l 0)" | sudo -S echo "Granted"
+      echo "$(rofi_run -password -dmenu -p 'Sudo password' -l 0)" | sudo -S echo "Granted"
     else
-      ${pkgs.wofi}/bin/wofi --dmenu --mesg "You don't have sudo priveleges." -a "rofi-ykman"
+      rofi_run -dmenu -mesg "You don't have sudo priveleges." -a "rofi-ykman"
       exit 1
     fi
 

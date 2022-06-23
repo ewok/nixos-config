@@ -2,20 +2,17 @@
   description = "ewoks envs";
 
   inputs = rec {
-    # nixpkgs.url = "github:nixos/nixpkgs/nixos-unstable";
     stable.url = "github:NixOS/nixpkgs/nixos-22.05";
     master.url = "github:nixos/nixpkgs/master";
     nixos-hardware.url = "github:NixOS/nixos-hardware";
-    # neovim-nightly-overlay.url = "github:nix-community/neovim-nightly-overlay";
-    # rnix.url = "github:nix-community/rnix-lsp/master";
-    # rnix.url = "https://github.com/nix-community/rnix-lsp/archive/master.tar.gz";
     home-manager = {
       url = "github:rycee/home-manager";
       inputs.nixpkgs.follows = "stable";
     };
+    nixgl.url = "github:guibou/nixGL";
   };
 
-  outputs = { self, home-manager, ... }@inputs:
+  outputs = { self, home-manager, nixgl, ... }@inputs:
     let
       lib = inputs.stable.lib;
       system = "x86_64-linux";
@@ -44,7 +41,7 @@
 
                 configuration = { config, pkgs, ... }:
                 {
-                    nixpkgs.overlays = [ nixpkgs (import ./overlays) ];
+                    nixpkgs.overlays = [ nixpkgs (import ./overlays) nixgl.overlay ];
                     nixpkgs.config = {
                         allowUnfree = true;
                         allowBroken = true;
@@ -72,6 +69,7 @@
                         nixpkgs
                         # inputs.neovim-nightly-overlay.overlay
                         (import ./overlays)
+                        nixgl.overlay
                     ];
                 }
                 (import (./. + "/machines/${name}"))

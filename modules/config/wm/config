@@ -14,16 +14,16 @@ set $right l
 ################################################################################################
 # Settings
 ################################################################################################
-gaps inner 7
+#gaps inner 7
 # gaps outer 7
-smart_gaps on
+#smart_gaps on
 
 # Configure border style <normal|1pixel|pixel xx|none|pixel>
 default_border pixel 3
 default_floating_border pixel
 
 # Hide borders
-hide_edge_borders smart_no_gaps
+#hide_edge_borders smart_no_gaps
 
 # Font for window titles. Will also be used by the bar unless a different font
 # is used in the bar {} block below.
@@ -124,7 +124,7 @@ mode "$mode_keyb" {
 }
 
 
-bindsym $mod_a+space exec "xkb-switch -n; pkill -SIGRTMIN+4 i3status-rs"
+bindsym $mod+space exec "xkb-switch -n; pkill -SIGRTMIN+4 i3status-rs"
 
 ################################################################################################
 ## sound-section - DO NOT EDIT if you wish to automatically upgrade Alsa -> Pulseaudio later! ##
@@ -147,16 +147,22 @@ bindsym XF86AudioNext exec playerctl next
 ################################################################################################
 # Screen brightness controls
 ################################################################################################
-bindsym XF86MonBrightnessUp exec "/run/current-system/sw/bin/light -A 1"
-bindsym XF86MonBrightnessDown exec "/run/current-system/sw/bin/light -U 1"
+bindsym XF86MonBrightnessUp exec "xbrightness +5000"
+bindsym XF86MonBrightnessDown exec "xbrightness -5000"
 
-bindsym $mod_c+XF86MonBrightnessUp exec "/run/current-system/sw/bin/light -A 10"
-bindsym $mod_c+XF86MonBrightnessDown exec "/run/current-system/sw/bin/light -U 10"
+bindsym $mod_c+XF86MonBrightnessUp exec "xbrightness +10000"
+bindsym $mod_c+XF86MonBrightnessDown exec "xbrightness -10000"
+
+# bindsym XF86MonBrightnessUp exec "light -A 1"
+# bindsym XF86MonBrightnessDown exec "light -U 1"
+#
+# bindsym $mod_c+XF86MonBrightnessUp exec "light -A 10"
+# bindsym $mod_c+XF86MonBrightnessDown exec "light -U 10"
 
 # Screenshots
 bindsym Print exec --no-startup-id flameshot full -p ~/Pictures/Screenshots/
 #bindsym $mod_a+Print exec --no-startup-id flameshot screen -p ~/Pictures/Screenshots/
-bindsym $mod_c+Print exec --no-startup-id flameshot gui -p ~/Pictures/Screenshots/
+bindsym $mod_c+Print exec --no-startup-id flameshot gui
 
 # Other
 # bindsym Shift+space exec "szAnswer=$(zenity --entry --text \\"Todoist: Add Task\\" --entry-text \\"\\"); td $szAnswer && dunstify \\"Task added\\" || dunstify -u critical \\"Error\\""
@@ -187,7 +193,7 @@ mode "$mode_apps" {
     bindsym k exec --no-startup-id "xkb-switch -s us; rofi-kill", mode "default"
     bindsym e exec --no-startup-id "xkb-switch -s us; rofi-emoji", mode "default"
     bindsym o mode "$mode_opts"
-    bindsym p exec --no-startup-id pavucontrol-qt, mode "default"
+    bindsym p exec --no-startup-id pavucontrol, mode "default"
     bindsym t exec --no-startup-id "xkb-switch -s us; todofi.sh", mode "default"
 
     # exit resize mode: Enter or Escape
@@ -217,7 +223,7 @@ bindsym $mod+q split toggle
 bindsym $mod+f fullscreen, exec bash ~/.config/i3/center-mouse
 
 # change focus between tiling / floating windows
-bindsym $mod+space focus mode_toggle, exec bash ~/.config/i3/center-mouse
+# bindsym $mod+space focus mode_toggle, exec bash ~/.config/i3/center-mouse
 
 # toggle sticky
 # bindsym $mod+p sticky toggle,exec notify-send 'sticky'
@@ -237,6 +243,16 @@ mode "$mode_win" {
         bindsym s layout stacking, mode "default"
         bindsym space focus mode_toggle, mode "default"
         bindsym t layout tabbed, mode "default"
+
+        bindsym $mod+a focus parent, mode "default"
+        bindsym $mod+e layout toggle split, mode "default"
+        bindsym $mod+f floating toggle, mode "default"
+        bindsym $mod+n exec i3-input -F 'rename workspace to "%s"' -P 'New name: ', mode "default"
+        bindsym $mod+p sticky toggle, exec notify-send 'sticky', mode "default"
+        bindsym $mod+r mode "resize"
+        bindsym $mod+s layout stacking, mode "default"
+        bindsym $mod+space focus mode_toggle, mode "default"
+        bindsym $mod+t layout tabbed, mode "default"
 
         # exit resize mode: Enter or Escape
         bindsym Return mode "default"
@@ -408,9 +424,10 @@ client.background       $base07
 exec_always --no-startup-id caffeine -k
 # exec_always --no-startup-id pgrep clipit || clipit
 exec_always --no-startup-id pgrep xkb-switch || xkb-switch --i3
-# exec_always --no-startup-id pgrep keepassxc || keepassxc
+exec_always --no-startup-id keyb-layout 1
+exec_always --no-startup-id nm-applet --indicator
+exec_always --no-startup-id pgrep flameshot || flameshot
 # exec_always --no-startup-id pgrep blueman-applet || blueman-applet
-# exec_always --no-startup-id pgrep Enpass || Enpass
 # exec_always --no-startup-id sparkleshare &
 # exec_always --no-startup-id pgrep cawbird || cawbird
 # exec_always --no-startup-id deadd

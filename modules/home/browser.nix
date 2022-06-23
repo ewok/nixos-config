@@ -107,13 +107,13 @@ in
 
   config = mkIf cfg.enable {
 
-    # home.sessionVariables = { "BROWSER" = "choose-browser"; };
-    #
+    home.sessionVariables = { "BROWSER" = "choose-browser"; };
+
     home.packages = with pkgs; [
       xsel
       mitmproxy-local-start
       mitmproxy-local-stop
-      # chooseBrowser
+      chooseBrowser
 
       # (
       #   makeDesktopItem {
@@ -126,16 +126,16 @@ in
       #   }
       # )
 
-      # (
-      #   makeDesktopItem {
-      #     name = "org.custom.choose.browser";
-      #     type = "Application";
-      #     exec = "choose-browser %U";
-      #     comment = "Choose browser to open URL";
-      #     desktopName = "ChooseBrowser";
-      #     categories = [ "Network" "WebBrowser" ];
-      #   }
-      # )
+      (
+        makeDesktopItem {
+          name = "org.custom.choose.browser";
+          type = "Application";
+          exec = "choose-browser %U";
+          comment = "Choose browser to open URL";
+          desktopName = "ChooseBrowser";
+          categories = [ "Network" "WebBrowser" ];
+        }
+      )
     ] ++
     optionals (cfg.chrome.enable) [
       # For Google Meet
@@ -554,18 +554,18 @@ in
     #   executable = true;
     # };
 
-    # xdg.mimeApps.defaultApplications = lib.genAttrs [
-    #   "text/html"
-    #   "x-scheme-handler/http"
-    #   "x-scheme-handler/https"
-    #   "application/x-extension-htm"
-    #   "application/x-extension-html"
-    #   "application/x-extension-shtml"
-    #   "application/xhtml+xml"
-    #   "application/x-extension-xht"
-    #   "x-scheme-handler/about"
-    #   "x-scheme-handler/unknown"
-    # ] (_: [ "org.custom.choose.browser.desktop" ]);
+    xdg.mimeApps.defaultApplications = lib.genAttrs [
+      "text/html"
+      "x-scheme-handler/http"
+      "x-scheme-handler/https"
+      "application/x-extension-htm"
+      "application/x-extension-html"
+      "application/x-extension-shtml"
+      "application/xhtml+xml"
+      "application/x-extension-xht"
+      "x-scheme-handler/about"
+      "x-scheme-handler/unknown"
+    ] (_: [ "org.custom.choose.browser.desktop" ]);
 
     };
 }

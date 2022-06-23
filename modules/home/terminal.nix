@@ -163,6 +163,9 @@ in
       };
       programs.alacritty = {
         enable = (terminal == "alacritty");
+        package = pkgs.writeShellScriptBin "alacritty" ''
+        ${pkgs.nixgl.nixGLIntel}/bin/nixGLIntel ${pkgs.alacritty}/bin/alacritty $@
+        '';
         settings = {
           scrolling = {
             history = 100000;
@@ -224,7 +227,6 @@ in
       home.sessionVariables.TERMINAL = "/usr/bin/${terminal}";
       programs.kitty = {
         enable = (terminal == "kitty");
-        package = pkgs.hello;
         settings = {
           font_family = fonts.monospaceFont;
           font_size = fonts.monospaceFontSize;
