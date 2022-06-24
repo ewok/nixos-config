@@ -113,7 +113,6 @@ in
   {
     options.opt.security = {
       enable = mkOption { type = types.bool; };
-      username = mkOption { type = types.str; };
       keybase.enable = mkOption {type = types.bool;};
       veracrypt.enable = mkOption { type = types.bool; };
       enpass.enable = mkOption { type = types.bool; };

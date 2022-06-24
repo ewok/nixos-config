@@ -109,5 +109,12 @@ in
     services.udev.extraRules = ''
       ACTION=="change", SUBSYSTEM=="drm", RUN+="${pkgs.autorandr}/bin/autorandr --batch --change"
     '';
+
+    # Home
+    home-manager.users."${cfg.username}" = {
+        imports = [
+            home/wm.nix
+        ];
+    };
   };
 }
