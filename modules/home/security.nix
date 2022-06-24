@@ -120,6 +120,7 @@ in
       keepass.enable = mkOption { type = types.bool; };
       lastpass.enable = mkOption { type = types.bool; };
       onep.enable = mkOption { type = types.bool; };
+      bitwarden.enable = mkOption { type = types.bool; };
       yubikey.enable = mkOption { type = types.bool; };
       cryptomator.enable = mkOption { type = types.bool; };
     };
@@ -175,6 +176,13 @@ in
                 }
               )
 
+          ];
+      })
+      (mkIf (cfg.enable && cfg.bitwarden.enable) {
+          home.packages = [
+            pkgs.bitwarden
+            pkgs.bitwarden-cli
+            pkgs.rofi-rbw
           ];
       })
       (mkIf (cfg.enable && cfg.onep.enable) {
