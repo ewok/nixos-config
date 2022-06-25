@@ -10,6 +10,7 @@
       boot.initrd.kernelModules = [];
       boot.kernelModules = [ "kvm-intel" ];
       boot.extraModulePackages = [];
+      boot.resumeDevice = "/dev/disk/by-uuid/441f29cb-7c15-48c0-b10a-782b5e68bd64";
 
       fileSystems."/" =
         { device = "/dev/disk/by-uuid/7de3383c-3c5b-48eb-aefd-b539c305d4b7";
@@ -24,9 +25,9 @@
       };
 
       swapDevices =
-        [
-    # { device = "/dev/disk/by-label/swap"; }
-  ];
+      [
+          { device = "/dev/disk/by-uuid/441f29cb-7c15-48c0-b10a-782b5e68bd64"; }
+      ];
   networking.useDHCP = lib.mkDefault true;
   powerManagement.cpuFreqGovernor = lib.mkDefault "powersave";
   hardware.cpu.intel.updateMicrocode = lib.mkDefault config.hardware.enableRedistributableFirmware;

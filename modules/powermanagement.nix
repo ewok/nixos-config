@@ -12,7 +12,7 @@ let
   '';
 
   hibernateEnvironment = {
-    HIBERNATE_SECONDS = "28800";
+    HIBERNATE_SECONDS = "14400";
     HIBERNATE_LOCK = "/var/run/autohibernate.lock";
   };
 in
@@ -77,7 +77,12 @@ in
         '';
 
         home-manager.users.${cfg.username} = {
-          home.packages = [ ptop powertune pkgs.powertop ];
+          home.packages = [
+          ptop
+          powertune
+          pkgs.powertop
+          pkgs.acpica-tools
+          ];
         };
 
         # Backlight
