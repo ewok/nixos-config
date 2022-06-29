@@ -6,7 +6,6 @@ in
 {
   options.opt.communication = {
     enable = mkOption { type = types.bool; };
-    username = mkOption { type = types.str; };
     discord.enable = mkOption {type = types.bool;};
     element.enable = mkOption {type = types.bool;};
     signal.enable = mkOption {type = types.bool;};

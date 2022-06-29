@@ -50,7 +50,6 @@ in
   options.opt.nvim = {
     enable = mkOption { type = types.bool; };
     gui = mkOption { type = types.bool; };
-    username = mkOption {type = types.str;};
     colors = {
         background = mkOption {
           type = types.str;
@@ -222,8 +221,8 @@ in
       #   }
       # '';
 
-      xdg.configFile."nvim/init.lua".source = ./config/neovim/nvim/init.lua;
-      xdg.configFile."nvim/lua".source = ./config/neovim/nvim/lua;
+      xdg.configFile."nvim/init.lua".source = ./config/neovim/init.lua;
+      # xdg.configFile."nvim/lua".source = ./config/neovim/nvim/lua;
 
 
       xdg.configFile."nvim/.gitignore".source = ./config/neovim/gitignore;
