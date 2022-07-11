@@ -46,6 +46,18 @@ let
     fi
   '';
 
+  hmMy = writeShellScriptBin "h" ''
+    if [ "$#" -eq 0 ]; then
+      echo "Provide a command as a first argument please."
+      echo "Usual h switch build"
+
+    elif [ "$#" -eq 1 ]; then
+      home-manager --impure --flake "." $1
+    else
+      home-manager --impure --flake ".#$2" $1
+    fi
+  '';
+
   nix = writeShellScriptBin "nix" ''
     ${pkgs.nixFlakes}/bin/nix --option experimental-features "nix-command flakes" "$@"
   '';
@@ -72,6 +84,7 @@ pkgs.mkShell {
     # nixFlakes
     nixosMy
     nix-copy-nas
+    hmMy
 
     nvim-test
     neovim
