@@ -160,20 +160,16 @@ in
 
     # Firefox Plugins
     home.file.".mozilla/firefox/${cfg.username}/extensions/treestyletab@piro.sakura.ne.jp.xpi".source = pkgs.fetchurl {
-      url = "https://addons.mozilla.org/firefox/downloads/file/3956945/tree_style_tab-3.8.24.xpi";
-      sha256 = "0p7dp5xixrz6x7466vbrg7i59xnwbjxqa5994za87zqi4d2b01lg";
-    };
-    home.file.".mozilla/firefox/${cfg.username}/extensions/{d634138d-c276-4fc8-924b-40a0ea21d284}.xpi".source = pkgs.fetchurl {
-      url = "https://addons.mozilla.org/firefox/downloads/file/3957930/1password_x_password_manager-2.3.5.xpi";
-      sha256 = "0yq6jmww4i7mx0mh9cz2yldxc900j9ziabv7kk4wfm4py88n7l9p";
+      url = "https://addons.mozilla.org/firefox/downloads/file/3972784/tree_style_tab-3.8.25.xpi";
+      sha256 = "0cqm9g451gawi3jw5d8sh1xxq37pqmh8f7xzc62p80mv0fgyvy5i";
     };
     home.file.".mozilla/firefox/${cfg.username}/extensions/addon@simplelogin.xpi".source = pkgs.fetchurl {
       url = "https://addons.mozilla.org/firefox/downloads/file/3952833/simplelogin-2.6.3.xpi";
       sha256 = "1ww3y1b1n2czim05r0l7141fj1z3di3q31v9n3w3bkq0zf1dgcqc";
     };
     home.file.".mozilla/firefox/${cfg.username}/extensions/addon@darkreader.org.xpi".source = pkgs.fetchurl {
-      url = "https://addons.mozilla.org/firefox/downloads/file/3954503/darkreader-4.9.51.xpi";
-      sha256 = "1ayk1abcbyk91cwsr0v7yid9p0xrh44ccpyi4wmgsn89lh64mf6z";
+      url = "https://addons.mozilla.org/firefox/downloads/file/3968561/darkreader-4.9.52.xpi";
+      sha256 = "0vdlh1nljmfrimz63w2nafa0ghhzbixdbaqvqcikxvm6185fp3a1";
     };
     home.file.".mozilla/firefox/${cfg.username}/extensions/{019b606a-6f61-4d01-af2a-cea528f606da}.xpi".source = pkgs.fetchurl {
       url = "https://addons.mozilla.org/firefox/downloads/file/3546070/xbs-1.5.2.xpi";
@@ -182,6 +178,10 @@ in
     home.file.".mozilla/firefox/${cfg.username}/extensions/tst-wheel_and_double@dontpokebadgers.com.xpi".source = pkgs.fetchurl {
       url = "https://addons.mozilla.org/firefox/downloads/file/3473925/tree_style_tab_mouse_wheel-1.5.xpi";
       sha256 = "1d9b94y9ds44dzf7iy5sblzwpipp3pc5vljz8qip73mirqgxbfn9";
+    };
+    home.file.".mozilla/firefox/${cfg.username}/extensions/{446900e4-71c2-419f-a6a7-df9c091e268b}.xpi".source = pkgs.fetchurl {
+      url = "https://addons.mozilla.org/firefox/downloads/file/3972752/bitwarden_password_manager-2022.6.1.xpi";
+      sha256 = "03f5kkabj0z9859ky4xv3npkbzfnv37c11a66nqwrpl81vys7n6y";
     };
 
     programs.firefox = {
