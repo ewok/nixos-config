@@ -212,7 +212,6 @@ in
 
         scrot
         flameshot
-        grim
         peek
         feh
 
@@ -221,12 +220,9 @@ in
         nixgl.nixGLIntel
 
         light
-        brightnessctl
-        xbrightness
 
         pavucontrol
         ponymix
-        swappy
 
       ] ++ [ pkgs.xkb-switch-i3 ];
 
@@ -293,6 +289,10 @@ in
                 name = "awesome";
                 overrides = {
                   time = "";
+                  volume_muted = "🔇";
+                  volume_empty = "🔈";
+                  volume_half = "🔉";
+                  volume_full = "🔊";
                 };
               };
 
@@ -436,10 +436,14 @@ in
               format = "{percentage} {time}";
             }
             {
-              block = "custom";
-              command = "xkb-switch";
-              interval = 10;
-              signal = 4;
+              block = "backlight";
+            }
+            {
+              block = "keyboard_layout";
+              driver = "xkbswitch";
+              on_click = "xkb-switch -n";
+              format = "{layout} {variant}";
+              interval = 1;
             }
           ];
           icons = "awesome";

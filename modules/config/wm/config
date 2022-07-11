@@ -147,17 +147,11 @@ bindsym XF86AudioNext exec playerctl next
 ################################################################################################
 # Screen brightness controls
 ################################################################################################
-bindsym XF86MonBrightnessUp exec "xbrightness +5000"
-bindsym XF86MonBrightnessDown exec "xbrightness -5000"
+bindsym XF86MonBrightnessUp exec "light -A 1; pkill -SIGRTMIN+5 i3status-rs"
+bindsym XF86MonBrightnessDown exec "light -U 1; pkill -SIGRTMIN+5 i3status-rs"
 
-bindsym $mod_c+XF86MonBrightnessUp exec "xbrightness +10000"
-bindsym $mod_c+XF86MonBrightnessDown exec "xbrightness -10000"
-
-# bindsym XF86MonBrightnessUp exec "light -A 1"
-# bindsym XF86MonBrightnessDown exec "light -U 1"
-#
-# bindsym $mod_c+XF86MonBrightnessUp exec "light -A 10"
-# bindsym $mod_c+XF86MonBrightnessDown exec "light -U 10"
+bindsym $mod_c+XF86MonBrightnessUp exec "light -A 10; pkill -SIGRTMIN+5 i3status-rs"
+bindsym $mod_c+XF86MonBrightnessDown exec "light -U 10; pkill -SIGRTMIN+5 i3status-rs"
 
 # Screenshots
 bindsym Print exec --no-startup-id flameshot full -p ~/Pictures/Screenshots/
