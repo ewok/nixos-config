@@ -13,6 +13,10 @@ in
         enable = true;
         enableFishIntegration = true;
       };
+
+      imports = [
+        home/nix.nix
+      ];
     };
   };
 }
