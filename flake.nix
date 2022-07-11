@@ -24,6 +24,7 @@
           inherit system;
         };
       };
+
     in
     {
         homeConfigurations = with lib;
@@ -31,54 +32,54 @@
             hosts = map (fname: builtins.head (builtins.match "(.*)" fname))
             (builtins.attrNames (builtins.readDir ./machines));
 
-        genConfiguration = hostName:
-            home-manager.lib.homeManagerConfiguration {
-
-                # TODO: Extract to file
-                inherit username;
-                inherit homeDirectory;
-                inherit system;
-
-                configuration = { config, pkgs, ... }:
-                {
-                    nixpkgs.overlays = [ nixpkgs (import ./overlays) nixgl.overlay ];
-                    nixpkgs.config = {
-                        allowUnfree = true;
-                        allowBroken = true;
-                    };
-
-                    imports = [
-                        (import (./. + "/machines/${hostName}"))
-                    ];
+            pkgs = import inputs.stable {
+                overlays = [ nixpkgs (import ./overlays) nixgl.overlay ];
+                config = {
+                    allowUnfree = true;
+                    allowBroken = true;
                 };
-                stateVersion = "22.05";
+            };
+
+            genConfiguration = hostName:
+            home-manager.lib.homeManagerConfiguration {
+                inherit pkgs;
+                modules = [
+                    {
+                        home = {
+                            username = "$username";
+                            homeDirectory = homeDirectory;
+                            stateVersion = "22.05";
+                        };
+                    }
+                ] ++ [
+                    (import (./. + "/machines/${hostName}"))
+                ];
             };
         in
-            genAttrs hosts genConfiguration;
+        genAttrs hosts genConfiguration;
 
         nixosConfigurations = with lib;
         let
             hosts = map (fname: builtins.head (builtins.match "(.*)" fname))
             (builtins.attrNames (builtins.readDir ./machines));
-        mkHost = name:
+            mkHost = name:
             nixosSystem {
                 inherit system;
                 modules = [
-                {
-                    nixpkgs.overlays = [
-                        nixpkgs
-                        # inputs.neovim-nightly-overlay.overlay
+                    {
+                        nixpkgs.overlays = [
+                            nixpkgs
                         (import ./overlays)
                         nixgl.overlay
                     ];
                 }
                 (import (./. + "/machines/${name}"))
-                    inputs.home-manager.nixosModules.home-manager
-                    inputs.stable.nixosModules.notDetected
-                ];
-                specialArgs = { inherit inputs; };
-            };
+                inputs.home-manager.nixosModules.home-manager
+                inputs.stable.nixosModules.notDetected
+            ];
+            specialArgs = { inherit inputs; };
+        };
         in
-            genAttrs hosts mkHost;
+        genAttrs hosts mkHost;
     };
 }
