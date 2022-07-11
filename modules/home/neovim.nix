@@ -142,12 +142,12 @@ in
         nodejs
         python3Packages.pynvim
         ripgrep
-        rnix-lsp
+        # rnix-lsp
         silver-searcher
-        sumneko-lua-language-server
+        # sumneko-lua-language-server
         todo
         tree-sitter
-        yaml-language-server
+        # yaml-language-server
         zig
         zk
 
