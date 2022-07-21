@@ -1,4 +1,4 @@
-{ pkgs ? import <nixpkgs> {}, ... }:
+{ pkgs ? import <nixpkgs> { }, ... }:
 
 with pkgs;
 let
@@ -18,9 +18,9 @@ let
 
       elif [ "$1" == "clean" ];then
         nix-collect-garbage -d
-        sudo nix-collect-garbage -d
+        # sudo nix-collect-garbage -d
         nix-store --gc
-        sudo nix-store --gc
+        # sudo nix-store --gc
 
       # elif [ "$1" == "update-nix" ];then
       #   for flake in stable nixpkgs master home-manager;
@@ -36,7 +36,7 @@ let
 
       elif [ "$1" == "switch" ];then
         sudo nixos-rebuild $1 --show-trace --verbose --flake "."
-        # ${nix-copy-nas}/bin/nix-copy-nas /run/current-system
+        # $${nix-copy-nas}/bin/nix-copy-nas /run/current-system
       else
         sudo nixos-rebuild $1 --verbose --flake "."
       fi
@@ -46,7 +46,7 @@ let
     fi
   '';
 
-  hmMy = writeShellScriptBin "h" ''
+  hmMy = writeShellScriptBin "hm" ''
     if [ "$#" -eq 0 ]; then
       echo "Provide a command as a first argument please."
       echo "Usual h switch build"
@@ -63,16 +63,29 @@ let
   '';
 
   git-crypt-status = writeShellScriptBin "git-crypt-status" ''
-    git-crypt status | grep -v not
+    git-crypt status -e
   '';
 
   nvim-test = writeShellScriptBin "nvim-test" ''
     nvim -u ./modules/config/neovim/nvim/init.lua $@
   '';
 
-  nix-copy-nas = writeShellScriptBin "nix-copy-nas" ''
-    nix copy --to 's3://store?endpoint=http://nas:9000' "$@"
-  '';
+  # nix-copy-nas = writeShellScriptBin "nix-copy-nas" ''
+  #   nix copy --to 's3://store?endpoint=http://nas:9000' "$@"
+  # '';
+
+  n-darwin-build = writeShellScriptBin "n-darwin-build" ''
+    nix run nix-darwin -- build --flake '.#mac'
+    '';
+  n-darwin-switch = writeShellScriptBin "n-darwin-switch" ''
+    nix run nix-darwin -- switch --flake '.#mac'
+    '';
+  n-droid-build = writeShellScriptBin "n-droid-build" ''
+    nix-on-droid build --flake '.#android'
+    '';
+  n-droid-switch = writeShellScriptBin "n-droid-switch" ''
+    nix-on-droid switch --flake '.#android'
+    '';
 
 in
 pkgs.mkShell {
@@ -83,13 +96,19 @@ pkgs.mkShell {
 
     # nixFlakes
     nixosMy
-    nix-copy-nas
+    #nix-copy-nas
     hmMy
+    nixpkgs-fmt
 
     nvim-test
+
     neovim
     nix
-    rnix-lsp
+    n-darwin-build
+    n-darwin-switch
+    n-droid-build
+    n-droid-switch
+    #rnix-lsp
   ];
 
   shellHook = ''

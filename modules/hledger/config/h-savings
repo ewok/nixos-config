@@ -1,0 +1,21 @@
+#!/usr/bin/env bash
+
+DATE=date
+
+echo "********************************************************************************"
+echo Goals:
+h \
+  bal \
+  --pretty-tables \
+  -e $($DATE +%Y-%m --date="next month") \
+  ^assets:goals $@
+echo
+
+echo "********************************************************************************"
+echo Assets:
+h \
+  bal \
+  --pretty-tables \
+  -e $($DATE +%Y-%m --date="next month") \
+  ^assets:asset $@
+echo

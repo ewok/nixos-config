@@ -1,0 +1,17 @@
+#!/usr/bin/env bash
+
+DATE=date
+
+h 2022 bal \
+  ^exp ^equity:adj not:tag:clopen \
+  --pretty-tables \
+  --sort -ATM "$@"
+
+echo
+
+h bal -ATM \
+  ^exp not:tag:clopen \
+  --pretty-tables \
+  --sort \
+  -b 2023-01 \
+  -e "$($DATE +%Y-%m --date="next month")" "$@"

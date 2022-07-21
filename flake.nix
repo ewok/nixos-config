@@ -1,85 +1,84 @@
 {
   description = "ewoks envs";
 
-  inputs = rec {
-    stable.url = "github:NixOS/nixpkgs/nixos-22.05";
-    master.url = "github:nixos/nixpkgs/master";
-    nixos-hardware.url = "github:NixOS/nixos-hardware";
-    home-manager = {
-      url = "github:rycee/home-manager";
-      inputs.nixpkgs.follows = "stable";
+  inputs = {
+    nixpkgs-stable.url = "github:NixOS/nixpkgs/nixos-23.05";
+    nixpkgs-unstable.url = "github:NixOS/nixpkgs/nixos-unstable";
+
+    # Darwin
+    darwin = {
+      url = "github:LnL7/nix-darwin";
+      inputs.nixpkgs.follows = "nixpkgs-unstable";
     };
-    nixgl.url = "github:guibou/nixGL";
+
+    # Home Manager(linux)
+    home-manager = {
+      url = "github:nix-community/home-manager";
+      inputs.nixpkgs.follows = "nixpkgs-unstable";
+    };
+
+    # Android related
+    nix-on-droid = {
+      url = "github:nix-community/nix-on-droid/release-23.05";
+      inputs.nixpkgs.follows = "nixpkgs-unstable";
+      inputs.home-manager.follows = "home-manager";
+    };
   };
 
-  outputs = { self, home-manager, nixgl, ... }@inputs:
+  outputs = { self, home-manager, nix-on-droid, darwin, ... }@inputs:
     let
-      lib = inputs.stable.lib;
-      system = "x86_64-linux";
-      username = "ataranchiev";
-      homeDirectory = "/home/${username}";
-      nixpkgs = final: prev: {
-        nixpkgs = import inputs.stable {
-          config.allowUnfree = true;
-          inherit system;
+      inherit (inputs.nixpkgs-unstable.lib) genAttrs;
+      homeStateVersion = "23.11";
+      nixpkgsDefaults = {
+        config = {
+          allowUnfree = true;
         };
       };
-
+      modules = map (n: ./modules + "/${n}") (builtins.attrNames (builtins.readDir ./modules));
     in
     {
-        homeConfigurations = with lib;
+
+      # homeConfigurations.linux = home-manager.lib.homeManagerConfiguration {
+      #   inherit (inputs.nixpkgs-unstable) pkgs;
+      #   modules = [
+      #     ./machines/linux
+      #   ];
+      # };
+
+      darwinConfigurations.mac =
         let
-            hosts = map (fname: builtins.head (builtins.match "(.*)" fname))
-            (builtins.attrNames (builtins.readDir ./machines));
-
-            pkgs = import inputs.stable {
-                overlays = [ nixpkgs (import ./overlays) nixgl.overlay ];
-                config = {
-                    allowUnfree = true;
-                    allowBroken = true;
-                };
-            };
-
-            genConfiguration = hostName:
-            home-manager.lib.homeManagerConfiguration {
-                inherit pkgs;
-                modules = [
-                    {
-                        home = {
-                            username = "$username";
-                            homeDirectory = homeDirectory;
-                            stateVersion = "22.05";
-                        };
-                    }
-                ] ++ [
-                    (import (./. + "/machines/${hostName}"))
-                ];
-            };
+          pkgs = import inputs.nixpkgs-unstable (nixpkgsDefaults // {
+            system = "aarch64-darwin";
+          });
         in
-        genAttrs hosts genConfiguration;
-
-        nixosConfigurations = with lib;
-        let
-            hosts = map (fname: builtins.head (builtins.match "(.*)" fname))
-            (builtins.attrNames (builtins.readDir ./machines));
-            mkHost = name:
-            nixosSystem {
-                inherit system;
-                modules = [
-                    {
-                        nixpkgs.overlays = [
-                            nixpkgs
-                        (import ./overlays)
-                        nixgl.overlay
-                    ];
-                }
-                (import (./. + "/machines/${name}"))
-                inputs.home-manager.nixosModules.home-manager
-                inputs.stable.nixosModules.notDetected
-            ];
-            specialArgs = { inherit inputs; };
+        darwin.lib.darwinSystem {
+          inherit pkgs;
+          modules = [
+            ./machines/common.nix
+            ./machines/mac
+            home-manager.darwinModules.home-manager
+          ];
         };
+
+      nixOnDroidConfigurations.android =
+        let
+          pkgs = import inputs.nixpkgs-unstable (nixpkgsDefaults // {
+            system = "aarch64-linux";
+          });
+          inherit modules;
         in
-        genAttrs hosts mkHost;
+        nix-on-droid.lib.nixOnDroidConfiguration {
+          inherit pkgs;
+          modules = [
+            ./machines/common.nix
+            ./machines/android
+            {
+              home-manager.config = {
+                imports = modules;
+                _module.args.utils = import utils/lib.nix { inherit pkgs; };
+              };
+            }
+          ];
+        };
     };
 }

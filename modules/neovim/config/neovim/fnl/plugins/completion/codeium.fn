@@ -1,0 +1,5 @@
+(local {: pack : map!} (require :lib))
+
+(pack :Exafunction/codeium.nvim
+      {:config #(let [codeium (require :codeium)]
+                  (codeium.setup {}))})

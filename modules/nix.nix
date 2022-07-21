@@ -4,19 +4,13 @@ let
   cfg = config.opt.nix;
 in
 {
-  options.opt.nix.enable = mkOption {type = types.bool;};
-  options.opt.nix.username = mkOption {type = types.str;};
+  options.opt.nix = {
+    enable = mkEnableOption "nix";
+  };
 
   config = mkIf cfg.enable {
-    home-manager.users.${cfg.username} = {
-      programs.nix-index = {
-        enable = true;
-        enableFishIntegration = true;
-      };
-
-      imports = [
-        home/nix.nix
-      ];
-    };
+    home.packages = with pkgs; [
+      nix-tree
+    ];
   };
 }

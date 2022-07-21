@@ -1,2 +1,5 @@
 /result*
 .nvimlog
+.nrepl-port
+.clj-kondo
+.lsp

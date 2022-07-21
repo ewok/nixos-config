@@ -4,28 +4,33 @@ let
   cfg = config.opt.ssh;
 in
 {
-  options.opt.ssh.config = mkOption {type = types.str;};
-  options.opt.ssh.username = mkOption {type = types.str;};
+  options.opt.ssh = {
+    enable = mkEnableOption "ssh";
+    config = mkOption { type = types.str; };
+    authorizedKeys = mkOption { type = types.str; };
+  };
 
-  config = {
-    home-manager.users.${cfg.username} = {
-      home.packages = [ pkgs.sshuttle pkgs.sshpass ];
-
-      programs.ssh = {
-        enable = true;
-        compression = true;
-        serverAliveInterval = 10;
-        serverAliveCountMax = 3;
-        userKnownHostsFile = "/dev/null";
-        controlMaster = "auto";
-        controlPath = "/tmp/ssh_mux_%h_%p_%r";
-        controlPersist = "1h";
-        extraOptionOverrides = {
-          "StrictHostKeyChecking" = "no";
-        };
-
-        matchBlocks = builtins.fromJSON cfg.config;
+  config = mkIf cfg.enable {
+    programs.ssh = {
+      enable = true;
+      compression = true;
+      serverAliveInterval = 10;
+      serverAliveCountMax = 3;
+      userKnownHostsFile = "/dev/null";
+      # controlMaster = "auto";
+      # controlPath = "/tmp/ssh_mux_%h_%p_%r";
+      # controlPersist = "1h";
+      extraOptionOverrides = {
+        "StrictHostKeyChecking" = "no";
+        "PubkeyAcceptedKeyTypes" = "+ssh-rsa";
+        "HostKeyAlgorithms" = "+ssh-rsa";
       };
+
+      matchBlocks = builtins.fromJSON cfg.config;
     };
+
+    home.file.".ssh/authorized_keys".text = ''
+      ${cfg.authorizedKeys}
+    '';
   };
 }
