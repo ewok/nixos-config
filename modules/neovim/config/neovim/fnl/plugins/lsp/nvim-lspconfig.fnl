@@ -4,7 +4,7 @@
                           :clojure_lsp
                           :gopls
                           :jsonls
-                          :ltex
+                          ; :ltex
                           :lua_ls
                           :pyright
                           :terraformls

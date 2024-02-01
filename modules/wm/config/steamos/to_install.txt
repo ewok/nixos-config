@@ -1,0 +1,9 @@
+FiraCode NERD Font
+i3-wm
+wmctrl
+base-devel
+gameconqueror
+tailscale
+
+
+set upt KDW i3 with systemd

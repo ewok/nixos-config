@@ -31,6 +31,7 @@ in
             };
             vifm.enable = true;
             fish.enable = true;
+            fish.homeDirectory = homeDirectory;
             starship.enable = true;
             git.enable = true;
             hledger.enable = true;

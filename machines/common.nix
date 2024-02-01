@@ -1,4 +1,4 @@
-{ config, pkgs, lib, ... }:
+{ lib, ... }:
 with lib;
 let
   colors = {
@@ -25,10 +25,10 @@ let
     alt_separator_left = "";
     alt_separator_right = "";
     name = "onedark";
-    # regular_font = "FuraMono Nerd Font";
-    # regular_font_size = 10;
-    # monospace_font = "FuraMono Nerd Font Mono";
-    # monospace_font_size = 10;
+    regular_font = "FiraCode Nerd Font";
+    regular_font_size = "10";
+    monospace_font = "FiraCode Nerd Font Mono";
+    monospace_font_size = "10";
   };
 in
 {
@@ -63,6 +63,10 @@ in
         separator_right = mkOption { type = types.str; };
         alt_separator_left = mkOption { type = types.str; };
         alt_separator_right = mkOption { type = types.str; };
+        regular_font = mkOption { type = types.str; };
+        regular_font_size = mkOption { type = types.str; };
+        monospace_font = mkOption { type = types.str; };
+        monospace_font_size = mkOption { type = types.str; };
       };
     };
 

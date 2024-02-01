@@ -5,6 +5,7 @@ let
   vars = {
     darwin = cfg.darwin;
     linux = !cfg.darwin;
+    homeDirectory = cfg.homeDirectory;
   };
 in
 {
@@ -15,9 +16,16 @@ in
       default = false;
       description = "Enable fish on darwin";
     };
+    homeDirectory = mkOption {
+      type = types.string;
+    };
   };
 
   config = mkIf cfg.enable {
+    programs.direnv = {
+      enable = true;
+      nix-direnv.enable = true;
+    };
     home = {
       packages = with pkgs; [
         fish
@@ -52,6 +60,9 @@ in
           url = "https://raw.githubusercontent.com/jorgebucaran/fisher/HEAD/functions/fisher.fish";
           hash = "sha256-lJvP+FmxQICLFU379pqgTZlYHsjs6XR5V0A+M3iaWGQ=";
         };
+
+        "bash/rc.d/00_path.sh".source = utils.templateFile "00_path.sh" ./config/00_path.sh vars;
+        "bash/rc.d/02_lang.sh".source = ./config/02_lang.sh;
         "bash/profile.d/01_path.sh".text = ''
           export PATH=~/.local/bin:~/bin:~/.bin:$PATH
 

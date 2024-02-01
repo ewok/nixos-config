@@ -1,7 +1,9 @@
-(local {: pack} (require :lib))
+(local {: pack : map!} (require :lib))
 
 (fn config []
   (let [git (require :git-conflict)]
+    (map! [:n] :<leader>gcr :<cmd>GitConflictRefresh<CR>
+          {:noremap true :silent true} :Refresh)
     (git.setup {:default_mappings {:ours :<leader>gco
                                    :theirs :<leader>gct
                                    :none :<leader>gcn

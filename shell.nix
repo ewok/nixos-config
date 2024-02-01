@@ -86,6 +86,12 @@ let
   n-droid-switch = writeShellScriptBin "n-droid-switch" ''
     nix-on-droid switch --flake '.#android'
     '';
+  n-steam-build = writeShellScriptBin "n-steam-build" ''
+    nix run home-manager -- build --flake '.#steamdeck'
+    '';
+  n-steam-switch = writeShellScriptBin "n-steam-switch" ''
+    nix run home-manager -- switch --flake '.#steamdeck'
+    '';
 
 in
 pkgs.mkShell {
@@ -108,6 +114,8 @@ pkgs.mkShell {
     n-darwin-switch
     n-droid-build
     n-droid-switch
+    n-steam-build
+    n-steam-switch
     #rnix-lsp
   ];
 

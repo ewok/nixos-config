@@ -38,12 +38,26 @@
     in
     {
 
-      # homeConfigurations.linux = home-manager.lib.homeManagerConfiguration {
-      #   inherit (inputs.nixpkgs-unstable) pkgs;
-      #   modules = [
-      #     ./machines/linux
-      #   ];
-      # };
+      homeConfigurations.steamdeck =
+        let
+          pkgs = import inputs.nixpkgs-unstable (nixpkgsDefaults // {
+            system = "x86_64-linux";
+          });
+          inherit modules;
+        in
+	 home-manager.lib.homeManagerConfiguration {
+          inherit pkgs;
+        modules = [
+            ./machines/common.nix
+            ./machines/steamdeck
+            {
+              #home-manager.config = {
+               imports = modules;
+               _module.args.utils = import utils/lib.nix { inherit pkgs; };
+              #};
+            }
+        ];
+      };
 
       darwinConfigurations.mac =
         let

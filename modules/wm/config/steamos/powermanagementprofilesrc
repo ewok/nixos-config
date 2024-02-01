@@ -1,0 +1,12 @@
+[Battery][DPMSControl]
+idleTime=300
+
+[Battery][HandleButtonEvents]
+lidAction=1
+powerButtonAction=1
+
+[Battery][SuspendSession]
+idleTime=1200000
+
+[LowBattery][BrightnessControl]
+value=20

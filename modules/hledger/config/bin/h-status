@@ -41,6 +41,7 @@
                                          "-X" "USD"
                                          "--no-total"
                                          "--layout=bare" "-O" "csv"))))
+
 ; Current Cash = assets -> current
 
 (defn get-val [table id index]
@@ -58,9 +59,13 @@
 (def planned-revenue (* -1 (Float/parseFloat (get-val exp-inc "income" 3))))
 (def expenses (Float/parseFloat (get-val exp-inc "expenses" 2)))
 (def planned-expenses (Float/parseFloat (get-val exp-inc "expenses" 3)))
+
 (def current-cash (Float/parseFloat (get-val asset "assets:cash" 2)))
 (def current-loan (Float/parseFloat (let [cl (get-val exp-inc "liabilities" 2)] (if (nil? cl) "0" cl))))
 (def planned-loan (Float/parseFloat (let [pl (get-val exp-inc "liabilities" 3)] (if (nil? pl) "0" pl))))
+
+(if (not= "USD" (get-val exp-inc "income" 1)) (do (println "Error! Wrong currency. Check exchange rates.") (System/exit 1)))
+(if (not= "USD" (get-val asset "assets:cash" 1)) (do (println "Error! Wrong currency. Check exchange rates.") (System/exit 1)))
 
 ; money = Current Cash + Planned Revenue - Planned Expenses - Received Income + (Expenses if <= Planned Expenses)
 (def money
@@ -96,3 +101,4 @@
 (print-red-if-negative (-> expenses
                            (/ planned-expenses)
                            (* 100)) "(%.2f%%)\n\n")
+

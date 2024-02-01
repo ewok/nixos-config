@@ -1,0 +1,25 @@
+#!/usr/bin/env bash
+
+h-status
+
+ARG1="$1"
+ARGS="${@:2}"
+DATE=date
+
+NEXTM=$($DATE +%Y-%m --date="next month")
+
+h \
+  bs \
+  --no-total \
+  --real \
+  -e $NEXTM \
+  ^assets:cash ^liabilities ^equity:adj $@ | grep assets
+
+h \
+  bs \
+  --no-total \
+  -e $NEXTM \
+  ^assets:goals  $@| grep assets
+# to show tend
+# with total
+  # ^assets:cash $@

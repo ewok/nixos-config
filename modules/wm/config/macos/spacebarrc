@@ -1,0 +1,40 @@
+#!/usr/bin/env sh
+
+spacebar -m config position                    top
+spacebar -m config display                     all
+spacebar -m config height                      32
+spacebar -m config title                       off
+spacebar -m config spaces                      on
+spacebar -m config clock                       off
+spacebar -m config power                       off
+spacebar -m config padding_left                20
+spacebar -m config padding_right               20
+spacebar -m config spacing_left                15
+spacebar -m config spacing_right               15
+spacebar -m config text_font                   "FiraCode Nerd Font Mono:Retina:12.0"
+spacebar -m config icon_font                   "Font Awesome 6 Free:Solid:11.0"
+spacebar -m config background_color            0xff282c34
+spacebar -m config foreground_color            0x88c8ccd4
+spacebar -m config power_icon_color            0x88cd950c
+spacebar -m config battery_icon_color          0x88d75f5f
+spacebar -m config dnd_icon_color              0x88a8a8a8
+spacebar -m config clock_icon_color            0x88a8a8a8
+spacebar -m config power_icon_strip             
+spacebar -m config space_icon                  
+spacebar -m config space_icon_color            0xff17ec64
+spacebar -m config space_icon_color_secondary  0xff78c4d4
+spacebar -m config space_icon_color_tertiary   0xfffff9b0
+spacebar -m config space_icon_strip            𝟭 𝟮 𝟯 𝟰 𝟱 𝟲 𝟳 𝟴 𝟵 𝟭𝟬
+spacebar -m config spaces_for_all_displays     on
+spacebar -m config clock_icon                  
+spacebar -m config dnd_icon                    
+spacebar -m config clock_format                "%d/%m/%Y %R"
+spacebar -m config right_shell_icon            ·
+# spacebar -m config right_shell_icon            
+spacebar -m config right_shell_icon_color      0x88a8a8a8
+spacebar -m config right_shell_command         "~/.nix-profile/bin/spacebar.sh"
+spacebar -m config right_shell                 on
+#spacebar -m config debug_output                on
+
+echo "$(date +%Y%m%d%H%M) spacebar configuration loaded.."
+

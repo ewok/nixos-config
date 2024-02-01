@@ -45,6 +45,7 @@ in
             fish = {
               enable = true;
               darwin = true;
+              homeDirectory = homeDirectory;
             };
 
             vifm.enable = true;
@@ -56,16 +57,17 @@ in
             bw.enable = true;
             nix.enable = true;
             lisps.enable = true;
+            wm.enable = true;
           };
 
 
           home.username = "${username}";
           home.stateVersion = "23.11";
 
-          programs.direnv = {
-            enable = true;
-            nix-direnv.enable = true;
-          };
+          # programs.direnv = {
+          #   enable = true;
+          #   nix-direnv.enable = true;
+          # };
 
           programs.fish = {
             enable = true;
@@ -88,8 +90,8 @@ in
             end
           '';
 
-          xdg.configFile."bash/profile.d/00_fix_mac_paths.sh".text = ''
-            export PATH="/Users/${username}/.nix-profile/bin:/run/current-system/sw/bin:/nix/var/nix/profiles/default/bin:$PATH"
+          xdg.configFile."bash/profile.d/01_fix_mac_paths.sh".text = ''
+            export PATH="/run/current-system/sw/bin:/nix/var/nix/profiles/default/bin:$PATH"
             export PATH="/opt/homebrew/sbin:/opt/homebrew/bin:$PATH"
 
             export FZF_LEGACY_KEYBINDINGS=0

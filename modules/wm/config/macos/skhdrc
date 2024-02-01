@@ -1,0 +1,93 @@
+# focus window
+ctrl + cmd - h : yabai -m window --focus west
+ctrl + cmd - j : yabai -m window --focus south
+ctrl + cmd - k : yabai -m window --focus north
+ctrl + cmd - l : yabai -m window --focus east
+
+# move managed window
+cmd + shift - h : yabai -m window --warp west
+cmd + shift - j : yabai -m window --warp south
+cmd + shift - k : yabai -m window --warp north
+cmd + shift - l : yabai -m window --warp east
+
+# balance size of windows
+ctrl + cmd - 0 : yabai -m space --balance
+
+# make floating window fill screen
+ctrl + cmd - up     : yabai -m window --grid 1:1:0:0:1:1
+ctrl + cmd - down   : yabai -m window --grid 4:4:1:1:2:2
+
+# make floating window fill left-half of screen
+ctrl + cmd - left    : yabai -m window --grid 1:2:0:0:1:1
+
+
+# send window to desktop and follow focus
+shift + cmd - 1 : yabai -m window --space  1; yabai -m space --focus 1
+shift + cmd - 2 : yabai -m window --space  2; yabai -m space --focus 2
+shift + cmd - 3 : yabai -m window --space  3; yabai -m space --focus 3
+shift + cmd - 4 : yabai -m window --space  4; yabai -m space --focus 4
+shift + cmd - 5 : yabai -m window --space  5; yabai -m space --focus 5
+shift + cmd - 6 : yabai -m window --space  6; yabai -m space --focus 6
+shift + cmd - 7 : yabai -m window --space  7; yabai -m space --focus 7
+shift + cmd - 8 : yabai -m window --space  8; yabai -m space --focus 8
+shift + cmd - 9 : yabai -m window --space  9; yabai -m space --focus 8
+
+# toggle window zoom
+ctrl + cmd - f : yabai -m window --toggle zoom-fullscreen
+
+# toggle window split type
+ctrl + cmd - e : yabai -m window --toggle split
+
+# float / unfloat window and center on screen
+ctrl + cmd + alt - f : yabai -m window --toggle float --grid 4:4:1:1:2:2
+
+## Other
+cmd - return : osascript ~/bin/new-iterm-window.scpt
+ctrl + cmd - return : osascript ~/bin/new-iterm-window.scpt
+
+# add an on_enter command to the default mode
+:: default : yabai -m config active_window_border_color 0xff775759
+
+:: resize @ : yabai -m config active_window_border_color 0xff24ccaa
+#
+# from 'default' mode, activate mode 'test'
+ctrl + cmd - r ; resize
+
+# from 'test' mode, activate mode 'default'
+resize < escape ; default
+resize < return ; default
+
+# increase window size
+resize < h : yabai -m window --resize left:-20:0
+resize < k : yabai -m window --resize top:0:-20
+
+# decrease window size
+resize < l : yabai -m window --resize left:20:0
+resize < j : yabai -m window --resize top:0:20
+
+
+## Application specific
+
+cmd - j [
+  "Microsoft Edge" : skhd -k "ctrl - tab"
+]
+
+cmd - k [
+  "Microsoft Edge" : skhd -k "ctrl + shift - tab"
+]
+
+alt + shift - j [
+  "Microsoft Edge" : skhd -k "down"
+]
+
+alt - j [
+  "Microsoft Edge" : skhd -k "pagedown"
+]
+
+alt + shift - k [
+  "Microsoft Edge" : skhd -k "up"
+]
+
+alt - k [
+  "Microsoft Edge" : skhd -k "pageup"
+]

@@ -10,6 +10,22 @@
 (map! :v :<leader>6e "c<c-r>=system('base64', @\")<cr><esc>"
       {:noremap true :silent true} "Encode Base64")
 
+;; Open current cwd note page
+(fn open_mind [mode] ; git remote get-url origin 2>/dev/null | sed 's/^.*://;s/.git$//'
+  (vim.cmd (.. "e " conf.notes-dir :/mind/
+               (let [git# (io.popen "git remote get-url origin 2>/dev/null | sed 's/^.*://;s/.git$//'")
+                     git (git#:read :*a)]
+                 (if (= git "")
+                     (string.match (vim.fn.getcwd) "([^/]+)$")
+                     (let [(git num) (string.gsub git "/" "_")] git)))
+               :.md)))
+
+(map! :n :<leader>3 open_mind {:noremap true :silent true} "Open CWD note")
+(map! :n :<leader>9 #(let [git# (io.popen "git remote get-url origin 2>/dev/null | sed 's/^.*://;s/.git$//'")
+                                  git (git#:read :*a)]
+                              (print git))
+      {:noremap true :silent true} "Open CWD note")
+
 ;; Navigation
 (map! [:n] :<C-O><C-O> :<C-O> md "Go Back")
 (map! [:n] :<C-O><C-I> :<Tab> md "Go Forward")
