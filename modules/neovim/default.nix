@@ -118,7 +118,7 @@ in
 
       # Linter
       clj-kondo
-      hadolint
+      # hadolint   # too massive on macos
       markdownlint-cli
       tflint
       tfsec
