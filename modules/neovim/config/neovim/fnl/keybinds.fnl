@@ -17,14 +17,12 @@
                      git (git#:read :*a)]
                  (if (= git "")
                      (string.match (vim.fn.getcwd) "([^/]+)$")
-                     (let [(git num) (string.gsub git "/" "_")] git)))
-               :.md)))
+                     (let [(git _) (string.gsub (string.match git
+                                                              "^%s*(.-)%s*$")
+                                                "/" "_")]
+                       git))) :.md)))
 
 (map! :n :<leader>3 open_mind {:noremap true :silent true} "Open CWD note")
-(map! :n :<leader>9 #(let [git# (io.popen "git remote get-url origin 2>/dev/null | sed 's/^.*://;s/.git$//'")
-                                  git (git#:read :*a)]
-                              (print git))
-      {:noremap true :silent true} "Open CWD note")
 
 ;; Navigation
 (map! [:n] :<C-O><C-O> :<C-O> md "Go Back")
