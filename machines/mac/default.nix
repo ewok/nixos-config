@@ -58,6 +58,7 @@ in
             nix.enable = true;
             lisps.enable = true;
             wm.enable = true;
+            ssh.enable = true;
           };
 
 
