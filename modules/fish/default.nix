@@ -17,7 +17,7 @@ in
       description = "Enable fish on darwin";
     };
     homeDirectory = mkOption {
-      type = types.string;
+      type = types.str;
     };
   };
 
