@@ -90,7 +90,7 @@ let
     nix run home-manager -- build --flake '.#steamdeck'
     '';
   n-steam-switch = writeShellScriptBin "n-steam-switch" ''
-    nix run home-manager -- switch --flake '.#steamdeck'
+    nix run home-manager -- switch -b bakup --flake '.#steamdeck'
     '';
 
 in

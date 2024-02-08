@@ -28,7 +28,6 @@
   outputs = { self, home-manager, nix-on-droid, darwin, ... }@inputs:
     let
       inherit (inputs.nixpkgs-unstable.lib) genAttrs;
-      homeStateVersion = "23.11";
       nixpkgsDefaults = {
         config = {
           allowUnfree = true;
@@ -45,19 +44,17 @@
           });
           inherit modules;
         in
-	 home-manager.lib.homeManagerConfiguration {
+        home-manager.lib.homeManagerConfiguration {
           inherit pkgs;
-        modules = [
+          modules = [
             ./machines/common.nix
             ./machines/steamdeck
             {
-              #home-manager.config = {
-               imports = modules;
-               _module.args.utils = import utils/lib.nix { inherit pkgs; };
-              #};
+              imports = modules;
+              _module.args.utils = import utils/lib.nix { inherit pkgs; };
             }
-        ];
-      };
+          ];
+        };
 
       darwinConfigurations.mac =
         let
