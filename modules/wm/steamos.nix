@@ -21,6 +21,10 @@ in
         source = ./config/steamos/i3/center-mouse;
         executable = true;
       };
+      home.file."bin/i3exit" = {
+        source = ./config/steamos/i3/i3exit;
+        executable = true;
+      };
       home.file.".config" = {
         source = ./config/steamos/kde;
         recursive = true;

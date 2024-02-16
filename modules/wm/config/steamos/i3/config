@@ -93,10 +93,11 @@ bindsym $mod+d exec --no-startup-id "krunner"
 
 # Lock screen
 # TODO: Add i3exit
-bindsym $mod+Backspace exec --no-startup-id "{{ conf.folders.bin }}/i3exit lock"
+bindsym $mod+$mod_c+l exec --no-startup-id "{{ conf.folders.bin }}/i3exit lock"
 
 # reload the configuration file
 bindsym $mod+Shift+c reload
+bindsym $mod+Shift+r restart
 
 # restart i3 inplace (preserves your layout/session, can be used to upgrade i3)
 # bindsym $mod+Shift+r exec "i3-msg restart;autorandr -c; sleep 2; nitrogen --random --set-zoom-fill; keyb 2"
@@ -256,20 +257,14 @@ bindsym $mod+Shift+9 move container to workspace $ws9
 # Set shut down, restart and locking features
 bindsym $mod+0 mode "$mode_system"
 bindsym $mod_a+0 mode "$mode_system"
-set $mode_system (0)plain (1)caps_swap_alt_win (2)caps (l)ock (e)xit switch_(u)ser (s)uspend (h)ibernate (r)eboot (Shift+s)hutdown
+set $mode_system (l)ock (e)xit (s)uspend (R)eboot (S)hutdown x(t)erm
 mode "$mode_system" {
-    bindsym 0 exec {{ conf.folders.bin }}/keyb, mode "default"
-    bindsym 1 exec {{ conf.folders.bin }}/keyb 1, mode "default"
-    bindsym 2 exec {{ conf.folders.bin }}/keyb 2, mode "default"
-
-    bindsym l exec --no-startup-id "{{ conf.folders.bin }}/i3exit lock", mode "default"
-    bindsym s exec --no-startup-id "{{ conf.folders.bin }}/i3exit suspend", mode "default"
-    bindsym u exec --no-startup-id "{{ conf.folders.bin }}/i3exit switch_user", mode "default"
-    bindsym e exec --no-startup-id "{{ conf.folders.bin }}/i3exit logout", mode "default"
-    bindsym h exec --no-startup-id "{{ conf.folders.bin }}/i3exit hibernate", mode "default"
-    bindsym r exec --no-startup-id "{{ conf.folders.bin }}/i3exit reboot", mode "default"
-    bindsym Shift+s exec --no-startup-id "{{ conf.folders.bin }}/i3exit shutdown", mode "default"
-    bindsym t exec --no-startup-id "xterm", mode "default"
+    bindsym l exec i3exit lock, mode "default"
+    bindsym s exec --no-startup-id i3exit suspend, mode "default"
+    bindsym e exec --no-startup-id i3exit logout, mode "default"
+    bindsym Shift+r exec --no-startup-id i3exit reboot, mode "default"
+    bindsym Shift+s exec --no-startup-id i3exit shutdown, mode "default"
+    bindsym t exec --no-startup-id xterm, mode "default"
 
     # exit system mode: "Enter" or "Escape{{ conf.folders.bin }}/"
     bindsym Return mode "default"
@@ -341,28 +336,31 @@ set $base0E #{{ conf.colors.base0E }}
 set $base0F #{{ conf.colors.base0F }}
 
 # Basic bar configuration using the Base16 variables.
-# bar {
-#     i3bar_command i3bar
-#     tray_output primary
-#     tray_padding 2
-#     height {{ conf.theme.monospace_font_size*2+1 }}
-#     # font pango:DejaVu Sans Mono, FontAwesome 11
-#     font pango:{{ conf.theme.monospace_font }} {{ conf.theme.monospace_font_size }}
-#     position top
-#     status_command i3status-rs ~/.config/i3status-rust/config-default.toml
-#     colors {
-#         background $base00
-#         separator  $base01
-#         statusline $base04
-#
-#         # State             Border  BG      Text
-#         focused_workspace   $base05 $base0D $base00
-#         active_workspace    $base05 $base03 $base00
-#         inactive_workspace  $base03 $base01 $base05
-#         urgent_workspace    $base08 $base08 $base00
-#         binding_mode        $base00 $base0A $base00
-#     }
-# }
+bar {
+    i3bar_command i3bar
+    # tray_output primary
+    # tray_padding 2
+    # height {{ conf.theme.monospace_font_size*2+1 }}
+    font pango:DejaVu Sans Mono, FontAwesome 11
+    font pango:{{ conf.theme.monospace_font }} {{ conf.theme.monospace_font_size }}
+    # status_command i3bar
+    # status_command i3status
+    mode hide
+    height 30
+    position top
+    colors {
+        background $base00
+        separator  $base01
+        statusline $base04
+
+        # State             Border  BG      Text
+        focused_workspace   $base05 $base0D $base00
+        active_workspace    $base05 $base03 $base00
+        inactive_workspace  $base03 $base01 $base05
+        urgent_workspace    $base08 $base08 $base00
+        binding_mode        $base00 $base0A $base00
+    }
+}
 
 # Basic color configuration using the Base16 variables for windows and borders.
 # Property Name         Border  BG      Text    Indicator Child Border
@@ -382,3 +380,4 @@ include ~/.config/i3/autostart.d/*.conf
 exec --no-startup-id dex --autostart --environment i3
 exec --no-startup-id xss-lock --transfer-sleep-lock -- i3lock --nofork
 exec --no-startup-id nm-applet
+exec_always --no-startup-id feh --bg-scale "/usr/share/wallpapers/Steam Deck Logo 5.jpg"

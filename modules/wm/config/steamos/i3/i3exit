@@ -1,0 +1,26 @@
+#!/usr/bin/env bash
+
+set -e
+
+case "$1" in
+  lock)
+      kstart loginctl lock-session
+      ;;
+  logout)
+      qdbus org.kde.Shutdown /Shutdown org.kde.Shutdown.logout
+      ;;
+  suspend)
+      systemctl suspend
+      ;;
+  reboot)
+      systemctl reboot
+      ;;
+  shutdown)
+      systemctl poweroff
+      ;;
+  *)
+      echo "== ! i3exit: missing or invalid argument ! =="
+      echo "Try again with: lock | logout | suspend | reboot | shutdown"
+      exit 2
+esac
+

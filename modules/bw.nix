@@ -31,7 +31,7 @@ in
               set -U GL_BW_SESSION (bw unlock --raw)
             end
             set -x BW_SESSION $GL_BW_SESSION
-          fish -c 'bw-reset' &
+          fish -N -c 'bw-reset' &
           end
         end
       '';
