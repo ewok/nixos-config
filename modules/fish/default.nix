@@ -22,10 +22,6 @@ in
   };
 
   config = mkIf cfg.enable {
-    programs.direnv = {
-      enable = true;
-      nix-direnv.enable = true;
-    };
     home = {
       packages = with pkgs; [
         fish
@@ -39,9 +35,6 @@ in
         viddy
         gnutar
         procps
-
-        direnv
-        nix-direnv
       ];
       file = {
         # ".profile".source = ./config/profile;

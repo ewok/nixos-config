@@ -44,6 +44,7 @@ in
           steamos = true;
           inherit colors theme;
         };
+        direnv.enable = true;
       };
 
     home.username = "deck";
