@@ -380,4 +380,4 @@ include ~/.config/i3/autostart.d/*.conf
 exec --no-startup-id dex --autostart --environment i3
 exec --no-startup-id xss-lock --transfer-sleep-lock -- i3lock --nofork
 exec --no-startup-id nm-applet
-exec_always --no-startup-id feh --bg-scale "/usr/share/wallpapers/Steam Deck Logo 5.jpg"
+exec_always --no-startup-id sleep 10; feh --bg-scale "/usr/share/wallpapers/Steam Deck Logo 5.jpg"
