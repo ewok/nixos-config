@@ -59,6 +59,7 @@ in
             lisps.enable = true;
             wm.enable = true;
             ssh.enable = true;
+            direnv.enable = true;
           };
 
 

@@ -27,7 +27,7 @@ let
     name = "onedark";
     regular_font = "FiraCode Nerd Font";
     regular_font_size = "10";
-    monospace_font = "FiraCode Nerd Font Mono";
+    monospace_font = "FiraCode Nerd Font Mono Med";
     monospace_font_size = "10";
   };
 in
