@@ -69,7 +69,7 @@
                               null-ls.builtins.diagnostics.terraform_validate
                               null-ls.builtins.diagnostics.tfsec
                               ;; Python
-                              null-ls.builtins.formatting.autopep8
+                              ; null-ls.builtins.formatting.autopep8
                               null-ls.builtins.formatting.black
                               ;; Go
                               ; null-ls.builtins.formatting.gofmt
@@ -78,8 +78,8 @@
                               ;; Json
                               ; null-ls.builtins.formatting.jq
                               ; ; ;; YAML
-                              null-ls.builtins.formatting.yq
-                              ; null-ls.builtins.diagnostics.yamllint
+                              ; null-ls.builtins.formatting.yq
+                              null-ls.builtins.diagnostics.yamllint
                               ;; Lua
                               (null-ls.builtins.formatting.stylua.with {:extra_args [:--indent-type=Spaces
                                                                                      :--indent-width=4]})]})))

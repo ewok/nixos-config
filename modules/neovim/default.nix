@@ -138,6 +138,7 @@ in
       shfmt
       jq
       yq
+      yamllint
       # prettier
       # nodePackages.sql-formatter
       # gofmt
