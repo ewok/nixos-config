@@ -1,0 +1,187 @@
+#!/usr/bin/env bash
+
+##
+## How to use it
+##
+## in default folder "~/share/vpn" you place several configuration files:
+## <vpn_name>.conf
+## with this type of content or executable script/program which returns this type of structure:
+
+## PwdTool=(lpass|op-session|bw)
+## PwdEntity=<Name of the password entity>
+## OtpTool=ykman is only supporter now
+## OtpEntity=<Name of the ykman entiry>
+
+## <vpn_name>.ovpn - openvpn configuration
+
+CMD="$1"
+NAME="$2"
+
+if [ ! $(command -v rofi) ];then echo "Install rofi" >&2; exit 1;fi
+if [ ! $(command -v ykman) ];then YKMAN=1; else YKMAN=0;fi
+if [ ! $(command -v setfattr) ];then SE=1; else SE=0;fi
+
+#  Init sudo
+prompt=$(sudo -nv 2>&1)
+if [ $? -eq 0 ]; then
+  echo "sudo granted" >&2
+elif echo $prompt | grep -q '^sudo:'; then
+  faillock --reset
+  echo "$(rofi -password -dmenu -p 'Sudo password' -l 0 -sidebar -width 20)" | sudo -S echo "Granted" >&2
+else
+  rofi -dmenu -mesg "You don't have sudo priveleges." -l 0 -a "vpn"
+  exit 2
+fi
+
+export DBUS_SESSION_BUS_ADDRESS=/dev/null
+
+PID=~/.cache/vpn-$NAME.pid
+VPN_DIR=~/share/vpn
+
+cleanup()
+{
+  sudo rm -f $VPN_DIR/$NAME.pw
+}
+trap cleanup 1 2 3 6 15 EXIT
+
+set -e
+
+case "$CMD" in
+  run)
+    if [[ -z "$NAME" ]];then echo "Please specify vpn name!" >&2; exit 1;fi
+    ;;
+  stop)
+    if [[ -z "$NAME" ]];then echo "Please specify vpn name!" >&2; exit 1;fi
+    if [[ -f $PID ]];then
+      sudo kill $(cat $PID)
+      rm -f $PID
+      exit 0
+    else
+      echo "VPN $NAME is not running" >&2
+      exit 1
+    fi
+    ;;
+  status)
+    if [[ -z "$NAME" ]];then echo "Please specify vpn name!" >&2; exit 1;fi
+    if [[ -f $PID ]];then
+      if ps -p $(cat $PID) > /dev/null; then
+        echo "running"
+        exit 0
+      fi
+    fi
+    echo "stopped"
+    exit 0
+    ;;
+  status-all)
+    # for all pids on ~/.cache/vpn-*.pid check status
+    for pid in $(ls ~/.cache/vpn-*.pid); do
+      T_NAME=$(echo $pid | cut -f2 -d- | cut -f1 -d.)
+      if [[ -f $pid ]];then
+        if ps -p $(cat $pid) > /dev/null; then
+          echo -n "${T_NAME}:🟢 "
+        else
+          echo -n "${T_NAME}:🔴 "
+        fi
+      else
+        echo -n "${T_NAME}:🔴 "
+      fi
+    done
+    exit 0
+    ;;
+  log)
+    {% if ansible_distribution == "Void" %}
+    svlogtail | grep openvpn@$NAME
+    {% else %}
+    echo "Not implemented" >&2
+    {% endif %}
+    exit 0
+    ;;
+  *)
+    echo "Unsupported command, use: run,stop,status,status-all" >&2
+    exit 2
+    ;;
+esac
+
+# check if PID exists and process is running
+if [[ -f $PID ]];then
+  if ps -p $(cat $PID) > /dev/null; then
+    echo "VPN $NAME is already running" >&2
+    exit 1
+  else
+    rm -f $PID
+  fi
+fi
+
+get()
+{
+  prop_name=$1
+  if [[ -x $VPN_DIR/$NAME.conf ]];then
+    $VPN_DIR/$NAME.conf | grep "$prop_name" | cut -f2 -d=
+  elif [[ -f $VPN_DIR/$NAME.conf ]];then
+    cat $VPN_DIR/$NAME.conf | grep "$prop_name" | cut -f2 -d=
+  fi
+}
+
+PASSWORD_TOOL=$(get PwdTool)
+PASSWORD_ENTITY=$(get PwdEntity)
+OTP_TOOL=$(get OtpTool)
+OTP_ENTITY=$(get OtpEntity)
+
+if [[ -n "$PASSWORD_TOOL" ]]; then
+  sudo rm -f $VPN_DIR/$NAME.pw
+
+  set -e
+  case "$PASSWORD_TOOL" in
+    lpass)
+      lpass show $PASSWORD_ENTITY --username > $VPN_DIR/$NAME.pw
+      lpass show $PASSWORD_ENTITY --password >> $VPN_DIR/$NAME.pw
+      ;;
+    op)
+      op-session item get $PASSWORD_ENTITY --fields username > $VPN_DIR/$NAME.pw
+      op-session item get $PASSWORD_ENTITY --fields password >> $VPN_DIR/$NAME.pw
+      ;;
+    bw)
+      bw get username $PASSWORD_ENTITY > $VPN_DIR/$NAME.pw
+      echo >> $VPN_DIR/$NAME.pw
+      bw get password $PASSWORD_ENTITY >> $VPN_DIR/$NAME.pw
+      if [[ $OTP_TOOL == "bw" ]]; then
+        bw get totp $PASSWORD_ENTITY >> $VPN_DIR/$NAME.pw
+      fi
+      ;;
+    *)
+      echo "Unsupported PW tool $PASSWORD_TOOL" >&2
+      exit 2
+      ;;
+  esac
+
+  sudo chmod 0600 $VPN_DIR/$NAME.pw
+  #sudo chown openvpn ~/share/vpn/$NAME.pw
+  if [[ $SE -eq 0 ]]; then
+    sudo setfattr -n security.selinux -v "system_u:object_r:etc_t:s0" $VPN_DIR/$NAME.pw
+  fi
+
+  if [[ -n $OTP_TOOL ]]; then
+    if [[ $YKMAN -eq 0 ]]; then
+      if [[ -n "$OTP_ENTITY" ]]; then
+        set +e
+        ykman oath accounts code openvpn_$NAME | awk '{print $2}' >> $VPN_DIR/$NAME.pw
+        set -e
+      fi
+    fi
+  fi
+
+else
+  echo "nobody" > $VPN_DIR/$NAME.pw
+  echo "nopassword" >> $VPN_DIR/$NAME.pw
+
+  if [[ $SE -eq 0 ]]; then
+    sudo setfattr -n security.selinux -v "system_u:object_r:etc_t:s0" $VPN_DIR/$NAME.pw
+  fi
+fi
+
+if [[ $SE -eq 0 ]]; then
+  sudo setfattr -n security.selinux -v "system_u:object_r:etc_t:s0" $VPN_DIR/$NAME.ovpn
+fi
+
+sudo openvpn --config $VPN_DIR/$NAME.ovpn --status /run/openvpn-$NAME.status 10 --daemon openvpn@$NAME --cd $VPN_DIR/ --auth-user-pass $VPN_DIR/$NAME.pw --writepid $PID
+cleanup
