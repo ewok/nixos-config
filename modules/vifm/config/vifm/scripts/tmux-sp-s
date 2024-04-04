@@ -2,7 +2,7 @@
 
 if [ -n "$TMUX" ]
 then
-    tmux split-window -p 20
+    tmux split-window -l 20%
 else
     $SHELL
 fi

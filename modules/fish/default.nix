@@ -54,9 +54,9 @@ in
           hash = "sha256-lJvP+FmxQICLFU379pqgTZlYHsjs6XR5V0A+M3iaWGQ=";
         };
 
-        "bash/rc.d/00_path.sh".source = utils.templateFile "00_path.sh" ./config/00_path.sh vars;
+        "bash/rc.d/01_path.sh".source = utils.templateFile "01_path.sh" ./config/01_path.sh vars;
         "bash/rc.d/02_lang.sh".source = ./config/02_lang.sh;
-        "bash/profile.d/01_path.sh".text = ''
+        "bash/profile.d/00_path.sh".text = ''
           export PATH=~/.local/bin:~/bin:~/.bin:$PATH
 
           if [ -z "$HOSTNAME" ] && command -v hostnamectl >/dev/null 2>&1; then

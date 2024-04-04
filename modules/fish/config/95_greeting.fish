@@ -28,11 +28,11 @@ function fish_greeting
       echo $SESS
       if test -n "$SESS"
         if $TMUX_CMD attach -t $SESS
-          # exit
+          exit
         end
       else
-        if $TMUX_CMD new
-          # exit
+        if $TMUX_CMD new -x- -y-
+          exit
         end
       end
     end

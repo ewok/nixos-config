@@ -40,6 +40,10 @@ in
   options.opt = {
     tmux = {
       enable = mkEnableOption "tmux";
+      install = mkOption {
+        type = types.bool;
+        default = true;
+      };
       terminal = mkOption {
         type = types.str;
         default = "tmux-256color";
@@ -82,14 +86,15 @@ in
   };
 
   config = mkIf cfg.enable {
-    home.packages = with pkgs;
-      [
-        tmux
-        gnugrep
-        procps
-        tm
-        tssh
-      ];
+    home.packages = with pkgs; let
+      optionalPkgs = optionals cfg.install [tmux];
+    in
+    [
+      gnugrep
+      procps
+      tm
+      tssh
+    ] ++ optionalPkgs;
     xdg.configFile."tmux/tmux.conf".source = utils.templateFile "tmux.conf" ./config/tmux.conf vars;
   };
 }
