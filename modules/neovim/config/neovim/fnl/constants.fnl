@@ -23,7 +23,7 @@
                 :spelllang [:nospell :en_us :ru_ru]
                 :large_file_size (* 1024 1024 20)
                 :direnv false
-                :snippets :vsnip})
+                :snippets :luasnip})
 
 (local separator
        {:left "{{ conf.theme.separator_left }}"
