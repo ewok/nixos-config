@@ -41,6 +41,7 @@ in
               enable = true;
               inherit colors theme;
               terminal = "xterm-256color";
+              install = false;
             };
             fish = {
               enable = true;

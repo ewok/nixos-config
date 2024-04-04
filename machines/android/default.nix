@@ -41,6 +41,7 @@ in
             bw.enable = false;
             nix.enable = true;
             lisps.enable = true;
+            direnv.enable = true;
           };
 
         home.username = "nix-on-droid";

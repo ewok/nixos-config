@@ -35,16 +35,18 @@ in
         #bw.enable = false;
         nix.enable = true;
         lisps.enable = true;
-        terminal = {
-          enable = true;
-          inherit colors theme;
-        };
+        # terminal = {
+        #   enable = true;
+        #   inherit colors theme;
+        # };
         wm = {
           enable = true;
           steamos = true;
           inherit colors theme;
+          terminal = "wezterm";
         };
         direnv.enable = true;
+        openvpn.enable = true;
       };
 
     home.username = "deck";
