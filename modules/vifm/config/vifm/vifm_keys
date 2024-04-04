@@ -101,3 +101,8 @@ nnoremap f =
 
 " Quit
 nnoremap q :q<cr>
+
+nnoremap <Left> h
+nnoremap <Down> j
+nnoremap <Up> k
+nnoremap <Right> l

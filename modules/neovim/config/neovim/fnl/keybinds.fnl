@@ -140,3 +140,9 @@ vmap <expr>  MR  ':s/\\(' . @/ . '\\)/\\1/g<LEFT><LEFT>'")
 (map! [:n] :<leader>pu "<cmd>Lazy sync<CR>" md "Sync Packages")
 (map! [:n] :<leader>pl "<cmd>Lazy home<CR>" md "List Packages")
 ;; {% endraw %}
+
+;; Colemak adjustment
+(map! [:n :x :v :i] :<Left> :h md "")
+(map! [:n :x :v :i] :<Right> :l md "")
+(map! [:n :x :v :i] :<Up> :k md "")
+(map! [:n :x :v :i] :<Down> :j md "")

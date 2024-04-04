@@ -10,3 +10,8 @@ idleTime=1200000
 
 [LowBattery][BrightnessControl]
 value=20
+
+[LowBattery][WirelessPowerSaving]
+btOption=1
+wifiOption=1
+wwanOption=1

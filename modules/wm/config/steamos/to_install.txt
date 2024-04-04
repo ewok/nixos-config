@@ -1,9 +1,14 @@
-FiraCode NERD Font
-i3-wm
-wmctrl
-base-devel
-gameconqueror
-tailscale
+sudo pacman -S --needed git base-devel && git clone https://aur.archlinux.org/yay-bin.git && cd yay-bin && makepkg -si
 
+yay -S --noconfirm \
+qt5-virtualkeyboard \
+extra-3.5/ttf-firacode-nerd \
+i3-wm \
+wmctrl \
+base-devel \
+gameconqueror \
+tailscale \
+feh xorg-xclip func-e-bin xorg-xkill \
+awesome-terminal-fonts
 
 set upt KDW i3 with systemd
