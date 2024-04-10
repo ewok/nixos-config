@@ -104,41 +104,41 @@ in
       gcc
 
       # LSP:
-      clojure-lsp
-      gopls
-      ltex-ls
-      lua-language-server
-      nodePackages.bash-language-server
-      nodePackages.pyright
-      nil
-      terraform-ls
-      vscode-langservers-extracted
-      yaml-language-server
-      zk
+      # clojure-lsp
+      # gopls
+      # ltex-ls
+      # lua-language-server
+      # nodePackages.bash-language-server
+      # nodePackages.pyright
+      # nil
+      # terraform-ls
+      # vscode-langservers-extracted
+      # yaml-language-server
+      # zk
 
       # Linter
-      clj-kondo
+      # clj-kondo
       # hadolint   # too massive on macos
-      markdownlint-cli
-      tflint
-      tfsec
+      # markdownlint-cli
+      # tflint
+      # tfsec
       # revive
       # staticcheck
       # codespell
       # typos
 
       # FMT
-      joker
-      fnlfmt
-      python311Packages.autopep8
-      black
-      stylua
-      nixpkgs-fmt
-      statix
-      shfmt
-      jq
-      yq
-      yamllint
+      # joker
+      # fnlfmt
+      # python311Packages.autopep8
+      # black
+      # stylua
+      # nixpkgs-fmt
+      # statix
+      # shfmt
+      # jq
+      # yq
+      # yamllint
       # prettier
       # nodePackages.sql-formatter
       # gofmt
@@ -162,9 +162,9 @@ in
         "fnlm/fnl".source = ./config/neovim/fnl;
 
         "fish/conf.d/20_nvim_vars.fish".text = ''
-          # if ! test -z "$NVIM"
-          #     fish_add_path --path -p ~/.local/share/nvim/mason/bin
-          # end
+          if ! test -z "$NVIM"
+              fish_add_path --path -p ~/.local/share/nvim/mason/bin
+          end
         '';
         "bash/profile.d/20_nvim_vars.sh".text = ''
           export EDITOR="vim"

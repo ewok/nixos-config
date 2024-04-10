@@ -1,10 +1,10 @@
 (local {: pack : map!} (require :lib))
 
 (fn config []
-  ; (map! [:n] :<Up> ":call vm#commands#add_cursor_up(0, v:count1)<cr>"
-  ;       {:silent true} "Create cursor down")
-  ; (map! [:n] :<Down> ":call vm#commands#add_cursor_down(0, v:count1)<cr>"
-  ;       {:silent true} "Create cursor up")
+  ;; (map! [:n] :<Up> ":call vm#commands#add_cursor_up(0, v:count1)<cr>"
+  ;;       {:silent true} "Create cursor down")
+  ;; (map! [:n] :<Down> ":call vm#commands#add_cursor_down(0, v:count1)<cr>"
+  ;;       {:silent true} "Create cursor up")
   (set vim.g.VM_Extend_hl :DiffAdd)
   (set vim.g.VM_Cursor_hl :Visual)
   (set vim.g.VM_Mono_hl :DiffText)

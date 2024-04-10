@@ -142,7 +142,7 @@ vmap <expr>  MR  ':s/\\(' . @/ . '\\)/\\1/g<LEFT><LEFT>'")
 ;; {% endraw %}
 
 ;; Colemak adjustment
-(map! [:n :x :v :i] :<Left> :h md "")
-(map! [:n :x :v :i] :<Right> :l md "")
-(map! [:n :x :v :i] :<Up> :k md "")
-(map! [:n :x :v :i] :<Down> :j md "")
+; (map! [:n :x :v :i] :<Left> :h md "")
+; (map! [:n :x :v :i] :<Right> :l md "")
+; (map! [:n :x :v :i] :<Up> :k md "")
+; (map! [:n :x :v :i] :<Down> :j md "")

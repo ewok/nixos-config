@@ -7,13 +7,11 @@
 
 (local complete_window_settings {:fixed true :min_width 20 :max_width 40})
 
-(local duplicate_keywords {:luasnip 1
-                           :vsnip 1
+(local duplicate_keywords {:snippy 1
                            :nvim_lsp 1
                            :buffer 0
                            :path 0
                            :cmdline 0
-                           :vim-dadbod-completion 0
                            :conjure 0})
 
 (fn config []
@@ -22,37 +20,14 @@
     (let [config_opts {:preselect types.cmp.PreselectMode.None
                        :confirmation {:default_behavior cmp.ConfirmBehavior.Insert}
                        :snippet {:expand (fn [args]
-                                           (do
-                                             (if (= :vsnip
-                                                    conf.options.snippets)
-                                                 (vim.call "vsnip#anonymous"
-                                                           args.body))
-                                             (if (= :luasnip
-                                                    conf.options.snippets)
-                                                 (let [luasnip (require :luasnip)]
-                                                   (luasnip.lsp_expand args.body)))))}
-                       :sources (cmp.config.sources [{:name :calc
-                                                      :group_index 1}
-                                                     {:name :copilot
-                                                      :group_index 2}
-                                                     ; {:name :codeium
-                                                     ;  :group_index 1}
-                                                     {:name :luasnip
-                                                      :group_index 2}
-                                                     {:name :vsnip
-                                                      :group_index 2}
-                                                     {:name :nvim_lsp
-                                                      :group_index 2}
-                                                     {:name :conjure
-                                                      :group_index 2}
-                                                     {:name :path
-                                                      :group_index 3}
-                                                     {:name :buffer
-                                                      :group_index 3}
-                                                     {:name :vim-dadbod-completion
-                                                      :group_index 3}
-                                                     {:name :emoji
-                                                      :group_index 3}])
+                                           (let [snippy (require :snippy)]
+                                             (snippy.expand_snippet args.body)))}
+                       :sources [{:name :calc}
+                                 {:name :snippy}
+                                 {:name :nvim_lsp}
+                                 {:name :conjure}
+                                 {:name :path}
+                                 {:name :buffer}]
                        :mapping {:<c-space> (cmp.mapping #(do
                                                             (if (not (cmp.visible))
                                                                 (cmp.complete)
@@ -103,7 +78,7 @@
                                                     source entry.source.name]
                                                 (set vim_item.kind
                                                      (string.format "%s %s"
-                                                                    (. conf.icons
+                                                                    (. conf.icons.lsp_kind
                                                                        kind)
                                                                     kind))
                                                 (set vim_item.menu
@@ -143,37 +118,21 @@
     (cmp.setup.cmdline "?" {:sources [{:name :buffer}]})
     (cmp.setup.cmdline ":"
                        {:sources (cmp.config.sources [{:name :path}
-                                                      {:name :cmdline}])})
-    ;; (let [(ok _) (pcall require :nvim-autopairs)]
-    ;;   (if ok
-    ;;       (let [cmp_autopairs (require :nvim-autopairs.completion.cmp)]
-    ;;         (: cmp.event :on :confirm_done (cmp_autopairs.on_confirm_done)))))
-    ))
+                                                      {:name :cmdline}])})))
 
-(pack :hrsh7th/nvim-cmp {: config
-                         :event [:InsertEnter :CmdlineEnter]
-                         :dependencies [(pack :hrsh7th/cmp-nvim-lsp
-                                              {:config false
-                                               :event [:InsertEnter]})
-                                        (pack :hrsh7th/cmp-buffer
-                                              {:config false
-                                               :event [:InsertEnter]})
-                                        (pack :hrsh7th/cmp-path
-                                              {:config false
-                                               :event [:InsertEnter]})
-                                        (pack :hrsh7th/cmp-cmdline
-                                              {:config false
-                                               :event [:InsertEnter
-                                                       :CmdlineEnter]})
-                                        (pack :hrsh7th/cmp-calc
-                                              {:config false
-                                               :event [:InsertEnter]})
-                                        ; (pack :hrsh7th/cmp-emoji {:config false})
-                                        (pack :PaterJason/cmp-conjure
-                                              {:config false
-                                               :ft [:python
-                                                    :clojure
-                                                    :fennel
-                                                    :lua]
-                                               ;; :event [:InsertEnter]
-                                               })]})
+(pack :hrsh7th/nvim-cmp
+      {: config
+       :event [:InsertEnter :CmdlineEnter]
+       :dependencies [(pack :hrsh7th/cmp-nvim-lsp
+                            {:config false :event [:InsertEnter]})
+                      (pack :hrsh7th/cmp-buffer
+                            {:config false :event [:InsertEnter]})
+                      (pack :hrsh7th/cmp-path
+                            {:config false :event [:InsertEnter]})
+                      (pack :hrsh7th/cmp-cmdline
+                            {:config false :event [:InsertEnter :CmdlineEnter]})
+                      (pack :hrsh7th/cmp-calc
+                            {:config false :event [:InsertEnter]})
+                      (pack :PaterJason/cmp-conjure
+                            {:config false :event [:InsertEnter]})
+                      :dcampos/cmp-snippy]})

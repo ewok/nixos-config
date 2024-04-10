@@ -1,18 +1,5 @@
 (local {: pack : map!} (require :lib))
 
-(local installed_servers [:bashls
-                          :clojure_lsp
-                          :gopls
-                          :jsonls
-                          ; :ltex
-                          :lua_ls
-                          :pyright
-                          :terraformls
-                          :tflint
-                          ; :tfsec
-                          :nil_ls
-                          :yamlls])
-
 (local handlers
        {:textDocument/hover (vim.lsp.with vim.lsp.handlers.hover
                               {:border (if conf.options.float_border :rounded
@@ -93,7 +80,7 @@
 
 (fn config []
   (let [lspconfig (require :lspconfig)
-        ; mason_lspconfig (require :mason-lspconfig)
+        mason_lspconfig (require :mason-lspconfig)
         navic (require :nvim-navic)
         telescope (require :telescope.builtin)]
     ;; Diagnostic config
@@ -110,9 +97,8 @@
     (each [_type _icon (pairs conf.icons.diagnostic)]
       (let [hl (.. :DiagnosticSign _type)]
         (vim.fn.sign_define hl {:text _icon :texthl hl :numhl hl})))
-    ;; Enriching capabilities 
-    ;; (each [_ server_name (ipairs (mason_lspconfig.get_installed_servers))]
-    (each [_ server_name (ipairs installed_servers)]
+    ;; Enriching capabilities
+    (each [_ server_name (ipairs (mason_lspconfig.get_installed_servers))]
       (let [(ok got-settings) (pcall require
                                      (.. :plugins.lsp.servers. server_name))]
         (let [settings (if ok got-settings {})]

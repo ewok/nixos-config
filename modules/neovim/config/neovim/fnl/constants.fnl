@@ -17,13 +17,10 @@
                 :auto_toggle_rnu true
                 :auto_hide_cursorline true
                 :rainbow_parents false
-                ; :leap or :hop :flash
-                :motion_plugin :flash
                 :theme "{{ conf.theme.name }}"
                 :spelllang [:nospell :en_us :ru_ru]
                 :large_file_size (* 1024 1024 20)
-                :direnv false
-                :snippets :luasnip})
+                :direnv false})
 
 (local separator
        {:left "{{ conf.theme.separator_left }}"

@@ -12,8 +12,9 @@
           "<cmd>ZkNew { title = vim.fn.input('Title: '), dir = 'notes' }<cr>" md
           "New note")
     (map! [:n] :<leader>wi :<cmd>ZkIndex<cr> md "Reindex notes")
-    (map! [:n] :<leader>wo "<cmd>ZkNotes { sort = { 'modified' }, select = { 'absPath', 'path' } }<cr>" md
-          "Open note")
+    (map! [:n] :<leader>wo
+          "<cmd>ZkNotes { sort = { 'modified' }, select = { 'absPath', 'path' } }<cr>"
+          md "Open note")
     (map! [:n] :<leader>wt :<cmd>ZkTags<cr> md "Open tag")
     (map! [:n] :<leader>wf
           "<cmd>ZkNotes { sort = { 'modified' }, match = { vim.fn.input('Search: ') }, select = { 'absPath', 'path' } }<cr>"

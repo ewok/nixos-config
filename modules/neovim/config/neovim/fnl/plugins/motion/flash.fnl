@@ -9,6 +9,4 @@
     (map! :c :<c-s> #(flash.toggle) {:silent true} :FlashToggle)
     (flash.setup {:modes {:search {:enabled false}}})))
 
-(if (= :flash conf.options.motion_plugin)
-    (pack :folke/flash.nvim {:event :VeryLazy : config})
-    [])
+(pack :folke/flash.nvim {:event :VeryLazy : config})

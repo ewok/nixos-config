@@ -1,5 +1,8 @@
 (local {: path-join} (require :lib))
 
+(vim.fn.setenv :PATH
+               (.. (path-join conf.data-dir :mason :bin) ":" vim.env.PATH))
+
 ; Dealing with largefiles
 ; Protect large files from sourcing and other overhead.
 (vim.api.nvim_create_augroup :LargeFile {})
