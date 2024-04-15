@@ -1,7 +1,7 @@
 local conf = require("conf")
 return {
     "folke/todo-comments.nvim",
-    event = { "BufReadPre", "BufNewFile" },
+    keys = {"<leader>fd"},
     init = function()
         local map = require("lib").map
         map("n", "<leader>fd", function()

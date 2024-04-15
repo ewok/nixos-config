@@ -1,7 +1,7 @@
 return {
     "navarasu/onedark.nvim",
     priority = 1000,
-    event = { "VimEnter" },
+    lazy = false,
     config = function()
         local onedark = require("onedark")
         onedark.setup({

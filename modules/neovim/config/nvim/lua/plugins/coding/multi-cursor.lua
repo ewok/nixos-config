@@ -1,6 +1,6 @@
 return {
     "mg979/vim-visual-multi",
-    event = { "BufReadPre", "BufNewFile" },
+    keys = { "<c-n>" },
     config = function()
         vim.g.VM_Extend_hl = "DiffAdd"
         vim.g.VM_Cursor_hl = "Visual"

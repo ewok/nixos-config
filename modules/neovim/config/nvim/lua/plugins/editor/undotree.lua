@@ -1,6 +1,5 @@
 return {
     "mbbill/undotree",
-    event = { "BufReadPre", "BufNewFile" },
     cmd = { "UndotreeToggle" },
     init = function()
         local map = require("lib").map

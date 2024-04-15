@@ -1,6 +1,5 @@
 local function on_attach(bufnr)
     local map = require("lib").map
-    map("n", "<leader>2", "<cmd>AerialToggle! right<cr>", { silent = true, buffer = bufnr }, "Open Outline Explorer")
     map("n", "{", "<cmd>lua require('aerial').prev()<cr>", { silent = true, buffer = bufnr }, "Move item up")
     map("n", "}", "<cmd>lua require('aerial').next()<cr>", { silent = true, buffer = bufnr }, "Move item down")
     map("n", "[[", "<cmd>lua require('aerial').prev_up()<cr>", { silent = true, buffer = bufnr }, "Move up one level")
@@ -9,7 +8,11 @@ end
 
 return {
     "stevearc/aerial.nvim",
-    event = { "BufNewFile", "BufReadPre" },
+    cmd = { "AerialToggle" },
+    init = function()
+        local map = require("lib").map
+        map("n", "<leader>2", "<cmd>AerialToggle! right<cr>", { silent = true, buffer = bufnr }, "Open Outline Explorer")
+    end,
     config = function()
         local conf = require("conf")
         local aerial = require("aerial")

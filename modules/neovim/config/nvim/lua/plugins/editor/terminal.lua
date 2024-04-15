@@ -31,7 +31,7 @@ end
 
 return {
     "akinsho/toggleterm.nvim",
-    event = { "VeryLazy" },
+    keys = { "<c-space>", "<leader>ot", "<leader>of", "<leader>gg" },
     config = function()
         local conf = require "conf"
         local toggleterm = require "toggleterm"

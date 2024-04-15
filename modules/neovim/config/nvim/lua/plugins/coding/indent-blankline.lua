@@ -1,7 +1,7 @@
 return {
     "lukas-reineke/indent-blankline.nvim",
     main = "ibl",
-    event = { "VeryLazy" },
+    event = { "BufNewFile", "BufReadPre" },
     config = function()
         local conf = require("conf")
         vim.g.indent_blankline_buftype_exclude = conf.ui_ft

@@ -4,7 +4,8 @@ return {
         dependencies = {
             { "shumphrey/fugitive-gitlab.vim", config = false },
         },
-        event = { "VeryLazy" },
+        event = { "BufNewFile", "BufReadPre" },
+        keys = { "<leader>gs" },
         config = function()
             local map = require("lib").map
             local md = { noremap = true, silent = true }
@@ -35,7 +36,7 @@ return {
             end, md, "Visual Block")
         end,
     },
-    { "rbong/vim-flog", config = false, cmd = { "Flog", "Flogsplit" } },
+    { "rbong/vim-flog",    config = false, cmd = { "Flog", "Flogsplit" } },
     { "tpope/vim-rhubarb", config = false, cmd = { "GBrowse" } },
     {
         "lewis6991/gitsigns.nvim",
