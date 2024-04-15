@@ -1,0 +1,62 @@
+return {
+    "stevearc/resession.nvim",
+    event = { "VeryLazy" },
+    config = function()
+        local map = require "lib".map
+        local path_join = require "lib".path_join
+        local resession = require('resession')
+        local notify = require('notify')
+
+        resession.setup {}
+
+        local autgroup = vim.api.nvim_create_augroup('PersistedHooks', {})
+
+        if vim.g.auto_load_session then
+            vim.fn.timer_start(1000, function()
+                resession.load(vim.fn.getcwd(), { dir = 'dirsession', silence_errors = true })
+                vim.cmd('e')
+            end)
+        end
+
+        vim.api.nvim_create_autocmd("VimLeavePre", {
+            group = autgroup,
+            callback = function()
+                resession.save(vim.fn.getcwd(), { dir = 'dirsession', notify = false })
+            end
+        })
+
+        -- mappings
+
+        map('n', '<leader>sl', function()
+            resession.load()
+            vim.cmd('e')
+            notify("Session loaded", "INFO", { title = "Session" })
+        end, { silent = true }, "Session Load")
+
+        map('n', '<leader>su', function()
+            resession.load(vim.fn.getcwd(), { dir = "dirsession", silence_errors = true })
+            vim.cmd('e')
+            notify("Session loaded", "INFO", { title = "Session" })
+        end, { silent = true }, "Session Load")
+
+        map('n', '<leader>ss', function()
+            resession.save()
+            notify("Session saved success", "INFO", { title = "Session" })
+        end, { silent = true }, "Session Save")
+
+        map('n', '<leader>sq', function()
+            resession.save()
+            vim.cmd('qall')
+        end, { silent = true }, "Session Quit")
+
+        map('n', '<leader>sd', function()
+            local ok, _ = pcall(resession.delete)
+            if ok then
+                notify("Session deleted success", "INFO", { title = "Session" })
+                -- vim.cmd('qall') -- It is commented out in the original snippet, so it's not clear if it should be executed or not.
+            else
+                notify("Session deleted failure", "ERROR", { title = "Session" })
+            end
+        end, { silent = true }, "Session Delete")
+    end
+}

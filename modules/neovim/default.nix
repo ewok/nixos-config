@@ -102,6 +102,7 @@ in
 
       # Langs
       gcc
+      go
 
       # LSP:
       # clojure-lsp
@@ -147,19 +148,29 @@ in
     xdg = {
       configFile = {
 
-        "nvim/init.lua".source = ./config/neovim/init.lua;
-        "nvim/fnl/ft".source = ./config/neovim/fnl/ft;
-        "nvim/fnl/plugins".source = ./config/neovim/fnl/plugins;
-        "nvim/fnl/after.fnl".source = ./config/neovim/fnl/after.fnl;
-        "nvim/fnl/before.fnl".source = ./config/neovim/fnl/before.fnl;
-        "nvim/fnl/init.fnl".source = ./config/neovim/fnl/init.fnl;
-        "nvim/fnl/keybinds.fnl".source = ./config/neovim/fnl/keybinds.fnl;
-        "nvim/fnl/lib.fnl".source = ./config/neovim/fnl/lib.fnl;
-        "nvim/fnl/settings.fnl".source = ./config/neovim/fnl/settings.fnl;
+        "nvim/init.lua".source = ./config/nvim/init.lua;
+        # "nvim/fnl/ft".source = ./config/neovim/fnl/ft;
+        # "nvim/fnl/plugins".source = ./config/neovim/fnl/plugins;
+        # "nvim/fnl/after.fnl".source = ./config/neovim/fnl/after.fnl;
+        # "nvim/fnl/before.fnl".source = ./config/neovim/fnl/before.fnl;
+        # "nvim/fnl/init.fnl".source = ./config/neovim/fnl/init.fnl;
+        # "nvim/fnl/keybinds.fnl".source = ./config/neovim/fnl/keybinds.fnl;
+        # "nvim/fnl/lib.fnl".source = ./config/neovim/fnl/lib.fnl;
+        # "nvim/fnl/settings.fnl".source = ./config/neovim/fnl/settings.fnl;
 
-        "nvim/fnl/constants.fnl".source = utils.templateFile "constants.fnl" ./config/neovim/fnl/constants.fnl vars;
+        # "nvim/fnl/constants.fnl".source = utils.templateFile "constants.fnl" ./config/neovim/fnl/constants.fnl vars;
         # Bug
-        "fnlm/fnl".source = ./config/neovim/fnl;
+        # "fnlm/fnl".source = ./config/neovim/fnl;
+
+        "nvim/lua/configs".source = ./config/nvim/lua/configs;
+        "nvim/lua/plugins".source = ./config/nvim/lua/plugins;
+        "nvim/lua/ft".source = ./config/nvim/lua/ft;
+        "nvim/lua/conf.lua".source = utils.templateFile "conf.lua" ./config/nvim/lua/conf.lua vars;
+        "nvim/lua/lib.lua".source = ./config/nvim/lua/lib.lua;
+        "nvim/lua/mappings.lua".source = ./config/nvim/lua/mappings.lua;
+        "nvim/lua/post.lua".source = ./config/nvim/lua/post.lua;
+        "nvim/lua/pre.lua".source = ./config/nvim/lua/pre.lua;
+        "nvim/lua/settings.lua".source = ./config/nvim/lua/settings.lua;
 
         "fish/conf.d/20_nvim_vars.fish".text = ''
           if ! test -z "$NVIM"
