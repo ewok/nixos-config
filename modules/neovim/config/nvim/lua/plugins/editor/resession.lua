@@ -14,7 +14,7 @@ return {
         if vim.g.auto_load_session then
             vim.fn.timer_start(1000, function()
                 resession.load(vim.fn.getcwd(), { dir = 'dirsession', silence_errors = true })
-                vim.cmd('e')
+                pcall(function() vim.cmd('silent e') end)
             end)
         end
 
@@ -29,13 +29,13 @@ return {
 
         map('n', '<leader>sl', function()
             resession.load()
-            vim.cmd('e')
+            pcall(function() vim.cmd('silent e') end)
             notify("Session loaded", "INFO", { title = "Session" })
         end, { silent = true }, "Session Load")
 
         map('n', '<leader>su', function()
             resession.load(vim.fn.getcwd(), { dir = "dirsession", silence_errors = true })
-            vim.cmd('e')
+            pcall(function() vim.cmd('silent e') end)
             notify("Session loaded", "INFO", { title = "Session" })
         end, { silent = true }, "Session Load")
 
