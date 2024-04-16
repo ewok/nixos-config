@@ -23,16 +23,22 @@ return {
         local lsp_zero = require("lsp-zero")
 
         lsp_zero.on_attach(function(client, bufnr)
+            if client.server_capabilities.documentSymbolProvider then
+                require('nvim-navic').attach(client, bufnr)
+            end
             -- Default does not work, not sure why
             map("n", "K", "<cmd>lua vim.lsp.buf.hover()<cr>", { buffer = bufnr }, "[lsp] Hover documentation")
             map("n", "gd", "<cmd>lua vim.lsp.buf.definition()<cr>", { buffer = bufnr }, "[lsp] Go to definition")
             map("n", "gD", "<cmd>lua vim.lsp.buf.declaration()<cr>", { buffer = bufnr }, "[lsp] Go to declaration")
             map("n", "gi", "<cmd>lua vim.lsp.buf.implementation()<cr>", { buffer = bufnr }, "[lsp] Go to implementation")
-            map("n", "go", "<cmd>lua vim.lsp.buf.type_definition()<cr>", { buffer = bufnr }, "[lsp] Go to type definition")
+            map("n", "go", "<cmd>lua vim.lsp.buf.type_definition()<cr>", { buffer = bufnr },
+                "[lsp] Go to type definition")
             map("n", "gr", "<cmd>lua vim.lsp.buf.references()<cr>", { buffer = bufnr }, "[lsp] Go to reference")
-            map("n", "gs", "<cmd>lua vim.lsp.buf.signature_help()<cr>", { buffer = bufnr }, "[lsp] Show function signature")
+            map("n", "gs", "<cmd>lua vim.lsp.buf.signature_help()<cr>", { buffer = bufnr },
+                "[lsp] Show function signature")
             map("n", "<leader>cn", "<cmd>lua vim.lsp.buf.rename()<cr>", { buffer = bufnr }, "[lsp] Rename symbol")
-            map("n", "<leader>cf", "<cmd>lua vim.lsp.buf.format({async = true})<cr>", { buffer = bufnr }, "[lsp] Format file")
+            map("n", "<leader>cf", "<cmd>lua vim.lsp.buf.format({async = true})<cr>", { buffer = bufnr },
+                "[lsp] Format file")
             map(
                 "x",
                 "<leader>cf",
@@ -40,7 +46,8 @@ return {
                 { buffer = bufnr },
                 "[lsp] Format selection"
             )
-            map("n", "<leader>ca", "<cmd>lua vim.lsp.buf.code_action()<cr>", { buffer = bufnr }, "[lsp] Execute code action")
+            map("n", "<leader>ca", "<cmd>lua vim.lsp.buf.code_action()<cr>", { buffer = bufnr },
+                "[lsp] Execute code action")
 
             if vim.lsp.buf.range_code_action then
                 map(

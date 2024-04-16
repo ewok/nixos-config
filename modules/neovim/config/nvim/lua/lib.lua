@@ -64,4 +64,14 @@ function M.umap(mode, lhs, options)
     vim.keymap.del(mode, lhs, options)
 end
 
+function M.is_ft_open(target_ft)
+    local result = false
+    for _, opts in ipairs(get_all_win_buf_ft()) do
+        if opts.buf_ft == target_ft then
+            return true
+        end
+    end
+    return false
+end
+
 return M
