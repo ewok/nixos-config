@@ -1,12 +1,37 @@
 return {
     {
         "nvim-telescope/telescope.nvim",
-        event = { "VeryLazy" },
+        cmd = { "Telescope" },
+        init = function()
+            local map = require("lib").map
+            map("n", "<leader>fo",
+                [[:lua require"telescope.builtin".find_files({find_command = {"rg","--ignore","--hidden","--files","--iglob","!.git","--ignore-vcs","--ignore-file","~/.config/git/gitexcludes"}})<CR>]]
+                , { silent = true }, "Find files in the current workspace")
+            map("n", "<leader>ff", "<CMD>Telescope live_grep<CR>", { silent = true },
+                "Find string in the current workspace")
+            map("n", "<leader>fh", "<CMD>Telescope oldfiles<CR>", { silent = true }, "Find telescope history")
+            map("n", "<leader>f.", "<CMD>Telescope resume<CR>", { silent = true }, "Find last lookup")
+            map("n", "<leader>fm", "<CMD>Telescope marks<CR>", { silent = true }, "Find marks in the current workspace")
+            map("n", "<leader>fb", "<CMD>Telescope buffers<CR>", { silent = true }, "Find all buffers")
+            map(
+                "n",
+                "<leader>f/",
+                "<CMD>Telescope current_buffer_fuzzy_find<CR>",
+                { silent = true },
+                "Find string in current buffer"
+            )
+            map("n", "<leader>f:", "<cmd>Telescope command_history", { silent = true }, "Find all command history")
+            map("n", "<leader>fss", "<cmd>Telescope vim_options<CR>", { silent = true }, "Settings")
+            map("n", "<leader>fH", "<cmd>Telescope help_tags<CR>", { silent = true }, "Help tags")
+            map("n", "<leader>fsa", "<cmd>Telescope autocommands<CR>", { silent = true }, "Autocommands")
+            map("n", "<leader>fsf", "<cmd>Telescope filetypes<CR>", { silent = true }, "Filetypes")
+            map("n", "<leader>fsh", "<cmd>Telescope highlights<CR>", { silent = true }, "Highlights")
+            map("n", "<leader>fsk", "<cmd>Telescope keymaps<CR>", { silent = true }, "Keymaps")
+            map("n", "<leader>fsc", "<cmd>Telescope colorscheme<CR>", { silent = true }, "Colorschemes")
+        end,
         config = function()
             local telescope = require("telescope")
             local actions = require("telescope.actions")
-            local builtin = require("telescope.builtin")
-            local map = require("lib").map
 
             local vimgrep_arguments = {
                 "rg",
@@ -88,44 +113,8 @@ return {
                 },
             })
 
-            map("n", "<leader>fo", function()
-                builtin.find_files({
-                    find_command = {
-                        "rg",
-                        "--ignore",
-                        "--hidden",
-                        "--files",
-                        "--iglob",
-                        "!.git",
-                        "--ignore-vcs",
-                        "--ignore-file",
-                        "~/.config/git/gitexcludes",
-                    },
-                })
-            end, { silent = true }, "Find files in the current workspace")
-            map("n", "<leader>ff", builtin.live_grep, { silent = true }, "Find string in the current workspace")
-            map("n", "<leader>fh", builtin.oldfiles, { silent = true }, "Find telescope history")
-            map("n", "<leader>f.", builtin.resume, { silent = true }, "Find last lookup")
-            map("n", "<leader>fm", builtin.marks, { silent = true }, "Find marks in the current workspace")
-            map("n", "<leader>fb", builtin.buffers, { silent = true }, "Find all buffers")
-            map(
-                "n",
-                "<leader>f/",
-                builtin.current_buffer_fuzzy_find,
-                { silent = true },
-                "Find string in current buffer"
-            )
-            map("n", "<leader>f:", builtin.command_history, { silent = true }, "Find all command history")
-            map("n", "<leader>fss", "<cmd>Telescope vim_options<CR>", { silent = true }, "Settings")
-            map("n", "<leader>fH", builtin.help_tags, { silent = true }, "Help tags")
-            map("n", "<leader>fsa", "<cmd>Telescope autocommands<CR>", { silent = true }, "Autocommands")
-            map("n", "<leader>fsf", "<cmd>Telescope filetypes<CR>", { silent = true }, "Filetypes")
-            map("n", "<leader>fsh", builtin.highlights, { silent = true }, "Highlights")
-            map("n", "<leader>fsk", "<cmd>Telescope keymaps<CR>", { silent = true }, "Keymaps")
-            map("n", "<leader>fsc", "<cmd>Telescope colorscheme<CR>", { silent = true }, "Colorschemes")
-
             telescope.load_extension("fzf")
-            vim.api.nvim_create_autocmd("BufEnter", { pattern = "*", command = "normal zx" })
+            -- vim.api.nvim_create_autocmd("BufEnter", { pattern = "*", command = "normal zx" })
         end,
     },
     {

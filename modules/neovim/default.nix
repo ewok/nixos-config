@@ -42,6 +42,7 @@ let
     conf.colors = cfg.colors;
     conf.theme = cfg.theme;
     conf.openai_token = cfg.openai_token;
+    is_nix = "true";
   };
 
 in
