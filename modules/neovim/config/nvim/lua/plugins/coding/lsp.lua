@@ -23,9 +23,6 @@ return {
         local lsp_zero = require("lsp-zero")
 
         lsp_zero.on_attach(function(client, bufnr)
-            if client.server_capabilities.documentSymbolProvider then
-                require('nvim-navic').attach(client, bufnr)
-            end
             -- Default does not work, not sure why
             map("n", "K", "<cmd>lua vim.lsp.buf.hover()<cr>", { buffer = bufnr }, "[lsp] Hover documentation")
             map("n", "gd", "<cmd>lua vim.lsp.buf.definition()<cr>", { buffer = bufnr }, "[lsp] Go to definition")
@@ -80,6 +77,8 @@ return {
                 info = icons.Info
             }
         )
+        require('lspconfig').nil_ls.setup({})
+
         require("mason-lspconfig").setup({
             handlers = {
                 lsp_zero.default_setup,

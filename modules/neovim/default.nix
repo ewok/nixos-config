@@ -34,8 +34,7 @@ let
 
   clean-cache = pkgs.writeShellScriptBin "nvim-clean-cache" ''
     set -e
-    rm -rf ~/.cache/nvim/hotpot/
-    rm -rf ~/.cache/nvim/lazy/
+    rm -rf ~/.cache/nvim
   '';
 
   vars = {
@@ -102,7 +101,8 @@ in
       python3
 
       # Langs
-      gcc
+      # gcc
+      clang
       go
 
       # LSP:
@@ -112,7 +112,7 @@ in
       # lua-language-server
       # nodePackages.bash-language-server
       # nodePackages.pyright
-      # nil
+      nil
       # terraform-ls
       # vscode-langservers-extracted
       # yaml-language-server
@@ -135,7 +135,7 @@ in
       # python311Packages.autopep8
       # black
       # stylua
-      # nixpkgs-fmt
+      nixpkgs-fmt
       # statix
       # shfmt
       # jq

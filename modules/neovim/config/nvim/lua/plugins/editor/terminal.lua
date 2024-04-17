@@ -6,12 +6,12 @@ local function open_callback(term)
     map('t', '<C-H>', '<c-\\><c-n><cmd>TmuxNavigateLeft<cr>', { silent = true, buffer = term.bufnr }, 'Left')
     map('t', '<C-K>', '<c-\\><c-n><cmd>TmuxNavigateUp<cr>', { silent = true, buffer = term.bufnr }, 'Up')
     map('t', '<C-L>', '<c-\\><c-n><cmd>TmuxNavigateRight<cr>', { silent = true, buffer = term.bufnr }, 'Right')
-    map('n', '<C-N>', ':i<C-N>', { silent = true, buffer = term.bufnr }, 'Next')
-    map('n', '<C-P>', ':i<C-P>', { silent = true, buffer = term.bufnr }, 'Previous')
-    map('n', '<C-C>', ':i<C-C>', { silent = true, buffer = term.bufnr }, 'Break')
+    map('n', '<C-N>', 'i<C-N>', { silent = true, buffer = term.bufnr }, 'Next')
+    map('n', '<C-P>', 'i<C-P>', { silent = true, buffer = term.bufnr }, 'Previous')
+    map('n', '<C-C>', 'i<C-C>', { silent = true, buffer = term.bufnr }, 'Break')
     map('t', '<C-U>', '<c-\\><c-n><C-U>', { silent = true, buffer = term.bufnr }, 'ScrollUp')
     map('t', '<C-Y>', '<c-\\><c-n><C-Y>', { silent = true, buffer = term.bufnr }, 'ScrollOneUp')
-    map('n', '<CR>', ':i', { silent = true, buffer = term.bufnr }, 'Enter')
+    map('n', '<CR>', 'i', { silent = true, buffer = term.bufnr }, 'Enter')
     umap('t', '<esc>')
 end
 
@@ -64,40 +64,48 @@ return {
         -- Setting terminals
         local terminal = require "toggleterm.terminal"
         local terms = terminal.Terminal
-        local term = terms:new({
-            direction = 'horizontal',
-            count = 110,
-            size = function(term)
-                if term.direction == 'horizontal' then
-                    return vim.o.lines * 0.25
-                else
-                    return vim.o.columns * 0.25
-                end
-            end,
-            float_opts = {
-                border = conf.options.float_border and 'rounded' or 'none',
-                width = function() return vim.o.columns - 4 end,
-                height = function() return vim.o.lines - 5 end
-            },
-            on_open = open_callback,
-            on_close = close_callback
-        })
-        local horizontal_term = function() term:toggle(nil, "horizontal") end
-        local float_term = function() term:toggle(nil, "float") end
+        -- local horizontal_term = function() term:toggle(nil, "horizontal") end
+        -- local float_term = function() term:toggle(nil, "float") end
+
+        local open_term = function(direction)
+            terms:new({
+                dir = vim.fn.expand("%:p:h"),
+                direction = 'horizontal',
+                count = 110,
+                size = function(term)
+                    if term.direction == 'horizontal' then
+                        return vim.o.lines * 0.25
+                    else
+                        return vim.o.columns * 0.25
+                    end
+                end,
+                float_opts = {
+                    border = conf.options.float_border and 'rounded' or 'none',
+                    width = function() return vim.o.columns - 4 end,
+                    height = function() return vim.o.lines - 5 end
+                },
+                on_open = open_callback,
+                on_close = close_callback
+            }):toggle(nil, direction)
+        end
 
         map("n", "<leader>ot", function()
             vim.g.tth = false
-            horizontal_term()
+            -- horizontal_term()
+            open_term("horizontal")
         end, { silent = true }, "Open bottom terminal")
         map("n", "<leader>of", function()
             vim.g.tth = true
-            float_term()
+            -- float_term()
+            open_term("float")
         end, { silent = true }, "Open floating terminal")
         map({ "n", "t" }, "<c-space>", function()
             if vim.g.tth then
-                float_term()
+                -- float_term()
+                open_term("float")
             else
-                horizontal_term()
+                -- horizontal_term()
+                open_term("horizontal")
             end
         end, { silent = true }, "Toggle bottom or float terminal")
         map("n", "<leader>gg", function()

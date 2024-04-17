@@ -14,7 +14,7 @@ return {
         local is_ft_open = require "lib".is_ft_open
         barbecue.setup({
             create_autocmd = false,
-            attach_navic = false,
+            -- attach_navic = false,
             theme = conf.options.theme,
             symbols = {
                 separator = conf.separator.alt_left

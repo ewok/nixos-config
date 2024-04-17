@@ -26,6 +26,7 @@ M.options = {
     spelllang = { "nospell", "en_us", "ru_ru" },
     large_file_size = 1024 * 1024 * 20,
     direnv = false,
+    nvim_tree = false,
 }
 
 M.separator = M.is_nix and {

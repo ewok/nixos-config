@@ -1,5 +1,10 @@
 return {
     {
+        "chrishrb/gx.nvim",
+        keys = { { "gx", "<cmd>Browse<cr>", mode = { "n", "x" } } },
+        cmd = { "GBrowse", "Browse" }
+    },
+    {
         "tpope/vim-fugitive",
         dependencies = {
             { "shumphrey/fugitive-gitlab.vim", config = false },
@@ -110,14 +115,14 @@ return {
                     map(
                         "n",
                         "[g",
-                        vim.wo.diff and "[c" or "<cmd>lua vim.schedule(require'gitsigns'.prev_hunk())<cr>",
+                        vim.wo.diff and "[c" or "<cmd>lua vim.schedule(require'gitsigns'.prev_hunk)<cr>",
                         { silent = true, buffer = bufnr },
                         "Jump to the prev hunk"
                     )
                     map(
                         "n",
                         "]g",
-                        vim.wo.diff and "]c" or "<cmd>lua vim.schedule(require'gitsigns'.next_hunk())<cr>",
+                        vim.wo.diff and "]c" or "<cmd>lua vim.schedule(require'gitsigns'.next_hunk)<cr>",
                         { silent = true, buffer = bufnr },
                         "Jump to the next hunk"
                     )

@@ -42,7 +42,7 @@ return {
             i = { name = "Insert" },
             l = { name = "Lsp" },
             o = { name = "Open" },
-            p = { name = "Packer | Profiling" },
+            p = { name = "Packages | Profiling | Mason" },
             r = { name = "Replace", w = "Replace Word To ..." },
             s = { name = "Session" },
             y = { name = "Yank" },

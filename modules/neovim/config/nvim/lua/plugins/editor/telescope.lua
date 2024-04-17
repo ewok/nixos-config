@@ -90,18 +90,19 @@ return {
                             ["<esc>"] = actions.close,
                         },
                     },
-                    pickers = {
-                        buffers = {
-                            mappings = {
-                                i = {
-                                    ["<c-d>"] = "delete_buf",
-                                },
-                                n = {
-                                    ["dd"] = "delete_buf",
-                                },
-                            },
-                        },
-                    },
+                },
+                pickers = {
+                    buffers = {
+                        show_all_buffers = true,
+                        sort_lastused = true,
+                        theme = "dropdown",
+                        previewer = false,
+                        mappings = {
+                            i = {
+                                ["<c-d>"] = actions.delete_buffer + actions.move_to_top,
+                            }
+                        }
+                    }
                 },
                 extensions = {
                     fzf = {

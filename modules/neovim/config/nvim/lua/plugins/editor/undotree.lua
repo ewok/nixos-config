@@ -4,7 +4,7 @@ return {
     init = function()
         local map = require("lib").map
         local toggle_sidebar = require("lib").toggle_sidebar
-        map("n", "<leader>4", function()
+        map("n", "<leader>u", function()
             toggle_sidebar("undotree")
             vim.cmd("UndotreeToggle")
         end, { silent = true }, "Open Undo Explorer")

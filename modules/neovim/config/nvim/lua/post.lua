@@ -2,13 +2,19 @@ local conf = require("conf")
 local set = require("lib").set
 
 -- auto save buffer
-if conf.options.auto_save then
-    vim.api.nvim_create_autocmd({ "InsertLeave", "TextChanged" }, {
-        pattern = "*",
-        command = "silent! wall",
-        nested = true,
-    })
-end
+-- if conf.options.auto_save then
+--     vim.api.nvim_create_autocmd({ "InsertLeave", "TextChanged" }, {
+--         pattern = "*",
+--         command =fun
+--             "silent! wall",
+--         callback = function(opts)
+--             if vim.api.nvim_buf_get_var(opts.buf, "autosave") == false
+--             vim.cmd("silent! wall")
+--
+--         end,
+--         nested = true,
+--     })
+-- end
 
 -- auto restore cursor position
 if conf.options.auto_restore_cursor_position then

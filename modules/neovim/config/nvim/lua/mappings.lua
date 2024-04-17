@@ -21,7 +21,7 @@ local function open_mind()
     vim.cmd("e " .. conf.notes_dir .. "/mind/" .. project_name .. ".md")
 end
 
-map("n", "<leader>3", open_mind, md, "Open CWD note")
+map("n", "<leader>on", open_mind, md, "Open CWD note")
 --
 -- ;; Navigation
 map("n", "<C-O><C-O>", "<C-O>", md, "Go Back")

@@ -15,6 +15,7 @@ local installer_resources = {
     "terraform-ls",
     "zk",
     "yaml-language-server",
+    "nil",
     -- },
     -- linter = {
     "ansible-lint",
@@ -84,6 +85,10 @@ return {
 
             max_concurrent_installers = 10,
         },
+        init = function ()
+            local map = require "lib".map
+            map("n", "<leader>pm", "<cmd>Mason<CR>", { noremap = true }, "Mason")
+        end,
         config = function(_, opts)
             require("mason").setup(opts)
 
