@@ -256,7 +256,46 @@ return {
             },
         })
 
-        map("n", "<S-Tab>", '<Cmd>lua require("cokeline.mappings").by_step("focus", -1)<CR>', opts, "Buffer/Tabs")
-        map("n", "<Tab>", '<Cmd>lua require("cokeline.mappings").by_step("focus", 1)<CR>', opts, "Buffer/Tabs")
+        map("n", "<S-Tab>", '<Cmd>lua require("cokeline.mappings").by_step("focus", -1)<CR>', opts, "Goto prev buffer")
+        map("n", "<Tab>", '<Cmd>lua require("cokeline.mappings").by_step("focus", 1)<CR>', opts, "Goto next buffer")
+
+        local hydra = require("hydra")
+        map("n", "<leader>k", function()
+            hydra({
+                name = "Switch buffers",
+
+                config = {
+                    hint = { type = "statusline" },
+                    on_enter = function()
+                        mapping.by_step("focus", -1)
+                    end,
+                    timeout = 300,
+                },
+                heads = {
+                    { "k", '<Cmd>lua require("cokeline.mappings").by_step("focus", -1)<CR>', { desc = "prev" } },
+                    { "j", '<Cmd>lua require("cokeline.mappings").by_step("focus", 1)<CR>',  { desc = "next" } },
+                    { "q", nil,                                                              { exit = true } },
+                },
+            }):activate()
+        end, { noremap = true }, "Goto prev buffer")
+
+        map("n", "<leader>j", function()
+            hydra({
+                name = "Switch buffers",
+
+                config = {
+                    hint = { type = "statusline" },
+                    on_enter = function()
+                        mapping.by_step("focus", 1)
+                    end,
+                    timeout = 300,
+                },
+                heads = {
+                    { "k", '<Cmd>lua require("cokeline.mappings").by_step("focus", -1)<CR>', { desc = "prev" } },
+                    { "j", '<Cmd>lua require("cokeline.mappings").by_step("focus", 1)<CR>',  { desc = "next" } },
+                    { "q", nil,                                                              { exit = true } },
+                },
+            }):activate()
+        end, { noremap = true }, "Goto next buffer")
     end,
 }
