@@ -2,16 +2,24 @@ return {
     {
         "chrishrb/gx.nvim",
         keys = { { "gx", "<cmd>Browse<cr>", mode = { "n", "x" } } },
-        cmd = { "GBrowse", "Browse" }
+        cmd = { "Browse" },
+        config = true
     },
     {
         "tpope/vim-fugitive",
+        cmd = { "Git", "Gedit", "Gvdiffsplit", "GBrowse", "Gread", "Gwrite" },
         dependencies = {
-            { "shumphrey/fugitive-gitlab.vim", config = false },
+            {
+                "shumphrey/fugitive-gitlab.vim",
+                config = false,
+            },
+            {
+                "tpope/vim-rhubarb",
+                config = false,
+            },
+
         },
-        event = { "BufNewFile", "BufReadPre" },
-        keys = { "<leader>gs" },
-        config = function()
+        init = function()
             local map = require("lib").map
             local md = { noremap = true, silent = true }
 
@@ -19,7 +27,7 @@ return {
             map("n", "<leader>ge", "<cmd>Gedit<CR>", md, "Git Edit")
             map("n", "<leader>gd", "<cmd>Gvdiffsplit<CR>", md, "Git Diff")
             map("n", "<leader>gx", "<cmd>.GBrowse %<CR>", md, "Git Browse")
-            map("n", "<leader>gl", function()
+            map("n", "<leader>gl.", function()
                 vim.cmd('exe ":G log -U1 -L " . string(getpos(\'.\')[1]) . ",+1:%"')
             end, md, "Line")
             map("n", "<leader>glt", "<cmd>Flog<cr>", md, "Commits in Tab")
@@ -32,17 +40,16 @@ return {
             map("n", "<leader>gpF", "<cmd>Git push --force<CR>", md, "Push(force)")
             map("n", "<leader>gR", "<cmd>Gread<CR>", md, "Git Reset")
             map("n", "<leader>gs", "<cmd>Git<CR>", md, "Git Status")
-            map("n", "<leader>gW", "<cmd>Gwrite<CR>", md, "Git Write")
+            map("n", "<leader>gw", "<cmd>Gwrite<CR>", md, "Git Write")
             map("x", "<leader>gx", ":'<,'>GBrowse %<CR>", md, "Git Browse")
             map("x", "<leader>glv", function()
                 -- TODO: Fix it
                 -- vim.cmd('exe ":G log -L " . string(getpos("\'<")[1]) . "," . string(getpos("\'>\'")[1]) . ":%"')
-                vim.cmd('exe ":G log -L " . string(getpos("\'<\'")[1]) . "," . string(getpos("\'>\'")[1]) . ":%"')
+                vim.cmd('exe ":Git log -L " . string(getpos("\'<\'")[1]) . "," . string(getpos("\'>\'")[1]) . ":%"')
             end, md, "Visual Block")
         end,
     },
-    { "rbong/vim-flog",    config = false, cmd = { "Flog", "Flogsplit" } },
-    { "tpope/vim-rhubarb", config = false, cmd = { "GBrowse" } },
+    { "rbong/vim-flog", config = false, cmd = { "Flog", "Flogsplit" } },
     {
         "lewis6991/gitsigns.nvim",
         event = { "BufReadPre", "BufNewFile" },
