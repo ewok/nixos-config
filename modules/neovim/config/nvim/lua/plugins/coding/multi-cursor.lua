@@ -1,6 +1,6 @@
 return {
     "mg979/vim-visual-multi",
-    keys = { "<c-n>" },
+    keys = { { "<c-n>", mode = "n" } },
     config = function()
         vim.g.VM_Extend_hl = "DiffAdd"
         vim.g.VM_Cursor_hl = "Visual"

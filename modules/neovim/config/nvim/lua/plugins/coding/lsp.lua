@@ -4,7 +4,7 @@ return {
     event = { "BufReadPre", "BufNewFile" },
     dependencies = {
         { "neovim/nvim-lspconfig" },
-        { "folke/neodev.nvim",                opts = {} },
+        { "folke/neodev.nvim", opts = {} },
         { "williamboman/mason-lspconfig.nvim" },
     },
     init = function()
@@ -18,7 +18,7 @@ return {
     end,
     config = function()
         local map = require("lib").map
-        local conf = require "conf"
+        local conf = require("conf")
         local icons = conf.icons.diagnostic
         local lsp_zero = require("lsp-zero")
 
@@ -27,15 +27,32 @@ return {
             map("n", "K", "<cmd>lua vim.lsp.buf.hover()<cr>", { buffer = bufnr }, "[lsp] Hover documentation")
             map("n", "gd", "<cmd>lua vim.lsp.buf.definition()<cr>", { buffer = bufnr }, "[lsp] Go to definition")
             map("n", "gD", "<cmd>lua vim.lsp.buf.declaration()<cr>", { buffer = bufnr }, "[lsp] Go to declaration")
-            map("n", "gi", "<cmd>lua vim.lsp.buf.implementation()<cr>", { buffer = bufnr }, "[lsp] Go to implementation")
-            map("n", "go", "<cmd>lua vim.lsp.buf.type_definition()<cr>", { buffer = bufnr },
-                "[lsp] Go to type definition")
+            map(
+                "n",
+                "gi",
+                "<cmd>lua vim.lsp.buf.implementation()<cr>",
+                { buffer = bufnr },
+                "[lsp] Go to implementation"
+            )
+            map(
+                "n",
+                "go",
+                "<cmd>lua vim.lsp.buf.type_definition()<cr>",
+                { buffer = bufnr },
+                "[lsp] Go to type definition"
+            )
             map("n", "gr", "<cmd>lua vim.lsp.buf.references()<cr>", { buffer = bufnr }, "[lsp] Go to reference")
-            map("n", "gs", "<cmd>lua vim.lsp.buf.signature_help()<cr>", { buffer = bufnr },
-                "[lsp] Show function signature")
+            map(
+                "n",
+                "gs",
+                "<cmd>lua vim.lsp.buf.signature_help()<cr>",
+                { buffer = bufnr },
+                "[lsp] Show function signature"
+            )
             map("n", "<leader>cn", "<cmd>lua vim.lsp.buf.rename()<cr>", { buffer = bufnr }, "[lsp] Rename symbol")
-            map("n", "<leader>cf", "<cmd>lua vim.lsp.buf.format({async = true})<cr>", { buffer = bufnr },
-                "[lsp] Format file")
+            -- conform
+            -- map("n", "<leader>cf", "<cmd>lua vim.lsp.buf.format({async = true})<cr>", { buffer = bufnr },
+            --     "[lsp] Format file")
             map(
                 "x",
                 "<leader>cf",
@@ -43,8 +60,13 @@ return {
                 { buffer = bufnr },
                 "[lsp] Format selection"
             )
-            map("n", "<leader>ca", "<cmd>lua vim.lsp.buf.code_action()<cr>", { buffer = bufnr },
-                "[lsp] Execute code action")
+            map(
+                "n",
+                "<leader>ca",
+                "<cmd>lua vim.lsp.buf.code_action()<cr>",
+                { buffer = bufnr },
+                "[lsp] Execute code action"
+            )
 
             if vim.lsp.buf.range_code_action then
                 map(
@@ -69,15 +91,13 @@ return {
             map("n", "]d", "<cmd>lua vim.diagnostic.goto_next()<cr>", { buffer = bufnr }, "[lsp] Next diagnostic")
         end)
 
-        lsp_zero.set_sign_icons(
-            {
-                error = icons.Error,
-                warn = icons.Warn,
-                hint = icons.Hint,
-                info = icons.Info
-            }
-        )
-        require('lspconfig').nil_ls.setup({})
+        lsp_zero.set_sign_icons({
+            error = icons.Error,
+            warn = icons.Warn,
+            hint = icons.Hint,
+            info = icons.Info,
+        })
+        require("lspconfig").nil_ls.setup({})
 
         require("mason-lspconfig").setup({
             handlers = {

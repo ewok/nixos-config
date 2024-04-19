@@ -1,13 +1,30 @@
 local conf = require("conf")
 return {
     "folke/todo-comments.nvim",
-    keys = {"<leader>fd"},
-    init = function()
-        local map = require("lib").map
-        map("n", "<leader>fd", function()
-            require("telescope").extensions["todo-comments"].todo()
-        end, { silent = true, noremap = true }, "Find todo tag in the current workspace")
-    end,
+    keys = {
+        {
+            "<leader>fd",
+            function()
+                require("telescope").extensions["todo-comments"].todo()
+            end,
+            desc = "Find todo tag in the current workspace",
+            mode = "n",
+        },
+        {
+            "<leader>xt",
+            "<cmd>TodoTrouble<CR>",
+            mode = "n",
+            desc = "Find todo tag in the current workspace",
+        },
+    },
+    -- init = function()
+    --     local map = require("lib").map
+    --     -- map("n", "<leader>fd", function()
+    --     --     require("telescope").extensions["todo-comments"].todo()
+    --     -- end, { silent = true, noremap = true }, "Find todo tag in the current workspace")
+    --     map("n", "<leader>xt", "<cmd>TodoTrouble<CR>", { silent = true, noremap = true },
+    --         "Find todo tag in the current workspace")
+    -- end,
     opts = {
         keywords = {
             NOTE = { icon = conf.icons.Note, color = "#96CDFB" },

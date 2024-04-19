@@ -1,26 +1,82 @@
 return {
     "ThePrimeagen/harpoon",
     branch = "harpoon2",
-    -- keys = { "<leader>m", "<leader>fm", "<leader>j", "<leader>k" },
-    event = { "VeryLazy" },
+    keys = {
+        {
+            "<leader>m",
+            function()
+                require("harpoon"):list():add()
+            end,
+            mode = "n",
+            desc = "Mark File",
+        },
+        {
+            "<leader>fm",
+            function()
+                local harpoon = require("harpoon")
+                harpoon.ui:toggle_quick_menu(harpoon:list())
+            end,
+            mode = "n",
+            desc = "Find Marks",
+        },
+        {
+            "<leader>1",
+            function()
+                require("harpoon"):list():select(1)
+            end,
+            mode = "n",
+            desc = "Goto file 1",
+        },
+        {
+            "<leader>2",
+            function()
+                require("harpoon"):list():select(2)
+            end,
+            mode = "n",
+            desc = "Goto file 2",
+        },
+        {
+            "<leader>3",
+            function()
+                require("harpoon"):list():select(3)
+            end,
+            mode = "n",
+            desc = "Goto file 3",
+        },
+        {
+            "<leader>4",
+            function()
+                require("harpoon"):list():select(4)
+            end,
+            mode = "n",
+            desc = "Goto file 4",
+        },
+        {
+            "<leader>5",
+            function()
+                require("harpoon"):list():select(5)
+            end,
+            mode = "n",
+            desc = "Goto file 5",
+        },
+        {
+            "<leader>6",
+            function()
+                require("harpoon"):list():select(6)
+            end,
+            mode = "n",
+            desc = "Goto file 6",
+        },
+        {
+            "<leader>7",
+            function()
+                require("harpoon"):list():select(7)
+            end,
+            mode = "n",
+            desc = "Goto file 7",
+        },
+    },
     config = function()
-        local map = require "lib".map
-        local harpoon = require("harpoon")
-
-        harpoon:setup()
-
-        map("n", "<leader>m", function() harpoon:list():add() end, { noremap = true }, "Mark File")
-        map("n", "<leader>fm", function() harpoon.ui:toggle_quick_menu(harpoon:list()) end, { noremap = true },
-            "Find Marks")
-        map("n", "<leader>1", function() harpoon:list():select(1) end, { noremap = true }, "Goto file 1")
-        map("n", "<leader>2", function() harpoon:list():select(2) end, { noremap = true }, "Goto file 2")
-        map("n", "<leader>3", function() harpoon:list():select(3) end, { noremap = true }, "Goto file 3")
-        map("n", "<leader>4", function() harpoon:list():select(4) end, { noremap = true }, "Goto file 4")
-        map("n", "<leader>5", function() harpoon:list():select(5) end, { noremap = true }, "Goto file 5")
-        map("n", "<leader>6", function() harpoon:list():select(6) end, { noremap = true }, "Goto file 6")
-        map("n", "<leader>7", function() harpoon:list():select(7) end, { noremap = true }, "Goto file 7")
-        -- Toggle previous & next buffers stored within Harpoon list
-        -- map("n", "<leader>k", function() harpoon:list():prev() end, {}, "Goto prev file")
-        -- map("n", "<leader>j", function() harpoon:list():next() end, {}, "Goto next file")
-    end
+        require("harpoon"):setup()
+    end,
 }

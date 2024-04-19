@@ -31,16 +31,14 @@ local installer_resources = {
     "yamllint",
     -- },
     -- formatter = {
-    "autopep8",
     "black",
     "gofumpt",
     "goimports-reviser",
     "joker",
     "jq",
-    "markdownlint",
+    -- "markdownlint",
     "prettier",
     "shfmt",
-    "sql-formatter",
     "stylua",
     -- },
 }
@@ -85,8 +83,8 @@ return {
 
             max_concurrent_installers = 10,
         },
-        init = function ()
-            local map = require "lib".map
+        init = function()
+            local map = require("lib").map
             map("n", "<leader>pm", "<cmd>Mason<CR>", { noremap = true }, "Mason")
         end,
         config = function(_, opts)

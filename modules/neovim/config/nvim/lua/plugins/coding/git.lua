@@ -3,7 +3,7 @@ return {
         "chrishrb/gx.nvim",
         keys = { { "gx", "<cmd>Browse<cr>", mode = { "n", "x" } } },
         cmd = { "Browse" },
-        config = true
+        config = true,
     },
     {
         "tpope/vim-fugitive",
@@ -17,7 +17,6 @@ return {
                 "tpope/vim-rhubarb",
                 config = false,
             },
-
         },
         init = function()
             local map = require("lib").map
