@@ -1,0 +1,1 @@
+return { "ewok/scope.nvim", config = true, event = { "BufReadPre", "BufNewFile" } }

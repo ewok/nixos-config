@@ -4,11 +4,20 @@ return {
         cmd = { "Telescope" },
         init = function()
             local map = require("lib").map
-            map("n", "<leader>fo",
-                [[:lua require"telescope.builtin".find_files({find_command = {"rg","--ignore","--hidden","--files","--iglob","!.git","--ignore-vcs","--ignore-file","~/.config/git/gitexcludes"}})<CR>]]
-                , { silent = true }, "Find files in the current workspace")
-            map("n", "<leader>ff", "<CMD>Telescope live_grep<CR>", { silent = true },
-                "Find string in the current workspace")
+            map(
+                "n",
+                "<leader>fo",
+                [[:lua require"telescope.builtin".find_files({find_command = {"rg","--ignore","--hidden","--files","--iglob","!.git","--ignore-vcs","--ignore-file","~/.config/git/gitexcludes"}})<CR>]],
+                { silent = true },
+                "Find files in the current workspace"
+            )
+            map(
+                "n",
+                "<leader>ff",
+                "<CMD>Telescope live_grep<CR>",
+                { silent = true },
+                "Find string in the current workspace"
+            )
             map("n", "<leader>fh", "<CMD>Telescope oldfiles<CR>", { silent = true }, "Find telescope history")
             map("n", "<leader>f.", "<CMD>Telescope resume<CR>", { silent = true }, "Find last lookup")
             map("n", "<leader>fM", "<CMD>Telescope marks<CR>", { silent = true }, "Find marks in the current workspace")
@@ -94,15 +103,16 @@ return {
                 pickers = {
                     buffers = {
                         show_all_buffers = true,
-                        sort_lastused = true,
+                        sort_mru = true,
+                        select_current = true,
                         theme = "dropdown",
                         previewer = false,
                         mappings = {
                             i = {
                                 ["<c-d>"] = actions.delete_buffer + actions.move_to_top,
-                            }
-                        }
-                    }
+                            },
+                        },
+                    },
                 },
                 extensions = {
                     fzf = {
