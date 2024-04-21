@@ -174,6 +174,7 @@ M.icons.lsp_kind = {
     Unit = "",
     Value = "",
     Variable = "",
+    Codeium = "",
 }
 
 M.icons.wk = {

@@ -11,7 +11,7 @@ return {
             mode = "n",
         },
         {
-            "<leader>xt",
+            "<leader>to",
             "<cmd>TodoTrouble<CR>",
             mode = "n",
             desc = "Find todo tag in the current workspace",

@@ -9,7 +9,6 @@ return {
     },
     config = function()
         local map = require("lib").map
-        local path_join = require("lib").path_join
         local resession = require("resession")
         local notify = require("notify")
 
@@ -37,19 +36,19 @@ return {
 
         if vim.g.auto_load_session then
             vim.fn.timer_start(1000, function()
-                resession.load(vim.fn.getcwd(), { dir = "dirsession", silence_errors = true })
+                resession.load(vim.fn.getcwd(), { silence_errors = true })
                 pcall(function()
                     vim.cmd("silent e")
                 end)
             end)
         end
 
-        vim.api.nvim_create_autocmd("VimLeavePre", {
-            group = autgroup,
-            callback = function()
-                resession.save(vim.fn.getcwd(), { dir = "dirsession", notify = false })
-            end,
-        })
+        -- vim.api.nvim_create_autocmd("VimLeavePre", {
+        --     group = autgroup,
+        --     callback = function()
+        --         resession.save(vim.fn.getcwd(), { dir = "dirsession", notify = false })
+        --     end,
+        -- })
 
         -- mappings
 
@@ -62,7 +61,7 @@ return {
         end, { silent = true }, "Session Load")
 
         map("n", "<leader>su", function()
-            resession.load(vim.fn.getcwd(), { dir = "dirsession", silence_errors = true })
+            resession.load(vim.fn.getcwd(), { silence_errors = true })
             pcall(function()
                 vim.cmd("silent e")
             end)
@@ -75,15 +74,26 @@ return {
         end, { silent = true }, "Session Save")
 
         map("n", "<leader>sq", function()
-            resession.save()
-            vim.cmd("qall")
+            if resession.get_current() ~= nil then
+                resession.save()
+                vim.cmd("qall")
+            else
+                vim.ui.input({ prompt = "Session Name(enter to use path): " }, function(name)
+                    if name == "" then
+                        resession.save(vim.fn.getcwd(), { notify = false })
+                    elseif name == nil then
+                    else
+                        resession.save(name, { notify = false })
+                    end
+                    vim.cmd("qall")
+                end)
+            end
         end, { silent = true }, "Session Quit")
 
         map("n", "<leader>sd", function()
             local ok, _ = pcall(resession.delete)
             if ok then
                 notify("Session deleted success", "INFO", { title = "Session" })
-                -- vim.cmd('qall') -- It is commented out in the original snippet, so it's not clear if it should be executed or not.
             else
                 notify("Session deleted failure", "ERROR", { title = "Session" })
             end

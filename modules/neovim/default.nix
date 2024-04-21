@@ -1,6 +1,7 @@
 { config, lib, pkgs, utils, ... }:
 with lib;
 let
+
   cfg = config.opt.nvim;
 
   jrnl = pkgs.writeShellScriptBin "jrnl" ''
@@ -44,6 +45,39 @@ let
     is_nix = "true";
   };
 
+  version = "1.8.25";
+  ls-system = "linux_arm";
+  hash = "sha256-Gt48FrW9MF4xppmA4TsuEe3iJYn8DrKhtFmb8N7rO+s=";
+  packs = with pkgs; {
+    codeium-lsp = stdenv.mkDerivation
+      {
+        pname = "codeium-lsp";
+        version = "v${version}";
+
+        src = pkgs.fetchurl {
+          url = "https://github.com/Exafunction/codeium/releases/download/language-server-v${version}/language_server_${ls-system}";
+          sha256 = hash;
+        };
+
+        sourceRoot = ".";
+
+        phases = [ "installPhase" "fixupPhase" ];
+        nativeBuildInputs =
+          [
+            stdenv.cc.cc
+          ]
+          ++ (
+            if !stdenv.isDarwin
+            then [ autoPatchelfHook ]
+            else [ ]
+          );
+
+        installPhase = ''
+          mkdir -p $out/bin
+          install -m755 $src $out/bin/codeium-lsp
+        '';
+      };
+  };
 in
 {
   options.opt.nvim = {
@@ -84,12 +118,15 @@ in
         base0F = "be5047";
       };
     };
-
+    android = mkOption { type = types.bool; default = false; };
   };
 
   config = mkIf cfg.enable {
 
-    home.packages = with pkgs; [
+    home.packages = with pkgs; let
+      androidPkgs = optionals cfg.android [ packs.codeium-lsp ];
+    in
+    [
       my-nvim
       lazygit
       clean-cache
@@ -144,8 +181,7 @@ in
       # prettier
       # nodePackages.sql-formatter
       # gofmt
-    ];
-
+    ] ++ androidPkgs;
     xdg = {
       configFile = {
 

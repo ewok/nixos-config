@@ -35,6 +35,7 @@ return {
                 end,
             },
             sources = {
+                { name = "codeium" },
                 { name = "calc" },
                 { name = "snippy" },
                 { name = "nvim_lsp" },

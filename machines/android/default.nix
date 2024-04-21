@@ -24,6 +24,7 @@ in
             nvim = {
               enable = true;
               inherit colors theme;
+              android = true;
             };
             tmux = {
               enable = true;

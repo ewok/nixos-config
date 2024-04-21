@@ -208,7 +208,7 @@ return {
                 },
             })
 
-            query.set("markdown", "highlights", md_rule)
+            -- query.set("markdown", "highlights", md_rule)
         end,
         event = { "BufReadPre", "BufNewFile" },
     },
