@@ -48,14 +48,14 @@ return {
         })
 
         local map = require("lib").map
-        map("n", "<Tab>", function()
-            vim.cmd("silent! bnext")
-            require("lualine").refresh({ scope = "tabpage", place = { "tabline", "statusline", "winbar" } })
-        end, {}, "Goto next buffer")
-        map("n", "<S-Tab>", function()
-            vim.cmd("silent! bprevious")
-            require("lualine").refresh({ scope = "tabpage", place = { "tabline", "statusline", "winbar" } })
-        end, {}, "Goto prev buffer")
+        -- map("n", "<Tab>", function()
+        --     vim.cmd("silent! bnext")
+        --     require("lualine").refresh({ scope = "tabpage", place = { "tabline", "statusline", "winbar" } })
+        -- end, {}, "Goto next buffer")
+        -- map("n", "<S-Tab>", function()
+        --     vim.cmd("silent! bprevious")
+        --     require("lualine").refresh({ scope = "tabpage", place = { "tabline", "statusline", "winbar" } })
+        -- end, {}, "Goto prev buffer")
 
         local hydra = require("hydra")
         map("n", "<leader>j", function()

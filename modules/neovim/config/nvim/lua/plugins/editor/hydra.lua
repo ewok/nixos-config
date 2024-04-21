@@ -90,9 +90,9 @@ any : quit
                         },
                     },
                     on_enter = function()
-                    --     if conf.nvim_tree then
-                    --         require("nvim-tree.api").tree.find_file({ open = true, focus = false })
-                    --     end
+                        --     if conf.nvim_tree then
+                        --         require("nvim-tree.api").tree.find_file({ open = true, focus = false })
+                        --     end
                         require("lualine").refresh({ scope = "tabpage", place = { "tabline", "statusline", "winbar" } })
                     end,
                     on_key = function()
