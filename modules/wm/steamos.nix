@@ -2,9 +2,9 @@
 with lib;
 let
   cfg = config.opt.wm;
-  spacebar-sh = pkgs.writeScriptBin "spacebar.sh" ''
-    ${readFile ./config/macos/spacebar.sh}
-  '';
+  # spacebar-sh = pkgs.writeScriptBin "spacebar.sh" ''
+  #   ${readFile ./config/macos/spacebar.sh}
+  # '';
   vars = {
     conf.colors = cfg.colors;
     conf.theme = cfg.theme;

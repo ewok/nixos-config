@@ -23,7 +23,11 @@ in
 {
   config = mkIf (cfg.enable && (pkgs.system == "aarch64-darwin"))
     {
-      home.packages = [ spacebar-sh home-profile work-profile ];
+      home.packages = [
+        # spacebar-sh
+        home-profile
+        work-profile
+      ];
       home.file.".skhdrc".source = ./config/macos/skhdrc;
       home.file.".finicky.js".source = ./config/macos/finicky.js;
       home.file.".wezterm.lua".source = ./config/macos/wezterm.lua;
