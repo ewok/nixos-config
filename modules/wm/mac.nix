@@ -2,9 +2,9 @@
 with lib;
 let
   cfg = config.opt.wm;
-  spacebar-sh = pkgs.writeScriptBin "spacebar.sh" ''
-    ${readFile ./config/macos/spacebar.sh}
-  '';
+  # spacebar-sh = pkgs.writeScriptBin "spacebar.sh" ''
+  #   ${readFile ./config/macos/spacebar.sh}
+  # '';
   home-profile = pkgs.writeScriptBin "home-profile" ''
     displayplacer \
       "id:D6C2035F-7377-4A18-A1CD-BC0BA930526E res:1920x1080 \
@@ -28,13 +28,13 @@ in
       home.file.".finicky.js".source = ./config/macos/finicky.js;
       home.file.".wezterm.lua".source = ./config/macos/wezterm.lua;
       home.file."bin/new-iterm-window.scpt".source = ./config/macos/new-iterm-window.scpt;
-      home.file.".yabairc" = {
-        source = ./config/macos/yabairc;
-        executable = true;
-      };
-      xdg.configFile."spacebar/spacebarrc" = {
-        source = ./config/macos/spacebarrc;
-        executable = true;
-      };
+      # home.file.".yabairc" = {
+      #   source = ./config/macos/yabairc;
+      #   executable = true;
+      # };
+      # xdg.configFile."spacebar/spacebarrc" = {
+      #   source = ./config/macos/spacebarrc;
+      #   executable = true;
+      # };
     };
 }

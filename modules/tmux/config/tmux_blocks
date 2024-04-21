@@ -1,0 +1,116 @@
+#! /bin/bash
+
+usbmon() {
+	i=1
+	#for usb in $(\df -Th | awk '/s[a-z][a-z][0-9]/ && $7!="/" {print substr($1,6)}')
+	for usb in $(\lsblk -do name,tran | awk '$2=="usb" {print $1}'); do
+		[[ $i -le 1 ]] && printf "#[fg=#5E81AC]  $usb"
+		[[ $i -gt 1 ]] && printf " $usb"
+		let "i+=1"
+	done
+}
+
+network() {
+	# get first element
+	conntype=$(ip route | awk '/default/ { print substr($5,1,2) }' | head -1)
+
+	if [ -z "$conntype" ]; then
+		echo -e "#[fg=#d75f5f]  "
+	elif [ "$conntype" = "et" ]; then
+		echo -e "#[fg=#83A589]  "
+	elif [ "$conntype" = "wl" ] || [ "$conntype" = "en" ]; then
+		echo -e "#[fg=#83A589] "
+	fi
+}
+
+battery() {
+	for battery in /sys/class/power_supply/BAT?*; do
+		[ -n "${capacity+x}" ] && printf " "
+		case "$(cat "$battery/status" 2>&1)" in
+		"Full") status="⚡" ;;
+		"Discharging") status="D" ;;
+		"Charging") status="🔌" ;;
+		"Not charging") status="!  " ;;
+		"Unknown") status="♻️  " ;;
+		*) exit 1 ;;
+		esac
+		capacity="$(cat "$battery/capacity" 2>&1)"
+		if [[ "$status" = "D" ]]; then
+			if [[ "$capacity" -ge 85 ]]; then
+				status="#[fg=#00FF00]🔋"
+			elif [[ "$capacity" -le 85 ]] && [[ "$capacity" -ge 75 ]]; then
+				status="#[fg=#549665]🔋"
+			elif [[ "$capacity" -le 75 ]] && [[ "$capacity" -ge 50 ]]; then
+				status="#[fg=#549665] "
+			elif [[ "$capatity" -le 50 ]] && [[ "$capacity" -ge 20 ]]; then
+				status="#[fg=#549665] "
+			elif [[ "$capatity" -le 20 ]] && [[ "$capacity" -ge 15 ]]; then
+				status="#[fg=red] "
+				notify-send -u critical "Plugin the power cable"
+			else
+				status="#[fg=red] "
+				notify-send -u critical "Plugin the power cable immediately"
+			fi
+		fi
+		[[ ! "$status" = "D" && "$capacity" -gt 85 && $(cat "/sys/class/power_supply/AC/online") = "1" ]] && notify-send -u low "Unplug the power cable"
+		printf "%s%d%%" "$status " "$capacity"
+	done
+}
+
+# ufw(){
+#     ufwstatus=$(sudo ufw status | awk '{ print $2 }')
+#     if [ "$ufwstatus" = "active" ]; then
+#            echo -e "#[fg=#549665] #[default]"
+#     elif [ "$ufwstatus" = "inactive" ]; then
+#           echo -e "#[fg=#d75f5f]  #[default]"
+#     fi
+# }
+
+# VOLUME="$(amixer get Master | tail -1 | awk '{print substr($4, 2, length($4) - 3)}')"
+memory() {
+	free -m | awk '/Mem/ {printf "%d MB\n", $3 }'
+}
+
+DATE=$(date +"📆 %d/%m")
+UTC=$(date -u +"🌐 %R")
+MSK=$(TZ='Europe/Moscow' date +"🇷🇺 %R")
+KG=$(TZ='Asia/Bishkek' date +"🇰🇬 %R")
+PHT=$(TZ='Asia/Manila' date +"🇵🇭 %R")
+
+mac_vpn_status() {
+	UTUN=$(ifconfig | grep -E 'utun[0-9]+:' | grep -v utun0 | cut -f1 -d':')
+	IPSEC=$(ifconfig | grep -E 'ipsec[0-9]+:' | cut -f1 -d':')
+
+	if [[ $UTUN != "" ]]; then
+		for utun in $UTUN; do
+			IP=$(ifconfig $utun 2>/dev/null | grep -w inet | cut -d' ' -f2)
+			if [[ "$IP" != "" ]]; then
+				echo -en ""
+				return
+			fi
+		done
+	fi
+
+	if [[ $IPSEC != "" ]]; then
+		for ipsec in $IPSEC; do
+			IP=$(ifconfig $utun 2>/dev/null | grep -w inet | cut -d' ' -f2)
+			if [[ "$IP" != "" ]]; then
+				echo -en ""
+				return
+			fi
+		done
+	fi
+
+	echo -en ""
+}
+
+mac_show_battery() {
+	echo -en "🔋"
+	pmset -g batt | grep 'remain' | sed ' s/.*\t\([0-9]*\%\);.* \([0-9]*:[0-9]*\) remaining.*/\1 \2/g'
+}
+
+if [[ "$OSTYPE" == "darwin"* ]]; then
+	echo -e "$(mac_vpn_status)#[default] $(network)#[default] $DATE $UTC $MSK $KG $PHT $(mac_show_battery)#[default]"
+else
+	echo -e "$(usbmon)#[default] $(network)#[default] #[fg=colour68]#[fg=colour96]🐏 $(memory)#[default] $DATE $UTC $MSK $KG $PHT $(battery)#[default] "
+fi

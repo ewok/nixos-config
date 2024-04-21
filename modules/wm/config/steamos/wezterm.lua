@@ -22,5 +22,6 @@ config.enable_tab_bar = false
 config.enable_scroll_bar = false
 config.window_close_confirmation = 'NeverPrompt'
 config.window_decorations = "RESIZE"
+config.warn_about_missing_glyphs = false
 
 return config
