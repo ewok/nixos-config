@@ -6,9 +6,10 @@ config.font = wezterm.font("FiraCode Nerd Font Propo", {
     weight='Bold',
     stretch="Condensed",
 })
-config.font_size = 15.0
+config.font_size = 14.6
 config.font_shaper = "Harfbuzz"
 config.freetype_load_target = "Light"
+-- config.line_height = 0.9
 -- config.freetype_load_target = "HorizontalLcd"
 -- config.foreground_text_hsb = {
 --     hue = 1.0,
