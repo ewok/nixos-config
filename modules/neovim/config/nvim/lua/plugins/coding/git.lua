@@ -7,7 +7,7 @@ return {
     },
     {
         "tpope/vim-fugitive",
-        cmd = { "Git", "Gedit", "Gvdiffsplit", "GBrowse", "Gread", "Gwrite" },
+        cmd = { "Git", "Gedit", "Gvdiffsplit", "GBrowse", "Gread", "Gwrite", "Flog", "Flogsplit" },
         dependencies = {
             {
                 "shumphrey/fugitive-gitlab.vim",

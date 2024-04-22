@@ -19,7 +19,7 @@ Spell Langs
                 invoke_on_body = true,
                 hint = {
                     float_opts = {
-                        style = "rounded",
+                        style = "minimal",
                     },
                     position = "middle",
                     funcs = {

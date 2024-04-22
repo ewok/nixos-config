@@ -73,9 +73,24 @@ return {
         -- local float_term = function() term:toggle(nil, "float") end
 
         local open_term = function(direction)
+            local dir = function()
+                local current_path = vim.fn.expand("%:p")
+                local cwd = vim.loop.cwd()
+                if vim.fn.filereadable(current_path) == 1 then
+                else
+                    return cwd
+                end
+                local current_parent = vim.fn.expand("%:p:h")
+                if current_parent == "" or current_parent == nil then
+                    return cwd
+                else
+                    return current_parent
+                end
+            end
             terms
                 :new({
-                    dir = vim.fn.expand("%:p:h"),
+                    dir = dir(),
+                    -- Check if "%" is expandable to ensure that `dir` is correctly set
                     direction = "horizontal",
                     count = 110,
                     size = function(term)

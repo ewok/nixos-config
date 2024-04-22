@@ -1,5 +1,6 @@
 return {
     "Exafunction/codeium.vim",
+    -- event = {"VeryLazy"},
     cmd = {
         "Codeium",
         "CodeiumEnable",
@@ -9,10 +10,6 @@ return {
         "CodeiumAuto",
     },
     keys = {
-        { "<C-l>", mode = "i" },
-        { "<C-.>", mode = "i" },
-        { "<C-,>", mode = "i" },
-        { "<C-;>", mode = "i" },
         {
             "<leader>tc",
             function()
@@ -40,17 +37,19 @@ return {
         --     language_server = "~/.nix-profile/bin/codeium-lsp",
         --   }
         -- })
-        vim.keymap.set("i", "<C-l>", function()
+        local map = require"lib".map
+
+        map("i", "<C-l>", function()
             return vim.fn["codeium#Accept"]()
-        end, { expr = true, silent = true })
-        vim.keymap.set("i", "<c-n>", function()
+        end, { expr = true, silent = true }, "Codeium Complete")
+        map("i", "<c-n>", function()
             return vim.fn["codeium#CycleCompletions"](1)
-        end, { expr = true, silent = true })
-        vim.keymap.set("i", "<c-p>", function()
+        end, { expr = true, silent = true }, "Codeium next")
+        map("i", "<c-p>", function()
             return vim.fn["codeium#CycleCompletions"](-1)
-        end, { expr = true, silent = true })
-        vim.keymap.set("i", "<c-g>", function()
+        end, { expr = true, silent = true }, "Codeium prev")
+        map("i", "<c-g>", function()
             return vim.fn["codeium#Clear"]()
-        end, { expr = true, silent = true })
+        end, { expr = true, silent = true }, "Codeium abort")
     end,
 }

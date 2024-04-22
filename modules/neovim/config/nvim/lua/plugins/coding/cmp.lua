@@ -23,6 +23,9 @@ return {
         local cmp = require("cmp")
         local types = require("cmp.types")
 
+        local t = function(str)
+            return vim.api.nvim_replace_termcodes(str, true, true, true)
+        end
         local config_opts = {
             preselect = types.cmp.PreselectMode.None,
             confirmation = {
@@ -52,10 +55,40 @@ return {
                     end
                 end),
                 ["<cr>"] = cmp.mapping(cmp.mapping.confirm(), { "i", "s", "c" }),
-                ["<c-p>"] = cmp.mapping(cmp.mapping.select_prev_item(), { "i", "s", "c" }),
-                ["<c-n>"] = cmp.mapping(cmp.mapping.select_next_item(), { "i", "s", "c" }),
-                ["<c-b>"] = cmp.mapping(cmp.mapping.scroll_docs(-5), { "i", "s", "c" }),
-                ["<c-f>"] = cmp.mapping(cmp.mapping.scroll_docs(5), { "i", "s", "c" }),
+                ["<C-n>"] = cmp.mapping({
+                    c = function()
+                        -- if cmp.visible() then
+                            cmp.select_next_item({ behavior = cmp.SelectBehavior.Insert })
+                        -- else
+                        --     vim.api.nvim_feedkeys(t("<Down>"), "n", true)
+                        -- end
+                    end,
+                    i = function(fallback)
+                        if cmp.visible() then
+                            cmp.select_next_item({ behavior = cmp.SelectBehavior.Insert })
+                        else
+                            fallback()
+                        end
+                    end,
+                }),
+                ["<C-p>"] = cmp.mapping({
+                    c = function()
+                        -- if cmp.visible() then
+                            cmp.select_prev_item({ behavior = cmp.SelectBehavior.Insert })
+                        -- else
+                        --     vim.api.nvim_feedkeys(t("<Up>"), "n", true)
+                        -- end
+                    end,
+                    i = function(fallback)
+                        if cmp.visible() then
+                            cmp.select_prev_item({ behavior = cmp.SelectBehavior.Insert })
+                        else
+                            fallback()
+                        end
+                    end,
+                }),
+                ["<c-b>"] = cmp.mapping(cmp.mapping.scroll_docs(-4), { "i", "s", "c" }),
+                ["<c-f>"] = cmp.mapping(cmp.mapping.scroll_docs(4), { "i", "s", "c" }),
                 ["<c-u>"] = cmp.mapping(function(fallback)
                     if cmp.visible() then
                         for i = 1, 5 do
