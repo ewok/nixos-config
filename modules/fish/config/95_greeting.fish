@@ -1,4 +1,6 @@
 function fish_greeting
+  # Use prompt at the botttom
+  tput cup 9999 0
 
   if ! test -z "$TMUX"
     if test -t 2
