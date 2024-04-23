@@ -68,5 +68,10 @@ format = "[[$symbol$status]]($style) "
 style = "bg:blue"
 
 [kubernetes]
-format = '[⛵ $context ](green)'
+symbol = "⛵ "
+format = '[$symbol$context:$namespace]($style) '
 disabled = false
+contexts = [
+    { context_pattern =  ".*fhl-tes(?P<cluster>[\\w-]+)-cluster", style = "green", context_alias = "tes$cluster" },
+    { context_pattern =  ".*fhl-prod(?P<cluster>[\\w-]+)-cluster", style = "red bold", context_alias = "prod$cluster" },
+]
