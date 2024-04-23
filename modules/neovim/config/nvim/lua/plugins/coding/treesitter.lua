@@ -71,7 +71,6 @@ local md_rule = [[
 return {
     {
         "nvim-treesitter/nvim-treesitter-textobjects",
-        lazy = true,
         config = function()
             require("nvim-treesitter.configs").setup({
                 textobjects = {
@@ -103,8 +102,14 @@ return {
                             ["af"] = { query = "@call.outer", desc = "Select outer part of a function call" },
                             ["if"] = { query = "@call.inner", desc = "Select inner part of a function call" },
 
-                            ["am"] = { query = "@function.outer", desc = "Select outer part of a method/function definition" },
-                            ["im"] = { query = "@function.inner", desc = "Select inner part of a method/function definition" },
+                            ["am"] = {
+                                query = "@function.outer",
+                                desc = "Select outer part of a method/function definition",
+                            },
+                            ["im"] = {
+                                query = "@function.inner",
+                                desc = "Select inner part of a method/function definition",
+                            },
 
                             ["ac"] = { query = "@class.outer", desc = "Select outer part of a class" },
                             ["ic"] = { query = "@class.inner", desc = "Select inner part of a class" },
@@ -168,14 +173,21 @@ return {
         "nvim-treesitter/nvim-treesitter",
         build = ":TSUpdate",
         dependencies = {
-            "nvim-treesitter/nvim-treesitter-textobjects"
+            "nvim-treesitter/nvim-treesitter-textobjects",
         },
         config = function()
             local configs = require("nvim-treesitter.configs")
             local query = require("vim.treesitter.query")
 
             configs.setup({
-                ensure_installed = { "markdown_inline", "markdown" },
+                ensure_installed = {
+                    "markdown_inline",
+                    "markdown",
+                    "c",
+                    "lua",
+                    "vim",
+                    "vimdoc",
+                },
                 ignore_install = {},
                 sync_install = false,
                 auto_install = true,
@@ -184,7 +196,7 @@ return {
                 },
                 highlight = {
                     enable = true,
-                    additional_vim_regex_highlighting = false,
+                    additional_vim_regex_highlighting = require"conf".treesitter_nvim_highlighting,
                 },
                 indent = {
                     enable = true,
@@ -208,8 +220,8 @@ return {
                 },
             })
 
-            -- query.set("markdown", "highlights", md_rule)
+            query.set("markdown", "highlights", md_rule)
         end,
-        event = { "BufReadPre", "BufNewFile" },
+        event = { "BufReadPost", "BufNewFile" },
     },
 }
