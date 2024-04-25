@@ -4,6 +4,7 @@ return {
     dependencies = {
         {
             "ewok/scope.nvim",
+            -- "tiagovla/scope.nvim",
             config = true,
         },
     },

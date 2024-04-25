@@ -131,6 +131,7 @@ any : quit
                         "d",
                         function()
                             require("scope.core").delete_buf()
+                            -- vim.cmd("BufferDelete")
                         end,
                         { desc = "Delete Buffer" },
                     },

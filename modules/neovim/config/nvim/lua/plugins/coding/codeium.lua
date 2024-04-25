@@ -1,6 +1,7 @@
 return {
     "Exafunction/codeium.vim",
     -- event = {"VeryLazy"},
+    dependencies = { "hrsh7th/nvim-cmp" },
     cmd = {
         "Codeium",
         "CodeiumEnable",
@@ -37,19 +38,19 @@ return {
         --     language_server = "~/.nix-profile/bin/codeium-lsp",
         --   }
         -- })
-        local map = require"lib".map
+        local map = require("lib").map
 
         map("i", "<C-l>", function()
             return vim.fn["codeium#Accept"]()
-        end, { expr = true, silent = true }, "Codeium Complete")
-        map("i", "<c-n>", function()
-            return vim.fn["codeium#CycleCompletions"](1)
-        end, { expr = true, silent = true }, "Codeium next")
-        map("i", "<c-p>", function()
-            return vim.fn["codeium#CycleCompletions"](-1)
-        end, { expr = true, silent = true }, "Codeium prev")
+        end, { expr = true, silent = true, noremap = true }, "Codeium Complete")
+        map("i", "<c-j>", function()
+            vim.call("codeium#CycleCompletions", 1)
+        end, { silent = true, noremap = true }, "Codeium next")
+        map("i", "<c-k>", function()
+            vim.call("codeium#CycleCompletions", 1)
+        end, { silent = true, noremap = true }, "Codeium prev")
         map("i", "<c-g>", function()
             return vim.fn["codeium#Clear"]()
-        end, { expr = true, silent = true }, "Codeium abort")
+        end, { expr = true, silent = true, noremap = true }, "Codeium abort")
     end,
 }

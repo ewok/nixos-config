@@ -58,33 +58,33 @@ return {
                 ["<C-n>"] = cmp.mapping({
                     c = function()
                         -- if cmp.visible() then
-                            cmp.select_next_item({ behavior = cmp.SelectBehavior.Insert })
+                        cmp.select_next_item({ behavior = cmp.SelectBehavior.Insert })
                         -- else
                         --     vim.api.nvim_feedkeys(t("<Down>"), "n", true)
                         -- end
                     end,
                     i = function(fallback)
-                        if cmp.visible() then
+                        -- if cmp.visible() then
                             cmp.select_next_item({ behavior = cmp.SelectBehavior.Insert })
-                        else
-                            fallback()
-                        end
+                        -- else
+                        --     fallback()
+                        -- end
                     end,
                 }),
                 ["<C-p>"] = cmp.mapping({
                     c = function()
                         -- if cmp.visible() then
-                            cmp.select_prev_item({ behavior = cmp.SelectBehavior.Insert })
+                        cmp.select_prev_item({ behavior = cmp.SelectBehavior.Insert })
                         -- else
                         --     vim.api.nvim_feedkeys(t("<Up>"), "n", true)
                         -- end
                     end,
                     i = function(fallback)
-                        if cmp.visible() then
+                        -- if cmp.visible() then
                             cmp.select_prev_item({ behavior = cmp.SelectBehavior.Insert })
-                        else
-                            fallback()
-                        end
+                        -- else
+                        --     fallback()
+                        -- end
                     end,
                 }),
                 ["<c-b>"] = cmp.mapping(cmp.mapping.scroll_docs(-4), { "i", "s", "c" }),
@@ -107,13 +107,13 @@ return {
                         fallback()
                     end
                 end, { "i", "s", "c" }),
-                ["<c-k>"] = cmp.mapping(function()
-                    if cmp.visible() then
-                        cmp.abort()
-                    else
-                        cmp.complete()
-                    end
-                end, { "i", "s", "c" }),
+                -- ["<c-k>"] = cmp.mapping(function()
+                --     if cmp.visible() then
+                --         cmp.abort()
+                --     else
+                --         cmp.complete()
+                --     end
+                -- end, { "i", "s", "c" }),
             },
             sorting = {
                 priority_weight = 2,

@@ -12,6 +12,8 @@ return {
             { silent = true },
             "Close current buffer"
         )
+        -- map("n", "<C-W>d", "<cmd>BufferDelete<cr>", { silent = true }, "Close current buffer")
+        -- map("n", "<C-W><C-D>", "<cmd>BufferDelete<cr>", { silent = true }, "Close current buffer")
     end,
     config = function()
         local lualine = require("lualine")
