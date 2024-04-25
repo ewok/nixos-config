@@ -1,4 +1,4 @@
-{ config, lib, pkgs, home-manager, ... }:
+{ config, pkgs, ... }:
 let
   inherit (config) colors theme username;
   homeDirectory = "/Users/${username}";
@@ -10,7 +10,6 @@ in
   ];
 
   config = {
-
     services.nix-daemon.enable = true;
 
     users.users."${username}" = {
@@ -37,12 +36,6 @@ in
               enable = true;
               inherit colors theme;
             };
-            tmux = {
-              enable = true;
-              inherit colors theme;
-              terminal = "xterm-256color";
-              install = false;
-            };
             fish = {
               enable = true;
               darwin = true;
@@ -61,6 +54,16 @@ in
             wm.enable = true;
             ssh.enable = true;
             direnv.enable = true;
+            terminal = {
+              enable = true;
+              inherit colors theme;
+              tmux = {
+                enable = true;
+                terminal = "xterm-256color";
+                install = false;
+              };
+              zellij.enable = true;
+            };
           };
 
 

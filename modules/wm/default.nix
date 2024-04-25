@@ -10,7 +10,7 @@ with lib;
 
     terminal = mkOption {
       type = types.str;
-      default = "alacritty";
+      default = "wezterm";
     };
 
     theme = mkOption {

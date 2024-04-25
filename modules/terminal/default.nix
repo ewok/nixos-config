@@ -1,22 +1,32 @@
-{ config, lib, pkgs, utils, ... }:
+{ lib, ... }:
 with lib;
-let
-  cfg = config.opt.terminal;
-
-  vars = {
-    conf.colors = cfg.colors;
-    conf.theme = cfg.theme;
-    conf.terminal = cfg.terminal;
-  };
-
-in
 {
   options.opt = {
     terminal = {
       enable = mkEnableOption "terminal";
+      steamdeck = mkOption { type = types.bool; default = false; };
       terminal = mkOption {
         type = types.str;
-        default = "alacritty";
+        default = "wezterm";
+      };
+      tmux = {
+        enable = mkEnableOption "tmux";
+        install = mkOption {
+          type = types.bool;
+          default = true;
+        };
+        terminal = mkOption {
+          type = types.str;
+          default = "tmux-256color";
+        };
+      };
+
+      zellij = {
+        enable = mkEnableOption "zellij";
+        install = mkOption {
+          type = types.bool;
+          default = true;
+        };
       };
 
       theme = mkOption {
@@ -54,11 +64,5 @@ in
 
     };
   };
-
-  config = mkIf cfg.enable {
-    # home.packages = with pkgs;
-    #   [
-    #   ];
-    xdg.configFile."alacritty/alacritty.yml".source = utils.templateFile "alacritty.yml" ./config/alacritty.yml vars;
-  };
+  imports = [ ./alacritty.nix ./wezterm.nix ./tmux.nix ./zellij.nix ];
 }

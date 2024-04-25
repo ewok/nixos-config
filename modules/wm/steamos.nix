@@ -29,7 +29,6 @@ in
         source = ./config/steamos/kde;
         recursive = true;
       };
-      home.file.".wezterm.lua".source = ./config/steamos/wezterm.lua;
       xdg.configFile."i3/config" = {
         source = utils.templateFile "config" ./config/steamos/i3/config vars;
         executable = true;

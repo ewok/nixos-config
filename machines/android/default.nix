@@ -26,10 +26,6 @@ in
               inherit colors theme;
               android = true;
             };
-            tmux = {
-              enable = true;
-              inherit colors theme;
-            };
             vifm.enable = true;
             fish.enable = true;
             fish.homeDirectory = homeDirectory;
@@ -43,6 +39,14 @@ in
             nix.enable = true;
             lisps.enable = true;
             direnv.enable = true;
+            termninal = {
+              enable = true;
+              terminal = "tty";
+              inherit colors theme;
+              tmux = {
+                enable = true;
+              };
+            };
           };
 
         home.username = "nix-on-droid";

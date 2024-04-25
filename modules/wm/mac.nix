@@ -30,7 +30,6 @@ in
       ];
       home.file.".skhdrc".source = ./config/macos/skhdrc;
       home.file.".finicky.js".source = ./config/macos/finicky.js;
-      home.file.".wezterm.lua".source = ./config/macos/wezterm.lua;
       home.file."bin/new-iterm-window.scpt".source = ./config/macos/new-iterm-window.scpt;
       # home.file.".yabairc" = {
       #   source = ./config/macos/yabairc;

@@ -19,10 +19,6 @@ in
           enable = true;
           inherit colors theme;
         };
-        tmux = {
-          enable = true;
-          inherit colors theme;
-        };
         vifm.enable = true;
         fish.enable = true;
         fish.homeDirectory = homeDirectory;
@@ -35,15 +31,18 @@ in
         #bw.enable = false;
         nix.enable = true;
         lisps.enable = true;
-        # terminal = {
-        #   enable = true;
-        #   inherit colors theme;
-        # };
+        terminal = {
+          enable = true;
+          inherit colors theme;
+          steamdeck = true;
+          tmux = {
+            enable = true;
+          };
+        };
         wm = {
           enable = true;
           steamos = true;
           inherit colors theme;
-          terminal = "wezterm";
         };
         direnv.enable = true;
         openvpn.enable = true;
