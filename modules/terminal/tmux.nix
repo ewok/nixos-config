@@ -29,6 +29,12 @@ let
     fi
   '';
 
+  zoxide-rm = pkgs.writeScriptBin "zoxide-rm" ''
+    #!${pkgs.bash}/bin/bash
+    EXP=$(echo "$1" | sed "s|~|$HOME|g")
+    ${pkgs.zoxide}/bin/zoxide remove $EXP
+  '';
+
   vars = {
     conf.colors = cfg.colors;
     conf.theme = cfg.theme;
@@ -44,6 +50,7 @@ in
     [
       sesh
       zoxide
+      zoxide-rm
       fzf
       gnugrep
       procps
