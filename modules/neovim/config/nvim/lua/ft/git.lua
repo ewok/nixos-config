@@ -1,7 +1,7 @@
 local map = require "lib".map
 local reg_ft = require "lib".reg_ft
 
-reg_ft("floggraph", function()
+reg_ft("floggraph", function(ev)
     map('n', 'q', '<cmd>close<CR>', { silent = true, buffer = true }, "Close")
     local wk_ok, wk = pcall(require, "which-key")
     if wk_ok then
@@ -76,12 +76,12 @@ reg_ft("floggraph", function()
             gN = "which_key_ignore",
             gv = "which_key_ignore",
             ds = "which_key_ignore"
-        }, { mode = "n", buffer = 0 })
+        }, { mode = "n", buffer = ev.buf })
     end
 end)
 
 for _, x in ipairs({ "fugitive", "fugitiveblame", "git" }) do
-    reg_ft(x, function()
+    reg_ft(x, function(ev)
         map('n', 'q', '<cmd>bdelete<cr>', { silent = true, buffer = true }, "Close")
         map('n', 'r', '<cmd>WhichKey r<cr>', { silent = true, buffer = true }, "Close")
         local wk_ok, wk = pcall(require, "which-key")
@@ -160,7 +160,7 @@ for _, x in ipairs({ "fugitive", "fugitiveblame", "git" }) do
                 dh = "[Git] Horizontal Diffsplit",
                 dq = "[Git] Close all but one",
                 ["d?"] = "[Git] Help"
-            }, { mode = "n", buffer = 0 })
+            }, { mode = "n", buffer = ev.buf })
         end
     end)
 end

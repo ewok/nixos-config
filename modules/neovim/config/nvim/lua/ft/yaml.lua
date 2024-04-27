@@ -1,6 +1,6 @@
 local reg_ft = require("lib").reg_ft
 
-reg_ft("yaml", function()
+reg_ft("yaml", function(ev)
     vim.opt_local.expandtab = true
     vim.opt_local.shiftwidth = 2
     vim.opt_local.tabstop = 2
@@ -43,7 +43,7 @@ reg_ft("yaml", function()
         }, {
             prefix = "<leader>c",
             mode = "n",
-            buffer = 0,
+            buffer = ev.buf,
         })
     end
 end)

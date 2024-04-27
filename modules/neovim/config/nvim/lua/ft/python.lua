@@ -1,6 +1,6 @@
 local reg_ft = require "lib".reg_ft
 
-reg_ft("python", function()
+reg_ft("python", function(ev)
     vim.opt_local.expandtab = true
     vim.opt_local.shiftwidth = 4
     vim.opt_local.tabstop = 4
@@ -16,7 +16,7 @@ reg_ft("python", function()
         }, {
             prefix = "<leader>c",
             mode = "n",
-            buffer = 0
+            buffer = ev.buf
         })
     end
 end)

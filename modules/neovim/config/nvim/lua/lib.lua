@@ -21,10 +21,14 @@ function M.map(mode, lhs, rhs, options, desc)
     vim.keymap.set(mode, lhs, rhs, options)
 end
 
-function M.reg_ft(ft, fun, postfix)
-    local ft_name = "ft_" .. ft .. (postfix or "")
-    vim.api.nvim_create_augroup(ft_name, { clear = true })
-    vim.api.nvim_create_autocmd({ "FileType" }, { pattern = ft, callback = fun, group = ft_name })
+function M.reg_ft(ft, fun)
+    -- local ft_name = "ft_" .. ft .. (postfix or "")
+    -- vim.api.nvim_create_augroup(ft_name, { clear = true })
+    vim.api.nvim_create_autocmd({ "FileType" }, {
+        pattern = ft,
+        callback = fun,
+        -- group = ft_name
+    })
 end
 
 local function get_all_win_buf_ft()

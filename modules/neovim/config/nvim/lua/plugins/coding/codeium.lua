@@ -1,7 +1,5 @@
 return {
     "Exafunction/codeium.vim",
-    -- event = {"VeryLazy"},
-    dependencies = { "hrsh7th/nvim-cmp" },
     cmd = {
         "Codeium",
         "CodeiumEnable",
@@ -27,17 +25,10 @@ return {
         },
     },
     init = function()
-        -- vim.g.codeium_bin =  "~/.nix-profile/bin/codeium-lsp"
         vim.g.codeium_disable_bindings = 1
         vim.g.codeium_enabled = false
     end,
     config = function()
-        -- require("codeium").setup({})
-        -- require"codeium".setup({
-        --   tools ={
-        --     language_server = "~/.nix-profile/bin/codeium-lsp",
-        --   }
-        -- })
         local map = require("lib").map
 
         map("i", "<C-l>", function()
