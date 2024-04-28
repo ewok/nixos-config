@@ -29,7 +29,7 @@ return {
                 bash = { "shfmt" },
                 sh = { "shfmt" },
                 nix = { "nixpkgs_fmt" },
-                clojure = { "joker" },
+                clojure = { "zprint" },
             },
         })
     end,
