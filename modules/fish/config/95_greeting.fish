@@ -1,6 +1,4 @@
 function fish_greeting
-  # Use prompt at the botttom
-  tput cup 9999 0
 
   # if ! test -z "$TMUX"
   #   if test -t 2
@@ -16,6 +14,11 @@ function fish_greeting
         # end
   #   end
   # end
+
+    # Use prompt at the botttom
+  if command -vq -- tput
+    tput cup 9999 0
+  end
 
   if command -vq -- tmux
 

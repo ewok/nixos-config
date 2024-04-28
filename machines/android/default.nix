@@ -39,9 +39,8 @@ in
             nix.enable = true;
             lisps.enable = true;
             direnv.enable = true;
-            termninal = {
+            terminal = {
               enable = true;
-              terminal = "tty";
               inherit colors theme;
               tmux = {
                 enable = true;
