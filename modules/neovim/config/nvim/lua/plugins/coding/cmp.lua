@@ -65,7 +65,7 @@ return {
                     end,
                     i = function(fallback)
                         -- if cmp.visible() then
-                            cmp.select_next_item({ behavior = cmp.SelectBehavior.Insert })
+                        cmp.select_next_item({ behavior = cmp.SelectBehavior.Insert })
                         -- else
                         --     fallback()
                         -- end
@@ -81,7 +81,7 @@ return {
                     end,
                     i = function(fallback)
                         -- if cmp.visible() then
-                            cmp.select_prev_item({ behavior = cmp.SelectBehavior.Insert })
+                        cmp.select_prev_item({ behavior = cmp.SelectBehavior.Insert })
                         -- else
                         --     fallback()
                         -- end
