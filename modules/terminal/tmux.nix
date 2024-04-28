@@ -63,5 +63,21 @@ in
       source = utils.templateFile "tmux_blocks" ./config/tmux_blocks vars;
       executable = true;
     };
+    xdg.configFile."tmux/tmux_battery" = {
+      source = ./config/tmux_battery;
+      executable = true;
+    };
+    xdg.configFile."tmux/tmux_cpu" = {
+      source = ./config/tmux_cpu;
+      executable = true;
+    };
+    xdg.configFile."tmux/tmux_network" = {
+      source = ./config/tmux_network;
+      executable = true;
+    };
+    xdg.configFile."tmux/tmux_ram" = {
+      source = ./config/tmux_ram;
+      executable = true;
+    };
   };
 }
