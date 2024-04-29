@@ -30,6 +30,7 @@ get_ssid() {
 }
 
 main() {
+    RATE=30
     network="Offline"
     for host in $HOSTS; do
         if ping -q -c 1 -W 1 "$host" &>/dev/null; then
@@ -39,6 +40,7 @@ main() {
     done
 
     echo "$network"
+    sleep "$RATE"
 }
 
 main

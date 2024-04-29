@@ -109,8 +109,14 @@ mac_vpn_status() {
 # 	pmset -g batt | grep 'remain' | sed ' s/.*\t\([0-9]*\%\);.* \([0-9]*:[0-9]*\) remaining.*/\1 \2/g'
 # }
 
-if [[ "$OSTYPE" == "darwin"* ]]; then
-	echo -e "$(mac_vpn_status) #[fg=#d19a66]$DATE $UTC $MSK $KG $PHT "
-else
-	echo -e "$(usbmon) #[fg=#d19a66]$DATE $UTC $MSK $KG $PHT "
-fi
+main() {
+	RATE=30
+	if [[ "$OSTYPE" == "darwin"* ]]; then
+		echo -e "#[fg=#d19a66]$DATE $UTC $MSK $KG $PHT  #[default]$(mac_vpn_status)"
+	else
+		echo -e "#[default]$(usbmon) #[fg=#d19a66]$DATE $UTC $MSK $KG $PHT "
+	fi
+	sleep "$RATE"
+}
+
+main
