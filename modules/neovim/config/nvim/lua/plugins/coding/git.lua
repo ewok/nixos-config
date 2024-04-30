@@ -48,7 +48,14 @@ return {
             end, md, "Visual Block")
         end,
     },
-    { "rbong/vim-flog", config = false, cmd = { "Flog", "Flogsplit" } },
+    {
+        "rbong/vim-flog",
+        config = false,
+        cmd = { "Flog", "Flogsplit" },
+        dependencies = {
+            "tpope/vim-fugitive",
+        },
+    },
     {
         "lewis6991/gitsigns.nvim",
         event = { "BufReadPre", "BufNewFile" },

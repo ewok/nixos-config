@@ -79,5 +79,9 @@ in
       source = ./config/tmux_ram;
       executable = true;
     };
+    xdg.configFile."tmux/tmux_toggle" = {
+      source = ./config/tmux_toggle;
+      executable = true;
+    };
   };
 }

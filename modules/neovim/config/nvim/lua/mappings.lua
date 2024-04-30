@@ -34,20 +34,45 @@ map("n", "<C-O><C-I>", "<Tab>", md, "Go Forward")
 
 -- Windows manipulation
 map("n", "<C-W>t", "<cmd>tabnew<CR>", md, "New Tab")
-map(
-    "n",
-    "<C-W>S",
-    conf.in_tmux and "<cmd>!tmux split-window -v -l 20\\%<CR><CR>" or "<cmd>split term://bash<CR>",
-    md,
-    "Split window"
-)
-map(
-    "n",
-    "<C-W>V",
-    conf.in_tmux and "<cmd>!tmux split-window -h -l 20\\%<CR><CR>" or "<cmd>vsplit term://bash<CR>",
-    md,
-    "VSplit window"
-)
+
+-- Terminal
+map("n", "<C-W>S", function()
+    if conf.in_tmux then
+        vim.cmd("silent !tmux split-window -v -l 20\\%")
+    else
+        vim.cmd("split term://bash")
+    end
+end, md, "Split window")
+map("n", "<C-W>V", function()
+    if conf.in_tmux then
+        vim.cmd("silent !tmux split-window -h -l 20\\%")
+    else
+        vim.cmd("vsplit term://bash")
+    end
+end, md, "VSplit window")
+
+map("n", "<leader>ot", function()
+    vim.g.tth = false
+    vim.cmd("silent !~/.config/tmux/tmux_toggle '" .. require("lib").get_file_cwd() .. "' false")
+end, { silent = true }, "Open bottom terminal")
+map("n", "<leader>of", function()
+    vim.g.tth = true
+    vim.cmd("silent !~/.config/tmux/tmux_toggle '" .. require("lib").get_file_cwd() .. "' true")
+end, { silent = true }, "Open floating terminal")
+
+map({ "n" }, "<c-space>", function()
+    if vim.g.tth then
+        vim.cmd("silent !~/.config/tmux/tmux_toggle '" .. require("lib").get_file_cwd() .. "' true")
+    else
+        vim.cmd("silent !~/.config/tmux/tmux_toggle '" .. require("lib").get_file_cwd() .. "' false")
+    end
+end, { silent = true }, "Toggle bottom or float terminal")
+
+map("n", "<leader>gg", function()
+    vim.cmd([[silent !tmux popup -d ]] ..vim.uv.cwd() .. [[ -xC -yC -w90\\% -h90\\% -E lazygit]])
+end, { silent = true }, "Open lazygit in bottom terminal")
+
+--
 
 map("n", "<C-W><C-J>", "<cmd>resize +5<CR>", md, "Increase height +5")
 map("n", "<C-W><C-K>", "<cmd>resize -5<CR>", md, "Decrease height -5")

@@ -78,4 +78,19 @@ function M.is_ft_open(target_ft)
     return false
 end
 
+function M.get_file_cwd()
+    local current_path = vim.fn.expand("%:p")
+    local cwd = vim.loop.cwd()
+    if vim.fn.filereadable(current_path) == 1 then
+    else
+        return cwd
+    end
+    local current_parent = vim.fn.expand("%:p:h")
+    if current_parent == "" or current_parent == nil then
+        return cwd
+    else
+        return current_parent
+    end
+end
+
 return M
