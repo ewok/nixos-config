@@ -57,6 +57,7 @@ in
       tm
       tssh
       xsel
+      bc
     ] ++ optionalPkgs;
     xdg.configFile."tmux/tmux.conf".source = utils.templateFile "tmux.conf" ./config/tmux.conf vars;
     xdg.configFile."tmux/tmux_blocks" = {
