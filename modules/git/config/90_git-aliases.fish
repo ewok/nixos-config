@@ -28,15 +28,11 @@ function __git_abbr_init
   # Working with branch
   abbr -a gb  'git branch'
   abbr -a gba 'git branch --all --verbose'
-  abbr -a gbc 'git checkout -b'
-  abbr -a gbl 'git branch --verbose'
-  abbr -a gbL 'git branch --all --verbose'
+  abbr -a gbc 'git switch -c'
+  abbr -a gbl 'git branch --all --verbose'
   abbr -a gbm 'git branch --move'
   abbr -a gbM 'git branch --move --force'
   abbr -a gbs 'git show-branch'
-  abbr -a gbS 'git show-branch --all'
-  abbr -a gbv 'git branch --verbose'
-  abbr -a gbV 'git branch --verbose --verbose'
   abbr -a gbx 'git branch --delete'
   abbr -a gbX 'git branch --delete --force'
 
@@ -44,16 +40,12 @@ function __git_abbr_init
   abbr -a gc    'git commit --verbose'
   abbr -a gcm   'git commit --message'
   abbr -a gcam  'git commit --verbose --amend'
-  abbr -a gcf   'git commit --amend --reuse-message HEAD'
+  abbr -a gcamr 'git commit --amend --reuse-message HEAD'
   abbr -a gcs   'git show'
   abbr -a gcr   'git revert'
 
-  abbr -a gcA   'git commit --verbose --all'
-  abbr -a gcAm  'git commit --all --message'
-
   abbr -a gcS   'git commit -S --verbose'
   abbr -a gcSam 'git commit -S --verbose --amend'
-  abbr -a gcSA  'git commit -S --verbose --all'
   abbr -a gcSm  'git commit -S --message'
   abbr -a gcSs  'git show --pretty=short --show-signature'
   abbr -a gcSl  'git show --pretty=short --show-signature'
@@ -64,14 +56,12 @@ function __git_abbr_init
   abbr -a gcot  'git checkout --theirs --'
 
   # Cherry-pick
-  abbr -a gCP  'git cherry-pick --no-commit'
-  abbr -a gCp  'git cherry-pick --ff'
-  abbr -a gCs  'git cherry -v'
-  abbr -a gCss 'git cherry -v --abbrev'
+  abbr -a gcp    'git cherry-pick --no-commit'
+  abbr -a gcpff  'git cherry-pick --ff'
 
   # Fetch
   abbr -a gf   'git fetch'
-  abbr -a gfA  'git fetch --all'
+  abbr -a gfa  'git fetch --all'
   abbr -a gfc  'git clone'
   abbr -a gfcr 'git clone --recurse-submodules'
   abbr -a gfm  'git pull'
@@ -84,11 +74,8 @@ function __git_abbr_init
   abbr -a giau   'git add --update'
   abbr -a giA    'git add --patch'
   abbr -a gir    'git reset'
-  abbr -a giR    'git reset --patch'
   abbr -a gid    'git diff --no-ext-diff --cached'
   abbr -a giD    'git diff --no-ext-diff --cached --word-diff'
-  abbr -a gii    'git update-index --assume-unchanged'
-  abbr -a giI    'git update-index --no-assume-unchanged'
   abbr -a gix    'git rm -r --cached'
   abbr -a giX    'git rm -rf --cached'
 
@@ -138,13 +125,18 @@ function __git_abbr_init
   # abbr -a gpp 'git pull origin "$(git-branch-current 2> /dev/null)" && git push origin "$(git-branch-current 2> /dev/null)"'
 
   # Rebase
-  abbr -a gr  'git rebase'
-  abbr -a gra 'git rebase --abort'
-  abbr -a grc 'git rebase --continue'
-  abbr -a gri 'git rebase --interactive'
-  abbr -a grs 'git rebase --skip'
+  abbr -a gR  'git rebase'
+  abbr -a gRa 'git rebase --abort'
+  abbr -a gRc 'git rebase --continue'
+  abbr -a gRi 'git rebase --interactive'
+  abbr -a gRs 'git rebase --skip'
 
-  abbr -a gRH 'git reset "HEAD^"'
+  # Restore
+  abbr -a gr  'git restore'
+  abbr -a grs 'git restore --staged'
+  abbr -a grp 'git restore --patch'
+  abbr -a grf 'git restore --source='
+  abbr -a grH 'git reset "HEAD^"'
 
   # Stash
   abbr -a gs  'git stash'

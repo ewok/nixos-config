@@ -22,6 +22,7 @@
 [rebase]
   autoSquash = true
   autoStash = true
+  updateRefs = true
 
 [includeIf "gitdir:{{conf.accounts.home.path}}"]
   path = "~/.config/git/home.cfg"
