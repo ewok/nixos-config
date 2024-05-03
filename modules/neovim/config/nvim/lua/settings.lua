@@ -5,6 +5,8 @@ local conf = require("conf")
 vim.g.mapleader = " "
 vim.g.maplocalleader = "\\"
 
+vim.g.auto_load_session = true -- load session by default
+
 local settings = {
     shell = "bash",
     backspace = "2",

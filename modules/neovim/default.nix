@@ -33,6 +33,10 @@ let
     '';
   };
 
+  vims = pkgs.writeShellScriptBin "vims" ''
+    vim +'let g:auto_load_session = v:true'
+  '';
+
   clean-cache = pkgs.writeShellScriptBin "nvim-clean-cache" ''
     set -e
     rm -rf ~/.cache/nvim
@@ -128,6 +132,7 @@ in
     in
     [
       my-nvim
+      # vims # vim with loaded session
       lazygit
       clean-cache
       ripgrep
