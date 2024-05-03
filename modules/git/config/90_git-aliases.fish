@@ -32,7 +32,7 @@ function __git_abbr_init
   abbr -a gbl 'git branch --all --verbose'
   abbr -a gbm 'git branch --move'
   abbr -a gbM 'git branch --move --force'
-  abbr -a gbs 'git show-branch'
+  abbr -a gbs 'git switch'
   abbr -a gbx 'git branch --delete'
   abbr -a gbX 'git branch --delete --force'
 
@@ -157,8 +157,8 @@ function __git_abbr_init
 
   # Workdir
   abbr -a gwa 'git add'
-  abbr -a gwc 'git clean -n'
-  abbr -a gwC 'git clean -f'
+  abbr -a gwc 'git clean -dxn'
+  abbr -a gwC 'git clean -dxf'
   abbr -a gwd 'git diff --no-ext-diff'
   abbr -a gwD 'git diff --no-ext-diff --word-diff'
   abbr -a gwr 'git reset --soft'
