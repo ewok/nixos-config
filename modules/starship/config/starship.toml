@@ -1,26 +1,26 @@
 add_newline = false
 scan_timeout = 10
-format = '${env_var.PROJECT}$all'
+# format = '${env_var.PROJECT}$all'
 
 [custom.direnv]
-format = "[\\(direnv\\)]($style) "
+format = "[\\(d\\)]($style) "
 style = "red"
 when = "env | grep -E '^DIRENV_FILE='"
 
-[env_var.PROJECT]
-format = "[✳️  $env_value]($style): "
-style = "green"
-variable = 'PROJECT'
-# when = "env | grep -E '^PROJECT='"
+# [env_var.PROJECT]
+# format = "[✳️  $env_value]($style): "
+# style = "green"
+# variable = 'PROJECT'
+# # when = "env | grep -E '^PROJECT='"
 
 [battery]
 [[battery.display]]
 style = "bold red"
 threshold = 15
 
-[[battery.display]]
-style = "bold yellow"
-threshold = 30
+# [[battery.display]]
+# style = "bold yellow"
+# threshold = 30
 
 [character]
 error_symbol = "[λ](bold red)"
