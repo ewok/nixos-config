@@ -72,35 +72,6 @@ if conf.options.auto_hide_cursorline then
     })
 end
 
--- BufferDelete
-local function buffer_delete()
-    local file_exists = vim.fn.filereadable(vim.fn.expand("%p")) > 0
-    local modified = vim.api.nvim_buf_get_option(0, "modified")
-    if not file_exists and modified then
-        local user_choice = vim.fn.input("The file is not saved, whether to force delete? Press enter or input [y/n]:")
-        if user_choice == "y" or user_choice == "" then
-            vim.cmd("bd!")
-        end
-    else
-        local force = not vim.bo.buflisted or vim.bo.buftype == "nofile"
-        if force then
-            vim.cmd("bd!")
-        else
-            local bufnr = vim.api.nvim_get_current_buf()
-            vim.cmd("bp")
-            if vim.api.nvim_buf_is_loaded(bufnr) then
-                vim.cmd(string.format("bd! %s", bufnr))
-            end
-        end
-    end
-end
-
-vim.api.nvim_create_user_command(
-    "BufferDelete",
-    buffer_delete,
-    { desc = "Delete the current Buffer while maintaining the window layout" }
-)
-
 local function buffer_delete_only()
     local del_non_modifiable = false -- true if you want to delete non-modifiable buffers
     local cur = vim.api.nvim_get_current_buf()

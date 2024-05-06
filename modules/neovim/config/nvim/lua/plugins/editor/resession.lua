@@ -3,8 +3,7 @@ return {
     event = { "VeryLazy" },
     dependencies = {
         {
-            "ewok/scope.nvim",
-            -- "tiagovla/scope.nvim",
+            "tiagovla/scope.nvim",
             config = true,
         },
     },

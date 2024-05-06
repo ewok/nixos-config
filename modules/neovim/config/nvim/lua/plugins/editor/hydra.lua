@@ -70,6 +70,7 @@ Spell Langs
         local opts = { noremap = true, silent = true }
         -- local mapping = require("cokeline.mappings")
         -- if conf.nvim_tree then
+        -- local close_buffers = require("close_buffers")
         local buff_hint = [[
 ^^         Buffers
 ^^---------------
@@ -130,8 +131,7 @@ any : quit
                     {
                         "d",
                         function()
-                            require("scope.core").delete_buf()
-                            -- vim.cmd("BufferDelete")
+                            vim.cmd("Bdelete")
                         end,
                         { desc = "Delete Buffer" },
                     },
@@ -152,26 +152,15 @@ any : quit
                 },
             }):activate()
         end, opts, "Buffer/Tabs")
-        -- else
-        --     map("n", "<leader>ba", function()
-        --         vim.cmd("enew")
-        --     end, { noremap = true }, "New Buffer")
-        --     map("n", "<leader>bd", function()
-        --         require("scope.core").delete_buf()
-        --     end, { noremap = true }, "Delete Buffer")
-        --     map("n", "<leader>bo", function()
-        --         vim.cmd("BufOnly")
-        --     end, { noremap = true }, "Only one Buffer")
-        --     map("n", "<leader>bA", function()
-        --         vim.cmd("$tabnew")
-        --     end, { noremap = true }, "New tab")
-        --     map("n", "<leader>bD", function()
-        --         vim.cmd("tabclose")
-        --     end, { noremap = true }, "Delete tab")
-        --     map("n", "<leader>bO", function()
-        --         vim.cmd("tabonly")
-        --     end, { noremap = true }, "Only one tab")
-        -- end
+        map("n", "<leader>ba", function()
+            vim.cmd("enew")
+        end, { noremap = true }, "New Buffer")
+        map("n", "<leader>bd", function()
+            vim.cmd("Bdelete")
+        end, { noremap = true }, "Delete Buffer")
+        map("n", "<leader>bo", function()
+            vim.cmd("BufOnly")
+        end, { noremap = true }, "Only one Buffer")
     end,
     event = { "BufReadPre", "BufNewFile" },
 }

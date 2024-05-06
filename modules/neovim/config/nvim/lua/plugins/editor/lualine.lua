@@ -3,17 +3,8 @@ return {
     event = { "VeryLazy" },
     init = function()
         local map = require("lib").map
-
-        map("n", "<C-W>d", "<cmd>lua require('scope.core').delete_buf()<cr>", { silent = true }, "Close current buffer")
-        map(
-            "n",
-            "<C-W><C-D>",
-            "<cmd>lua require('scope.core').delete_buf()<cr>",
-            { silent = true },
-            "Close current buffer"
-        )
-        -- map("n", "<C-W>d", "<cmd>BufferDelete<cr>", { silent = true }, "Close current buffer")
-        -- map("n", "<C-W><C-D>", "<cmd>BufferDelete<cr>", { silent = true }, "Close current buffer")
+        map("n", "<C-W>d", "<CMD>Bdelete<CR>", { silent = true }, "Close current buffer")
+        map("n", "<C-W><C-D>", "<CMD>Bdelete<CR>", { silent = true }, "Close current buffer")
     end,
     config = function()
         local lualine = require("lualine")
