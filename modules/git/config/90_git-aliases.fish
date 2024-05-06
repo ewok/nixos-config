@@ -157,8 +157,8 @@ function __git_abbr_init
 
   # Workdir
   abbr -a gwa 'git add'
-  abbr -a gwc 'git clean -dxn'
-  abbr -a gwC 'git clean -dxf'
+  abbr -a gwc 'git clean -e shell.nix -e .envrc -dxn'
+  abbr -a gwC 'git clean -e shell.nix -e .envrc -dxf'
   abbr -a gwd 'git diff --no-ext-diff'
   abbr -a gwD 'git diff --no-ext-diff --word-diff'
   abbr -a gwr 'git reset --soft'
