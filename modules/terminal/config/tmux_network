@@ -7,11 +7,15 @@ HOSTS="google.com github.com example.com"
 get_ssid() {
     case $(uname -s) in
     Linux)
-        SSID=$(iwgetid -r)
-        if [ -n "$SSID" ]; then
-            printf '%s' " $SSID"
+        if [ -z $TERMUX_VERSION ]; then
+            SSID=$(iwgetid -r)
+            if [ -n "$SSID" ]; then
+                printf '%s' " $SSID"
+            else
+                echo '󰈀 '
+            fi
         else
-            echo '󰈀 '
+            echo 'n/a'
         fi
         ;;
 
@@ -33,7 +37,8 @@ main() {
     RATE=30
     network="Offline"
     for host in $HOSTS; do
-        if ping -q -c 1 -W 1 "$host" &>/dev/null; then
+        # if ping -q -c 1 -W 1 "$host" &>/dev/null; then
+        if curl -Is $host | grep -q HTTP ; then
             network="#[fg=#83A589]$(get_ssid)"
             break
         fi

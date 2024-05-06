@@ -16,11 +16,15 @@ current_dir="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 
 get_percent() {
 	case $(uname -s) in
-	Linux)
-		total_mem=$(free -g | awk '/^Mem/ {print $2}')
-		used_mem=$(free -g | awk '/^Mem/ {print $3}')
-		memory_percent=$(((used_mem * 100) / total_mem))
-		echo "$memory_percent"
+		Linux)
+			if [ -n $TERMUX_VERSION ]; then
+				total_mem=$(free -g | awk '/^Mem/ {print $2}')
+				used_mem=$(free -g | awk '/^Mem/ {print $3}')
+				memory_percent=$(((used_mem * 100) / total_mem))
+				echo "$memory_percent"
+			else 
+				echo "0"
+			fi
 		;;
 	Darwin)
 		used_mem=$(vm_stat | grep ' active\|wired ' | sed 's/[^0-9]//g' | paste -sd ' ' - | awk -v pagesize=$(pagesize) '{printf "%d\n", ($1+$2) * pagesize / 1048576}')

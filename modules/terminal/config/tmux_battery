@@ -38,7 +38,13 @@ battery_percent() {
 
 battery_status() {
     case $(uname -s) in
-    Linux) status=$(linux_acpi status) ;;
+    Linux)
+        if [ -z $TERMUX_VERSION ];then
+            status=$(linux_acpi status)
+        else
+            status="tbd"
+        fi
+        ;;
     Darwin) status=$(pmset -g batt | sed -n 2p | cut -d ';' -f 2 | tr -d " ") ;;
     FreeBSD) status=$(apm | sed '8,11d' | grep Status | awk '{printf $3}') ;;
     CYGWIN* | MINGW32* | MSYS* | MINGW*) ;;

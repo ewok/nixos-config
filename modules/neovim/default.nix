@@ -146,6 +146,7 @@ in
       # gcc
       clang
       go
+      gnumake
 
       # LSP:
       # clojure-lsp
