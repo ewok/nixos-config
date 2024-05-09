@@ -20,7 +20,7 @@ return {
             )
             map("n", "<leader>fh", "<CMD>Telescope oldfiles<CR>", { silent = true }, "Find telescope history")
             map("n", "<leader>f.", "<CMD>Telescope resume<CR>", { silent = true }, "Find last lookup")
-            map("n", "<leader>fm", "<CMD>Telescope marks<CR>", { silent = true }, "Find marks in the current workspace")
+            map("n", "<leader>fM", "<CMD>Telescope marks<CR>", { silent = true }, "Find marks in the current workspace")
             map("n", "<leader>fb", "<CMD>Telescope buffers<CR>", { silent = true }, "Find all buffers")
             map(
                 "n",
@@ -37,6 +37,8 @@ return {
             map("n", "<leader>fsh", "<cmd>Telescope highlights<CR>", { silent = true }, "Highlights")
             map("n", "<leader>fsk", "<cmd>Telescope keymaps<CR>", { silent = true }, "Keymaps")
             map("n", "<leader>fsc", "<cmd>Telescope colorscheme<CR>", { silent = true }, "Colorschemes")
+            map("n", "<leader>fj", "<cmd>Telescope jumplist<CR>", { silent = true }, "Find jumps")
+            map("n", "<leader>fm", "<cmd>Telescope man_pages<CR>", { silent = true }, "Find man pages")
         end,
         config = function()
             local telescope = require("telescope")

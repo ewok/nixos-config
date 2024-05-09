@@ -1,12 +1,13 @@
 return {
     "folke/trouble.nvim",
     dependencies = { "nvim-tree/nvim-web-devicons" },
-    cmd = { "TroubleToggle", "TodoTrouble" },
+    cmd = { "TroubleToggle", "Trouble" },
     keys = {
-        { "<leader>tt", "<cmd>TroubleToggle<CR>",                       desc = "Open/close trouble list" },
-        { "<leader>tw", "<cmd>TroubleToggle workspace_diagnostics<CR>", desc = "Open trouble workspace diagnostics" },
-        { "<leader>td", "<cmd>TroubleToggle document_diagnostics<CR>",  desc = "Open trouble document diagnostics" },
-        { "<leader>tq", "<cmd>TroubleToggle quickfix<CR>",              desc = "Open trouble quickfix list" },
-        { "<leader>tl", "<cmd>TroubleToggle loclist<CR>",               desc = "Open trouble location list" },
+        { "<leader>tt", "<cmd>TroubleToggle<CR>", desc = "Trouble" },
+        { "<leader>tw", "<cmd>TroubleToggle workspace_diagnostics<CR>", desc = "Diagnostics workspace (Trouble)" },
+        { "<leader>td", "<cmd>TroubleToggle document_diagnostics<CR>", desc = "Diagnostics (Trouble)" },
+        { "<leader>tq", "<cmd>TroubleToggle quickfix toggle<CR>", desc = "Quickfix List (Trouble)" },
+        { "<leader>tl", "<cmd>TroubleToggle loclist toggle<CR>", desc = "Location List (Trouble)" },
     },
+    opts = {},
 }

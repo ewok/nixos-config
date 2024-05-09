@@ -11,7 +11,7 @@ return {
     cmd = { "AerialToggle" },
     init = function()
         local map = require("lib").map
-        map("n", "<leader>a", "<cmd>AerialToggle! right<cr>", { silent = true }, "Open Outline Explorer")
+        map("n", "<leader>to", "<cmd>AerialToggle! right<cr>", { silent = true }, "Open Outline Explorer")
     end,
     config = function()
         local conf = require("conf")

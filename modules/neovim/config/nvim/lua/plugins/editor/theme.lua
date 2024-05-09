@@ -11,7 +11,7 @@ return {
                 MatchParen = { fg = "$red", bg = "$bg0", fmt = "bold" },
             },
             style = "dark",
-            toggle_style_key = "<leader>8",
+            toggle_style_key = "<leader>th",
             toggle_style_list = { "darker", "light", "dark" },
             code_style = {
                 comments = "italic",

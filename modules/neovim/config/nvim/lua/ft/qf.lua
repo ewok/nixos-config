@@ -1,18 +1,28 @@
-local reg_ft = require "lib".reg_ft
-local map = require "lib".map
+local reg_ft = require("lib").reg_ft
+local map = require("lib").map
 
-reg_ft("qf", function()
-    map('n', 'q', '<cmd>bdelete<CR>', { silent = true, buffer = true }, "Close")
+reg_ft("qf", function(ev)
+    map("n", "q", "<cmd>bdelete<CR>", { silent = true, buffer = ev.buf }, "Close")
     -- map('n', '<c-n>', ':cnext|wincmd p<CR>', { silent = true, buffer = true }, "Next C item")
     -- map('n', '<c-p>', ':cprevious|wincmd p<CR>', { silent = true, buffer = true }, "Previous C item")
     -- map('n', ']]', ':lnext|wincmd p<CR>', { silent = true, buffer = true }, "Next L item")
     -- map('n', '[[', ':lprevious|wincmd p<CR>', { silent = true, buffer = true }, "Previous L item")
-    map('n', 'i', ':cdo s/\\<<c-r>=expand("<cword>")<cr>\\>//gc<LEFT><LEFT><LEFT>', { buffer = true }, "Edit Results")
-    map('v', 'i', 'y:cdo s/<c-r>0//gc<LEFT><LEFT><LEFT>', { buffer = true }, "Edit Results")
-    map('n', 'a', ':cdo s///gc<LEFT><LEFT><LEFT><LEFT>', { buffer = true }, "Edit Results")
+    map("n", "ri", ':cdo s/\\<<c-r>=expand("<cword>")<cr>\\>//gc<LEFT><LEFT><LEFT>', { buffer = ev.buf }, "cdo <cword>")
+    map(
+        "n",
+        "rI",
+        ':cdo %s/\\<<c-r>=expand("<cword>")<cr>\\>//gc<LEFT><LEFT><LEFT>',
+        { buffer = ev.buf },
+        "cdo %<cword>"
+    )
+    map("v", "ri", "y:cdo s/<c-r>0//gc<LEFT><LEFT><LEFT>", { buffer = ev.buf }, "cdo <visual>")
+    map("n", "ra", ":cdo s///gc<LEFT><LEFT><LEFT><LEFT>", { buffer = ev.buf }, "cdo <>")
+    map("n", "rA", ":cdo %s///gc<LEFT><LEFT><LEFT><LEFT>", { buffer = ev.buf }, "cdo %<>")
     vim.cmd([[
-    nmap <expr>  MR  ':cdo s/' . @/ . '//gc<LEFT><LEFT><LEFT>'
+    nmap <expr><buffer>  MR  ':cdo s/' . @/ . '//gc<LEFT><LEFT><LEFT>'
     ]])
+
+    map("n", "r", "<cmd>WhichKey r<cr>", { buffer = ev.buf }, "Close")
 end)
 
 local function toggle_qf()

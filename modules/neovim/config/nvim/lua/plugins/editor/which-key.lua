@@ -28,7 +28,7 @@ return {
         })
 
         wk.register({
-            ["8"] = "Dark/Light theme",
+            th = "Dark/Light theme",
             c = { name = "Code" },
             f = { name = "Find" },
             fs = { name = "Settings" },

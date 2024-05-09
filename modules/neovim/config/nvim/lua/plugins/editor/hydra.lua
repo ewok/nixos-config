@@ -68,16 +68,14 @@ Spell Langs
         })
 
         local opts = { noremap = true, silent = true }
-        -- local mapping = require("cokeline.mappings")
-        -- if conf.nvim_tree then
-        -- local close_buffers = require("close_buffers")
         local buff_hint = [[
 ^^         Buffers
 ^^---------------
 _j_, _k_: next/previous
 _d_: delete
 _a_: new
-_o_: remain only
+_p_: pin buffer
+_o_: remain only current
 any : quit
 ]]
         map("n", "<leader>b", function()
@@ -141,6 +139,15 @@ any : quit
                             vim.cmd("enew")
                         end,
                         { desc = "New Buffer", exit = true },
+                    },
+                    {
+                        "p",
+                        function()
+                            local cur_buf = vim.api.nvim_get_current_buf()
+                            local isSet, setTrue = pcall(vim.api.nvim_buf_get_var, cur_buf, "ignore_early_retirement")
+                            vim.api.nvim_buf_set_var(cur_buf, "ignore_early_retirement", not (isSet and setTrue))
+                        end,
+                        { desc = "Pin buffer" },
                     },
                     {
                         "o",

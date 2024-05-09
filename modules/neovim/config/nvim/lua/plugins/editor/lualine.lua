@@ -10,6 +10,7 @@ return {
         local lualine = require("lualine")
         local conf = require("conf")
         lualine.setup({
+            extensions = { "fugitive", "trouble", "aerial" },
             options = {
                 theme = conf.options.theme or "auto",
                 icons_enabled = true,
@@ -25,18 +26,40 @@ return {
             sections = {
                 lualine_a = { "mode" },
                 lualine_b = { "branch", "diff", "diagnostics" },
-                lualine_c = { "filename" },
+                lualine_c = {
+                    {
+                        "filename",
+                        fmt = function(str)
+                            local isSet, setTrue = pcall(
+                                vim.api.nvim_buf_get_var,
+                                vim.api.nvim_get_current_buf(),
+                                "ignore_early_retirement"
+                            )
+                            local pinned = (isSet and setTrue) and "📍" or ""
+                            return pinned .. str
+                        end,
+                    },
+                },
                 lualine_x = { "encoding", "fileformat", "filetype" },
                 lualine_y = { "progress" },
                 lualine_z = { "location" },
             },
             tabline = {
-                lualine_a = { "buffers" },
+                lualine_a = { { "buffers", use_mode_colors = true } },
                 lualine_b = {},
                 lualine_c = {},
                 lualine_x = {},
                 lualine_y = { "tabs" },
-                lualine_z = { 'string.gsub(vim.fn.getcwd(), os.getenv("HOME"), "~")' },
+                lualine_z = {
+                    {
+                        function()
+                            local cwd = string.gsub(vim.fn.getcwd(), os.getenv("HOME"), "~")
+                            -- local cwd = vim.fn.pathshorten(vim.fn.getcwd())
+                            local buff_count = #vim.api.nvim_list_bufs()
+                            return cwd .. " #" .. buff_count
+                        end,
+                    },
+                },
             },
         })
 
@@ -51,6 +74,9 @@ return {
         -- end, {}, "Goto prev buffer")
 
         local hydra = require("hydra")
+        local lualine_refresh = function()
+            lualine.refresh({ scope = "tabpage", place = { "tabline", "statusline", "winbar" } })
+        end
         map("n", "<leader>j", function()
             hydra({
                 name = "Switch buffers",
@@ -59,10 +85,10 @@ return {
                     hint = { type = "statusline" },
                     on_enter = function()
                         vim.cmd("silent! bnext")
-                        require("lualine").refresh({ scope = "tabpage", place = { "tabline", "statusline", "winbar" } })
+                        lualine_refresh()
                     end,
                     on_key = function()
-                        require("lualine").refresh({ scope = "tabpage", place = { "tabline", "statusline", "winbar" } })
+                        lualine_refresh()
                     end,
                     timeout = 300,
                 },
@@ -82,10 +108,10 @@ return {
                     hint = { type = "statusline" },
                     on_enter = function()
                         vim.cmd("silent! bprevious")
-                        require("lualine").refresh({ scope = "tabpage", place = { "tabline", "statusline", "winbar" } })
+                        lualine_refresh()
                     end,
                     on_key = function()
-                        require("lualine").refresh({ scope = "tabpage", place = { "tabline", "statusline", "winbar" } })
+                        lualine_refresh()
                     end,
                     timeout = 300,
                 },

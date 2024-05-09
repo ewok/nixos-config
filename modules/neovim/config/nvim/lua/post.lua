@@ -80,8 +80,10 @@ local function buffer_delete_only()
             vim.api.nvim_buf_delete(n, {})
         end
     end
+    print("Buffers left: " .. #vim.api.nvim_list_bufs())
     vim.cmd("redraw!")
 end
+    -- Correct buffer count after deletion
 
 vim.api.nvim_create_user_command("BufOnly", buffer_delete_only, { desc = "Delete all other buffers" })
 --
