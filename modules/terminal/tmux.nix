@@ -32,7 +32,7 @@ let
   zoxide-rm = pkgs.writeScriptBin "zoxide-rm" ''
     #!${pkgs.bash}/bin/bash
     EXP=$(echo "$1" | sed "s|~|$HOME|g")
-    ${pkgs.zoxide}/bin/zoxide remove $EXP
+    ${pkgs.zoxide}/bin/zoxide remove "$EXP"
   '';
 
   vars = {
