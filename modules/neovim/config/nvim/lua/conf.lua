@@ -23,12 +23,14 @@ M.options = {
     auto_hide_cursorline = true,
     rainbow_parents = false,
     theme = M.is_nix and "{{ conf.theme.name }}" or "onedark",
+    light_theme = M.is_nix and "{{ conf.theme.light_name }}" or "onedark",
     spelllang = { "nospell", "en_us", "ru_ru" },
     large_file_size = 1024 * 1024 * 20,
     direnv = false,
     nvim_tree = false,
     -- possible to use list of filetypes
     treesitter_nvim_highlighting = false,
+    undotree = false,
 }
 
 M.separator = M.is_nix

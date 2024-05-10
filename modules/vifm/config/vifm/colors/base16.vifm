@@ -1,31 +1,59 @@
-" base16 color scheme for vifm
+"" " base16 onedark
+""
+"" " Reset all styles first
+"" highlight clear
+""
+"" highlight Border	cterm=none	ctermfg=002	ctermbg=000
+""
+"" highlight TopLine	cterm=none	ctermfg=002	ctermbg=000
+"" highlight TopLineSel	cterm=bold	ctermfg=002	ctermbg=000
+""
+"" highlight Win		cterm=none	ctermfg=007	ctermbg=000
+"" highlight Directory	cterm=none	ctermfg=004	ctermbg=000
+"" highlight CurrLine	cterm=bold,inverse	ctermfg=default	ctermbg=default
+"" highlight OtherLine	cterm=bold	ctermfg=default	ctermbg=default
+"" highlight Selected	cterm=none	ctermfg=008	ctermbg=003
+""
+"" highlight JobLine	cterm=bold	ctermfg=007	ctermbg=000
+"" highlight StatusLine	cterm=none	ctermfg=007	ctermbg=000
+"" highlight ErrorMsg	cterm=bold	ctermfg=001	ctermbg=000
+"" highlight WildMenu	cterm=bold	ctermfg=004	ctermbg=000
+"" highlight CmdLine	cterm=none	ctermfg=007	ctermbg=000
+""
+"" highlight Executable	cterm=underline	ctermfg=002	ctermbg=000
+"" highlight Link		cterm=none	ctermfg=006	ctermbg=000
+"" highlight BrokenLink	cterm=none	ctermfg=000	ctermbg=001
+"" highlight Device	cterm=none,standout	ctermfg=001	ctermbg=000
+"" highlight Fifo		cterm=none,standout	ctermfg=003	ctermbg=000
+"" highlight Socket	cterm=none,standout	ctermfg=005	ctermbg=000
+" nightfox color scheme adaptation for vifm
 
-" Reset all styles first
+" Apply nightfox color scheme
 highlight clear
 
-highlight Border	cterm=none	ctermfg=002	ctermbg=000
+highlight Border      cterm=none	ctermfg=default ctermbg=default
+highlight TopLine     cterm=none	ctermfg=110	ctermbg=233
+highlight TopLineSel	cterm=bold	ctermfg=110 ctermbg=234
 
-highlight TopLine	cterm=none	ctermfg=002	ctermbg=000
-highlight TopLineSel	cterm=bold	ctermfg=002	ctermbg=000
+highlight Win         cterm=none	ctermfg=7	ctermbg=default
+highlight OtherWin    cterm=none	ctermfg=7	ctermbg=default
+highlight CurrLine    cterm=bold,inverse	ctermfg=default	ctermbg=default
+highlight OtherLine   cterm=bold	ctermfg=7	ctermbg=default
+highlight Selected    cterm=none	ctermfg=7	ctermbg=237
 
-highlight Win		cterm=none	ctermfg=007	ctermbg=000
-highlight Directory	cterm=none	ctermfg=004	ctermbg=000
-highlight CurrLine	cterm=bold,inverse	ctermfg=default	ctermbg=default
-highlight OtherLine	cterm=bold	ctermfg=default	ctermbg=default
-highlight Selected	cterm=none	ctermfg=008	ctermbg=003
+highlight JobLine     cterm=bold	ctermfg=116	ctermbg=238
+highlight StatusLine	cterm=bold	ctermfg=110	ctermbg=234
+highlight ErrorMsg    cterm=bold	ctermfg=167	ctermbg=default
+highlight WildMenu    cterm=bold,inverse	ctermfg=110	ctermbg=234
+highlight CmdLine     cterm=none	ctermfg=7	ctermbg=default
 
-highlight JobLine	cterm=bold	ctermfg=007	ctermbg=000
-highlight StatusLine	cterm=none	ctermfg=007	ctermbg=000
-highlight ErrorMsg	cterm=bold	ctermfg=001	ctermbg=000
-highlight WildMenu	cterm=bold	ctermfg=004	ctermbg=000
-highlight CmdLine	cterm=none	ctermfg=007	ctermbg=000
-
-highlight Executable	cterm=underline	ctermfg=002	ctermbg=000
-highlight Link		cterm=none	ctermfg=006	ctermbg=000
-highlight BrokenLink	cterm=none	ctermfg=000	ctermbg=001
-highlight Device	cterm=none,standout	ctermfg=001	ctermbg=000
-highlight Fifo		cterm=none,standout	ctermfg=003	ctermbg=000
-highlight Socket	cterm=none,standout	ctermfg=005	ctermbg=000
+highlight Executable	cterm=bold	ctermfg=003	ctermbg=default
+highlight Directory   cterm=bold	ctermfg=110	ctermbg=default
+highlight Link        cterm=none	ctermfg=005	ctermbg=default
+highlight BrokenLink	cterm=bold	ctermfg=007 ctermbg=167
+highlight Device      cterm=none,standout	ctermfg=110	ctermbg=default
+highlight Fifo        cterm=none	ctermfg=172	ctermbg=default
+highlight Socket      cterm=bold	ctermfg=223	ctermbg=default
 
 " Custom colors
 

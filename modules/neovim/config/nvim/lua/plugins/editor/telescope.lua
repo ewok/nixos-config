@@ -39,6 +39,8 @@ return {
             map("n", "<leader>fsc", "<cmd>Telescope colorscheme<CR>", { silent = true }, "Colorschemes")
             map("n", "<leader>fj", "<cmd>Telescope jumplist<CR>", { silent = true }, "Find jumps")
             map("n", "<leader>fm", "<cmd>Telescope man_pages<CR>", { silent = true }, "Find man pages")
+
+            map("n", "<leader>u", "<cmd>Telescope undo<CR>", { silent = true }, "Undo History")
         end,
         config = function()
             local telescope = require("telescope")
@@ -127,11 +129,12 @@ return {
             })
 
             telescope.load_extension("fzf")
-            -- vim.api.nvim_create_autocmd("BufEnter", { pattern = "*", command = "normal zx" })
+            telescope.load_extension("undo")
         end,
     },
     {
         "nvim-telescope/telescope-fzf-native.nvim",
         build = "make",
     },
+    "debugloop/telescope-undo.nvim",
 }

@@ -1,6 +1,7 @@
 return {
     "mbbill/undotree",
     cmd = { "UndotreeToggle" },
+    enabled = require("conf").options.undotree,
     init = function()
         local map = require("lib").map
         local toggle_sidebar = require("lib").toggle_sidebar

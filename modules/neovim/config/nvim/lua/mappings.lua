@@ -69,8 +69,25 @@ map({ "n" }, "<c-space>", function()
 end, { silent = true }, "Toggle bottom or float terminal")
 
 map("n", "<leader>gg", function()
-    vim.cmd([[silent !tmux popup -d ]] ..vim.uv.cwd() .. [[ -xC -yC -w90\\% -h90\\% -E lazygit]])
+    vim.cmd([[silent !tmux popup -d ]] .. vim.uv.cwd() .. [[ -xC -yC -w90\\% -h90\\% -E lazygit]])
 end, { silent = true }, "Open lazygit in bottom terminal")
+
+-- themes
+map("n", "<leader>th", function()
+    if vim.o.background == "dark" then
+        vim.cmd.colorscheme(conf.options.light_theme)
+        pcall(function()
+            require("lualine").setup({ options = { theme = conf.options.light_theme } })
+        end)
+        os.execute("toggle-theme light")
+    else
+        vim.cmd.colorscheme(conf.options.theme)
+        pcall(function()
+            require("lualine").setup({ options = { theme = conf.options.theme } })
+        end)
+        os.execute("toggle-theme dark")
+    end
+end, { noremap = true }, "Toggle theme")
 
 --
 

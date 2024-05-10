@@ -33,6 +33,7 @@ with lib;
         type = types.attrsOf types.str;
         default = {
           name = "onedark";
+          light_name = "onedark";
           separator_left = "";
           separator_right = "";
           alt_separator_left = "";

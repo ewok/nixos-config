@@ -1,12 +1,50 @@
-{{^steamdeck}}
--- MacOS
-local wezterm = require 'wezterm'
+local wezterm = require("wezterm")
+
+local function file_exists(name)
+    local f = io.open(name, "r")
+    return f ~= nil and io.close(f)
+end
+
+wezterm.on("user-var-changed", function(window, pane, name, value)
+    if name == "THEME" then
+        wezterm.reload_configuration()
+    end
+end)
+
+wezterm.on("window-focus-changed", function(window, pane)
+    wezterm.reload_configuration()
+end)
+
+local function get_appearance()
+    if wezterm.gui then
+        return wezterm.gui.get_appearance()
+    end
+    return "Dark"
+end
+
+function Scheme_for_appearance()
+    if file_exists("/tmp/theme_dark") then
+        return "{{theme}}"
+    end
+    if file_exists("/tmp/theme_light") then
+        return "{{light_theme}}"
+    end
+    if get_appearance():find("Dark") then
+        return "{{theme}}"
+    else
+        return "{{light_theme}}"
+    end
+end
 
 local config = wezterm.config_builder()
 
+config.color_scheme = Scheme_for_appearance()
+
+-- {{^steamdeck}}
+-- MacOS
 config.font = wezterm.font("FiraCode Nerd Font Propo", {
-    weight='Bold',
-    stretch="Condensed",
+    weight = "Bold",
+    stretch = "Condensed",
 })
 config.font_size = 14.6
 config.font_shaper = "Harfbuzz"
@@ -18,25 +56,12 @@ config.freetype_load_target = "Light"
 --     saturation = 1.0,
 --     brightness = 0.9,  -- default is 1.0
 -- }
-
-config.color_scheme = 'OneDark (base16)'
-
-config.enable_tab_bar = false
-config.enable_scroll_bar = false
-config.window_close_confirmation = 'NeverPrompt'
-config.window_decorations = "RESIZE"
-
-return config
-{{/steamdeck}}
-{{#steamdeck}}
+-- {{/steamdeck}}
+-- {{#steamdeck}}
 -- SteamOs
-local wezterm = require 'wezterm'
-
-local config = wezterm.config_builder()
-
 config.font = wezterm.font("FiraCode Nerd Font", {
-    weight='Regular',
-    stretch="Condensed",
+    weight = "Regular",
+    stretch = "Condensed",
 })
 config.font_size = 10.0
 config.font_shaper = "Harfbuzz"
@@ -47,14 +72,12 @@ config.font_shaper = "Harfbuzz"
 --     saturation = 1.0,
 --     brightness = 0.9,  -- default is 1.0
 -- }
-
-config.color_scheme = 'OneDark (base16)'
+-- {{/steamdeck}}
 
 config.enable_tab_bar = false
 config.enable_scroll_bar = false
-config.window_close_confirmation = 'NeverPrompt'
+config.window_close_confirmation = "NeverPrompt"
 config.window_decorations = "RESIZE"
 config.warn_about_missing_glyphs = false
 
 return config
-{{/steamdeck}}
