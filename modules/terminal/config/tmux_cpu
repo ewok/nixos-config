@@ -3,52 +3,52 @@
 export LC_ALL=en_US.UTF-8
 
 normalize_padding() {
-	percent_len=${#1}
-	max_len=${2:-5}
-	let diff_len=$max_len-$percent_len
-	# if the diff_len is even, left will have 1 more space than right
-	let left_spaces=($diff_len + 1)/2
-	let right_spaces=($diff_len)/2
-	printf "%${left_spaces}s%s%${right_spaces}s\n" "" $1 ""
+    percent_len=${#1}
+    max_len=${2:-5}
+    let diff_len=$max_len-$percent_len
+    # if the diff_len is even, left will have 1 more space than right
+    let left_spaces=($diff_len + 1)/2
+    let right_spaces=($diff_len)/2
+    printf "%${left_spaces}s%s%${right_spaces}s\n" "" $1 ""
 }
 
 current_dir="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 
 get_percent() {
-	case $(uname -s) in
-	Linux)
-		if [ -z $TERMUX_VERSION ]; then
-			percent=$(LC_NUMERIC=en_US.UTF-8 top -bn2 -d 0.01 | grep "Cpu(s)" | tail -1 | sed "s/.*, *\([0-9]*\)\.[0-9]*%* id.*/\1/" | awk '{print 100 - $1}')
-			echo $percent
-		else
-			echo "0"
-		fi
-		;;
+    case $(uname -s) in
+    Linux)
+        if [ -z $TERMUX_VERSION ]; then
+            percent=$(LC_NUMERIC=en_US.UTF-8 top -bn2 -d 0.01 | grep "Cpu(s)" | tail -1 | sed "s/.*, *\([0-9]*\)\.[0-9]*%* id.*/\1/" | awk '{print 100 - $1}')
+            echo $percent
+        else
+            echo "0"
+        fi
+        ;;
 
-	Darwin)
-		cpuvalue=$(/bin/ps -A -o %cpu | awk -F. '{s+=$1} END {print s}')
-		cpucores=$(sysctl -n hw.logicalcpu)
-		cpuusage=$((cpuvalue / cpucores))
-		echo $cpuusage
-		;;
+    Darwin)
+        cpuvalue=$(/bin/ps -A -o %cpu | awk -F. '{s+=$1} END {print s}')
+        cpucores=$(sysctl -n hw.logicalcpu)
+        cpuusage=$((cpuvalue / cpucores))
+        echo $cpuusage
+        ;;
 
-	CYGWIN* | MINGW32* | MSYS* | MINGW*) ;; # TODO - windows compatibility
-esac
+    CYGWIN* | MINGW32* | MSYS* | MINGW*) ;; # TODO - windows compatibility
+    esac
 }
 
 main() {
-	RATE=10
-	cpu_label=""
-	cpu_percent=$(get_percent)
-	if [ -n "$cpu_percent" ]; then
-		cpu_color=""
-		if [ $cpu_percent -gt 90 ]; then
-			cpu_color="#[fg=#e06c75]"
-		fi
-		cpu_percent=$(normalize_padding "$cpu_percent%")
-		echo "$cpu_color$cpu_label ${cpu_percent}"
-	fi
-	sleep "$RATE"
+    RATE=10
+    cpu_label=""
+    cpu_percent=$(get_percent)
+    if [ -n "$cpu_percent" ]; then
+        cpu_color=""
+        if [ $cpu_percent -gt 90 ]; then
+            cpu_color="#[fg=#{{ conf.colors.base08 }}]"
+        fi
+        cpu_percent=$(normalize_padding "$cpu_percent%")
+        echo "$cpu_color$cpu_label ${cpu_percent}"
+    fi
+    sleep "$RATE"
 }
 
 main

@@ -65,23 +65,23 @@ in
       executable = true;
     };
     xdg.configFile."tmux/tmux_battery" = {
-      source = ./config/tmux_battery;
+      source = utils.templateFile "tmux_battery" ./config/tmux_battery vars;
       executable = true;
     };
     xdg.configFile."tmux/tmux_cpu" = {
-      source = ./config/tmux_cpu;
+      source = utils.templateFile "tmux_cpu" ./config/tmux_cpu vars;
       executable = true;
     };
     xdg.configFile."tmux/tmux_network" = {
-      source = ./config/tmux_network;
+      source = utils.templateFile "tmux_network" ./config/tmux_network vars;
       executable = true;
     };
     xdg.configFile."tmux/tmux_ram" = {
-      source = ./config/tmux_ram;
+      source = utils.templateFile "tmux_ram" ./config/tmux_ram vars;
       executable = true;
     };
     xdg.configFile."tmux/tmux_toggle" = {
-      source = ./config/tmux_toggle;
+      source = utils.templateFile "tmux_toggle" ./config/tmux_toggle vars;
       executable = true;
     };
   };

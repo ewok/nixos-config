@@ -38,8 +38,8 @@ main() {
     network="Offline"
     for host in $HOSTS; do
         # if ping -q -c 1 -W 1 "$host" &>/dev/null; then
-        if curl -Is $host | grep -q HTTP ; then
-            network="#[fg=#83A589]$(get_ssid)"
+        if curl -Is $host | grep -q HTTP; then
+            network="#[fg=#{{ conf.colors.base0B }}]$(get_ssid)"
             break
         fi
     done

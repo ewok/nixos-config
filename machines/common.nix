@@ -4,40 +4,40 @@ let
   colors = {
 
     # # Catpuccin
-    # base00 = "303446"; # base
-    # base01 = "292c3c"; # mantle
-    # base02 = "414559"; # surface0
-    # base03 = "51576d"; # surface1
-    # base04 = "626880"; # surface2
-    # base05 = "c6d0f5"; # text
-    # base06 = "f2d5cf"; # rosewater
-    # base07 = "babbf1"; # lavender
-    # base08 = "e78284"; # red
-    # base09 = "ef9f76"; # peach
-    # base0A = "e5c890"; # yellow
-    # base0B = "a6d189"; # green
-    # base0C = "81c8be"; # teal
-    # base0D = "8caaee"; # blue
-    # base0E = "ca9ee6"; # mauve
-    # base0F = "eebebe"; # flamingo
+    # base00 = "303446"; #303446 base
+    # base01 = "292c3c"; #292c3c mantle
+    # base02 = "414559"; #414559 surface0
+    # base03 = "51576d"; #51576d surface1
+    # base04 = "626880"; #626880 surface2
+    # base05 = "c6d0f5"; #c6d0f5 text
+    # base06 = "f2d5cf"; #f2d5cf rosewater
+    # base07 = "babbf1"; #babbf1 lavender
+    # base08 = "e78284"; #e78284 red
+    # base09 = "ef9f76"; #ef9f76 peach
+    # base0A = "e5c890"; #e5c890 yellow
+    # base0B = "a6d189"; #a6d189 green
+    # base0C = "81c8be"; #81c8be teal
+    # base0D = "8caaee"; #8caaee blue
+    # base0E = "ca9ee6"; #ca9ee6 mauve
+    # base0F = "eebebe"; #eebebe flamingo
 
     # Nightfox
-    base00 = "192330";
-    base01 = "212e3f";
-    base02 = "29394f";
-    base03 = "575860";
-    base04 = "71839b";
-    base05 = "cdcecf";
-    base06 = "aeafb0";
-    base07 = "e4e4e5";
-    base08 = "c94f6d";
-    base09 = "f4a261";
-    base0A = "dbc074";
-    base0B = "81b29a";
-    base0C = "63cdcf";
-    base0D = "719cd6";
-    base0E = "9d79d6";
-    base0F = "d67ad2";
+    base00 = "192330"; # #192330
+    base01 = "212e3f"; # #212e3f
+    base02 = "29394f"; # #29394f
+    base03 = "575860"; # #575860
+    base04 = "71839b"; # #71839b
+    base05 = "cdcecf"; # #cdcecf
+    base06 = "aeafb0"; # #aeafb0
+    base07 = "e4e4e5"; # #e4e4e5
+    base08 = "c94f6d"; # #c94f6d
+    base09 = "f4a261"; # #f4a261
+    base0A = "dbc074"; # #dbc074
+    base0B = "81b29a"; # #81b29a
+    base0C = "63cdcf"; # #63cdcf
+    base0D = "719cd6"; # #719cd6
+    base0E = "9d79d6"; # #9d79d6
+    base0F = "d67ad2"; # #d67ad2
 
     # # Onedark
     # base00 = "282c34"; # #282c34

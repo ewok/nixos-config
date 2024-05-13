@@ -1,13 +1,13 @@
 #! /bin/bash
 
 usbmon() {
-	i=1
-	#for usb in $(\df -Th | awk '/s[a-z][a-z][0-9]/ && $7!="/" {print substr($1,6)}')
-	for usb in $(\lsblk -do name,tran | awk '$2=="usb" {print $1}'); do
-		[[ $i -le 1 ]] && printf "#[fg=#5E81AC]  $usb"
-		[[ $i -gt 1 ]] && printf " $usb"
-		let "i+=1"
-	done
+    i=1
+    #for usb in $(\df -Th | awk '/s[a-z][a-z][0-9]/ && $7!="/" {print substr($1,6)}')
+    for usb in $(\lsblk -do name,tran | awk '$2=="usb" {print $1}'); do
+        [[ $i -le 1 ]] && printf "#[fg=#{{ conf.colors.base0C }}]  $usb"
+        [[ $i -gt 1 ]] && printf " $usb"
+        let "i+=1"
+    done
 }
 
 # network() {
@@ -78,30 +78,30 @@ KG=$(TZ='Asia/Bishkek' date +"🇰🇬 %R")
 PHT=$(TZ='Asia/Manila' date +"🇵🇭 %R")
 
 mac_vpn_status() {
-	UTUN=$(ifconfig | grep -E 'utun[0-9]+:' | grep -v utun0 | cut -f1 -d':')
-	IPSEC=$(ifconfig | grep -E 'ipsec[0-9]+:' | cut -f1 -d':')
+    UTUN=$(ifconfig | grep -E 'utun[0-9]+:' | grep -v utun0 | cut -f1 -d':')
+    IPSEC=$(ifconfig | grep -E 'ipsec[0-9]+:' | cut -f1 -d':')
 
-	if [[ $UTUN != "" ]]; then
-		for utun in $UTUN; do
-			IP=$(ifconfig $utun 2>/dev/null | grep -w inet | cut -d' ' -f2)
-			if [[ "$IP" != "" ]]; then
-				echo -en ""
-				return
-			fi
-		done
-	fi
+    if [[ $UTUN != "" ]]; then
+        for utun in $UTUN; do
+            IP=$(ifconfig $utun 2>/dev/null | grep -w inet | cut -d' ' -f2)
+            if [[ "$IP" != "" ]]; then
+                echo -en ""
+                return
+            fi
+        done
+    fi
 
-	if [[ $IPSEC != "" ]]; then
-		for ipsec in $IPSEC; do
-			IP=$(ifconfig $utun 2>/dev/null | grep -w inet | cut -d' ' -f2)
-			if [[ "$IP" != "" ]]; then
-				echo -en ""
-				return
-			fi
-		done
-	fi
+    if [[ $IPSEC != "" ]]; then
+        for ipsec in $IPSEC; do
+            IP=$(ifconfig $utun 2>/dev/null | grep -w inet | cut -d' ' -f2)
+            if [[ "$IP" != "" ]]; then
+                echo -en ""
+                return
+            fi
+        done
+    fi
 
-	echo -en ""
+    echo -en ""
 }
 
 # mac_show_battery() {
@@ -110,15 +110,15 @@ mac_vpn_status() {
 # }
 
 main() {
-	RATE=30
-	if [[ "$OSTYPE" == "darwin"* ]]; then
-		echo -e "#[fg=#d19a66]$DATE $UTC $MSK $KG $PHT  #[default]$(mac_vpn_status)"
-	elif [ -n $TERMUX_VERSION ];then
-		echo -e "#[fg=#d19a66]$DATE $UTC $MSK $KG $PHT "
-	else
-		echo -e "#[default]$(usbmon) #[fg=#d19a66]$DATE $UTC $MSK $KG $PHT "
-	fi
-	sleep "$RATE"
+    RATE=30
+    if [[ "$OSTYPE" == "darwin"* ]]; then
+        echo -e "#[fg=#{{ conf.colors.base09 }}]$DATE $UTC $MSK $KG $PHT  #[default]$(mac_vpn_status)"
+    elif [ -n $TERMUX_VERSION ]; then
+        echo -e "#[fg=#{{ conf.colors.base09 }}]$DATE $UTC $MSK $KG $PHT "
+    else
+        echo -e "#[default]$(usbmon) #[fg=#{{ conf.colors.base09 }}]$DATE $UTC $MSK $KG $PHT "
+    fi
+    sleep "$RATE"
 }
 
 main

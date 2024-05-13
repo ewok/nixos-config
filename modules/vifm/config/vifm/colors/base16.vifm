@@ -35,17 +35,17 @@ highlight Border      cterm=none	ctermfg=default ctermbg=default
 highlight TopLine     cterm=none	ctermfg=110	ctermbg=233
 highlight TopLineSel	cterm=bold	ctermfg=110 ctermbg=234
 
-highlight Win         cterm=none	ctermfg=7	ctermbg=default
-highlight OtherWin    cterm=none	ctermfg=7	ctermbg=default
+highlight Win         cterm=none	ctermfg=8	ctermbg=default
+highlight OtherWin    cterm=none	ctermfg=8	ctermbg=default
 highlight CurrLine    cterm=bold,inverse	ctermfg=default	ctermbg=default
-highlight OtherLine   cterm=bold	ctermfg=7	ctermbg=default
+highlight OtherLine   cterm=bold	ctermfg=8	ctermbg=default
 highlight Selected    cterm=none	ctermfg=7	ctermbg=237
 
 highlight JobLine     cterm=bold	ctermfg=116	ctermbg=238
 highlight StatusLine	cterm=bold	ctermfg=110	ctermbg=234
 highlight ErrorMsg    cterm=bold	ctermfg=167	ctermbg=default
 highlight WildMenu    cterm=bold,inverse	ctermfg=110	ctermbg=234
-highlight CmdLine     cterm=none	ctermfg=7	ctermbg=default
+highlight CmdLine     cterm=none	ctermfg=8	ctermbg=default
 
 highlight Executable	cterm=bold	ctermfg=003	ctermbg=default
 highlight Directory   cterm=bold	ctermfg=110	ctermbg=default

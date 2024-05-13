@@ -32,5 +32,8 @@ return {
                 clojure = { "zprint" },
             },
         })
+        conform.formatters.shfmt = {
+            prepend_args = { "-i", "4" },
+        }
     end,
 }

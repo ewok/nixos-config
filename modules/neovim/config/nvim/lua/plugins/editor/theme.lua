@@ -42,11 +42,15 @@ return {
                 group = vim.api.nvim_create_augroup("nightfox", { clear = true }),
                 callback = function()
                     if vim.fn.filereadable("/tmp/theme_light") == 1 then
-                        vim.cmd.colorscheme("dayfox")
-                        require("lualine").setup({ options = { theme = "dayfox" } })
+                        if vim.cmd.colorscheme ~= "dayfox" then
+                            vim.cmd.colorscheme("dayfox")
+                            require("lualine").setup({ options = { theme = "dayfox" } })
+                        end
                     else
-                        vim.cmd.colorscheme("nightfox")
-                        require("lualine").setup({ options = { theme = "nightfox" } })
+                        if vim.cmd.colorscheme ~= "nightfox" then
+                            vim.cmd.colorscheme("nightfox")
+                            require("lualine").setup({ options = { theme = "nightfox" } })
+                        end
                     end
                 end,
                 desc = "Toggle theme on WinEnter",
