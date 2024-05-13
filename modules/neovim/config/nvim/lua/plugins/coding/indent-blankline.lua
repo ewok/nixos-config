@@ -5,6 +5,14 @@ return {
     config = function()
         local conf = require("conf")
         vim.g.indent_blankline_buftype_exclude = conf.ui_ft
-        require("ibl").setup({ scope = { enabled = true } })
+        require("ibl").setup({
+            indent = {
+                -- char = "╎",
+                -- char = "┊",
+                char = "│",
+                -- char = "▏",
+            },
+            scope = { enabled = true },
+        })
     end,
 }

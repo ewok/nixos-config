@@ -3,7 +3,7 @@ with lib;
 let
   colors = {
 
-    # # Catpuccin
+    # # Catpuccin Frappe
     # base00 = "303446"; #303446 base
     # base01 = "292c3c"; #292c3c mantle
     # base02 = "414559"; #414559 surface0
@@ -21,23 +21,59 @@ let
     # base0E = "ca9ee6"; #ca9ee6 mauve
     # base0F = "eebebe"; #eebebe flamingo
 
-    # Nightfox
-    base00 = "192330"; # #192330
-    base01 = "212e3f"; # #212e3f
-    base02 = "29394f"; # #29394f
-    base03 = "575860"; # #575860
-    base04 = "71839b"; # #71839b
-    base05 = "cdcecf"; # #cdcecf
-    base06 = "aeafb0"; # #aeafb0
-    base07 = "e4e4e5"; # #e4e4e5
-    base08 = "c94f6d"; # #c94f6d
-    base09 = "f4a261"; # #f4a261
-    base0A = "dbc074"; # #dbc074
-    base0B = "81b29a"; # #81b29a
-    base0C = "63cdcf"; # #63cdcf
-    base0D = "719cd6"; # #719cd6
-    base0E = "9d79d6"; # #9d79d6
-    base0F = "d67ad2"; # #d67ad2
+    # Catpuccin Macchiato
+    base00 = "24273a"; #24273a base
+    base01 = "1e2030"; #1e2030 mantle
+    base02 = "363a4f"; #363a4f surface0
+    base03 = "494d64"; #494d64 surface1
+    base04 = "5b6078"; #5b6078 surface2
+    base05 = "cad3f5"; #cad3f5 text
+    base06 = "f4dbd6"; #f4dbd6 rosewater
+    base07 = "b7bdf8"; #b7bdf8 lavender
+    base08 = "ed8796"; #ed8796 red
+    base09 = "f5a97f"; #f5a97f peach
+    base0A = "eed49f"; #eed49f yellow
+    base0B = "a6da95"; #a6da95 green
+    base0C = "8bd5ca"; #8bd5ca teal
+    base0D = "8aadf4"; #8aadf4 blue
+    base0E = "c6a0f6"; #c6a0f6 mauve
+    base0F = "f0c6c6"; #f0c6c6 flamingo
+
+    # # Catpuccin Mocha
+    # base00 = "1e1e2e"; #1e1e2e ; base
+    # base01 = "181825"; #181825 ; mantle
+    # base02 = "313244"; #313244 ; surface0
+    # base03 = "45475a"; #45475a ; surface1
+    # base04 = "585b70"; #585b70 ; surface2
+    # base05 = "cdd6f4"; #cdd6f4 ; text
+    # base06 = "f5e0dc"; #f5e0dc ; rosewater
+    # base07 = "b4befe"; #b4befe ; lavender
+    # base08 = "f38ba8"; #f38ba8 ; red
+    # base09 = "fab387"; #fab387 ; peach
+    # base0A = "f9e2af"; #f9e2af ; yellow
+    # base0B = "a6e3a1"; #a6e3a1 ; green
+    # base0C = "94e2d5"; #94e2d5 ; teal
+    # base0D = "89b4fa"; #89b4fa ; blue
+    # base0E = "cba6f7"; #cba6f7 ; mauve
+    # base0F = "f2cdcd"; #f2cdcd ; flamingo
+
+    # # Nightfox
+    # base00 = "192330"; # #192330
+    # base01 = "212e3f"; # #212e3f
+    # base02 = "29394f"; # #29394f
+    # base03 = "575860"; # #575860
+    # base04 = "71839b"; # #71839b
+    # base05 = "cdcecf"; # #cdcecf
+    # base06 = "aeafb0"; # #aeafb0
+    # base07 = "e4e4e5"; # #e4e4e5
+    # base08 = "c94f6d"; # #c94f6d
+    # base09 = "f4a261"; # #f4a261
+    # base0A = "dbc074"; # #dbc074
+    # base0B = "81b29a"; # #81b29a
+    # base0C = "63cdcf"; # #63cdcf
+    # base0D = "719cd6"; # #719cd6
+    # base0E = "9d79d6"; # #9d79d6
+    # base0F = "d67ad2"; # #d67ad2
 
     # # Onedark
     # base00 = "282c34"; # #282c34
@@ -63,9 +99,10 @@ let
     separator_right = "";
     alt_separator_left = "";
     alt_separator_right = "";
-    # name = "catppuccin";
-    name = "nightfox";
-    light_name = "dayfox";
+    name = "catppuccin-macchiato";
+    light_name = "catppuccin-latte";
+    # name = "nightfox";
+    # light_name = "dayfox";
     # name = "onedark";
     regular_font = "FiraCode Nerd Font";
     regular_font_size = "10";

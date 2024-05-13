@@ -45,11 +45,13 @@ return {
                         if vim.cmd.colorscheme ~= "dayfox" then
                             vim.cmd.colorscheme("dayfox")
                             require("lualine").setup({ options = { theme = "dayfox" } })
+                            require("ibl").update()
                         end
                     else
                         if vim.cmd.colorscheme ~= "nightfox" then
                             vim.cmd.colorscheme("nightfox")
                             require("lualine").setup({ options = { theme = "nightfox" } })
+                            require("ibl").update()
                         end
                     end
                 end,
@@ -62,9 +64,28 @@ return {
         name = "catppuccin",
         priority = 1000,
         lazy = false,
-        enabled = conf.options.theme == "catppuccin" and true or false,
+        -- enabled = conf.options.theme == "catppuccin-mocha" and true or false,
+        enabled = conf.options.theme:match("^catppuccin") and true or false,
         config = function()
-            vim.cmd.colorscheme("catppuccin")
+            vim.api.nvim_create_autocmd({ "WinEnter", "FocusGained", "VimEnter" }, {
+                group = vim.api.nvim_create_augroup("catppuccin", { clear = true }),
+                callback = function()
+                    if vim.fn.filereadable("/tmp/theme_light") == 1 then
+                        if vim.cmd.colorscheme ~= conf.options.light_theme then
+                            vim.cmd.colorscheme(conf.options.light_theme)
+                            require("lualine").setup({ options = { theme = conf.options.light_theme } })
+                            require("ibl").update()
+                        end
+                    else
+                        if vim.cmd.colorscheme ~= conf.options.theme then
+                            vim.cmd.colorscheme(conf.options.theme)
+                            require("lualine").setup({ options = { theme = conf.options.theme } })
+                            require("ibl").update()
+                        end
+                    end
+                end,
+                desc = "Toggle theme on WinEnter",
+            })
         end,
     },
 }
