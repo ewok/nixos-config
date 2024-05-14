@@ -64,6 +64,7 @@ in
               };
               zellij.enable = true;
             };
+            scripts.enable = true;
           };
 
 
