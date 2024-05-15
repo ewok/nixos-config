@@ -64,19 +64,5 @@ return {
             prefix = "<leader>",
             mode = "x",
         })
-
-        wk.register({
-            c = {
-                name = "Comment",
-                c = "Toggle line comment",
-                b = "Toggle block comment",
-                a = "Insert line comment to line end",
-                j = "Insert line comment to next line",
-                k = "Insert line comment to previous line",
-            },
-        }, {
-            prefix = "g",
-            mode = "n",
-        })
     end,
 }
