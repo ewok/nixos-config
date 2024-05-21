@@ -92,7 +92,7 @@ return {
                         .. "START AND END YOUR ANSWER WITH:\n\n```",
                 },
                 {
-                    name = "ChatGPT4",
+                    name = "ChatGPT4o",
                     chat = true,
                     command = false,
                     model = { model = "gpt-4o", temperature = 1.1, top_p = 1 },
