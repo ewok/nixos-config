@@ -76,22 +76,22 @@ let
 
   n-darwin-build = writeShellScriptBin "n-darwin-build" ''
     nix run nix-darwin -- build --flake '.#mac'
-    '';
+  '';
   n-darwin-switch = writeShellScriptBin "n-darwin-switch" ''
     nix run nix-darwin -- switch --flake '.#mac'
-    '';
+  '';
   n-droid-build = writeShellScriptBin "n-droid-build" ''
     nix-on-droid build --flake '.#android'
-    '';
+  '';
   n-droid-switch = writeShellScriptBin "n-droid-switch" ''
     nix-on-droid switch --flake '.#android'
-    '';
+  '';
   n-steam-build = writeShellScriptBin "n-steam-build" ''
     nix run home-manager -- build --flake '.#steamdeck'
-    '';
+  '';
   n-steam-switch = writeShellScriptBin "n-steam-switch" ''
     nix run home-manager -- switch -b bakup --flake '.#steamdeck'
-    '';
+  '';
 
 in
 pkgs.mkShell {
