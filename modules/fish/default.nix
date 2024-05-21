@@ -16,6 +16,10 @@ in
       default = false;
       description = "Enable fish on darwin";
     };
+    openai_token = mkOption {
+      type = types.str;
+      default = "";
+    };
     homeDirectory = mkOption {
       type = types.str;
     };
@@ -35,6 +39,7 @@ in
         viddy
         gnutar
         procps
+        please-cli
       ];
       file = {
         # ".profile".source = ./config/profile;
@@ -53,7 +58,9 @@ in
           url = "https://raw.githubusercontent.com/jorgebucaran/fisher/HEAD/functions/fisher.fish";
           hash = "sha256-lJvP+FmxQICLFU379pqgTZlYHsjs6XR5V0A+M3iaWGQ=";
         };
-
+        "fish/conf.d/01_openai.fish".text = ''
+          export OPENAI_API_KEY="${cfg.openai_token}"
+        '';
         "bash/rc.d/01_path.sh".source = utils.templateFile "01_path.sh" ./config/01_path.sh vars;
         "bash/rc.d/02_lang.sh".source = ./config/02_lang.sh;
         "bash/profile.d/00_path.sh".text = ''
