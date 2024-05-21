@@ -8,19 +8,23 @@ let
     light_theme = cfg.theme.light_name;
   };
   toggle_theme = pkgs.writeShellScriptBin "toggle-theme" ''
-    if [ -z "$TMUX" ]; then
-      printf "\033]1337;SetUserVar=%s=%s\007" THEME $(echo -n $1 | base64)
-    else
-      printf "\033Ptmux;\033\033]1337;SetUserVar=%s=%s\007\033\\" THEME $(echo -n $1 | base64)
-    fi
-
-    if [ "$1" == "dark" ];then
+    if [ "$1" == "auto" ];then
+      rm -f /tmp/theme_dark
+      rm -f /tmp/theme_light
+    elif [ "$1" == "dark" ];then
       touch /tmp/theme_dark
       rm -f /tmp/theme_light
     else
       touch /tmp/theme_light
       rm -f /tmp/theme_dark
       fi
+
+    if [ -z "$TMUX" ]; then
+      printf "\033]1337;SetUserVar=%s=%s\007" THEME $(echo -n $1 | base64)
+    else
+      printf "\033Ptmux;\033\033]1337;SetUserVar=%s=%s\007\033\\" THEME $(echo -n $1 | base64)
+    fi
+
   '';
 in
 {

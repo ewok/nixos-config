@@ -22,23 +22,22 @@ local function get_appearance()
     return "Dark"
 end
 
-function Scheme_for_appearance()
+function Scheme_for_appearance(appearance)
     if file_exists("/tmp/theme_dark") then
         return "{{theme}}"
     end
     if file_exists("/tmp/theme_light") then
         return "{{light_theme}}"
     end
-    if get_appearance():find("Dark") then
-        return "{{theme}}"
-    else
+    if appearance():find("Light") then
         return "{{light_theme}}"
     end
+    return "{{theme}}"
 end
 
 local config = wezterm.config_builder()
 
-config.color_scheme = Scheme_for_appearance()
+config.color_scheme = Scheme_for_appearance(get_appearance)
 
 -- {{^steamdeck}}
 -- MacOS

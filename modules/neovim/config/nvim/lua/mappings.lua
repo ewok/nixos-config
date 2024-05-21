@@ -73,21 +73,28 @@ map("n", "<leader>gg", function()
 end, { silent = true }, "Open lazygit in bottom terminal")
 
 -- themes
-map("n", "<leader>th", function()
-    if vim.o.background == "dark" then
-        vim.cmd.colorscheme(conf.options.light_theme)
-        pcall(function()
-            require("lualine").setup({ options = { theme = conf.options.light_theme } })
-        end)
-        os.execute("toggle-theme light")
-    else
+map("n", "<leader>thd", function()
         vim.cmd.colorscheme(conf.options.theme)
         pcall(function()
             require("lualine").setup({ options = { theme = conf.options.theme } })
         end)
         os.execute("toggle-theme dark")
-    end
-end, { noremap = true }, "Toggle theme")
+end, { noremap = true }, "Toggle theme Dark")
+map("n", "<leader>thl", function()
+        vim.cmd.colorscheme(conf.options.light_theme)
+        pcall(function()
+            require("lualine").setup({ options = { theme = conf.options.light_theme } })
+        end)
+        os.execute("toggle-theme light")
+end, { noremap = true }, "Toggle theme Light")
+map("n", "<leader>tha", function()
+    -- TODO: implement feedback
+        -- vim.cmd.colorscheme(conf.options.light_theme)
+        -- pcall(function()
+        --     require("lualine").setup({ options = { theme = conf.options.light_theme } })
+        -- end)
+        os.execute("toggle-theme auto")
+end, { noremap = true }, "Toggle theme Auto")
 
 --
 
