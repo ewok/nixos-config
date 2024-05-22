@@ -45,14 +45,15 @@ in
             vifm.enable = true;
             starship.enable = true;
             git.enable = true;
-            hledger.enable = true;
-            svn.enable = true;
+            # hledger.enable = true;
+            # svn.enable = true;
             kube.enable = true;
+            tf.enable = true;
             bw.enable = true;
             nix.enable = true;
-            lisps.enable = true;
+            # lisps.enable = true;
             wm.enable = true;
-            ssh.enable = true;
+            # ssh.enable = true;
             direnv.enable = true;
             terminal = {
               enable = true;
@@ -65,6 +66,7 @@ in
               zellij.enable = true;
             };
             scripts.enable = true;
+            aws.enable = true;
           };
 
 
@@ -80,7 +82,7 @@ in
             enable = true;
           };
 
-          programs.granted.enable = true;
+          # programs.granted.enable = true;
           xdg.configFile."fish/conf.d/99_granted.fish".text =
             let
               assume-fish = ./assume.fish;
