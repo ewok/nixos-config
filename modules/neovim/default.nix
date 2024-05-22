@@ -159,6 +159,8 @@ in
       clang
       go
       gnumake
+      cargo
+      nodejs
 
       # LSP:
       # clojure-lsp

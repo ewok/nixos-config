@@ -40,7 +40,22 @@ return {
                         end,
                     },
                 },
-                lualine_x = { "encoding", "fileformat", "filetype" },
+                lualine_x = {
+                    "encoding",
+                    "fileformat",
+                    "filetype",
+                    {
+                        function()
+                            local isSet, venv = pcall(require, "venv-selector")
+                            if isSet then
+                                if venv.venv() then
+                                    return "venv"
+                                end
+                            end
+                            return ""
+                        end,
+                    },
+                },
                 lualine_y = { "progress" },
                 lualine_z = { "location" },
             },

@@ -7,7 +7,7 @@ return {
         "chrisgrieser/nvim-early-retirement",
         config = function()
             require("early-retirement").setup({
-                minimumBufferNum = 1,
+                minimumBufferNum = 3,
                 notificationOnAutoClose = true,
                 retirementAgeMins = 20,
                 -- deleteBufferWhenFileDeleted = true,
