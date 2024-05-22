@@ -92,6 +92,12 @@ let
   n-steam-switch = writeShellScriptBin "n-steam-switch" ''
     nix run home-manager -- switch -b bakup --flake '.#steamdeck'
   '';
+  n-orb-build = writeShellScriptBin "n-orb-build" ''
+    nix run home-manager -- build --flake '.#orb'
+  '';
+  n-orb-switch = writeShellScriptBin "n-orb-switch" ''
+    nix run home-manager -- switch -b bakup --flake '.#orb'
+  '';
 
 in
 pkgs.mkShell {
@@ -116,6 +122,8 @@ pkgs.mkShell {
     n-droid-switch
     n-steam-build
     n-steam-switch
+    n-orb-build
+    n-orb-switch
     #rnix-lsp
   ];
 

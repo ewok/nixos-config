@@ -56,6 +56,25 @@
           ];
         };
 
+      homeConfigurations.orb =
+        let
+          pkgs = import inputs.nixpkgs-unstable (nixpkgsDefaults // {
+            system = "aarch64-linux";
+          });
+          inherit modules;
+        in
+        home-manager.lib.homeManagerConfiguration {
+          inherit pkgs;
+          modules = [
+            ./machines/common.nix
+            ./machines/orb
+            {
+              imports = modules;
+              _module.args.utils = import utils/lib.nix { inherit pkgs; };
+            }
+          ];
+        };
+
       darwinConfigurations.mac =
         let
           pkgs = import inputs.nixpkgs-unstable (nixpkgsDefaults // {
