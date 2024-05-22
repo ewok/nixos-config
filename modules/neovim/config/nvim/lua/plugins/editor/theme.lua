@@ -67,6 +67,14 @@ return {
         -- enabled = conf.options.theme == "catppuccin-mocha" and true or false,
         enabled = conf.options.theme:match("^catppuccin") and true or false,
         config = function()
+            require("catppuccin").setup({
+                custom_highlights = function(colors)
+                    return {
+                        Visual = { bg = colors.overlay2 },
+                        VisualNOS = { bg = colors.overlay2 },
+                    }
+                end,
+            })
             vim.api.nvim_create_autocmd({ "WinEnter", "FocusGained", "VimEnter" }, {
                 group = vim.api.nvim_create_augroup("catppuccin", { clear = true }),
                 callback = function()

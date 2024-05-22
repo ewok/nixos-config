@@ -1,5 +1,6 @@
 return {
     "lukas-reineke/indent-blankline.nvim",
+    commit = "3d08501",
     main = "ibl",
     event = { "BufNewFile", "BufReadPre" },
     config = function()

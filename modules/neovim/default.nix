@@ -26,7 +26,7 @@ let
 
   my-nvim = pkgs.symlinkJoin {
     name = "my-neovim";
-    paths = [ pkgs.neovim ];
+    paths = with pkgs; [ neovim ];
     postBuild = ''
       ln -s $out/bin/nvim $out/bin/vim
       ln -s $out/bin/nvim $out/bin/vi
@@ -127,11 +127,23 @@ in
 
   config = mkIf cfg.enable {
 
+    # nixpkgs.overlays = [
+    #   (final: prev: {
+    #     neovim-unwrapped = prev.neovim-unwrapped.overrideAttrs (old: {
+    #       src = prev.fetchFromGitHub {
+    #         rev = "v0.10.0";
+    #         hash = "sha256-FCOipXHkAbkuFw9JjEpOIJ8BkyMkjkI0Dp+SzZ4yZlw=";
+    #       };
+    #     });
+    #   })
+    # ];
+
     home.packages = with pkgs; let
       androidPkgs = optionals cfg.android [ packs.codeium-lsp ];
     in
     [
       my-nvim
+      # neovim
       # vims # vim with loaded session
       lazygit
       clean-cache
