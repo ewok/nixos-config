@@ -25,26 +25,18 @@ in
         svn.enable = true;
         ssh.enable = true;
         kube.enable = true;
-        aws.enable = true;
         tf.enable = true;
-        #bw.enable = false;
         nix.enable = true;
         lisps.enable = true;
         terminal = {
           enable = true;
           inherit colors theme;
-          # steamdeck = true;
           tmux = {
             enable = true;
           };
         };
-        # wm = {
-        #   enable = true;
-        #   steamos = true;
-        #   inherit colors theme;
-        # };
         direnv.enable = true;
-        # openvpn.enable = true;
+        aws.enable = true;
       };
 
     home.username = "${username}";

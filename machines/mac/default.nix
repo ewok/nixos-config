@@ -20,7 +20,6 @@ in
     home-manager =
       {
         useGlobalPkgs = true;
-        # useUserPackages = true;
         backupFileExtension = "backup";
 
         users."${username}" = {
@@ -45,15 +44,11 @@ in
             vifm.enable = true;
             starship.enable = true;
             git.enable = true;
-            # hledger.enable = true;
-            # svn.enable = true;
             kube.enable = true;
             tf.enable = true;
             bw.enable = true;
             nix.enable = true;
-            # lisps.enable = true;
             wm.enable = true;
-            # ssh.enable = true;
             direnv.enable = true;
             terminal = {
               enable = true;
@@ -73,25 +68,9 @@ in
           home.username = "${username}";
           home.stateVersion = "23.11";
 
-          # programs.direnv = {
-          #   enable = true;
-          #   nix-direnv.enable = true;
-          # };
-
           programs.fish = {
             enable = true;
           };
-
-          # programs.granted.enable = true;
-          xdg.configFile."fish/conf.d/99_granted.fish".text =
-            let
-              assume-fish = ./assume.fish;
-            in
-            ''
-              if status is-interactive
-                alias assume="source ${assume-fish}"
-              end
-            '';
 
           xdg.configFile."fish/conf.d/99_yubikey-agent.fish".text = ''
             if status is-interactive

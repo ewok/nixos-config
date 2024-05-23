@@ -10,9 +10,6 @@ in
 
   config = {
 
-    # useGlobalPkgs = true;
-    # backupFileExtension = "backup";
-
     opt =
       {
         nvim = {
@@ -20,15 +17,15 @@ in
           inherit colors theme;
         };
         vifm.enable = true;
-        fish.enable = true;
-        fish.homeDirectory = homeDirectory;
+        fish = {
+          enable = true;
+          homeDirectory = homeDirectory;
+        };
         starship.enable = true;
         git.enable = true;
         hledger.enable = true;
         svn.enable = true;
         ssh.enable = true;
-        #kube.enable = false;
-        #bw.enable = false;
         nix.enable = true;
         lisps.enable = true;
         terminal = {
