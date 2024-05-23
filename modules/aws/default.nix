@@ -40,5 +40,15 @@ in
         end
       '';
     };
+
+    xdg.configFile."fish/conf.d/99_granted.fish".text =
+      let
+        assume-fish = ./assume.fish;
+      in
+      ''
+        if status is-interactive
+          alias assume="source ${assume-fish}"
+        end
+      '';
   };
 }
