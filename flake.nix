@@ -88,6 +88,7 @@
             ./machines/mac
             home-manager.darwinModules.home-manager
           ];
+
         };
 
       nixOnDroidConfigurations.android =
