@@ -2,8 +2,6 @@
 local path_join = require("lib").path_join
 local conf = require("conf")
 
-vim.fn.setenv("PATH", path_join(conf.data_dir, "mason", "bin") .. ":" .. vim.env.PATH)
-
 -- Dealing with large files.
 local LargeFileGroup = vim.api.nvim_create_augroup("LargeFile", { clear = true })
 vim.api.nvim_create_autocmd("BufReadPre", {

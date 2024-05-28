@@ -170,6 +170,10 @@ return {
         end,
     },
     {
+        "hiphish/rainbow-delimiters.nvim",
+        event = { "BufReadPost", "BufNewFile" },
+    },
+    {
         "nvim-treesitter/nvim-treesitter",
         build = ":TSUpdate",
         dependencies = {
@@ -196,7 +200,7 @@ return {
                 },
                 highlight = {
                     enable = true,
-                    additional_vim_regex_highlighting = require"conf".treesitter_nvim_highlighting,
+                    additional_vim_regex_highlighting = require("conf").treesitter_nvim_highlighting,
                 },
                 indent = {
                     enable = true,

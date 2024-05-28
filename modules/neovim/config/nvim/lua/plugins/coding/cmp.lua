@@ -12,7 +12,7 @@ local duplicate_keywords = {
     buffer = 0,
     path = 0,
     cmdline = 0,
-    conjure = 0,
+    -- conjure = 0,
 }
 
 return {
@@ -42,7 +42,7 @@ return {
                 { name = "calc" },
                 { name = "snippy" },
                 { name = "nvim_lsp" },
-                { name = "conjure" },
+                -- { name = "conjure" },
                 { name = "path" },
                 { name = "buffer" },
             },

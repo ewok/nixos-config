@@ -41,7 +41,7 @@ return {
             gp = { name = "Git Push" },
             l = { name = "Lsp" },
             o = { name = "Open" },
-            p = { name = "Packages | Profiling | Mason" },
+            p = { name = "Packages | Profiling" },
             s = { name = "Session" },
             y = { name = "Yank" },
             yf = { name = "File" },

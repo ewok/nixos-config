@@ -42,8 +42,6 @@ return {
             map("n", "<leader>gw", "<cmd>Gwrite<CR>", md, "Git Write")
             map("x", "<leader>gx", ":'<,'>GBrowse %<CR>", md, "Git Browse")
             map("x", "<leader>glv", function()
-                -- TODO: Fix it
-                -- vim.cmd('exe ":G log -L " . string(getpos("\'<")[1]) . "," . string(getpos("\'>\'")[1]) . ":%"')
                 vim.cmd('exe ":Git log -L " . string(getpos("\'<\'")[1]) . "," . string(getpos("\'>\'")[1]) . ":%"')
             end, md, "Visual Block")
         end,

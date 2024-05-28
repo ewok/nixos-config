@@ -38,7 +38,7 @@ return {
             vim.call("codeium#CycleCompletions", 1)
         end, { silent = true, noremap = true }, "Codeium next")
         map("i", "<c-k>", function()
-            vim.call("codeium#CycleCompletions", 1)
+            vim.call("codeium#CycleCompletions", -1)
         end, { silent = true, noremap = true }, "Codeium prev")
         map("i", "<c-g>", function()
             return vim.fn["codeium#Clear"]()

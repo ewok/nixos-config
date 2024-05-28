@@ -29,7 +29,7 @@ return {
                 -- this is required, since the default filter skips nobuflisted buffers
                 return true
             end,
-            extensions = { scope = {} },
+            extensions = { scope = {}, hbac = {} },
         })
 
         local autgroup = vim.api.nvim_create_augroup("PersistedHooks", {})
@@ -42,13 +42,6 @@ return {
                 end)
             end)
         end
-
-        -- vim.api.nvim_create_autocmd("VimLeavePre", {
-        --     group = autgroup,
-        --     callback = function()
-        --         resession.save(vim.fn.getcwd(), { dir = "dirsession", notify = false })
-        --     end,
-        -- })
 
         -- mappings
 

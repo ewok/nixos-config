@@ -1,11 +1,6 @@
 return {
     "nvim-lualine/lualine.nvim",
     event = { "VeryLazy" },
-    init = function()
-        local map = require("lib").map
-        map("n", "<C-W>d", "<CMD>Bdelete<CR>", { silent = true }, "Close current buffer")
-        map("n", "<C-W><C-D>", "<CMD>Bdelete<CR>", { silent = true }, "Close current buffer")
-    end,
     config = function()
         local lualine = require("lualine")
         local conf = require("conf")
@@ -30,12 +25,11 @@ return {
                     {
                         "filename",
                         fmt = function(str)
-                            local isSet, setTrue = pcall(
-                                vim.api.nvim_buf_get_var,
-                                vim.api.nvim_get_current_buf(),
-                                "ignore_early_retirement"
-                            )
-                            local pinned = (isSet and setTrue) and "📍" or ""
+                            local isSet, pinned = pcall(function()
+                                local cur_buf = vim.api.nvim_get_current_buf()
+                                return require("hbac.state").is_pinned(cur_buf)
+                            end)
+                            local pinned = (isSet and pinned) and "📍" or ""
                             return pinned .. str
                         end,
                     },
@@ -69,7 +63,19 @@ return {
                     {
                         function()
                             local cwd = string.gsub(vim.fn.getcwd(), os.getenv("HOME"), "~")
-                            -- local cwd = vim.fn.pathshorten(vim.fn.getcwd())
+                            -- nicely shorten cwd path
+                            if #cwd > 30 then
+                                local parts = vim.split(cwd, "/")
+                                local shortened = ""
+                                for i = #parts, 1, -1 do
+                                    shortened = "/" .. parts[i] .. shortened
+                                    if #shortened - 1 > 30 then
+                                        shortened = "/..." .. shortened
+                                        break
+                                    end
+                                end
+                                cwd = shortened
+                            end
                             local buff_count = #vim.api.nvim_list_bufs()
                             return cwd .. " #" .. buff_count
                         end,
@@ -79,19 +85,11 @@ return {
         })
 
         local map = require("lib").map
-        -- map("n", "<Tab>", function()
-        --     vim.cmd("silent! bnext")
-        --     require("lualine").refresh({ scope = "tabpage", place = { "tabline", "statusline", "winbar" } })
-        -- end, {}, "Goto next buffer")
-        -- map("n", "<S-Tab>", function()
-        --     vim.cmd("silent! bprevious")
-        --     require("lualine").refresh({ scope = "tabpage", place = { "tabline", "statusline", "winbar" } })
-        -- end, {}, "Goto prev buffer")
-
-        local hydra = require("hydra")
         local lualine_refresh = function()
             lualine.refresh({ scope = "tabpage", place = { "tabline", "statusline", "winbar" } })
         end
+
+        local hydra = require("hydra")
         map("n", "<leader>j", function()
             hydra({
                 name = "Switch buffers",

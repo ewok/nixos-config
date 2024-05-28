@@ -45,6 +45,7 @@ return {
         config = function()
             local telescope = require("telescope")
             local actions = require("telescope.actions")
+            local previewers = require("telescope.previewers")
 
             local vimgrep_arguments = {
                 "rg",

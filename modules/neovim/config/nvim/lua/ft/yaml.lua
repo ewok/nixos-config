@@ -1,13 +1,25 @@
-local reg_ft = require("lib").reg_ft
+local lib = require("lib")
 
-reg_ft("yaml", function(ev)
+lib.reg_ft("yaml", function(ev)
     vim.opt_local.expandtab = true
     vim.opt_local.shiftwidth = 2
     vim.opt_local.tabstop = 2
     vim.opt_local.softtabstop = 2
     local map = require("lib").map
-    map("n", "<leader>ckb", "<cmd>lua require('kustomize').build()<cr>", { noremap = true, buffer = true }, "Kustomize Build")
-    map("n", "<leader>ckk", "<cmd>lua require('kustomize').kinds()<cr>", { noremap = true, buffer = true }, "List kinds")
+    map(
+        "n",
+        "<leader>ckb",
+        "<cmd>lua require('kustomize').build()<cr>",
+        { noremap = true, buffer = true },
+        "Kustomize Build"
+    )
+    map(
+        "n",
+        "<leader>ckk",
+        "<cmd>lua require('kustomize').kinds()<cr>",
+        { noremap = true, buffer = true },
+        "List kinds"
+    )
     map(
         "n",
         "<leader>ckl",
@@ -46,4 +58,12 @@ reg_ft("yaml", function(ev)
             buffer = ev.buf,
         })
     end
+end)
+
+-- lib.reg_lsp({"yamlls"})
+
+
+lib.reg_ft_once("yaml", function()
+    local null_ls = require("null-ls")
+    null_ls.register({ null_ls.builtins.formatting.prettier })
 end)

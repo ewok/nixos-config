@@ -1,4 +1,29 @@
 local conf = require("conf")
+local map = require("lib").map
+
+map("n", "<leader>thd", function()
+    vim.cmd.colorscheme(conf.options.theme)
+    pcall(function()
+        require("lualine").setup({ options = { theme = conf.options.theme } })
+    end)
+    os.execute("toggle-theme dark")
+end, { noremap = true }, "Toggle theme Dark")
+map("n", "<leader>thl", function()
+    vim.cmd.colorscheme(conf.options.light_theme)
+    pcall(function()
+        require("lualine").setup({ options = { theme = conf.options.light_theme } })
+    end)
+    os.execute("toggle-theme light")
+end, { noremap = true }, "Toggle theme Light")
+map("n", "<leader>tha", function()
+    -- TODO: implement feedback
+    -- vim.cmd.colorscheme(conf.options.light_theme)
+    -- pcall(function()
+    --     require("lualine").setup({ options = { theme = conf.options.light_theme } })
+    -- end)
+    os.execute("toggle-theme auto")
+end, { noremap = true }, "Toggle theme Auto")
+
 return {
     {
         "navarasu/onedark.nvim",

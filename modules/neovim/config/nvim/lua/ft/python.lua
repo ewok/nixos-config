@@ -1,6 +1,6 @@
-local reg_ft = require("lib").reg_ft
+local lib = require("lib")
 
-reg_ft("python", function(ev)
+lib.reg_ft("python", function(ev)
     vim.opt_local.expandtab = true
     vim.opt_local.shiftwidth = 4
     vim.opt_local.tabstop = 4
@@ -21,4 +21,11 @@ reg_ft("python", function(ev)
     end
     local map = require("lib").map
     map("n", "<leader>cv", "<cmd>VenvSelect<cr>", { noremap = true, buffer = true }, "Select VirtualEnv")
+end)
+
+lib.reg_lsp({ "pyright" })
+
+lib.reg_ft_once("python", function()
+    local null_ls = require("null-ls")
+    null_ls.register({ null_ls.builtins.formatting.black })
 end)

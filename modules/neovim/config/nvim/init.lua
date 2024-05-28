@@ -2,16 +2,6 @@ require("settings")
 require("pre")
 require("mappings")
 
-local ft_path = vim.fn.stdpath("config") .. "/lua/ft"
-if vim.loop.fs_stat(ft_path) then
-  for file in vim.fs.dir(ft_path) do
-    file = file:match("^(.*)%.lua$")
-    if file then
-      require("ft." .. file)
-    end
-  end
-end
-
 -- bootstrap lazy and all plugins
 local lazypath = vim.fn.stdpath("data") .. "/lazy/lazy.nvim"
 
@@ -50,13 +40,14 @@ require("lazy").setup({
     { import = "plugins/editor" },
 }, lazy_config)
 
-require("post")
--- -- load theme
--- dofile(vim.g.base46_cache .. "defaults")
--- dofile(vim.g.base46_cache .. "statusline")
---
--- require "nvchad.autocmds"
+local ft_path = vim.fn.stdpath("config") .. "/lua/ft"
+if vim.loop.fs_stat(ft_path) then
+  for file in vim.fs.dir(ft_path) do
+    file = file:match("^(.*)%.lua$")
+    if file then
+      require("ft." .. file)
+    end
+  end
+end
 
--- vim.schedule(function()
---   require "mappings"
--- end)
+require("post")

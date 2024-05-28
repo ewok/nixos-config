@@ -4,13 +4,18 @@ return {
         ft = { "yaml" },
         config = function()
             local map = require("lib").map
+            local lsp_zero = require("lsp-zero")
 
             local yamlconfig = require("yaml-companion")
             local cfg = yamlconfig.setup({
+                handlers = {
+                    lsp_zero.default_setup,
+                },
                 schemas = {
                     {
                         name = "Kubernetes 1.22.4",
-                        uri = "https://raw.githubusercontent.com/yannh/kubernetes-json-schema/master/v1.22.4-standalone-strict/all.json",
+                        uri =
+                        "https://raw.githubusercontent.com/yannh/kubernetes-json-schema/master/v1.22.4-standalone-strict/all.json",
                     },
                 },
             })

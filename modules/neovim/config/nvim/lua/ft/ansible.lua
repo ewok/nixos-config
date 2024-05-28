@@ -1,4 +1,4 @@
-local reg_ft = require "lib".reg_ft
+local reg_ft = require("lib").reg_ft
 
 reg_ft("ansible", function()
     vim.opt_local.expandtab = true

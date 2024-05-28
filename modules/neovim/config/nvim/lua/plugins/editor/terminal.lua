@@ -1,3 +1,42 @@
+local map = require("lib").map
+local conf = require("conf")
+
+map("n", "<C-W>S", function()
+    if conf.in_tmux then
+        vim.cmd("silent !tmux split-window -v -l 20\\%")
+    else
+        vim.cmd("split term://bash")
+    end
+end, { noremap = true, silent = true }, "Split window")
+map("n", "<C-W>V", function()
+    if conf.in_tmux then
+        vim.cmd("silent !tmux split-window -h -l 20\\%")
+    else
+        vim.cmd("vsplit term://bash")
+    end
+end, { noremap = true, silent = true }, "VSplit window")
+
+map("n", "<leader>ot", function()
+    vim.g.tth = false
+    vim.cmd("silent !~/.config/tmux/tmux_toggle '" .. require("lib").get_file_cwd() .. "' false")
+end, { silent = true }, "Open bottom terminal")
+map("n", "<leader>of", function()
+    vim.g.tth = true
+    vim.cmd("silent !~/.config/tmux/tmux_toggle '" .. require("lib").get_file_cwd() .. "' true")
+end, { silent = true }, "Open floating terminal")
+
+map({ "n" }, "<c-space>", function()
+    if vim.g.tth then
+        vim.cmd("silent !~/.config/tmux/tmux_toggle '" .. require("lib").get_file_cwd() .. "' true")
+    else
+        vim.cmd("silent !~/.config/tmux/tmux_toggle '" .. require("lib").get_file_cwd() .. "' false")
+    end
+end, { silent = true }, "Toggle bottom or float terminal")
+
+map("n", "<leader>gg", function()
+    vim.cmd([[silent !tmux popup -d ]] .. vim.uv.cwd() .. [[ -xC -yC -w90\\% -h90\\% -E lazygit]])
+end, { silent = true }, "Open lazygit in bottom terminal")
+
 return {}
 --
 -- local map = require("lib").map

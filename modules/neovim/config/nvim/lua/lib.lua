@@ -93,4 +93,28 @@ function M.get_file_cwd()
     end
 end
 
+-- -- Function singleton
+function M.once(name, func)
+    if not _G[name] then
+        _G[name] = true
+        func()
+    end
+end
+
+-- Function to run once on FileType
+function M.reg_ft_once(filetype, func)
+    vim.api.nvim_create_autocmd("FileType", {
+        pattern = filetype,
+        callback = func,
+        once = true,
+    })
+end
+
+M.lsps = {}
+function M.reg_lsp(lsp_list)
+    for _, lsp_name in ipairs(lsp_list) do
+        table.insert(M.lsps, lsp_name)
+    end
+end
+
 return M

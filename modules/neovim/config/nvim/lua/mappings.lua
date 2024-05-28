@@ -8,7 +8,6 @@ map("v", "<leader>6d", "c<c-r>=system('base64 --decode', @\")<cr><esc>", md, "De
 map("v", "<leader>6e", "c<c-r>=system('base64', @\")<cr><esc>", md, "Encode Base64")
 
 -- Open current cwd note page
--- TODO: Check this one
 local function open_mind()
     local git_url = io.popen("git remote get-url origin 2>/dev/null | sed 's/^.*://;s/.git$//'"):read("*a")
     local project_name
@@ -24,79 +23,13 @@ end
 map("n", "<leader>on", open_mind, md, "Open CWD note")
 --
 -- ;; Navigation
-map("n", "<C-O><C-O>", "<C-O>", md, "Go Back")
-map("n", "<C-O><C-I>", "<Tab>", md, "Go Forward")
+-- map("n", "<C-O><C-O>", "<C-O>", md, "Go Back")
+-- map("n", "<C-O><C-I>", "<Tab>", md, "Go Forward")
 --
 -- ;; Windows manipulation
--- Navigation
-map("n", "<C-O><C-O>", "<C-O>", md, "Go Back")
-map("n", "<C-O><C-I>", "<Tab>", md, "Go Forward")
 
 -- Windows manipulation
 map("n", "<C-W>t", "<cmd>tabnew<CR>", md, "New Tab")
-
--- Terminal
-map("n", "<C-W>S", function()
-    if conf.in_tmux then
-        vim.cmd("silent !tmux split-window -v -l 20\\%")
-    else
-        vim.cmd("split term://bash")
-    end
-end, md, "Split window")
-map("n", "<C-W>V", function()
-    if conf.in_tmux then
-        vim.cmd("silent !tmux split-window -h -l 20\\%")
-    else
-        vim.cmd("vsplit term://bash")
-    end
-end, md, "VSplit window")
-
-map("n", "<leader>ot", function()
-    vim.g.tth = false
-    vim.cmd("silent !~/.config/tmux/tmux_toggle '" .. require("lib").get_file_cwd() .. "' false")
-end, { silent = true }, "Open bottom terminal")
-map("n", "<leader>of", function()
-    vim.g.tth = true
-    vim.cmd("silent !~/.config/tmux/tmux_toggle '" .. require("lib").get_file_cwd() .. "' true")
-end, { silent = true }, "Open floating terminal")
-
-map({ "n" }, "<c-space>", function()
-    if vim.g.tth then
-        vim.cmd("silent !~/.config/tmux/tmux_toggle '" .. require("lib").get_file_cwd() .. "' true")
-    else
-        vim.cmd("silent !~/.config/tmux/tmux_toggle '" .. require("lib").get_file_cwd() .. "' false")
-    end
-end, { silent = true }, "Toggle bottom or float terminal")
-
-map("n", "<leader>gg", function()
-    vim.cmd([[silent !tmux popup -d ]] .. vim.uv.cwd() .. [[ -xC -yC -w90\\% -h90\\% -E lazygit]])
-end, { silent = true }, "Open lazygit in bottom terminal")
-
--- themes
-map("n", "<leader>thd", function()
-        vim.cmd.colorscheme(conf.options.theme)
-        pcall(function()
-            require("lualine").setup({ options = { theme = conf.options.theme } })
-        end)
-        os.execute("toggle-theme dark")
-end, { noremap = true }, "Toggle theme Dark")
-map("n", "<leader>thl", function()
-        vim.cmd.colorscheme(conf.options.light_theme)
-        pcall(function()
-            require("lualine").setup({ options = { theme = conf.options.light_theme } })
-        end)
-        os.execute("toggle-theme light")
-end, { noremap = true }, "Toggle theme Light")
-map("n", "<leader>tha", function()
-    -- TODO: implement feedback
-        -- vim.cmd.colorscheme(conf.options.light_theme)
-        -- pcall(function()
-        --     require("lualine").setup({ options = { theme = conf.options.light_theme } })
-        -- end)
-        os.execute("toggle-theme auto")
-end, { noremap = true }, "Toggle theme Auto")
-
---
 
 map("n", "<C-W><C-J>", "<cmd>resize +5<CR>", md, "Increase height +5")
 map("n", "<C-W><C-K>", "<cmd>resize -5<CR>", md, "Decrease height -5")

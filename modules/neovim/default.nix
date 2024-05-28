@@ -127,24 +127,11 @@ in
 
   config = mkIf cfg.enable {
 
-    # nixpkgs.overlays = [
-    #   (final: prev: {
-    #     neovim-unwrapped = prev.neovim-unwrapped.overrideAttrs (old: {
-    #       src = prev.fetchFromGitHub {
-    #         rev = "v0.10.0";
-    #         hash = "sha256-FCOipXHkAbkuFw9JjEpOIJ8BkyMkjkI0Dp+SzZ4yZlw=";
-    #       };
-    #     });
-    #   })
-    # ];
-
     home.packages = with pkgs; let
       androidPkgs = optionals cfg.android [ packs.codeium-lsp ];
     in
     [
       my-nvim
-      # neovim
-      # vims # vim with loaded session
       lazygit
       clean-cache
       ripgrep
@@ -155,70 +142,61 @@ in
       python3
 
       # Langs
-      # gcc
-      clang
-      go
-      gnumake
-      cargo
-      nodejs
+      gcc # required for treesitter
+      # clang
+      # go
+      # gnumake
+      # cargo
+      # nodejs
 
       # LSP:
-      # clojure-lsp
-      # gopls
+      clojure-lsp
+      gopls
       # ltex-ls
-      # lua-language-server
-      # nodePackages.bash-language-server
-      # nodePackages.pyright
+      lua-language-server
       nil
-      # terraform-ls
-      # vscode-langservers-extracted
-      # yaml-language-server
-      # zk
+      # nodePackages.bash-language-server
+      nodePackages.pyright
+      terraform-ls
+      vscode-langservers-extracted
+      yaml-language-server
+      zk
 
       # Linter
-      # clj-kondo
+      # ansible-lint
+      clj-kondo
+      # codespell
       # hadolint   # too massive on macos
       # markdownlint-cli
-      # tflint
-      # tfsec
+      # pylint
       # revive
       # staticcheck
-      # codespell
+      tflint
+      tfsec
       # typos
+      # yamllint
 
       # FMT
-      # joker
+      black
       # fnlfmt
-      # python311Packages.autopep8
-      # black
-      # stylua
-      nixpkgs-fmt
-      # statix
-      # shfmt
-      # jq
-      # yq
-      # yamllint
-      # prettier
-      # nodePackages.sql-formatter
       # gofmt
+      # joker
+      jq
+      nixpkgs-fmt
+      # nodePackages.sql-formatter
+      nodePackages.prettier
+      # python311Packages.autopep8
+      shfmt
+      # statix
+      stylua
+      # yamllint
+      # yq
+      zprint
     ] ++ androidPkgs;
     xdg = {
       configFile = {
 
         "nvim/init.lua".source = ./config/nvim/init.lua;
-        # "nvim/fnl/ft".source = ./config/neovim/fnl/ft;
-        # "nvim/fnl/plugins".source = ./config/neovim/fnl/plugins;
-        # "nvim/fnl/after.fnl".source = ./config/neovim/fnl/after.fnl;
-        # "nvim/fnl/before.fnl".source = ./config/neovim/fnl/before.fnl;
-        # "nvim/fnl/init.fnl".source = ./config/neovim/fnl/init.fnl;
-        # "nvim/fnl/keybinds.fnl".source = ./config/neovim/fnl/keybinds.fnl;
-        # "nvim/fnl/lib.fnl".source = ./config/neovim/fnl/lib.fnl;
-        # "nvim/fnl/settings.fnl".source = ./config/neovim/fnl/settings.fnl;
-
-        # "nvim/fnl/constants.fnl".source = utils.templateFile "constants.fnl" ./config/neovim/fnl/constants.fnl vars;
-        # Bug
-        # "fnlm/fnl".source = ./config/neovim/fnl;
-
         "nvim/lua/configs".source = ./config/nvim/lua/configs;
         "nvim/lua/plugins".source = ./config/nvim/lua/plugins;
         "nvim/lua/ft".source = ./config/nvim/lua/ft;
@@ -228,12 +206,6 @@ in
         "nvim/lua/post.lua".source = ./config/nvim/lua/post.lua;
         "nvim/lua/pre.lua".source = ./config/nvim/lua/pre.lua;
         "nvim/lua/settings.lua".source = ./config/nvim/lua/settings.lua;
-
-        "fish/conf.d/20_nvim_vars.fish".text = ''
-          if ! test -z "$NVIM"
-              fish_add_path --path -p ~/.local/share/nvim/mason/bin
-          end
-        '';
         "bash/profile.d/20_nvim_vars.sh".text = ''
           export EDITOR="vim"
           export VISUAL="vim"

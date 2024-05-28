@@ -9,6 +9,7 @@ return {
             vim.g["conjure#mapping#doc_word"] = "h"
         end,
     },
+    -- { "Olical/nfnl", ft = "fennel" },
     {
         "guns/vim-sexp",
         ft = { "python", "clojure", "fennel", "lua" },
@@ -34,7 +35,7 @@ return {
                 sexp_square_head_wrap_list = "<[",
                 sexp_square_tail_wrap_list = ">]",
                 sexp_curly_head_wrap_list = "<{",
-                sexp_curly_tail_wrap_list = "}",
+                sexp_curly_tail_wrap_list = ">}",
                 sexp_round_head_wrap_element = "<W(",
                 sexp_round_tail_wrap_element = ">W)",
                 sexp_square_head_wrap_element = "<W[",
@@ -64,7 +65,7 @@ return {
             for _, x in ipairs(require("conf").lisp_langs) do
                 reg_ft(x, function()
                     map("n", "m", "<cmd>WhichKey m<cr>", { buffer = true }, "Menu")
-                    map("n", "mh", function()
+                    map("n", "m(", function()
                         local hydra = require("hydra")
                         hydra({
                             name = "Move (",
@@ -81,7 +82,7 @@ return {
                             },
                         }):activate()
                     end, { buffer = true }, "Move (")
-                    map("n", "ml", function()
+                    map("n", "m)", function()
                         local hydra = require("hydra")
                         hydra({
                             name = "Move",
