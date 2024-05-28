@@ -11,6 +11,8 @@ in
   config = mkIf cfg.enable {
     home.packages = with pkgs; [
       clojure
+      clojure-lsp
+      clj-kondo
       babashka-unwrapped
       leiningen
     ];

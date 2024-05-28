@@ -46,7 +46,8 @@ in
             git.enable = true;
             kube.enable = true;
             tf.enable = true;
-            bw.enable = true;
+            pass.enable = true;
+            ssh.enable = true;
             nix.enable = true;
             wm.enable = true;
             direnv.enable = true;
@@ -62,6 +63,7 @@ in
             };
             scripts.enable = true;
             aws.enable = true;
+            lisps.enable = true;
           };
 
 
@@ -72,11 +74,11 @@ in
             enable = true;
           };
 
-          xdg.configFile."fish/conf.d/99_yubikey-agent.fish".text = ''
-            if status is-interactive
-                export SSH_AUTH_SOCK="$(brew --prefix)/var/run/yubikey-agent.sock"
-            end
-          '';
+          # xdg.configFile."fish/conf.d/99_yubikey-agent.fish".text = ''
+          #   if status is-interactive
+          #       export SSH_AUTH_SOCK="$(brew --prefix)/var/run/yubikey-agent.sock"
+          #   end
+          # '';
 
           xdg.configFile."bash/profile.d/01_fix_mac_paths.sh".text = ''
             export PATH="/run/current-system/sw/bin:/nix/var/nix/profiles/default/bin:$PATH"

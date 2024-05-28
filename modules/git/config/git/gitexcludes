@@ -3,5 +3,6 @@
 .out/
 .tmp/
 .mind/
+result/
 .envrc
 shell.nix

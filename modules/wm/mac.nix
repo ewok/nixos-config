@@ -10,7 +10,7 @@ let
       "id:D6C2035F-7377-4A18-A1CD-BC0BA930526E res:1920x1080 \
       hz:75 color_depth:8 enabled:true scaling:off origin:(0,0) degree:0" \
       "id:37D8832A-2D66-02CA-B9F7-8F30A301B230 res:1512x982 \
-      hz:120 color_depth:8 enabled:true scaling:on origin:(1920,98) degree:0" \
+      hz:120 color_depth:8 enabled:true scaling:on origin:(217,-982) degree:0" \
   '';
 
   work-profile = pkgs.writeScriptBin "work-profile" ''
