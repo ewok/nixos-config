@@ -49,7 +49,7 @@ let
     is_nix = "true";
     conf.orb = cfg.orb;
   };
-
+# https://github.com/Exafunction/codeium/releases
   version = "1.8.25";
   ls-system = "linux_arm";
   hash = "sha256-Gt48FrW9MF4xppmA4TsuEe3iJYn8DrKhtFmb8N7rO+s=";
@@ -90,7 +90,6 @@ in
     openai_token = mkOption {
       type = types.str;
     };
-    orb = mkOption { type = types.bool; default = false; };
 
     theme = mkOption {
       type = types.attrsOf types.str;
@@ -125,12 +124,14 @@ in
       };
     };
     android = mkOption { type = types.bool; default = false; };
+    orb = mkOption { type = types.bool; default = false; };
   };
 
   config = mkIf cfg.enable {
 
     home.packages = with pkgs; let
       androidPkgs = optionals cfg.android [ packs.codeium-lsp ];
+      orbPkgs = optionals cfg.orb [ packs.codeium-lsp ];
     in
     [
       my-nvim
@@ -194,7 +195,7 @@ in
       # yamllint
       # yq
       zprint
-    ] ++ androidPkgs;
+    ] ++ androidPkgs ++ orbPkgs;
     xdg = {
       configFile = {
 

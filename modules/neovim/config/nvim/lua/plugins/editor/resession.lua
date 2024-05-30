@@ -32,8 +32,6 @@ return {
             extensions = { scope = {}, hbac = {} },
         })
 
-        local autgroup = vim.api.nvim_create_augroup("PersistedHooks", {})
-
         if vim.g.auto_load_session then
             vim.fn.timer_start(1000, function()
                 resession.load(vim.fn.getcwd(), { silence_errors = true })
