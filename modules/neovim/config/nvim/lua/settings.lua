@@ -5,6 +5,21 @@ local conf = require("conf")
 vim.g.mapleader = " "
 vim.g.maplocalleader = "\\"
 
+if conf.options.pbclip then
+    vim.g.clipboard = {
+        name = "orb",
+        copy = {
+            ["+"] = { "pbcopy" },
+            ["*"] = { "pbcopy" },
+        },
+        paste = {
+            ["+"] = { "pbpaste" },
+            ["*"] = { "pbpaste" },
+        },
+        cache_enabled = 1,
+    }
+end
+
 local settings = {
     shell = "bash",
     backspace = "2",

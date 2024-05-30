@@ -39,6 +39,7 @@ let
     conf.colors = cfg.colors;
     conf.theme = cfg.theme;
     conf.terminal = cfg.tmux.terminal;
+    conf.orb = cfg.orb;
   };
 
 in

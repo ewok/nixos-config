@@ -32,7 +32,7 @@ in
 
           opt = {
             nvim = {
-              enable = true;
+              enable = false;
               inherit colors theme;
             };
             fish = {
@@ -41,29 +41,29 @@ in
               homeDirectory = homeDirectory;
             };
 
-            vifm.enable = true;
-            starship.enable = true;
+            vifm.enable = false;
+            starship.enable = false;
             git.enable = true;
-            kube.enable = true;
-            tf.enable = true;
-            pass.enable = true;
+            kube.enable = false;
+            tf.enable = false;
+            pass.enable = false;
             ssh.enable = true;
             nix.enable = true;
             wm.enable = true;
-            direnv.enable = true;
+            direnv.enable = false;
             terminal = {
               enable = true;
               inherit colors theme;
               tmux = {
-                enable = true;
+                enable = false;
                 terminal = "xterm-256color";
                 install = false;
               };
-              zellij.enable = true;
+              zellij.enable = false;
             };
-            scripts.enable = true;
-            aws.enable = true;
-            lisps.enable = true;
+            scripts.enable = false;
+            aws.enable = false;
+            lisps.enable = false;
           };
 
 

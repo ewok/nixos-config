@@ -49,7 +49,7 @@ in
     home = {
       packages = with pkgs; [
         git
-        # gitAndTools.git-crypt
+        gitAndTools.git-crypt
         gitAndTools.git-extras
         gitAndTools.git-filter-repo
         gitAndTools.git-trim

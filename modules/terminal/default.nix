@@ -1,10 +1,11 @@
-{lib, ... }:
+{ lib, ... }:
 with lib;
 {
   options.opt = {
     terminal = {
       enable = mkEnableOption "terminal";
       steamdeck = mkOption { type = types.bool; default = false; };
+      orb = mkOption { type = types.bool; default = false; };
       terminal = mkOption {
         type = types.str;
         default = "wezterm";

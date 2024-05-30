@@ -4,22 +4,33 @@ let
   cfg = config.opt.vifm;
   open = pkgs.writeShellScriptBin "open" ''
     #!/usr/bin/env bash
-        if [[ "$WSLENV" != "" ]]; then
-            explorer.exe "$@"
-        elif [[ "$OSTYPE" == "linux-gnu" ]]; then
-            xdg-open "$@"
-        elif [[ "$OSTYPE" == "darwin"* ]]; then
-            /usr/bin/open "$@"
-        elif [[ "$OSTYPE" == "cygwin" ]]; then
-            exit 1
-        elif [[ "$OSTYPE" == "msys" ]]; then
-            exit 1
-        elif [[ "$OSTYPE" == "freebsd"* ]]; then
-            exit 1
-        else
-            exit 1
-        fi
+    if [[ "$WSLENV" != "" ]]; then
+        explorer.exe "$@"
+    elif [[ "$OSTYPE" == "linux-gnu" ]]; then
+      if [[ "$ORB" == "true" ]]; then
+        mac open "$@"
+      else
+        /usr/bin/xdg-open "$@"
+      fi
+    elif [[ "$OSTYPE" == "darwin"* ]]; then
+        /usr/bin/open "$@"
+    elif [[ "$OSTYPE" == "cygwin" ]]; then
+        exit 1
+    elif [[ "$OSTYPE" == "msys" ]]; then
+        exit 1
+    elif [[ "$OSTYPE" == "freebsd"* ]]; then
+        exit 1
+    else
+        exit 1
+    fi
   '';
+  xdg-open = pkgs.symlinkJoin {
+    name = "xdg-open";
+    paths = [ open ];
+    postBuild = ''
+      ln -s $out/bin/open $out/bin/xdg-open
+    '';
+  };
 in
 {
   options.opt.vifm = {
@@ -38,7 +49,9 @@ in
       archivemount
       dpkg
       viu
+      trash-cli
       open
+      xdg-open
     ];
 
     xdg = {

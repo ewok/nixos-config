@@ -29,6 +29,12 @@ in
     #     Backend = "pass"
     # '';
 
+    home.file.".gnupg/gpg-agent.conf".text = ''
+      pinentry-program ~/.nix-profile/bin/pinentry
+      default-cache-ttl 604800
+      max-cache-ttl 604800
+    '';
+
     xdg.configFile."fish/conf.d/99_aws.fish" = {
       text = ''
         if status --is-interactive

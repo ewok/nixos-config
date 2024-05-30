@@ -47,6 +47,7 @@ let
     conf.theme = cfg.theme;
     conf.openai_token = cfg.openai_token;
     is_nix = "true";
+    conf.orb = cfg.orb;
   };
 
   version = "1.8.25";
@@ -89,6 +90,7 @@ in
     openai_token = mkOption {
       type = types.str;
     };
+    orb = mkOption { type = types.bool; default = false; };
 
     theme = mkOption {
       type = types.attrsOf types.str;

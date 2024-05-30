@@ -4,8 +4,17 @@ export LC_ALL=en_US.UTF-8
 
 HOSTS="google.com github.com example.com"
 
+# Patch for Orb
+if [[ "$ORB" == "true" ]];then
+    MAC_PREFIX="/opt/orbstack-guest/bin/mac"
+    PLATFORM="Darwin"
+else
+    MAC_PREFIX=""
+    PLATFORM=$(uname -s)
+fi
+
 get_ssid() {
-    case $(uname -s) in
+    case $PLATFORM in
     Linux)
         if [ -z $TERMUX_VERSION ]; then
             SSID=$(iwgetid -r)
@@ -20,8 +29,8 @@ get_ssid() {
         ;;
 
     Darwin)
-        device_name=$(networksetup -listallhardwareports | grep -A 1 Wi-Fi | grep Device | awk '{print $2}')
-        SSID=$(networksetup -getairportnetwork "$device_name" | awk -F ": " '{print $2}')
+        device_name=$($MAC_PREFIX networksetup -listallhardwareports | grep -A 1 Wi-Fi | grep Device | awk '{print $2}')
+        SSID=$($MAC_PREFIX networksetup -getairportnetwork "$device_name" | awk -F ": " '{print $2}')
         if [ -n "$SSID" ]; then
             printf '%s' " $SSID"
         else

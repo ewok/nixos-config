@@ -31,6 +31,7 @@ M.options = {
     -- possible to use list of filetypes
     treesitter_nvim_highlighting = false,
     undotree = false,
+    pbclip = "{{ conf.orb }}" == "true" and true or false
 }
 
 M.separator = M.is_nix

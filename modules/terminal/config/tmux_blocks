@@ -1,5 +1,14 @@
 #!/usr/bin/env bash
 
+# Patch for Orb
+if [[ "$ORB" == "true" ]];then
+    MAC_PREFIX="/opt/orbstack-guest/bin/mac"
+    PLATFORM="Darwin"
+else
+    MAC_PREFIX=""
+    PLATFORM=$(uname -s)
+fi
+
 usbmon() {
     i=1
     #for usb in $(\df -Th | awk '/s[a-z][a-z][0-9]/ && $7!="/" {print substr($1,6)}')
@@ -78,12 +87,12 @@ KG=$(TZ='Asia/Bishkek' date +"🇰🇬 %R")
 PHT=$(TZ='Asia/Manila' date +"🇵🇭 %R")
 
 mac_vpn_status() {
-    UTUN=$(ifconfig | grep -E 'utun[0-9]+:' | grep -v utun0 | cut -f1 -d':')
-    IPSEC=$(ifconfig | grep -E 'ipsec[0-9]+:' | cut -f1 -d':')
+    UTUN=$($MAC_PREFIX ifconfig | grep -E 'utun[0-9]+:' | grep -v utun0 | cut -f1 -d':')
+    IPSEC=$($MAC_PREFIX ifconfig | grep -E 'ipsec[0-9]+:' | cut -f1 -d':')
 
     if [[ $UTUN != "" ]]; then
         for utun in $UTUN; do
-            IP=$(ifconfig $utun 2>/dev/null | grep -w inet | cut -d' ' -f2)
+            IP=$($MAC_PREFIX ifconfig $utun 2>/dev/null | grep -w inet | cut -d' ' -f2)
             if [[ "$IP" != "" ]]; then
                 echo -en ""
                 return
@@ -93,7 +102,7 @@ mac_vpn_status() {
 
     if [[ $IPSEC != "" ]]; then
         for ipsec in $IPSEC; do
-            IP=$(ifconfig $utun 2>/dev/null | grep -w inet | cut -d' ' -f2)
+            IP=$($MAC_PREFIX ifconfig $utun 2>/dev/null | grep -w inet | cut -d' ' -f2)
             if [[ "$IP" != "" ]]; then
                 echo -en ""
                 return
@@ -111,7 +120,7 @@ mac_vpn_status() {
 
 main() {
     RATE=30
-    if [[ "$OSTYPE" == "darwin"* ]]; then
+    if [[ "$PLATFORM" == "Darwin" ]]; then
         echo -e "#[fg=#{{ conf.colors.base09 }}]$DATE $UTC $MSK $KG $PHT  #[default]$(mac_vpn_status)"
     elif [ -n $TERMUX_VERSION ]; then
         echo -e "#[fg=#{{ conf.colors.base09 }}]$DATE $UTC $MSK $KG $PHT "

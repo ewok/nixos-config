@@ -15,6 +15,7 @@ in
         nvim = {
           enable = true;
           inherit colors theme;
+          orb = true;
         };
         vifm.enable = true;
         fish.enable = true;
@@ -42,6 +43,11 @@ in
     home.username = "${username}";
     home.homeDirectory = homeDirectory;
     home.stateVersion = "23.11";
+
+    xdg.configFile."bash/profile.d/00_fix_orb_env.sh".text = ''
+      export ORB=true
+      export OPEN_CMD=open
+    '';
 
     nix.package = pkgs.nix;
   };

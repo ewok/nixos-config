@@ -29,7 +29,8 @@ map("n", "<leader>on", open_mind, md, "Open CWD note")
 -- ;; Windows manipulation
 
 -- Windows manipulation
-map("n", "<C-W>t", "<cmd>tabnew<CR>", md, "New Tab")
+map("n", "<C-W>t", "<cmd>tab split<CR>", md, "New Tab")
+map("n", "<C-W><C-T>", "<cmd>tab split<CR>", md, "New Tab")
 
 map("n", "<C-W><C-J>", "<cmd>resize +5<CR>", md, "Increase height +5")
 map("n", "<C-W><C-K>", "<cmd>resize -5<CR>", md, "Decrease height -5")
