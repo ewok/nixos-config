@@ -21,7 +21,7 @@ return {
             map("n", "<leader>fh", "<CMD>Telescope oldfiles<CR>", { silent = true }, "Find telescope history")
             map("n", "<leader>f.", "<CMD>Telescope resume<CR>", { silent = true }, "Find last lookup")
             map("n", "<leader>fM", "<CMD>Telescope marks<CR>", { silent = true }, "Find marks in the current workspace")
-            map("n", "<leader>fb", "<CMD>Telescope buffers<CR>", { silent = true }, "Find all buffers")
+            -- map("n", "<leader>fb", "<CMD>Telescope buffers<CR>", { silent = true }, "Find all buffers")
             map(
                 "n",
                 "<leader>f/",
@@ -45,7 +45,7 @@ return {
         config = function()
             local telescope = require("telescope")
             local actions = require("telescope.actions")
-            local previewers = require("telescope.previewers")
+            -- local previewers = require("telescope.previewers")
 
             local vimgrep_arguments = {
                 "rg",

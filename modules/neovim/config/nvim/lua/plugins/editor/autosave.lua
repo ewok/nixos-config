@@ -7,19 +7,16 @@ return {
 
         require('autosave').setup {
             enable = conf.options.auto_save,
-            prompt_style = 'stdout',
-            prompt_message = function()
-                return 'Autosave: saved at ' .. vim.fn.strftime('%H:%M:%S')
-            end,
             events = { 'InsertLeave', 'TextChanged' },
             conditions = {
                 exists = true,
                 modifiable = true,
                 filename_is_not = {},
-                filetype_is_not = { "oil" }
+                filetype_is_not = {}
+                -- filetype_is_not = { "oil" }
             },
             write_all_buffers = false,
-            debounce_delay = 135
+            debounce_delay = 2000
         }
     end
 }

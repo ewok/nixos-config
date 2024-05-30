@@ -12,6 +12,7 @@ return {
         end,
         config = function()
             require("oil").setup({
+                default_file_explorer = true,
                 columns = {
                     "icon",
                     -- "permissions",
@@ -19,6 +20,8 @@ return {
                     -- "mtime",
                 },
                 skip_confirm_for_simple_edits = true,
+                prompt_save_on_select_new_entry = true,
+                cleanup_delay_ms = 2000,
                 win_options = {
                     signcolumn = "yes:2",
                     winbar = " oil://%{v:lua.string.gsub(v:lua.require('oil').get_current_dir(), v:lua.os.getenv('HOME'), '~')}",
@@ -32,15 +35,17 @@ return {
                     ["g?"] = "actions.show_help",
                     ["<CR>"] = "actions.select",
                     ["J"] = "actions.select",
-                    ["v"] = "actions.select_vsplit",
-                    ["s"] = "actions.select_split",
+                    ["<C-W>v"] = "actions.select_vsplit",
+                    ["<C-W><C-v>"] = "actions.select_vsplit",
+                    ["<C-W>s"] = "actions.select_split",
+                    ["<C-W><C-s>"] = "actions.select_split",
                     -- ["t"] = "actions.select_tab",
                     ["<C-p>"] = "actions.preview",
                     ["q"] = "actions.close",
                     ["R"] = "actions.refresh",
                     ["-"] = "actions.parent",
+                    ["<C-u>"] = "actions.parent",
                     ["K"] = "actions.parent",
-                    ["_"] = "actions.open_cwd",
                     ["."] = "actions.open_cwd",
                     ["cd"] = "actions.cd",
                     ["cD"] = "actions.tcd",

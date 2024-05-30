@@ -1,11 +1,8 @@
 local map = require("lib").map
 
--- map("n", "<leader>ba", function()
---     vim.cmd("enew")
--- end, { noremap = true }, "New Buffer")
-map("n", "<leader>bo", function()
+map("n", "<leader>bw", function()
     vim.cmd("BufOnly")
-end, { noremap = true }, "Only one Buffer")
+end, { noremap = true }, "Wipe all except one Buffer")
 -- map("n", "<Tab>", function()
 --     vim.cmd("silent! bnext")
 -- end, {}, "Goto next buffer")
@@ -29,6 +26,8 @@ return {
         "axkirillov/hbac.nvim",
         event = "VeryLazy",
         config = function()
+            local telescope = require("telescope")
+            local actions = require("hbac.telescope.actions")
             require("hbac").setup({
                 autoclose = true,
                 threshold = 10,
@@ -37,11 +36,38 @@ return {
                     require("bufdelete").bufdelete(bufnr)
                 end,
                 close_buffers_with_windows = false,
+                telescope = {
+                    show_all_buffers = true,
+                    sort_mru = true,
+                    select_current = true,
+                    theme = "dropdown",
+                    previewer = false,
+                    use_default_mappings = false,
+                    layout_strategy = "dropdown",
+                    mappings = {
+                        i = {
+                            ["<C-a>"] = actions.pin_all,
+                            ["<c-d>"] = actions.delete_buffer,
+                            ["<C-o>"] = actions.close_unpinned,
+                            ["<C-Space>"] = actions.toggle_pin,
+                            ["<C-u>"] = actions.unpin_all,
+                        },
+                    },
+                },
             })
-            map("n", "<leader>bb", "<cmd>Hbac toggle_pin<cr>", { noremap = true }, "Pin Buffer")
-            map("n", "<leader>bc", "<cmd>Hbac close_unpinned<cr>", { noremap = true }, "Close UnPinned buffers")
+            telescope.load_extension("hbac")
+
             map("n", "<leader>ba", "<cmd>Hbac pin_all<cr>", { noremap = true }, "Pin all buffers")
-            map("n", "<leader>bA", "<cmd>Hbac unpin_all<cr>", { noremap = true }, "UnPin all buffers")
+            map("n", "<leader>bb", "<cmd>Hbac toggle_pin<cr>", { noremap = true }, "Pin Buffer")
+            map("n", "<leader>bo", "<cmd>Hbac close_unpinned<cr>", { noremap = true }, "Close UnPinned buffers")
+            map("n", "<leader>bu", "<cmd>Hbac unpin_all<cr>", { noremap = true }, "UnPin all buffers")
+
+            local CallTelescope = function(input)
+                local theme = require("telescope.themes").get_dropdown({})
+                input(theme)
+            end
+
+            map("n", "<leader>fb", function() CallTelescope(telescope.extensions.hbac.buffers) end, { silent = true }, "Find all buffers")
         end,
     },
 }
