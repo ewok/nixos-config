@@ -25,9 +25,4 @@ if status is-interactive
   alias ......="cd ../../../../../"
   alias .......="cd ../../../../../../"
 
-  ##{% if ansible_distribution == "MacOSX" %}
-  ### TODO: Move to some role
-  ##export SSH_AUTH_SOCK="$(brew --prefix)/var/run/yubikey-agent.sock"
-  ##{% endif %}
-
 end

@@ -11,7 +11,6 @@ PANE_COUNT="$(echo "${LIST_PANES}" | wc -l | bc)"
 TMUX_SESS=$(tmux display-message -p -F "#{session_name}")
 FLOAT_TERM=$(tmux display-message -p -F "#{@${TMUX_SESS}_float}")
 
-### TODO: Session different
 if [[ "$TMUX_SESS" == popup* ]]; then
     tmux detach-client
     exit 0
