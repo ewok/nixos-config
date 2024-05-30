@@ -19,6 +19,7 @@ in
       packages = with npkgs; [
         kubectl
         kubectx
+        k9s
       ];
     };
     xdg.configFile."fish/conf.d/90_kube.fish".source = ./config/90_kube.fish;

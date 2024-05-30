@@ -24,7 +24,7 @@ return {
         local au_group = vim.api.nvim_create_augroup("barbecue.updater", {})
 
         vim.api.nvim_create_autocmd(
-            { "CursorHold", "BufWinEnter", "InsertLeave", "WinScrolled", "BufWritePost", "TextChanged", "TextChangedI" },
+            { "CursorHold", "BufWinEnter", "InsertLeave", "WinScrolled" },
             {
                 group = au_group,
                 callback = function() ui.update() end
