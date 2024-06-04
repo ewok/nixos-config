@@ -195,6 +195,9 @@ in
       # yamllint
       # yq
       zprint
+
+      # Manual
+      manix
     ] ++ androidPkgs ++ orbPkgs;
     xdg = {
       configFile = {
