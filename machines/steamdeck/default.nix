@@ -43,11 +43,17 @@ in
         };
         direnv.enable = true;
         openvpn.enable = true;
+        scripts.enable = true;
       };
 
     home.username = "deck";
     home.homeDirectory = homeDirectory;
     home.stateVersion = "23.11";
+
+    # home.packages = with pkgs; [
+    #   android-studio
+    #   jdk17
+    # ];
 
     nix.package = pkgs.nix;
   };

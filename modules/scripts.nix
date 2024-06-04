@@ -43,9 +43,19 @@ in
           # Note: Add or remove --type and --overwrite flags based on your requirements
           aws ssm put-parameter --name "$PARAMETER" --value "$value" --profile "$DESTINATION_AWS_PROFILE" --type "SecureString" --overwrite
         '';
+
+        convert = pkgs.writeShellScriptBin "convert-mov" ''
+        PARAM=''${1:-"720:-1"}
+        for v in *.MOV; do
+          ## Remove ext .mov
+          NAME=$(basename -s .MOV "$v")
+          ffmpeg -i "$NAME.MOV" -filter:v scale=$PARAM "''${NAME}_C.MOV"
+        done
+        '';
       in
       [
         copy-ssm
+        convert
       ];
   };
 }
