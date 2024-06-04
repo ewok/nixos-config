@@ -117,4 +117,37 @@ function M.reg_lsp(lsp_list)
     end
 end
 
+function M.isModuleAvailable(name)
+    if package.loaded[name] then
+        return true
+    else
+        for _, searcher in ipairs(package.searchers or package.loaders) do
+            local loader = searcher(name)
+            if type(loader) == "function" then
+                package.preload[name] = loader
+                return true
+            end
+        end
+        return false
+    end
+end
+
+function M.has_value(tbl, value)
+    local found = false
+    for _, v in pairs(tbl) do
+        if v == value then
+            found = true
+        end
+    end
+    return found
+end
+
+function M.has_key(tbl, key)
+    return tbl[key] ~= nil
+end
+
+function M.is_loaded(module)
+    return M.has_key(package.loaded, module)
+end
+
 return M

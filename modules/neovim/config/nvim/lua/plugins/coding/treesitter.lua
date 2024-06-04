@@ -181,7 +181,7 @@ return {
         },
         config = function()
             local configs = require("nvim-treesitter.configs")
-            local query = require("vim.treesitter.query")
+            -- local query = require("vim.treesitter.query")
 
             configs.setup({
                 ensure_installed = {
@@ -224,7 +224,7 @@ return {
                 },
             })
 
-            query.set("markdown", "highlights", md_rule)
+            -- query.set("markdown", "highlights", md_rule)
         end,
         event = { "BufReadPost", "BufNewFile" },
     },

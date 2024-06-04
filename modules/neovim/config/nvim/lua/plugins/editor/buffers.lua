@@ -3,12 +3,6 @@ local map = require("lib").map
 map("n", "<leader>bw", function()
     vim.cmd("BufOnly")
 end, { noremap = true }, "Wipe all except one Buffer")
--- map("n", "<Tab>", function()
---     vim.cmd("silent! bnext")
--- end, {}, "Goto next buffer")
--- map("n", "<S-Tab>", function()
---     vim.cmd("silent! bprevious")
--- end, {}, "Goto prev buffer")
 
 return {
     {
@@ -24,7 +18,8 @@ return {
     },
     {
         "axkirillov/hbac.nvim",
-        event = "VeryLazy",
+        event = "BufReadPost",
+        dependencies = { "nvim-telescope/telescope.nvim" },
         config = function()
             local telescope = require("telescope")
             local actions = require("hbac.telescope.actions")
@@ -55,19 +50,21 @@ return {
                     },
                 },
             })
-            telescope.load_extension("hbac")
 
             map("n", "<leader>ba", "<cmd>Hbac pin_all<cr>", { noremap = true }, "Pin all buffers")
             map("n", "<leader>bb", "<cmd>Hbac toggle_pin<cr>", { noremap = true }, "Pin Buffer")
             map("n", "<leader>bo", "<cmd>Hbac close_unpinned<cr>", { noremap = true }, "Close UnPinned buffers")
             map("n", "<leader>bu", "<cmd>Hbac unpin_all<cr>", { noremap = true }, "UnPin all buffers")
 
+            telescope.load_extension("hbac")
             local CallTelescope = function(input)
                 local theme = require("telescope.themes").get_dropdown({})
                 input(theme)
             end
 
-            map("n", "<leader>fb", function() CallTelescope(telescope.extensions.hbac.buffers) end, { silent = true }, "Find all buffers")
+            map("n", "<leader>fb", function()
+                CallTelescope(telescope.extensions.hbac.buffers)
+            end, { silent = true }, "Find all buffers")
         end,
     },
 }

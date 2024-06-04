@@ -23,9 +23,9 @@ return {
         local cmp = require("cmp")
         local types = require("cmp.types")
 
-        local t = function(str)
-            return vim.api.nvim_replace_termcodes(str, true, true, true)
-        end
+        -- local t = function(str)
+        --     return vim.api.nvim_replace_termcodes(str, true, true, true)
+        -- end
         local config_opts = {
             preselect = types.cmp.PreselectMode.None,
             confirmation = {
@@ -184,7 +184,7 @@ return {
         { "hrsh7th/cmp-nvim-lsp", config = false, event = "InsertEnter" },
         { "hrsh7th/cmp-buffer", config = false, event = "InsertEnter" },
         { "hrsh7th/cmp-path", config = false, event = "InsertEnter" },
-        { "hrsh7th/cmp-cmdline", config = false, event = { "InsertEnter", "CmdlineEnter" } },
+        { "hrsh7th/cmp-cmdline", config = false, event = { "CmdlineEnter" } },
         { "hrsh7th/cmp-calc", config = false, event = "InsertEnter" },
         -- { "PaterJason/cmp-conjure", config = false, event = "InsertEnter" },
         "dcampos/cmp-snippy",

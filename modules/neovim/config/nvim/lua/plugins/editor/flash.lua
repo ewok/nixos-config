@@ -1,6 +1,6 @@
 return {
     "folke/flash.nvim",
-    event = { "BufReadPre", "BufNewFile" },
+    event = { "BufReadPost", "BufNewFile", "BufNew" },
     config = function()
         local map = require("lib").map
 

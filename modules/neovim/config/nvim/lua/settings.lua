@@ -107,40 +107,6 @@ end
 
 set("", "whichwrap", "<>[]hl", "append")
 
-local disable_builtin_plugins = {
-    "2html_plugin",
-    "tohtml",
-    "getscript",
-    "getscriptPlugin",
-    "gzip",
-    "logipat",
-    "netrw",
-    "netrwPlugin",
-    "netrwSettings",
-    "netrwFileHandlers",
-    "matchit",
-    "tar",
-    "tarPlugin",
-    "rrhelper",
-    "spellfile_plugin",
-    "vimball",
-    "vimballPlugin",
-    "zip",
-    "zipPlugin",
-    "tutor",
-    "rplugin",
-    "syntax",
-    "synmenu",
-    "optwin",
-    "compiler",
-    "bugreport",
-    "ftplugin",
-}
-
-for _, builtin_plugin in ipairs(disable_builtin_plugins) do
-    vim.g["loaded_" .. builtin_plugin] = 1
-end
-
 vim.cmd([[
 filetype plugin indent on
 

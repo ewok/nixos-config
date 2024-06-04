@@ -29,6 +29,10 @@ return {
 
         wk.register({
             th = "Dark/Light theme",
+            tS = "Toggle Spell language",
+            j = "Goto Next buffer",
+            k = "Goto Prev buffer",
+            b = { name = "Buffer" },
             c = { name = "Code" },
             f = { name = "Find" },
             fs = { name = "Settings" },

@@ -1,11 +1,12 @@
+local lib = require("lib")
 return {
     "nvim-lualine/lualine.nvim",
     event = { "VeryLazy" },
     config = function()
         local lualine = require("lualine")
         local conf = require("conf")
-        lualine.setup({
-            extensions = { "fugitive", "trouble", "aerial" },
+        local opts = {
+            extensions = { "fugitive", "trouble" },
             options = {
                 theme = conf.options.theme or "auto",
                 icons_enabled = true,
@@ -20,41 +21,63 @@ return {
             },
             sections = {
                 lualine_a = { "mode" },
-                lualine_b = { "branch", "diff", "diagnostics" },
-                lualine_c = {
+                lualine_b = {
+                    "branch",
+                    "diff",
+                    "diagnostics",
                     {
-                        "filename",
-                        fmt = function(str)
-                            local isSet, pinned = pcall(function()
-                                local cur_buf = vim.api.nvim_get_current_buf()
-                                return require("hbac.state").is_pinned(cur_buf)
-                            end)
-                            local pinned = (isSet and pinned) and "📍" or ""
-                            return pinned .. str
+                        function()
+                            if lib.is_loaded("hbac") then
+                                local isSet, is_pinned = pcall(function()
+                                    local cur_buf = vim.api.nvim_get_current_buf()
+                                    return require("hbac.state").is_pinned(cur_buf)
+                                end)
+                                return (isSet and is_pinned) and " 📍" or ""
+                            end
                         end,
                     },
                 },
+                lualine_c = {},
                 lualine_x = {
-                    "encoding",
-                    "fileformat",
-                    "filetype",
+                    {
+                        "lsp_progress",
+                        separators = {
+                            component = " ",
+                            progress = " | ",
+                            percentage = { pre = "", post = "%% " },
+                            title = { pre = "", post = ": " },
+                            lsp_client_name = { pre = "[", post = "]" },
+                            spinner = { pre = "", post = "" },
+                            message = { commenced = "In Progress", completed = "Completed" },
+                        },
+                        display_components = { "lsp_client_name", "spinner", { "title", "percentage", "message" } },
+                        timer = { progress_enddelay = 500, spinner = 1000, lsp_client_name_enddelay = 1000 },
+                        spinner_symbols = { "🌑 ", "🌒 ", "🌓 ", "🌔 ", "🌕 ", "🌖 ", "🌗 ", "🌘 " },
+                    },
                     {
                         function()
-                            local isSet, venv = pcall(require, "venv-selector")
-                            if isSet then
-                                if venv.venv() then
-                                    return "venv"
+                            if lib.is_loaded("venv-selector") then
+                                local isSet, venv = pcall(require, "venv-selector")
+                                if isSet then
+                                    if venv.venv() then
+                                        return "venv"
+                                    end
                                 end
                             end
                             return ""
                         end,
                     },
+                    "encoding",
+                    "fileformat",
+                    "filetype",
                 },
                 lualine_y = { "progress" },
                 lualine_z = { "location" },
             },
             tabline = {
-                lualine_a = { { "buffers", use_mode_colors = true } },
+                lualine_a = {
+                    { "buffers", use_mode_colors = true },
+                },
                 lualine_b = {},
                 lualine_c = {},
                 lualine_x = {},
@@ -82,58 +105,8 @@ return {
                     },
                 },
             },
-        })
+        }
 
-        local map = require("lib").map
-        local lualine_refresh = function()
-            lualine.refresh({ scope = "tabpage", place = { "tabline", "statusline", "winbar" } })
-        end
-
-        local hydra = require("hydra")
-        map("n", "<leader>j", function()
-            hydra({
-                name = "Switch buffers",
-
-                config = {
-                    hint = { type = "statusline" },
-                    on_enter = function()
-                        vim.cmd("silent! bnext")
-                        lualine_refresh()
-                    end,
-                    on_key = function()
-                        lualine_refresh()
-                    end,
-                    timeout = 300,
-                },
-                heads = {
-                    { "k", "<cmd>silent! bprevious<CR>", { desc = "prev" } },
-                    { "j", "<cmd>silent! bnext<CR>", { desc = "next" } },
-                    { "q", nil, { exit = true } },
-                },
-            }):activate()
-        end, { noremap = true }, "Goto next buffer")
-
-        map("n", "<leader>k", function()
-            hydra({
-                name = "Switch buffers",
-
-                config = {
-                    hint = { type = "statusline" },
-                    on_enter = function()
-                        vim.cmd("silent! bprevious")
-                        lualine_refresh()
-                    end,
-                    on_key = function()
-                        lualine_refresh()
-                    end,
-                    timeout = 300,
-                },
-                heads = {
-                    { "k", "<Cmd>silent! bprevious<CR>", { desc = "prev" } },
-                    { "j", "<Cmd>silent! bnext<CR>", { desc = "next" } },
-                    { "q", nil, { exit = true } },
-                },
-            }):activate()
-        end, { noremap = true }, "Goto prev buffer")
+        lualine.setup(opts)
     end,
 }
