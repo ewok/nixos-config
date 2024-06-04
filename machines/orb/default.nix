@@ -38,6 +38,7 @@ in
         };
         direnv.enable = true;
         aws.enable = true;
+        tailscale.enable = true;
       };
 
     home.username = "${username}";
