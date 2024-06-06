@@ -25,7 +25,7 @@
     flake-utils.url = "github:numtide/flake-utils";
   };
 
-  outputs = { self, home-manager, nix-on-droid, darwin, flake-utils, ... }@inputs:
+  outputs = { self, nixpkgs-unstable, home-manager, nix-on-droid, darwin, flake-utils, ... }@inputs:
 
     let
       nixpkgsDefaults = {
@@ -56,22 +56,20 @@
           ];
         };
 
-      homeConfigurations.orb =
+      nixosConfigurations.orb =
         let
-          pkgs = import inputs.nixpkgs-unstable (nixpkgsDefaults // {
-            system = "aarch64-linux";
-          });
+          # pkgs = import inputs.nixpkgs-unstable (nixpkgsDefaults // {
+          #   system = "aarch64-linux";
+          # });
+          system = "aarch64-linux";
           inherit modules;
         in
-        home-manager.lib.homeManagerConfiguration {
-          inherit pkgs;
+        nixpkgs-unstable.lib.nixosSystem {
+          inherit system;
           modules = [
             ./machines/common.nix
             ./machines/orb
-            {
-              imports = modules;
-              _module.args.utils = import utils/lib.nix { inherit pkgs; };
-            }
+            home-manager.nixosModules.default
           ];
         };
 
@@ -126,60 +124,24 @@
               nixosMy = writeShellScriptBin "n" ''
                 if [ "$#" -eq 0 ]; then
                   echo "Provide a command as a first argument please."
-                  echo "Usual nixos-rebuild commands + clean, clean-result, update-nix, update-all, crypt"
+                  echo "Usual nixos-rebuild commands + clean, update, crypt"
 
                 elif [ "$#" -eq 1 ]; then
 
-                  if [ "$1" == "clean-result" ];then
-                    nix-store --gc --print-roots | awk '{print $1}' | grep '/result$' | sudo xargs rm
-
-                  elif [ "$1" == "crypt" ];then
+                  if [ "$1" == "crypt" ];then
                     ${git-crypt-status}/bin/git-crypt-status
 
                   elif [ "$1" == "clean" ];then
+                    nix-store --gc --print-roots | awk '{print $1}' | grep '/result$' | sudo xargs rm
                     nix-collect-garbage -d
                     nix-store --gc
                     sudo nix-collect-garbage -d || echo error running sudo
                     sudo nix-store --gc || echo error running sudo
 
-                  # elif [ "$1" == "update-nix" ];then
-                  #   for flake in stable nixpkgs master home-manager;
-                  #   do
-                  #     nix flake update --update-input $flake
-                  #   done
-
-                  elif [ "$1" == "update-all" ];then
-                    # for flake in stable nixpkgs master nixos-hardware neovim-nightly-overlay home-manager;
-                    # do
+                  elif [ "$1" == "update" ];then
                       nix flake update
-                    # done
-
-                  elif [ "$1" == "switch" ];then
-                    sudo nixos-rebuild $1 --show-trace --verbose --flake "."
-                    # $${nix-copy-nas}/bin/nix-copy-nas /run/current-system
-                  else
-                    sudo nixos-rebuild $1 --verbose --flake "."
                   fi
-
-                else
-                  sudo nixos-rebuild $1 --show-trace --verbose --flake ".#$2" $3
                 fi
-              '';
-
-              hmMy = writeShellScriptBin "hm" ''
-                if [ "$#" -eq 0 ]; then
-                  echo "Provide a command as a first argument please."
-                  echo "Usual h switch build"
-
-                elif [ "$#" -eq 1 ]; then
-                  home-manager --impure --flake "." $1
-                else
-                  home-manager --impure --flake ".#$2" $1
-                fi
-              '';
-
-              nix = writeShellScriptBin "nix" ''
-                ${pkgs.nixFlakes}/bin/nix --option experimental-features "nix-command flakes" "$@"
               '';
 
               git-crypt-status = writeShellScriptBin "git-crypt-status" ''
@@ -205,10 +167,10 @@
                 nix run home-manager -- switch -b bakup --flake '.#steamdeck'
               '';
               n-orb-build = writeShellScriptBin "n-orb-build" ''
-                nix run home-manager -- build --flake '.#orb'
+                sudo nixos-rebuild build --flake '.#orb' --impure
               '';
               n-orb-switch = writeShellScriptBin "n-orb-switch" ''
-                nix run home-manager -- switch -b bakup --flake '.#orb'
+                sudo nixos-rebuild switch --flake '.#orb' --impure
               '';
             in
             [
@@ -216,7 +178,6 @@
               git-crypt
               git-crypt-status
               nixosMy
-              hmMy
               nixpkgs-fmt
               neovim
               nix

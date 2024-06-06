@@ -111,11 +111,27 @@ let
   };
 in
 {
+  imports = [
+    ./secrets.nix
+  ];
+
   options =
     {
-      username = mkOption {
-        type = types.str;
-      };
+      username = mkOption { type = types.str; };
+      fullName = mkOption { type = types.str; };
+      email = mkOption { type = types.str; };
+      workEmail = mkOption { type = types.str; };
+      deviceName = mkOption { type = types.str; };
+      backupRepo = mkOption { type = types.str; }; # rclone
+      timezone = mkOption { type = types.str; };
+      projectDir = mkOption { type = types.str; };
+      homeDirectory = mkOption { type = types.str; };
+
+      openai_token = mkOption { type = types.str; };
+      exchange_api_key = mkOption { type = types.str; };
+
+      ssh_config = mkOption { type = types.str; };
+      authorizedKeys = mkOption { type = types.str; };
 
       colors = {
         base00 = mkOption { type = types.str; };
@@ -155,8 +171,8 @@ in
     inherit theme;
     nix = {
       extraOptions = ''
-        keep-outputs = true
-        keep-derivations = true
+        # keep-outputs = true
+        # keep-derivations = true
         experimental-features = nix-command flakes
       '';
     };

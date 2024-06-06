@@ -1,31 +1,42 @@
 { config, lib, pkgs, ... }:
 let
-  inherit (config) colors theme;
-  homeDirectory = "/home/deck";
+  inherit (config) colors theme exchange_api_key openai_token fullName email workEmail authorizedKeys ssh_config;
+  username = "deck";
+  homeDirectory = "/home/${username}";
 in
 {
-  imports = [
-    ./secrets.nix
-  ];
-
   config = {
 
     opt =
       {
         nvim = {
           enable = true;
-          inherit colors theme;
+          inherit colors theme openai_token;
         };
         vifm.enable = true;
         fish = {
           enable = true;
           homeDirectory = homeDirectory;
+          inherit openai_token;
         };
         starship.enable = true;
-        git.enable = true;
-        hledger.enable = true;
+        git = {
+          enable = true;
+          homePath = "${homeDirectory}/";
+          workPath = "${homeDirectory}/work/";
+          homeEmail = email;
+          inherit fullName workEmail;
+        };
+        hledger = {
+          enable = true;
+          inherit exchange_api_key;
+        };
         svn.enable = true;
-        ssh.enable = true;
+        ssh = {
+          inherit authorizedKeys;
+          config = ssh_config;
+          enable = true;
+        };
         nix.enable = true;
         lisps.enable = true;
         terminal = {
@@ -46,14 +57,9 @@ in
         scripts.enable = true;
       };
 
-    home.username = "deck";
+    home.username = username;
     home.homeDirectory = homeDirectory;
     home.stateVersion = "23.11";
-
-    # home.packages = with pkgs; [
-    #   android-studio
-    #   jdk17
-    # ];
 
     nix.package = pkgs.nix;
   };

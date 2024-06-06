@@ -1,6 +1,7 @@
 { config, lib, pkgs, ... }:
 let
-  inherit (config) colors theme;
+  inherit (config) colors theme exchange_api_key openai_token fullName email workEmail authorizedKeys ssh_config;
+  username = "nix-on-droid";
   homeDirectory = "/data/data/com.termux.nix/files/home";
   usrDirectory = "/data/data/com.termux.nix/files/usr";
 in
@@ -10,6 +11,20 @@ in
   ];
 
   config = {
+
+    environment.packages = with pkgs; [
+      diffutils
+      findutils
+      utillinux
+      tzdata
+      hostname
+      man
+      gnugrep
+      gnused
+      openssh
+      git
+      which
+    ];
 
     terminal.font = "${pkgs.nerdfonts.override { fonts = [ "FiraCode" ]; }}/share/fonts/truetype/NerdFonts/FiraCodeNerdFontMono-Regular.ttf";
 
@@ -23,17 +38,33 @@ in
           {
             nvim = {
               enable = true;
-              inherit colors theme;
+              inherit colors theme openai_token;
               android = true;
             };
             vifm.enable = true;
-            fish.enable = true;
-            fish.homeDirectory = homeDirectory;
+            fish = {
+              enable = true;
+              homeDirectory = homeDirectory;
+              inherit openai_token;
+            };
             starship.enable = true;
-            git.enable = true;
-            hledger.enable = true;
+            git = {
+              enable = true;
+              homePath = "${homeDirectory}/";
+              workPath = "${homeDirectory}/work/";
+              homeEmail = email;
+              inherit fullName workEmail;
+            };
+            hledger = {
+              enable = true;
+              inherit exchange_api_key;
+            };
             svn.enable = true;
-            ssh.enable = true;
+            ssh = {
+              inherit authorizedKeys;
+              config = ssh_config;
+              enable = true;
+            };
             kube.enable = false;
             bw.enable = false;
             nix.enable = true;
@@ -48,7 +79,7 @@ in
             };
           };
 
-        home.username = "nix-on-droid";
+        home.username = username;
         home.homeDirectory = homeDirectory;
         home.stateVersion = "23.11";
 
@@ -95,19 +126,5 @@ in
         };
       };
     };
-
-    environment.packages = with pkgs; [
-      diffutils
-      findutils
-      utillinux
-      tzdata
-      hostname
-      man
-      gnugrep
-      gnused
-      openssh
-      git
-      which
-    ];
   };
 }

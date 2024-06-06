@@ -1,14 +1,10 @@
 { config, pkgs, ... }:
 let
-  inherit (config) colors theme username;
+  inherit (config) colors theme username workEmail fullName authorizedKeys email ssh_config;
   homeDirectory = "/Users/${username}";
   modules = map (n: ../../modules + "/${n}") (builtins.attrNames (builtins.readDir ../../modules));
 in
 {
-  imports = [
-    ./secrets.nix
-  ];
-
   config = {
     services.nix-daemon.enable = true;
 
@@ -31,26 +27,25 @@ in
           };
 
           opt = {
-            nvim = {
-              enable = false;
-              inherit colors theme;
-            };
             fish = {
               enable = true;
               darwin = true;
               homeDirectory = homeDirectory;
             };
-
-            vifm.enable = false;
-            starship.enable = false;
-            git.enable = true;
-            kube.enable = false;
-            tf.enable = false;
-            pass.enable = false;
-            ssh.enable = true;
+            git = {
+              enable = true;
+              homePath = "${homeDirectory}/";
+              workPath = "${homeDirectory}/work/";
+              homeEmail = email;
+              inherit fullName workEmail;
+            };
+            ssh = {
+              inherit authorizedKeys;
+              config = ssh_config;
+              enable = true;
+            };
             nix.enable = true;
             wm.enable = true;
-            direnv.enable = false;
             terminal = {
               enable = true;
               inherit colors theme;
@@ -59,13 +54,8 @@ in
                 terminal = "xterm-256color";
                 install = false;
               };
-              zellij.enable = false;
             };
-            scripts.enable = false;
-            aws.enable = false;
-            lisps.enable = false;
           };
-
 
           home.username = "${username}";
           home.stateVersion = "23.11";
