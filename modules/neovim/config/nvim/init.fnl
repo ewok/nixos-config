@@ -34,7 +34,7 @@
 (lazy.setup [:udayvir-singh/tangerine.nvim
              {:import :plugins/base}
              {:import :plugins/ft}
-             {:import :plugins/editor_fnl}] lazy_config)
+             {:import :plugins/editor}] lazy_config)
 
 (local ft_path (.. (vim.fn.stdpath :config) :/lua/ft))
 (if (vim.loop.fs_stat ft_path)

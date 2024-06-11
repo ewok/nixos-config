@@ -104,51 +104,7 @@ M.icons.tag_level = {
     Perf = "↻",
 }
 
--- ;; Linux
--- ;; (tset icons :tag_level {:Fixme "ﰡ"
--- ;;                         :Hack "ﰠ"
--- ;;                         :Warn ""
--- ;;                         :Note "ﮉ"
--- ;;                         :Todo "ﮉ"
--- ;;                         :Perf "ﮉ"})
---
--- ;; MacOs
--- (tset icons :lsp_kind {:Array ""
---                        :Boolean "◩"
---                        :Class ""
---                        :Color ""
---                        :Constant ""
---                        :Constructor ""
---                        :Enum ""
---                        :EnumMember ""
---                        :Event ""
---                        :Field ""
---                        :File ""
---                        :Folder ""
---                        :Function "󰊕"
---                        :Interface ""
---                        :Key "󰌋"
---                        :Keyword ""
---                        :Method "󰆧"
---                        :Module ""
---                        :Namespace ""
---                        :Null :0
---                        :Number ""
---                        :Object ""
---                        :Operator ""
---                        :Property ""
---                        :Reference ""
---                        :Snippet ""
---                        :String "󰉿"
---                        :Struct ""
---                        :Text ""
---                        :TypeParameter ""
---                        :Unit ""
---                        :Value ""
---                        :Variable ""})
---
--- (tset icons :wk {:breadcrumb " " :separator " " :group " "})
---
+-- Kind
 M.icons.lsp_kind = {
     Array = "󰅪",
     Boolean = "◩",
@@ -187,12 +143,14 @@ M.icons.lsp_kind = {
     Variable = "",
 }
 
+-- Which-Key
 M.icons.wk = {
     breadcrumb = " ",
     separator = " ",
     group = " ",
 }
 
+-- Source
 M.icons.source = {
     buffer = "",
     calc = "",
