@@ -41,7 +41,7 @@ in
         procps
         please-cli
         fswatch
-
+        htop
       ];
       file = {
         # ".profile".source = ./config/profile;

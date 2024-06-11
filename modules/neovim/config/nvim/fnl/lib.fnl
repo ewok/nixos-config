@@ -80,10 +80,9 @@
 
 ;; True if filetype in Window otherwise False
 (fn is_ft_open [target_ft]
-  (let [result false]
-    (each [_ opts (ipairs (get_all_win_buf_ft))]
+  (each [_ opts (ipairs (get_all_win_buf_ft))]
       (if (= opts.buf_ft target_ft)
-          (lua "return true")))))
+          (lua "return true"))))
 
 (fn get_file_cwd []
   (let [current_path (vim.fn.expand "%:p")
