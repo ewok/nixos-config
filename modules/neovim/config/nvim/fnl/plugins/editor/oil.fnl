@@ -1,9 +1,7 @@
 (local {: pack : map} (require :lib))
 
-;; TODO: Update it
 (pack :stevearc/oil.nvim
-      {:commit :e5312c3a801e7274fa14e6a56aa10a618fed80c3
-       :cmd :Oil
+      {:cmd :Oil
        :dependencies [(pack :refractalize/oil-git-status.nvim)]
        :init #(do
                 (map :n "-" :<CMD>Oil<CR> {} "Open parent directory")
