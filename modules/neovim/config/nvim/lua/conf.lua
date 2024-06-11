@@ -31,7 +31,7 @@ M.options = {
     -- possible to use list of filetypes
     treesitter_nvim_highlighting = false,
     undotree = false,
-    pbclip = "{{ conf.orb }}" == "true" and true or false
+    pbclip = "{{ conf.orb }}" == "true" and true or false,
 }
 
 M.separator = M.is_nix
@@ -150,7 +150,7 @@ M.icons.tag_level = {
 -- (tset icons :wk {:breadcrumb " " :separator " " :group " "})
 --
 M.icons.lsp_kind = {
-    Array = "",
+    Array = "󰅪",
     Boolean = "◩",
     Class = "",
     Color = "",
@@ -167,12 +167,14 @@ M.icons.lsp_kind = {
     Key = "󰌋",
     Keyword = "",
     Method = "󰆧",
-    Module = "",
-    Namespace = "",
+    Module = "",
+    -- Namespace = "",
+    Namespace = "",
     Null = "0",
     Number = "",
     Object = "",
     Operator = "",
+    Package = "",
     Property = "",
     Reference = "",
     Snippet = "",
@@ -181,9 +183,8 @@ M.icons.lsp_kind = {
     Text = "",
     TypeParameter = "",
     Unit = "",
-    Value = "",
+    Value = "",
     Variable = "",
-    Codeium = "",
 }
 
 M.icons.wk = {
@@ -192,40 +193,15 @@ M.icons.wk = {
     group = " ",
 }
 
--- ;; Linux
--- ;; (tset icons :lsp_kind {:String ""
--- ;;                        :Number ""
--- ;;                        :Boolean "◩"
--- ;;                        :Array ""
--- ;;                        :Object ""
--- ;;                        :Key ""
--- ;;                        :Null "ﳠ"
--- ;;                        :Text ""
--- ;;                        :Method ""
--- ;;                        :Function ""
--- ;;                        :Constructor ""
--- ;;                        :Namespace ""
--- ;;                        :Field "ﰠ"
--- ;;                        :Variable "ﳋ"
--- ;;                        :Class ""
--- ;;                        :Interface ""
--- ;;                        :Module "ﰪ"
--- ;;                        :Property ""
--- ;;                        :Unit "塞"
--- ;;                        :Value ""
--- ;;                        :Enum ""
--- ;;                        :Keyword ""
--- ;;                        :Snippet ""
--- ;;                        :Color ""
--- ;;                        :File ""
--- ;;                        :Reference ""
--- ;;                        :Folder ""
--- ;;                        :EnumMember ""
--- ;;                        :Constant ""
--- ;;                        :Struct "﬌"
--- ;;                        :Event ""
--- ;;                        :Operator ""
--- ;;                        :TypeParameter ""})
+M.icons.source = {
+    buffer = "",
+    calc = "",
+    cmdline = "",
+    codeium = "",
+    nvim_lsp = "",
+    path = "",
+    snippy = "",
+}
 
 M.in_tmux = os.getenv("TMUX") ~= nil
 

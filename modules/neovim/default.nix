@@ -3,6 +3,7 @@ with lib;
 let
 
   cfg = config.opt.nvim;
+  dag = config.lib.dag;
 
   jrnl = pkgs.writeShellScriptBin "jrnl" ''
     NOTE="$HOME/Notes/diary/$(date +%Y-%m-%d).md"
@@ -37,6 +38,10 @@ let
     vim +'let g:auto_load_session = v:true'
   '';
 
+  vim-compile = pkgs.writeShellScriptBin "vim-compile" ''
+    ${my-nvim}/bin/nvim --headless --cmd 'lua _G.update=true'
+  '';
+
   clean-cache = pkgs.writeShellScriptBin "nvim-clean-cache" ''
     set -e
     rm -rf ~/.cache/nvim
@@ -49,7 +54,7 @@ let
     is_nix = "true";
     conf.orb = cfg.orb;
   };
-# https://github.com/Exafunction/codeium/releases
+  # https://github.com/Exafunction/codeium/releases
   version = "1.8.25";
   ls-system = "linux_arm";
   hash = "sha256-Gt48FrW9MF4xppmA4TsuEe3iJYn8DrKhtFmb8N7rO+s=";
@@ -129,12 +134,17 @@ in
 
   config = mkIf cfg.enable {
 
+    home.activation.nvim-changes = dag.entryAnywhere ''
+      ${vim-compile}/bin/vim-compile
+    '';
+
     home.packages = with pkgs; let
       androidPkgs = optionals cfg.android [ packs.codeium-lsp ];
       orbPkgs = optionals cfg.orb [ packs.codeium-lsp ];
     in
     [
       my-nvim
+      vim-compile
       lazygit
       clean-cache
       ripgrep
@@ -160,6 +170,7 @@ in
       nil
       # nodePackages.bash-language-server
       nodePackages.pyright
+      fennel-ls
       terraform-ls
       vscode-langservers-extracted
       yaml-language-server
@@ -181,7 +192,7 @@ in
 
       # FMT
       black
-      # fnlfmt
+      fnlfmt
       # gofmt
       # joker
       jq
@@ -195,6 +206,8 @@ in
       # yamllint
       # yq
       zprint
+      shellharden
+      shfmt
 
       # Manual
       manix
@@ -203,15 +216,11 @@ in
       configFile = {
 
         "nvim/init.lua".source = ./config/nvim/init.lua;
-        "nvim/lua/configs".source = ./config/nvim/lua/configs;
-        "nvim/lua/plugins".source = ./config/nvim/lua/plugins;
-        "nvim/lua/ft".source = ./config/nvim/lua/ft;
+        "nvim/init.fnl".source = utils.templateFile "init.fnl" ./config/nvim/init.fnl vars;
+
+        "nvim/fnl".source = ./config/nvim/fnl;
+
         "nvim/lua/conf.lua".source = utils.templateFile "conf.lua" ./config/nvim/lua/conf.lua vars;
-        "nvim/lua/lib.lua".source = ./config/nvim/lua/lib.lua;
-        "nvim/lua/mappings.lua".source = ./config/nvim/lua/mappings.lua;
-        "nvim/lua/post.lua".source = ./config/nvim/lua/post.lua;
-        "nvim/lua/pre.lua".source = ./config/nvim/lua/pre.lua;
-        "nvim/lua/settings.lua".source = ./config/nvim/lua/settings.lua;
         "bash/profile.d/20_nvim_vars.sh".text = ''
           export EDITOR="vim"
           export VISUAL="vim"

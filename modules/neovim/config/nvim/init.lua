@@ -1,53 +1,52 @@
-require("settings")
-require("pre")
-require("mappings")
+-- pick your plugin manager
 
--- bootstrap lazy and all plugins
-local lazypath = vim.fn.stdpath("data") .. "/lazy/lazy.nvim"
+local pack = "lazy"
 
-if not vim.loop.fs_stat(lazypath) then
-    local repo = "https://github.com/folke/lazy.nvim.git"
-    vim.fn.system({ "git", "clone", "--filter=blob:none", repo, "--branch=stable", lazypath })
-end
+local function bootstrap(url, ref)
+    local name = url:gsub(".*/", "")
+    local path
 
-vim.opt.rtp:prepend(lazypath)
-
--- validate that lazy is available
-if not pcall(require, "lazy") then
-  -- stylua: ignore
-  vim.api.nvim_echo({ { ("Unable to load lazy from: %s\n"):format(lazypath), "ErrorMsg" }, { "Press any key to exit...", "MoreMsg" } }, true, {})
-    vim.fn.getchar()
-    vim.cmd.quit()
-end
-
-local lazy_config = require("configs.lazy")
-
--- load plugins
-require("lazy").setup({
-    {
-        "nvim-tree/nvim-web-devicons",
-        lazy = false,
-        config = false,
-    },
-    {
-        "nvim-lua/plenary.nvim",
-        lazy = false,
-        config = false,
-    },
-
-    { import = "plugins/ft" },
-    { import = "plugins/coding" },
-    { import = "plugins/editor" },
-}, lazy_config)
-
-local ft_path = vim.fn.stdpath("config") .. "/lua/ft"
-if vim.loop.fs_stat(ft_path) then
-  for file in vim.fs.dir(ft_path) do
-    file = file:match("^(.*)%.lua$")
-    if file then
-      require("ft." .. file)
+    if pack == "lazy" then
+        path = vim.fn.stdpath("data") .. "/lazy/" .. name
+        vim.opt.rtp:prepend(path)
+    else
+        path = vim.fn.stdpath("data") .. "/site/pack/" .. pack .. "/start/" .. name
     end
-  end
+
+    if vim.fn.isdirectory(path) == 0 then
+        print(name .. ": installing in data dir...")
+
+        vim.fn.system({ "git", "clone", url, path })
+        if ref then
+            vim.fn.system({ "git", "-C", path, "checkout", ref })
+        end
+
+        vim.cmd("redraw")
+        print(name .. ": finished installing")
+
+        _G.update = true
+    end
+
+    local ok, tang = pcall(require, "tangerine")
+    if ok then
+        tang.setup({
+            keymaps = {
+                eval_buffer = "<Nop>",
+                peek_buffer = "<Nop>",
+                goto_output = "<Nop>",
+                float = {
+                    kill = "q",
+                },
+            },
+        })
+        if _G.update == true then
+            vim.cmd([[
+                FnlClean
+                FnlCompile!
+                q]])
+        end
+    end
 end
 
-require("post")
+-- bootstrap("https://github.com/udayvir-singh/tangerine.nvim", "v2.8")
+bootstrap("https://github.com/udayvir-singh/tangerine.nvim")

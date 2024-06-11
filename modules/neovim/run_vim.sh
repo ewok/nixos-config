@@ -11,9 +11,9 @@ export XDG_CONFIG_HOME="${PWD}/config"
 export XDG_CACHE_HOME="/tmp/cache"
 
 if [ "$1" == "--clean" ]; then
-  rm -rf /tmp/nvim-data
-  rm -rf /tmp/cache
-  rm -f ./config/nvim/lazy-lock.json
+	rm -rf /tmp/nvim-data
+	rm -rf /tmp/cache
+	rm -f ./config/nvim/lazy-lock.json
 else
-  nvim "$@"
+	nvim "$@"
 fi
