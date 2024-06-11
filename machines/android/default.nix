@@ -3,14 +3,10 @@ let
   inherit (config) colors theme exchange_api_key openai_token fullName email workEmail authorizedKeys ssh_config;
   username = "nix-on-droid";
   homeDirectory = "/data/data/com.termux.nix/files/home";
-  usrDirectory = "/data/data/com.termux.nix/files/usr";
 in
 {
-  imports = [
-    ./secrets.nix
-  ];
-
   config = {
+    system.stateVersion = "23.11";
 
     environment.packages = with pkgs; [
       diffutils

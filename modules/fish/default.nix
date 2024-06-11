@@ -40,6 +40,8 @@ in
         gnutar
         procps
         please-cli
+        fswatch
+
       ];
       file = {
         # ".profile".source = ./config/profile;
