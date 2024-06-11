@@ -169,7 +169,7 @@ in
       lua-language-server
       nil
       # nodePackages.bash-language-server
-      nodePackages.pyright
+      pyright
       fennel-ls
       terraform-ls
       vscode-langservers-extracted
