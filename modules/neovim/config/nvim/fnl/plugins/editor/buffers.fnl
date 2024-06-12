@@ -1,7 +1,6 @@
 (local {: map : pack} (require :lib))
 
-(map :n :<leader>bw #(vim.cmd :BufOnly) {:noremap true}
-     "Wipe all except one Buffer")
+(map :n :<leader>bw #(vim.cmd :BufWipeAll) {:noremap true} "Wipe all buffers")
 
 [(pack :famiu/bufdelete.nvim
        {:cmd [:Bdelete :Bwipeout]

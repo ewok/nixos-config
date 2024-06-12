@@ -66,13 +66,23 @@
 (vim.api.nvim_create_user_command :BufOnly buffer-delete-only
                                   {:desc "Delete all other buffers"})
 
+(fn buffer-wipe-all []
+  (let [del-non-modifiable false]
+    (each [_ n (ipairs (vim.api.nvim_list_bufs))]
+      (if (or (vim.api.nvim_buf_get_option n :modifiable) del-non-modifiable)
+          (vim.api.nvim_buf_delete n {})))
+    (vim.cmd :redrawt)))
+
+(vim.api.nvim_create_user_command :BufWipeAll buffer-wipe-all
+                                  {:desc "Wipe all buffers"})
+
 ;; Autoread
 (tset vim.opt :autoread true)
-; (vim.api.nvim_create_autocmd [:BufEnter :CursorHold :CursorHoldI :FocusGained]
-;                              {:callback #(let [{: mode} (vim.api.nvim_get_mode)]
-;                                            (when (not= :c mode)
-;                                              (pcall vim.cmd :checktime)))
-;                               :pattern ["*"]})
+(vim.api.nvim_create_autocmd [:BufEnter :CursorHold :CursorHoldI :FocusGained]
+                             {:callback #(let [{: mode} (vim.api.nvim_get_mode)]
+                                           (when (not= :c mode)
+                                             (pcall vim.cmd :checktime)))
+                              :pattern ["*"]})
 
 ;; Autosize windows
 (vim.api.nvim_create_autocmd [:VimResized] {:command "wincmd =" :pattern ["*"]})
