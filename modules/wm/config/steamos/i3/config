@@ -74,7 +74,6 @@ for_window [title="Desktop — Plasma"] kill; floating enable; border none
 ################################################################################################
 
 # Clipboard
-# TODO: Add xdotools-mod
 bindsym --release $mod_a+c exec --no-startup-id {{ conf.folders.bin }}/xdotool-mod Ctrl+Insert
 bindsym --release $mod_a+x exec --no-startup-id {{ conf.folders.bin }}/xdotool-mod Shift+Delete
 bindsym --release $mod_a+v exec --no-startup-id {{ conf.folders.bin }}/xdotool-mod Shift+Insert
@@ -89,11 +88,9 @@ bindsym $mod_a+Shift+q --release exec --no-startup-id xkill
 
 # start program launcher
 
-# TODO: Add rofi
 bindsym $mod_a+d exec --no-startup-id "krunner"
 
 # Lock screen
-# TODO: Add i3exit
 bindsym $mod+$mod_a+l exec --no-startup-id "{{ conf.folders.bin }}/i3exit lock"
 
 # reload the configuration file
@@ -121,7 +118,6 @@ bindsym XF86AudioMicMute exec --no-startup-id pactl set-source-mute @DEFAULT_SOU
 ################################################################################################
 # Media
 ################################################################################################
-# TODO: Add playerctl
 bindsym XF86AudioPrev exec playerctl previous
 bindsym XF86AudioPlay exec playerctl play-pause
 bindsym XF86AudioNext exec playerctl next
@@ -136,7 +132,6 @@ bindsym XF86AudioNext exec playerctl next
 # bindsym $mod_c+XF86MonBrightnessDown exec "light -U 10; pkill -SIGRTMIN+5 i3status-rs"
 
 # Screenshots
-# TODO: Add screenshots
 # bindsym Print exec --no-startup-id flameshot full -p ~/Pictures/Screenshots/
 # bindsym Mod1+Shift+S exec --no-startup-id flameshot full -p ~/Pictures/Screenshots/
 # bindsym $mod_a+Mod4+Shift+4 exec --no-startup-id flameshot full -p ~/Pictures/Screenshots/
