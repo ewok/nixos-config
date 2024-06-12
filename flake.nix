@@ -56,6 +56,25 @@
           ];
         };
 
+      homeConfigurations.cnt =
+        let
+          pkgs = import inputs.nixpkgs-unstable (nixpkgsDefaults // {
+            system = "x86_64-linux";
+          });
+          inherit modules;
+        in
+        home-manager.lib.homeManagerConfiguration {
+          inherit pkgs;
+          modules = [
+            ./machines/common.nix
+            ./machines/cnt
+            {
+              imports = modules;
+              _module.args.utils = import utils/lib.nix { inherit pkgs; };
+            }
+          ];
+        };
+
       nixosConfigurations.orb =
         let
           # pkgs = import inputs.nixpkgs-unstable (nixpkgsDefaults // {
@@ -166,6 +185,12 @@
               n-steam-switch = writeShellScriptBin "n-steam-switch" ''
                 nix run home-manager -- switch -b bakup --flake '.#steamdeck'
               '';
+              n-cnt-build = writeShellScriptBin "n-cnt-build" ''
+                nix run home-manager -- build --flake '.#cnt'
+              '';
+              n-cnt-switch = writeShellScriptBin "n-cnt-switch" ''
+                nix run home-manager -- switch -b bakup --flake '.#cnt'
+              '';
               n-orb-build = writeShellScriptBin "n-orb-build" ''
                 sudo nixos-rebuild build --flake '.#orb' --impure
               '';
@@ -189,6 +214,8 @@
               n-steam-switch
               n-orb-build
               n-orb-switch
+              n-cnt-build
+              n-cnt-switch
             ];
 
           shellHook = ''
