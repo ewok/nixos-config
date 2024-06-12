@@ -1,4 +1,4 @@
-(local {: pack : map} (require :lib))
+(local {: pack : map : reg_ft} (require :lib))
 
 (pack :stevearc/oil.nvim
       {:cmd :Oil
@@ -8,6 +8,13 @@
                 (map :n :<leader>fp :<CMD>Oil<CR> {} "Open parent directory"))
        :config #(let [oil (require :oil)
                       oil-git (require :oil-git-status)]
+                  (reg_ft :oil
+                          (fn [ev]
+                            (map :n :<C-T>
+                                 #(do
+                                    (vim.cmd "tab split")
+                                    (oil.select))
+                                 {:buffer ev.buf} "Open in Tab")))
                   (oil.setup {:default_file_explorer true
                               :columns [:icon]
                               :skip_confirm_for_simple_edits false
@@ -22,7 +29,6 @@
                                         :J :actions.select
                                         :<C-V> :actions.select_vsplit
                                         :<C-S> :actions.select_split
-                                        :<C-T> :actions.select_tab
                                         :<C-p> :actions.preview
                                         :q :actions.close
                                         :R :actions.refresh

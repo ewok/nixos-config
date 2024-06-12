@@ -41,7 +41,9 @@
                                                   :cond #(not= :oil
                                                                (get_buf_ft 0))}
                                                  {1 #"%{%v:lua.require'nvim-navic'.get_location()%}"
-                                                  :cond #(is_loaded :nvim-navic)}
+                                                  :cond #(and (is_loaded :nvim-navic)
+                                                              (not= :oil
+                                                                    (get_buf_ft 0)))}
                                                  {1 #" oil://%{v:lua.string.gsub(v:lua.require('oil').get_current_dir(), v:lua.os.getenv('HOME'), '~')}"
                                                   :cond #(= :oil (get_buf_ft 0))}]}
                             :inactive_winbar {:lualine_c [{1 #(let [cur_buf (vim.api.nvim_get_current_buf)
