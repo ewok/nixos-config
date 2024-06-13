@@ -4,11 +4,19 @@
 (set vim.g.mapleader " ")
 (set vim.g.maplocalleader "\\")
 
-(if conf.options.pbclip
-    (set vim.g.clipboard {:name :orb
-                          :copy {:+ [:pbcopy] :* [:pbcopy]}
-                          :paste {:+ [:pbpaste] :* [:pbpaste]}
-                          :cache_enabled 1}))
+(when conf.options.pbclip
+  (set vim.g.clipboard {:name :orb
+                        :copy {:+ [:pbcopy] :* [:pbcopy]}
+                        :paste {:+ [:pbpaste] :* [:pbpaste]}
+                        :cache_enabled 1}))
+
+(when conf.options.tmuxclip
+  (set vim.g.clipboard {:name :tmux
+                        :copy {:+ [:tmux :load-buffer "-"]
+                               :* [:tmux :load-buffer "-"]}
+                        :paste {:+ [:tmux :save-buffer "-"]
+                                :* [:tmux :save-buffer "-"]}
+                        :cache_enabled 1}))
 
 (local settings
        {:shell :bash
@@ -46,7 +54,10 @@
         :timeoutlen 500
         :titlestring "%F"
         :title true
-        :ttimeoutlen -1
+        ;; Strange behaviour on remote machines
+        ;; after startup it paste data from clipboar
+        ;; in empty buffer
+        :ttimeoutlen (if conf.options.tmuxclip 50 -1)
         :ttyfast true
         :undodir (path_join conf.cache_dir :.vim_undo)
         :undolevels 100

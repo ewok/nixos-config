@@ -11,6 +11,7 @@ in
         nvim = {
           enable = true;
           inherit colors theme openai_token;
+          remote = true;
         };
         vifm.enable = true;
         fish = {

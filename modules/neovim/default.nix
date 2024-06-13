@@ -53,6 +53,7 @@ let
     conf.openai_token = cfg.openai_token;
     is_nix = "true";
     conf.orb = cfg.orb;
+    conf.remote = cfg.remote;
   };
   # https://github.com/Exafunction/codeium/releases
   version = "1.8.25";
@@ -130,6 +131,7 @@ in
     };
     android = mkOption { type = types.bool; default = false; };
     orb = mkOption { type = types.bool; default = false; };
+    remote = mkOption { type = types.bool; default = false; };
   };
 
   config = mkIf cfg.enable {

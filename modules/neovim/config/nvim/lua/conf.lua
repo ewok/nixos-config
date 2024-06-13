@@ -32,6 +32,8 @@ M.options = {
     treesitter_nvim_highlighting = false,
     undotree = false,
     pbclip = "{{ conf.orb }}" == "true" and true or false,
+    tmuxclip = "{{ conf.remote }}" == "true" and true or false,
+    remote = "{{ conf.remote }}" == "true" and true or false,
 }
 
 M.separator = M.is_nix
