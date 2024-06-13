@@ -54,7 +54,8 @@
         :config #(let [ng (require :neogit)]
                    (ng.setup {:use_per_project_settings true
                               :remember_settings true
-                              :mappings {:status {:gx :OpenTree := :Toggle}}})
+                              :mappings {:status {:gx :OpenTree := :Toggle}}
+                              :disable_insert_on_commit true})
                    (reg_ft :DiffviewFileHistory
                            (fn [ev]
                              (map :n :q :<cmd>tabclose<cr> {:buffer ev.buf}
