@@ -1,6 +1,8 @@
 (local {: map : pack} (require :lib))
 
 (map :n :<leader>bw #(vim.cmd :BufWipeAll) {:noremap true} "Wipe all buffers")
+(map :n :<Tab> "<cmd>bnext<cr>" {:noremap true} "Tab")
+(map :n :<S-Tab> "<cmd>bprev<cr>" {:noremap true} "S-Tab")
 
 [(pack :famiu/bufdelete.nvim
        {:cmd [:Bdelete :Bwipeout]

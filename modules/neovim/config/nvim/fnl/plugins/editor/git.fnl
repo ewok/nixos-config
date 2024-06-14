@@ -1,6 +1,5 @@
 (local {: pack : map : reg_ft} (require :lib))
 (local conf (require :conf))
-; (local md {:noremap true :silent true})
 
 [(pack :FabijanZulj/blame.nvim
        {:cmd :BlameToggle
@@ -55,7 +54,8 @@
                    (ng.setup {:use_per_project_settings true
                               :remember_settings true
                               :mappings {:status {:gx :OpenTree := :Toggle}}
-                              :disable_insert_on_commit true})
+                              :auto_show_console false
+                              :console_timeout 5000})
                    (reg_ft :DiffviewFileHistory
                            (fn [ev]
                              (map :n :q :<cmd>tabclose<cr> {:buffer ev.buf}

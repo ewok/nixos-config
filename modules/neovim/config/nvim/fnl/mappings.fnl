@@ -1,4 +1,4 @@
-(local {: map! : umap} (require :lib))
+(local {: map! } (require :lib))
 (local conf (require :conf))
 
 (local md {:noremap true :silent true})

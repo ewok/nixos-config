@@ -48,9 +48,10 @@
                        navic (require :nvim-navic)
                        lsp (require :lspconfig)]
                    (lsp_zero.on_attach (fn [client bufnr]
-                                         (sig.on_attach {:bind true
-                                                         :handler_opts {:border :rounded}}
-                                                        bufnr)
+                                         (when (not= client.name :terraformls)
+                                           (sig.on_attach {:bind true
+                                                           :handler_opts {:border :rounded}}
+                                                          bufnr))
                                          (when client.server_capabilities.documentSymbolProvider
                                            (navic.attach client bufnr))
                                          (map :n :<leader>cdw

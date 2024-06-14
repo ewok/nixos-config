@@ -79,9 +79,7 @@
 ;; Autoread
 (tset vim.opt :autoread true)
 (vim.api.nvim_create_autocmd [:BufEnter :CursorHold :CursorHoldI :FocusGained]
-                             {:callback #(let [{: mode} (vim.api.nvim_get_mode)]
-                                           (when (not= :c mode)
-                                             (pcall vim.cmd :checktime)))
+                             {:command "if getcmdwintype() == '' | checktime | endif"
                               :pattern ["*"]})
 
 ;; Autosize windows
