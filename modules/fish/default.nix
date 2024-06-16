@@ -42,6 +42,7 @@ in
         please-cli
         fswatch
         htop
+        tldr
       ];
       file = {
         # ".profile".source = ./config/profile;

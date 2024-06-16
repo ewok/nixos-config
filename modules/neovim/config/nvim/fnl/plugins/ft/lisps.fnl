@@ -49,11 +49,11 @@
                                       :sexp_swap_element_forward :>E
                                       :sexp_emit_head_element "-("
                                       :sexp_emit_tail_element "-)"
-                                      :sexp_capture_prev_element "+("
-                                      :sexp_capture_next_element "+)"}))
+                                      :sexp_capture_prev_element "=("
+                                      :sexp_capture_next_element "=)"}))
                        :config #(let [hydra (require :hydra)
                                       conf (require :conf)]
-                                  (let [form (hydra {:name "Move Element"
+                                  (let [form (hydra {:name "Move Form"
                                                      :config {:hint {:type :statusline}}
                                                      :heads [[:h
                                                               "<Plug>(sexp_swap_list_backward)"
@@ -109,11 +109,11 @@
                                                  (map! :n :m
                                                        "<cmd>WhichKey m<cr>"
                                                        {:buffer true} :Menu)
-                                                 (map! :n "m("
+                                                 (map! :n "mh"
                                                        #(: head :activate)
                                                        {:buffer true}
                                                        "Move Head")
-                                                 (map! :n "m)"
+                                                 (map! :n "ml"
                                                        #(: tail :activate)
                                                        {:buffer true}
                                                        "Move Tail")

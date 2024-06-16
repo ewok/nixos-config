@@ -180,25 +180,25 @@
         :config #(let [configs (require :nvim-treesitter.configs)
                        query (require :vim.treesitter.query)]
                    (configs.setup {:ensure_installed [:markdown_inline
-                                                     :markdown
-                                                     :c
-                                                     :lua
-                                                     :vim
-                                                     :vimdoc]
-                                  :ignore_install []
-                                  :sync_install false
-                                  :auto_install true
-                                  :matchup {:enable false}
-                                  :highlight {:enable true
-                                              :additional_vim_regex_highlighting conf.treesitter_nvim_highlighting}
-                                  :indent {:enable true
-                                           :disable [:yaml :python :html :vue]}
-                                  :incremental_selection {:enable false
-                                                          :keymaps {:init_selection :<cr>
-                                                                    :node_incremental :<cr>
-                                                                    :node_decremental :<bs>
-                                                                    :scope_incremental :<tab>}}
-                                  :autotag {:enable true}
-                                  :context_commentstring {:enable true
-                                                          :enable_autocmd false}})
+                                                      :markdown
+                                                      :c
+                                                      :lua
+                                                      :vim
+                                                      :vimdoc]
+                                   :ignore_install []
+                                   :sync_install false
+                                   :auto_install true
+                                   :matchup {:enable false}
+                                   :highlight {:enable true
+                                               :additional_vim_regex_highlighting conf.treesitter_nvim_highlighting}
+                                   :indent {:enable true
+                                            :disable [:yaml :python :html :vue]}
+                                   :incremental_selection {:enable false
+                                                           :keymaps {:init_selection :<cr>
+                                                                     :node_incremental :<cr>
+                                                                     :node_decremental :<bs>
+                                                                     :scope_incremental :<tab>}}
+                                   :autotag {:enable true}
+                                   :context_commentstring {:enable true
+                                                           :enable_autocmd false}})
                    (query.set :markdown :highlights md-rule))})]
