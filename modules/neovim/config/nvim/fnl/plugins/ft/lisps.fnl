@@ -25,32 +25,32 @@
                                       :sexp_move_to_next_element_head :W
                                       :sexp_move_to_prev_element_tail :gE
                                       :sexp_move_to_next_element_tail :E
-                                      :sexp_round_head_wrap_list "<("
-                                      :sexp_round_tail_wrap_list ">)"
-                                      :sexp_square_head_wrap_list "<["
-                                      :sexp_square_tail_wrap_list ">]"
-                                      :sexp_curly_head_wrap_list "<{"
-                                      :sexp_curly_tail_wrap_list ">}"
-                                      :sexp_round_head_wrap_element "<W("
-                                      :sexp_round_tail_wrap_element ">W)"
-                                      :sexp_square_head_wrap_element "<W["
-                                      :sexp_square_tail_wrap_element ">W]"
-                                      :sexp_curly_head_wrap_element "<W{"
-                                      :sexp_curly_tail_wrap_element ">W}"
-                                      :sexp_insert_at_list_head :<I
-                                      :sexp_insert_at_list_tail :>I
+                                      :sexp_round_head_wrap_list "g("
+                                      :sexp_round_tail_wrap_list "g)"
+                                      :sexp_square_head_wrap_list "g["
+                                      :sexp_square_tail_wrap_list "g]"
+                                      :sexp_curly_head_wrap_list "g{"
+                                      :sexp_curly_tail_wrap_list "g}"
+                                      :sexp_round_head_wrap_element "gw("
+                                      :sexp_round_tail_wrap_element "gw)"
+                                      :sexp_square_head_wrap_element "gw["
+                                      :sexp_square_tail_wrap_element "gw]"
+                                      :sexp_curly_head_wrap_element "gw{"
+                                      :sexp_curly_tail_wrap_element "gw}"
+                                      :sexp_insert_at_list_head :g-
+                                      :sexp_insert_at_list_tail :g=
                                       :sexp_splice_list :dsf
-                                      :sexp_convolute "<?"
-                                      :sexp_raise_list :<RF
-                                      :sexp_raise_element :<RE
-                                      :sexp_swap_list_backward :<F
-                                      :sexp_swap_list_forward :>F
-                                      :sexp_swap_element_backward :<E
-                                      :sexp_swap_element_forward :>E
-                                      :sexp_emit_head_element "-("
-                                      :sexp_emit_tail_element "-)"
-                                      :sexp_capture_prev_element "=("
-                                      :sexp_capture_next_element "=)"}))
+                                      :sexp_convolute :g?
+                                      :sexp_raise_list ""
+                                      :sexp_raise_element ""
+                                      :sexp_swap_list_backward ""
+                                      :sexp_swap_list_forward ""
+                                      :sexp_swap_element_backward ""
+                                      :sexp_swap_element_forward ""
+                                      :sexp_emit_head_element ""
+                                      :sexp_emit_tail_element ""
+                                      :sexp_capture_prev_element ""
+                                      :sexp_capture_next_element ""}))
                        :config #(let [hydra (require :hydra)
                                       conf (require :conf)]
                                   (let [form (hydra {:name "Move Form"
@@ -109,20 +109,17 @@
                                                  (map! :n :m
                                                        "<cmd>WhichKey m<cr>"
                                                        {:buffer true} :Menu)
-                                                 (map! :n "mh"
-                                                       #(: head :activate)
+                                                 (map! :n :mh #(head:activate)
                                                        {:buffer true}
                                                        "Move Head")
-                                                 (map! :n "ml"
-                                                       #(: tail :activate)
+                                                 (map! :n :ml #(tail:activate)
                                                        {:buffer true}
                                                        "Move Tail")
                                                  (map! :n :me
-                                                       #(: element :activate)
+                                                       #(element:activate)
                                                        {:buffer true}
                                                        "Move Element")
-                                                 (map! :n :mf
-                                                       #(: form :activate)
+                                                 (map! :n :mf #(form:activate)
                                                        {:buffer true}
                                                        "Move Form"))
                                               :lisp))))})]
