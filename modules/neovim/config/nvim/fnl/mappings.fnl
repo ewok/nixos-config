@@ -1,4 +1,4 @@
-(local {: map! } (require :lib))
+(local {: map!} (require :lib))
 (local conf (require :conf))
 
 (local md {:noremap true :silent true})
@@ -135,3 +135,5 @@ vmap <expr>  MR  ':s/\\(' . @/ . '\\)/\\1/g<LEFT><LEFT>'")
                           (vim.cmd :FnlCompile!)
                           (vim.cmd :FnlClean)) md
       "Compile Configs")
+
+(map! :i :<M-BS> :<C-W> md "Split hack")
