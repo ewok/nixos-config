@@ -1,4 +1,4 @@
-(local {: pack : map : lsps} (require :lib))
+(local {: pack : map : lsps : umap : open-file} (require :lib))
 (local conf (require :conf))
 
 ; https://github.com/neovim/nvim-lspconfig/blob/master/doc/server_configurations.md
@@ -34,7 +34,46 @@
                                       (. :setup)))}
                        {1 :SmiteshP/nvim-navic
                         :config #((-> (require :nvim-navic)
-                                      (. :setup)) {:highlight true})}]
+                                      (. :setup)) {:highlight true})}
+                       {1 :rmagatti/goto-preview
+                        :config #(let [gp (require :goto-preview)
+                                       select-to-edit-map {:default :edit
+                                                           :horizontal :new
+                                                           :vertical :vnew
+                                                           :tab :tabedit}]
+                                   (fn open-preview [preview-win type]
+                                     (fn []
+                                       (let [command (. select-to-edit-map type)
+                                             orig-window (. (vim.api.nvim_win_get_config preview-win)
+                                                            :win)
+                                             cursor-position (vim.api.nvim_win_get_cursor preview-win)
+                                             filename (vim.api.nvim_buf_get_name 0)]
+                                         (vim.api.nvim_win_close preview-win
+                                                                 gp.conf.force_close)
+                                         (open-file orig-window filename
+                                                    cursor-position command))))
+
+                                   (fn post-open-hook [buf win]
+                                     (map :n :<C-v>
+                                          (open-preview win :vertical)
+                                          {:buffer buf})
+                                     (map :n :<CR> (open-preview win :default)
+                                          {:buffer buf})
+                                     (map :n :<C-s>
+                                          (open-preview win :horizontal)
+                                          {:buffer buf})
+                                     (map :n :<C-t> (open-preview win :tab)
+                                          {:buffer buf})
+                                     (map :n :q :<cmd>q<cr> {:buffer buf}))
+
+                                   (gp.setup {:post_open_hook post-open-hook
+                                              :post_close_hook #(each [_ x (ipairs [:<C-v>
+                                                                                    :<CR>
+                                                                                    :<C-s>
+                                                                                    :<C-t>
+                                                                                    :q])]
+                                                                  (umap [:n] x
+                                                                        {:buffer $1}))}))}]
         :init #(do
                  (map :n :<leader>li :<cmd>LspInfo<CR> {:noremap true} :Info)
                  (map :n :<leader>ls :<cmd>LspStart<CR> {:noremap true} :Start)
@@ -67,25 +106,35 @@
                                               {:buffer bufnr}
                                               "[lsp] Hover documentation")
                                          (map :n :gd
-                                              "<cmd>vsplit | lua vim.lsp.buf.definition()<cr>"
+                                              "<cmd>lua require('goto-preview').goto_preview_definition()<cr>"
+                                              ; "<cmd>vsplit | lua vim.lsp.buf.definition()<cr>"
                                               {:buffer bufnr}
                                               "[lsp] Go to definition")
                                          (map :n :gD
-                                              "<cmd>vsplit | lua vim.lsp.buf.declaration()<cr>"
+                                              "<cmd>lua require('goto-preview').goto_preview_declaration()<cr>"
+                                              ; "<cmd>vsplit | lua vim.lsp.buf.declaration()<cr>"
                                               {:buffer bufnr}
                                               "[lsp] Go to declaration")
                                          (map :n :gi
-                                              "<cmd>vsplit | lua vim.lsp.buf.implementation()<cr>"
+                                              "<cmd>lua require('goto-preview').goto_preview_implementation()<cr>"
+                                              ; "<cmd>vsplit | lua vim.lsp.buf.implementation()<cr>"
                                               {:buffer bufnr}
                                               "[lsp] Go to implementation")
                                          (map :n :go
-                                              "<cmd>lua vim.lsp.buf.type_definition()<cr>"
+                                              "<cmd>lua require('goto-preview').goto_preview_type_definition()<cr>"
+                                              ; "<cmd>lua vim.lsp.buf.type_definition()<cr>"
                                               {:buffer bufnr}
                                               "[lsp] Go to type definition")
                                          (map :n :gr
-                                              "<cmd>lua vim.lsp.buf.references()<cr>"
+                                              "<cmd>lua require('goto-preview').goto_preview_references()<cr>"
+                                              ; "<cmd>lua vim.lsp.buf.references()<cr>"
                                               {:buffer bufnr}
                                               "[lsp] Go to reference")
+                                         (map :n :gP
+                                              "<cmd>lua require('goto-preview').close_all_win()<cr>"
+                                              ; "<cmd>lua vim.lsp.buf.references()<cr>"
+                                              {:buffer bufnr}
+                                              "[lsp] Close all float preview")
                                          (map :n :<leader>cn
                                               "<cmd>lua vim.lsp.buf.rename()<cr>"
                                               {:buffer bufnr}

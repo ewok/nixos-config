@@ -81,8 +81,8 @@
 ;; True if filetype in Window otherwise False
 (fn is_ft_open [target_ft]
   (each [_ opts (ipairs (get_all_win_buf_ft))]
-      (if (= opts.buf_ft target_ft)
-          (lua "return true"))))
+    (if (= opts.buf_ft target_ft)
+        (lua "return true"))))
 
 (fn get_file_cwd []
   (let [current_path (vim.fn.expand "%:p")
@@ -124,7 +124,14 @@
 (local t (fn [str]
            (vim.api.nvim_replace_termcodes str true true true)))
 
-{: close_sidebar
+(fn open-file [orig-window filename cursor-position command]
+  (when (and (not= orig-window 0) orig-window)
+    (vim.api.nvim_set_current_win orig-window))
+  (pcall vim.cmd (string.format "%s %s" command filename))
+  (vim.api.nvim_win_set_cursor 0 cursor-position))
+
+{: open-file
+ : close_sidebar
  : cmd!
  : exists?
  : get_buf_ft
