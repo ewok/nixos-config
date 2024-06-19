@@ -11,6 +11,7 @@ in
   ];
 
   config = {
+    nix.settings.trusted-users = [ "root" username ];
     services.tailscale.enable = true;
 
     users.users."${username}" = {

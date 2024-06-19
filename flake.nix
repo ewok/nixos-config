@@ -23,9 +23,10 @@
       inputs.home-manager.follows = "home-manager";
     };
     flake-utils.url = "github:numtide/flake-utils";
+    neovim-nightly-overlay.url = "github:nix-community/neovim-nightly-overlay";
   };
 
-  outputs = { self, nixpkgs-unstable, home-manager, nix-on-droid, darwin, flake-utils, ... }@inputs:
+  outputs = { nixpkgs-unstable, home-manager, nix-on-droid, darwin, flake-utils, ... }@inputs:
 
     let
       nixpkgsDefaults = {
@@ -34,6 +35,9 @@
         };
       };
       modules = map (n: ./modules + "/${n}") (builtins.attrNames (builtins.readDir ./modules));
+      overlays = [
+        inputs.neovim-nightly-overlay.overlays.default
+      ];
     in
     {
 
@@ -77,11 +81,7 @@
 
       nixosConfigurations.orb =
         let
-          # pkgs = import inputs.nixpkgs-unstable (nixpkgsDefaults // {
-          #   system = "aarch64-linux";
-          # });
           system = "aarch64-linux";
-          inherit modules;
         in
         nixpkgs-unstable.lib.nixosSystem {
           inherit system;
@@ -89,6 +89,9 @@
             ./machines/common.nix
             ./machines/orb
             home-manager.nixosModules.default
+            {
+              nixpkgs.overlays = overlays;
+            }
           ];
         };
 
@@ -136,7 +139,7 @@
             system = "${system}";
           });
         in
-        with pkgs; pkgs.mkShell {
+        with pkgs; mkShell {
           packages =
             let
 
