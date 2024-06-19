@@ -22,12 +22,7 @@
                                 :f {:name :Find}
                                 :fs {:name :Settings}
                                 :g {:name :Git}
-                                ; :gc {:name "Git Conflict"}
-                                ; :gf {:name "Git Fetch"}
-                                :gh {:name "Git Hunk"}
                                 :gl {:name "Git Log"}
-                                ; :gt {:name "Git Toggle"}
-                                ; :gp {:name "Git Push"}
                                 :l {:name :Lsp}
                                 :o {:name :Open}
                                 :p {:name "Packages | Profiling"}

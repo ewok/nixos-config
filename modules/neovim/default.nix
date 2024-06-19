@@ -5,38 +5,35 @@ let
   cfg = config.opt.nvim;
   dag = config.lib.dag;
 
-  jrnl = pkgs.writeShellScriptBin "jrnl" ''
-    NOTE="$HOME/Notes/diary/$(date +%Y-%m-%d).md"
-    if [ $# -ge 1 ]
-    then
-      echo "[$(date +%H:%M)] $*" >> "$NOTE"
-      nvim -c '$' -c 'startinsert!' "$NOTE"
-    else
-      nvim -c '$' -c 'startinsert!' "$NOTE"
-    fi
-  '';
+  # jrnl = pkgs.writeShellScriptBin "jrnl" ''
+  #   NOTE="$HOME/Notes/diary/$(date +%Y-%m-%d).md"
+  #   if [ $# -ge 1 ]
+  #   then
+  #     echo "[$(date +%H:%M)] $*" >> "$NOTE"
+  #     nvim -c '$' -c 'startinsert!' "$NOTE"
+  #   else
+  #     nvim -c '$' -c 'startinsert!' "$NOTE"
+  #   fi
+  # '';
 
-  todo = pkgs.writeShellScriptBin "todo" ''
-    set -e
-    NOTE="$HOME/Notes/diary/$(date +%Y-%m-%d).md"
-    echo >> "$NOTE"
-    echo "- [ ] TODO $*" >> "$NOTE"
-    nvim -c '$' -c 'startinsert!' "$NOTE"
-  '';
-
+  # todo = pkgs.writeShellScriptBin "todo" ''
+  #   set -e
+  #   NOTE="$HOME/Notes/diary/$(date +%Y-%m-%d).md"
+  #   echo >> "$NOTE"
+  #   echo "- [ ] TODO $*" >> "$NOTE"
+  #   nvim -c '$' -c 'startinsert!' "$NOTE"
+  # '';
 
   my-nvim = pkgs.symlinkJoin {
     name = "my-neovim";
-    paths = with pkgs; [ neovim ];
+    paths = [
+      pkgs.neovim
+    ];
     postBuild = ''
       ln -s $out/bin/nvim $out/bin/vim
       ln -s $out/bin/nvim $out/bin/vi
     '';
   };
-
-  vims = pkgs.writeShellScriptBin "vims" ''
-    vim +'let g:auto_load_session = v:true'
-  '';
 
   vim-compile = pkgs.writeShellScriptBin "vim-compile" ''
     ${my-nvim}/bin/nvim --headless --cmd 'lua _G.update=true'
@@ -163,6 +160,8 @@ in
       # gnumake
       # cargo
       # nodejs
+
+      tree-sitter
 
       # LSP:
       clojure-lsp

@@ -143,16 +143,6 @@
                                                                           "]z" {:query "@fold"
                                                                                 :query_group :folds
                                                                                 :desc "Next fold"}}
-                                                        :goto_next_end {"]F" {:query "@call.outer"
-                                                                              :desc "Next function call end"}
-                                                                        "]M" {:query "@function.outer"
-                                                                              :desc "Next method/function def end"}
-                                                                        "]C" {:query "@class.outer"
-                                                                              :desc "Next class end"}
-                                                                        "]I" {:query "@conditional.outer"
-                                                                              :desc "Next conditional end"}
-                                                                        "]L" {:query "@loop.outer"
-                                                                              :desc "Next loop end"}}
                                                         :goto_previous_start {"[f" {:query "@call.outer"
                                                                                     :desc "Prev function call start"}
                                                                               "[m" {:query "@function.outer"
@@ -162,17 +152,7 @@
                                                                               "[i" {:query "@conditional.outer"
                                                                                     :desc "Prev conditional start"}
                                                                               "[l" {:query "@loop.outer"
-                                                                                    :desc "Prev loop start"}}
-                                                        :goto_previous_end {"[F" {:query "@call.outer"
-                                                                                  :desc "Prev function call end"}
-                                                                            "[M" {:query "@function.outer"
-                                                                                  :desc "Prev method/function def end"}
-                                                                            "[C" {:query "@class.outer"
-                                                                                  :desc "Prev class end"}
-                                                                            "[I" {:query "@conditional.outer"
-                                                                                  :desc "Prev conditional end"}
-                                                                            "[L" {:query "@loop.outer"
-                                                                                  :desc "Prev loop end"}}}}}))})
+                                                                                    :desc "Prev loop start"}}}}}))})
  (pack :nvim-treesitter/nvim-treesitter
        {:build ":TSUpdate"
         :dependencies [:nvim-treesitter/nvim-treesitter-textobjects]

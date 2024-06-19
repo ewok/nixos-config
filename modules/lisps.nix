@@ -1,14 +1,13 @@
 { config, lib, pkgs, ... }:
-with lib;
 let
   cfg = config.opt.lisps;
 in
 {
   options.opt.lisps = {
-    enable = mkEnableOption "lisps";
+    enable = lib.mkEnableOption "lisps";
   };
 
-  config = mkIf cfg.enable {
+  config = lib.mkIf cfg.enable {
     home.packages = with pkgs; [
       clojure
       clojure-lsp

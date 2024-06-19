@@ -37,8 +37,8 @@
                                       :sexp_square_tail_wrap_element "gw]"
                                       :sexp_curly_head_wrap_element "gw{"
                                       :sexp_curly_tail_wrap_element "gw}"
-                                      :sexp_insert_at_list_head :g-
-                                      :sexp_insert_at_list_tail :g=
+                                      :sexp_insert_at_list_head :g<
+                                      :sexp_insert_at_list_tail :g>
                                       :sexp_splice_list :dsf
                                       :sexp_convolute :g?
                                       :sexp_raise_list ""

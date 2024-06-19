@@ -11,7 +11,7 @@
       {:noremap true :silent true} "Encode Base64")
 
 ;; Open current cwd note page
-(fn open_mind [mode] ; git remote get-url origin 2>/dev/null | sed 's/^.*://;s/.git$//'
+(fn open_mind [] ; git remote get-url origin 2>/dev/null | sed 's/^.*://;s/.git$//'
   (vim.cmd (.. "e " conf.notes_dir :/mind/
                (let [git# (io.popen "git remote get-url origin 2>/dev/null | sed 's/^.*://;s/.git$//'")
                      git (git#:read :*a)]
@@ -23,10 +23,6 @@
                        git))) :.md)))
 
 (map! :n :<leader>on open_mind {:noremap true :silent true} "Open CWD note")
-
-; ;; Navigation
-; (map! [:n] :<C-O><C-O> :<C-O> md "Go Back")
-; (map! [:n] :<C-O><C-I> :<Tab> md "Go Forward")
 
 ;; Windows manipulation
 (map! [:n] :<C-W>t "<cmd>tab split<CR>" md "Open in tab")
@@ -45,8 +41,8 @@
 (map! [:n] :zO :zczO md "Open all folds under cursor")
 (map! [:n] :zC "zcV:foldc!<CR>" md "Close all folds under cursor")
 (map! [:n] :z<Space> "mzzMzvzz15<c-e>`z" md "Show only current Fold")
-; (map! [:n] :<Space><Space> "za\"{{{\"" md "Toggle Fold")
-; (map! [:x] :<Space><Space> "zf\"}}}\"" md "Toggle Fold")
+(map! [:n] :<Space><Space> "za\"{{{\"" md "Toggle Fold")
+(map! [:x] :<Space><Space> "zf\"}}}\"" md "Toggle Fold")
 
 ;; Yank
 (map! [:n] :<leader>yy "<cmd>.w! ~/.vbuf<CR>" md "Yank to ~/.vbuf")
@@ -112,17 +108,6 @@ vmap <expr>  MR  ':s/\\(' . @/ . '\\)/\\1/g<LEFT><LEFT>'")
 (map! [:n] "*"
       ":let stay_star_view = winsaveview()<cr>*:call winrestview(stay_star_view)<CR>"
       md "Search for word under cursor")
-
-;; Thanks to Wansmer
-;; https://github.com/Wansmer/nvim-config/blob/f7f63d3cf18a0e40ce5ae774944d53fdd9986321/lua/autocmd.lua#L38
-; (local hl-ns (vim.api.nvim_create_namespace :hl_search))
-; (fn manage_hlsearch [char]
-;   (let [keys [:<CR> :n :N "*" "#" "?" "/" :v]
-;         new_hlsearch (vim.tbl_contains keys (vim.fn.keytrans char))]
-;     (if (not= (: vim.opt.hlsearch :get) new_hlsearch)
-;         (set vim.opt.hlsearch new_hlsearch))))
-;
-; (vim.on_key manage_hlsearch hl-ns)
 
 ;; Keep search matches in the middle of the window.
 (map! [:n] :n :nzzzv md "Next search match")
