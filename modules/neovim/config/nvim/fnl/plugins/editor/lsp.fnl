@@ -168,7 +168,6 @@
                                              :warn icons.Warn
                                              :hint icons.Hint
                                              :info icons.Info})
-                   (lsp.nil_ls.setup {})
                    (each [lsp-name settings (pairs lsps)]
                      (let [server (. lsp lsp-name)]
                        (server.setup {:handlers [lsp_zero.default_setup]

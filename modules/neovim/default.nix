@@ -169,7 +169,8 @@ in
       gopls
       # ltex-ls
       lua-language-server
-      nil
+      # nil
+      nixd
       # nodePackages.bash-language-server
       pyright
       fennel-ls
