@@ -34,14 +34,14 @@
           allowUnfree = true;
         };
       };
-      modules = map (n: ./modules + "/${n}") (builtins.attrNames (builtins.readDir ./modules));
+      modules = map (n: ./modules/hm + "/${n}") (builtins.attrNames (builtins.readDir ./modules/hm));
       overlays = [
         inputs.neovim-nightly-overlay.overlays.default
       ];
     in
     {
 
-      homeConfigurations.steamdeck =
+      homeConfigurations.sd =
         let
           pkgs = import inputs.nixpkgs-unstable (nixpkgsDefaults // {
             system = "x86_64-linux";
@@ -52,7 +52,7 @@
           inherit pkgs;
           modules = [
             ./machines/common.nix
-            ./machines/steamdeck
+            ./machines/sd
             {
               imports = modules;
               _module.args.utils = import utils/lib.nix { inherit pkgs; };
@@ -78,6 +78,42 @@
             }
           ];
         };
+
+      homeConfigurations.rpi =
+        let
+          pkgs = import inputs.nixpkgs-unstable (nixpkgsDefaults // {
+            system = "aarch64-linux";
+          });
+          inherit modules;
+        in
+        home-manager.lib.homeManagerConfiguration {
+          inherit pkgs;
+          modules = [
+            ./machines/common.nix
+            ./machines/cnt
+            {
+              imports = modules;
+              _module.args.utils = import utils/lib.nix { inherit pkgs; };
+            }
+          ];
+        };
+
+      nixosConfigurations.nixos =
+        let
+          system = "aarch64-linux";
+        in
+        nixpkgs-unstable.lib.nixosSystem {
+          inherit system;
+          modules = [
+            ./machines/common.nix
+            ./machines/nixos
+            home-manager.nixosModules.default
+            {
+              nixpkgs.overlays = overlays;
+            }
+          ];
+        };
+
 
       nixosConfigurations.orb =
         let
@@ -111,7 +147,7 @@
 
         };
 
-      nixOnDroidConfigurations.android =
+      nixOnDroidConfigurations.droid =
         let
           pkgs = import inputs.nixpkgs-unstable (nixpkgsDefaults // {
             system = "aarch64-linux";
@@ -122,7 +158,7 @@
           inherit pkgs;
           modules = [
             ./machines/common.nix
-            ./machines/android
+            ./machines/droid
             {
               home-manager.config = {
                 imports = modules;
@@ -146,7 +182,8 @@
               nixosMy = writeShellScriptBin "n" ''
                 if [ "$#" -eq 0 ]; then
                   echo "Provide a command as a first argument please."
-                  echo "Usual nixos-rebuild commands + clean, update, crypt"
+                  echo "crypt, clean, update, b, s"
+                  echo "b(uild), s(witch) [h(m)|n(ixos)|d(roid)|dw(darwin)]"
 
                 elif [ "$#" -eq 1 ]; then
 
@@ -163,42 +200,36 @@
                   elif [ "$1" == "update" ];then
                       nix flake update
                   fi
+                elif [ "$#" -eq 3 ]; then
+
+                  CMD=""
+                  if [ "$1" == "b" ]; then
+                    CMD="build"
+                  elif [ "$1" == "s" ]; then
+                    CMD="switch -b bakup"
+                  else
+                    exit 1
+                  fi
+
+                  if [ "$2" == "h" ]; then
+                    CMD="nix run home-manager -- $CMD"
+                  elif [ "$2" == "n" ]; then
+                    CMD="sudo nixos-rebuild $CMD --impure"
+                  elif [ "$2" == "d" ]; then
+                    CMD="nix-on-droid $CMD"
+                  elif [ "$2" == "dw" ]; then
+                    CMD="nix run nix-darwin -- $CMD"
+                  else
+                    exit 1
+                  fi
+                  CMD="$CMD --flake .#$3"
+
+                  $CMD
                 fi
               '';
 
               git-crypt-status = writeShellScriptBin "git-crypt-status" ''
                 git-crypt status -e
-              '';
-
-              n-darwin-build = writeShellScriptBin "n-darwin-build" ''
-                nix run nix-darwin -- build --flake '.#mac'
-              '';
-              n-darwin-switch = writeShellScriptBin "n-darwin-switch" ''
-                nix run nix-darwin -- switch --flake '.#mac'
-              '';
-              n-droid-build = writeShellScriptBin "n-droid-build" ''
-                nix-on-droid build --flake '.#android'
-              '';
-              n-droid-switch = writeShellScriptBin "n-droid-switch" ''
-                nix-on-droid switch --flake '.#android'
-              '';
-              n-steam-build = writeShellScriptBin "n-steam-build" ''
-                nix run home-manager -- build --flake '.#steamdeck'
-              '';
-              n-steam-switch = writeShellScriptBin "n-steam-switch" ''
-                nix run home-manager -- switch -b bakup --flake '.#steamdeck'
-              '';
-              n-cnt-build = writeShellScriptBin "n-cnt-build" ''
-                nix run home-manager -- build --flake '.#cnt'
-              '';
-              n-cnt-switch = writeShellScriptBin "n-cnt-switch" ''
-                nix run home-manager -- switch -b bakup --flake '.#cnt'
-              '';
-              n-orb-build = writeShellScriptBin "n-orb-build" ''
-                sudo nixos-rebuild build --flake '.#orb' --impure
-              '';
-              n-orb-switch = writeShellScriptBin "n-orb-switch" ''
-                sudo nixos-rebuild switch --flake '.#orb' --impure
               '';
             in
             [
@@ -209,16 +240,6 @@
               nixpkgs-fmt
               neovim
               nix
-              n-darwin-build
-              n-darwin-switch
-              n-droid-build
-              n-droid-switch
-              n-steam-build
-              n-steam-switch
-              n-orb-build
-              n-orb-switch
-              n-cnt-build
-              n-cnt-switch
             ];
 
           shellHook = ''
