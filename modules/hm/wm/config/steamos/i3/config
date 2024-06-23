@@ -158,7 +158,7 @@ bindsym $mod+Shift+l move right
 
 workspace_auto_back_and_forth no
 
-bindsym $mod+backslash split toggle
+bindsym $mod+bracketleft split toggle
 
 # enter fullscreen mode for the focused container
 bindsym $mod+f fullscreen, exec bash {{ conf.folders.bin }}/center-mouse
@@ -376,4 +376,4 @@ include ~/.config/i3/autostart.d/*.conf
 exec --no-startup-id dex --autostart --environment i3
 exec --no-startup-id xss-lock --transfer-sleep-lock -- i3lock --nofork
 exec --no-startup-id nm-applet
-exec_always --no-startup-id sleep 10; feh --bg-scale "/usr/share/wallpapers/Steam Deck Logo 5.jpg"
+exec_always --no-startup-id sleep 5; feh --bg-scale "/usr/share/wallpapers/Steam Deck Logo 5.jpg"

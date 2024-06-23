@@ -2,7 +2,7 @@
 (local conf (require :conf))
 
 ; https://github.com/neovim/nvim-lspconfig/blob/master/doc/server_configurations.md
-[(pack :zeioth/garbage-day.nvim {:event [:BufReadPre :BufNewFile] :opts {}})
+[; (pack :zeioth/garbage-day.nvim {:event [:BufReadPre :BufNewFile] :opts {}})
  (pack :kosayoda/nvim-lightbulb
        {:event [:BufReadPost :BufNewFile]
         :config #(let [bulb (require :nvim-lightbulb)]

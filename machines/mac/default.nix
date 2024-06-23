@@ -2,7 +2,7 @@
 let
   inherit (config) colors theme username workEmail fullName authorizedKeys email ssh_config;
   homeDirectory = "/Users/${username}";
-  modules = map (n: ../../modules + "/${n}") (builtins.attrNames (builtins.readDir ../../modules));
+  modules = map (n: ../../modules/hm + "/${n}") (builtins.attrNames (builtins.readDir ../../modules/hm));
 in
 {
   config = {
