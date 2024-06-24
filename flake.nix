@@ -206,7 +206,7 @@
                   if [ "$1" == "b" ]; then
                     CMD="build"
                   elif [ "$1" == "s" ]; then
-                    CMD="switch -b bakup"
+                    CMD="switch"
                   else
                     exit 1
                   fi
