@@ -33,16 +33,24 @@
 (if conf.options.auto_toggle_rnu
     (do
       (tset vim.wo :rnu true)
-      (vim.api.nvim_create_autocmd [:InsertLeave]
+      (vim.api.nvim_create_autocmd [:BufEnter
+                                    :FocusGained
+                                    :InsertLeave
+                                    :WinEnter
+                                    :CmdlineLeave]
                                    {:pattern ["*"]
                                     :callback (fn []
-                                                (if (vim.api.nvim_get_option :showcmd)
-                                                    (tset vim.wo :rnu true)))})
-      (vim.api.nvim_create_autocmd [:InsertEnter]
+                                                (when vim.o.number
+                                                  (tset vim.wo :rnu true)))})
+      (vim.api.nvim_create_autocmd [:BufLeave
+                                    :FocusLost
+                                    :InsertEnter
+                                    :WinLeave
+                                    :CmdlineEnter]
                                    {:pattern ["*"]
                                     :callback (fn []
-                                                (if (vim.api.nvim_get_option :showcmd)
-                                                    (tset vim.wo :rnu false)))})))
+                                                (when vim.o.number
+                                                  (tset vim.wo :rnu false)))})))
 
 ;; auto hide cursorline
 (if conf.options.auto_hide_cursorline
