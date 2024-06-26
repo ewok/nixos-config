@@ -13,7 +13,7 @@
                :desc "Open Minifiles"}]
        :config #(let [mf (require :mini.files)]
                   (mf.setup {:mappings {:close :q :go_in_plus :l :go_in :<cr>}
-                             :windows {:preview false :width_preview 40}})
+                             :windows {:preview true :width_preview 40}})
 
                   (fn map-split [buf-id lhs direction]
                     (let [rhs (fn []
