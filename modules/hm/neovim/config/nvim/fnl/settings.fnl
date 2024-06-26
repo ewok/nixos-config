@@ -2,7 +2,7 @@
 (local conf (require :conf))
 
 (set vim.g.mapleader " ")
-(set vim.g.maplocalleader "\\")
+(set vim.g.maplocalleader ",")
 
 (when conf.options.pbclip
   (set vim.g.clipboard {:name :orb
