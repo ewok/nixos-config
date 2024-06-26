@@ -70,8 +70,8 @@
                    (map :n :<leader>gh "<cmd>lua MiniDiff.toggle_overlay()<cr>"
                         {:noremap true} "Show githunk overlay")
                    (diff.setup {:view {:style :sign
-                                       :signs {:add "┃"
-                                               :change "┃"
+                                       :signs {:add "│"
+                                               :change "│"
                                                :delete "_"}}
                                 :mappings {:apply :gh
                                            :reset :gH

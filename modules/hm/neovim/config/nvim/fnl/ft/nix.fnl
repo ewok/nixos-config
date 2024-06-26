@@ -1,10 +1,10 @@
 (local lib (require :lib))
 
-(lib.reg_ft :nix
-            (fn [ev]
-              (lib.map :n :<leader>fm
-                       "<Cmd>lua require('telescope').extensions.manix.manix()<CR>"
-                       {:silent true :buffer ev.buf} "Nix manual[manix] ")))
+; (lib.reg_ft :nix
+;             (fn [ev]
+;               (lib.map :n :<leader>fm
+;                        "<Cmd>lua require('telescope').extensions.manix.manix()<CR>"
+;                        {:silent true :buffer ev.buf} "Nix manual[manix] ")))
 
 (lib.reg_lsp :nixd {})
 ;

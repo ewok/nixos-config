@@ -212,7 +212,7 @@ in
       shfmt
 
       # Manual
-      manix
+      # manix
     ] ++ androidPkgs ++ orbPkgs;
     xdg = {
       configFile = {

@@ -14,7 +14,7 @@
                              :operators {:gc :Comments}
                              :window {:border :single}})
                   (wk.register {:th "Dark/Light theme"
-                                :tS "Toggle Spell language"
+                                ; :ts "Toggle Spell language"
                                 :j "Goto Next buffer"
                                 :k "Goto Prev buffer"
                                 :b {:name :Buffer}

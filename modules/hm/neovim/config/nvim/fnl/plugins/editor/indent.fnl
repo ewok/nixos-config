@@ -7,7 +7,8 @@
                                                           ; char = "╎",
                                                           ; char = "┊",
                                                           ; char = "│",
-                                                          :char "▏"
+                                                          ; :char "▏"
+                                                          :char "│"
                                                           :exclude [:clojure
                                                                     :fennel]})
                   (vim.cmd.highlight "default link IndentLine Comment"))})

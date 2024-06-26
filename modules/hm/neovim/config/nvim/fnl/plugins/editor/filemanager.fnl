@@ -25,11 +25,11 @@
                                                          (set new-target-window
                                                               (vim.api.nvim_get_current_win))))
                                 (mf.set_target_window new-target-window)
-                                (mf.go_in))
+                                (mf.go_in {:close_on_file true}))
                           desc (.. "Split " direction)]
                       (vim.keymap.set :n lhs rhs {:buffer buf-id : desc})))
 
-                  (fn files-set-cwd [path]
+                  (fn files-set-cwd []
                     (let [cur-entry-path (. (mf.get_fs_entry) :path)
                           cur-directory (vim.fs.dirname cur-entry-path)]
                       (vim.fn.chdir cur-directory)))
@@ -59,4 +59,7 @@
                                                                    {:buffer cur-buf})
                                                               (map :n :<c-k>
                                                                    :<up>
+                                                                   {:buffer cur-buf})
+                                                              (map :n :<esc>
+                                                                   #(mf.close)
                                                                    {:buffer cur-buf})))}))})
