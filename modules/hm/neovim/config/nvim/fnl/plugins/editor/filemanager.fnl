@@ -13,7 +13,7 @@
                :desc "Open Minifiles"}]
        :config #(let [mf (require :mini.files)]
                   (mf.setup {:mappings {:close :q :go_in_plus :l :go_in :<cr>}
-                             :windows {:preview true :width_preview 40}})
+                             :windows {:preview false :width_preview 40}})
 
                   (fn map-split [buf-id lhs direction]
                     (let [rhs (fn []
@@ -34,6 +34,9 @@
                           cur-directory (vim.fs.dirname cur-entry-path)]
                       (vim.fn.chdir cur-directory)))
 
+                  (fn on-preview []
+                    (mf.refresh {:windows {:preview true}}))
+
                   (vim.api.nvim_create_autocmd :User
                                                {:pattern :MiniFilesBufferCreate
                                                 :callback (fn [args]
@@ -44,6 +47,10 @@
                                                               (map-split cur-buf
                                                                          :<C-V>
                                                                          "belowright vertical")
+                                                              (map :n :<C-P>
+                                                                   on-preview
+                                                                   {:buffer cur-buf}
+                                                                   :Preview)
                                                               (map :n :cd
                                                                    files-set-cwd
                                                                    {:buffer cur-buf}

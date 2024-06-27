@@ -11,18 +11,16 @@
                              :icons {:breadcrumb conf.icons.wk.breadcrumb
                                      :separator conf.icons.wk.separator
                                      :group conf.icons.wk.group}
-                             :operators {:gc :Comments}
                              :window {:border :single}})
                   (wk.register {:th "Dark/Light theme"
-                                ; :ts "Toggle Spell language"
                                 :j "Goto Next buffer"
                                 :k "Goto Prev buffer"
                                 :b {:name :Buffer}
                                 :c {:name :Code}
+                                :cd {:name :Diff/Diagnostics}
                                 :f {:name :Find}
                                 :fs {:name :Settings}
                                 :g {:name :Git}
-                                :gl {:name "Git Log"}
                                 :l {:name :Lsp}
                                 :o {:name :Open}
                                 :p {:name "Packages | Profiling"}

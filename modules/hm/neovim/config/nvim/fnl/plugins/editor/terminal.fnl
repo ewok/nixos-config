@@ -21,7 +21,7 @@
      #(do
         (set vim.g.tth true)
         (vim.cmd (.. "silent !~/.config/tmux/tmux_toggle '" (get_file_cwd)
-                     "' true"))) {:silent true} "Open floating window")
+                     "' true"))) {:silent true} "Open floating terminal")
 
 (map :n :<c-space>
      #(if vim.g.tth
@@ -31,9 +31,9 @@
                        "' false"))) {:silent true}
      "Toggle bottom or float terminal")
 
-(map :n :<leader>gg
-     #(vim.cmd (.. "silent !tmux popup -d " (vim.uv.cwd)
-                   " -xC -yC -w90\\% -h90\\% -E lazygit")) {:silent true}
-     "Open lazygit in bottom terminal")
+; (map :n :<leader>gg
+;      #(vim.cmd (.. "silent !tmux popup -d " (vim.uv.cwd)
+;                    " -xC -yC -w90\\% -h90\\% -E lazygit")) {:silent true}
+;      "Open lazygit in bottom terminal")
 
 []
