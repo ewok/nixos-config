@@ -20,7 +20,7 @@
                                 :cd {:name :Diff/Diagnostics}
                                 :f {:name :Find}
                                 :fs {:name :Settings}
-                                :g {:name :Git}
+                                ; :g {:name :Git}
                                 :l {:name :Lsp}
                                 :o {:name :Open}
                                 :p {:name "Packages | Profiling"}
@@ -32,9 +32,9 @@
                                {:prefix :<leader> :mode :n})
                   (wk.register {[:6] {:name :Base64}
                                 :c {:name :Code}
-                                :g {:name :Git}
-                                :gl {:name "Git Log"}
-                                :gh {:name :Hunk}
+                                ; :g {:name :Git}
+                                ; :gl {:name "Git Log"}
+                                ; :gh {:name :Hunk}
                                 :y {:name :Yank}
                                 :w {:name :Wiki}}
                                {:prefix :<leader> :mode :x}))})
