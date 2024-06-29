@@ -26,7 +26,8 @@
                 1 :<leader>cx
                 2 "<cmd>lua require'gitlinker'.get_buf_range_url('v', {action_callback = require'gitlinker.actions'.open_in_browser})<cr>"
                 :desc :GBrowse}]
-        :config true
+        :config #(let [gl (require :gitlinker)]
+                   (gl.setup {:mappings :<localleader>gy}))
         :opts {:mappings nil}})
  (pack :NeogitOrg/neogit
        {:cmd [:Neogit :DiffviewFileHistory]
