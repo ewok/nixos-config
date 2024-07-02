@@ -1,5 +1,4 @@
 { config, lib, pkgs, utils, ... }:
-with lib;
 let
   cfg = config.opt.fish;
   vars = {
@@ -9,7 +8,7 @@ let
   };
 in
 {
-  options.opt.fish = {
+  options.opt.fish = with lib; {
     enable = mkEnableOption "fish";
     darwin = mkOption {
       type = types.bool;
@@ -25,7 +24,7 @@ in
     };
   };
 
-  config = mkIf cfg.enable {
+  config = lib.mkIf cfg.enable {
     home = {
       packages = with pkgs; [
         fish
@@ -43,6 +42,10 @@ in
         fswatch
         htop
         tldr
+        zip
+
+        # Move to backup module
+        rclone
       ];
       file = {
         # ".profile".source = ./config/profile;

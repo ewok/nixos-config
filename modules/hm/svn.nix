@@ -45,7 +45,7 @@ in
       [helpers]
       [tunnels]
       [miscellany]
-      global-ignores = *.o *.lo *.la *.al .libs *.so *.so.[0-9]* *.a *.pyc *.pyo __pycache__ .terraform .direnv .venv .vscode .clj-kondo .lsp .nrepl-port iced_stdout target
+      global-ignores = *.o *.lo *.la *.al .libs *.so *.so.[0-9]* *.a *.pyc *.pyo __pycache__ .terraform .direnv .venv .vscode .clj-kondo .lsp .nrepl-port iced_stdout target .cpcache
       [auto-props]
       [working-copy]
     '';

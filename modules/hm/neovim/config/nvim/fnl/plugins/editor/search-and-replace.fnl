@@ -19,16 +19,20 @@
                 :mode :n
                 :desc "Find and Replace [global]"}]})
  (pack :chrisgrieser/nvim-rip-substitute
-       {:config #(let [rs (require :rip-substitute)]
+       {:cmd [:RipSubstitute]
+        :config #(let [rs (require :rip-substitute)]
                    (rs.setup {:keymaps {:confirm :<c-l>
                                         :abort :<esc>
                                         :prevSubst :<c-k>
                                         :nextSubst :<c-j>
                                         :insertModeConfirm :<c-l>}
                               :editingBehavior {:autoCaptureGroups true}
-                              :prefill {:startInReplaceLineIfPrefill false}}))
+                              :prefill {:startInReplaceLineIfPrefill true}}))
         :keys [{1 :<leader>fr
-                2 #(let [rs (require :rip-substitute)]
-                     (rs.sub))
-                :mode [:n :x]
+                2 #(vim.cmd (.. "RipSubstitute (" (vim.fn.expand :<cword>) ")"))
+                :mode [:n]
+                :desc "Find and Replace [buffer]"}
+               {1 :<leader>fr
+                2 #(vim.cmd :RipSubstitute)
+                :mode [:x]
                 :desc "Find and Replace [buffer]"}]})]

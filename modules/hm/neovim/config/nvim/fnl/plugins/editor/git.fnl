@@ -41,7 +41,7 @@
                    (ng.setup {:use_per_project_settings true
                               :remember_settings true
                               :mappings {:status {:gx :OpenTree := :Toggle}}
-                              :auto_show_console false
+                              :auto_show_console true
                               :console_timeout 5000})
                    (reg_ft :DiffviewFileHistory
                            (fn [ev]
