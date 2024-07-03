@@ -87,7 +87,7 @@
                        navic (require :nvim-navic)
                        lsp (require :lspconfig)]
                    (lsp_zero.on_attach (fn [client bufnr]
-                                         (when (not= client.name :terraformls)
+                                         (when (not= client.name :null-ls)
                                            (sig.on_attach {:bind true
                                                            :handler_opts {:border :rounded}}
                                                           bufnr))
