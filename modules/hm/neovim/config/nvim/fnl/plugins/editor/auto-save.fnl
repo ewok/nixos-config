@@ -1,4 +1,4 @@
-(local {: pack} (require :lib))
+(local {: pack : get_buf_ft} (require :lib))
 
 (pack :okuuva/auto-save.nvim
       {:cmd :ASToggle
@@ -12,7 +12,8 @@
               :trigger_events {:immediate_save [:BufLeave :FocusLost]
                                :defer_save [:InsertLeave :TextChanged]
                                :cancel_defered_save [:InsertEnter]}
-              :condition nil
+              :condition #(let [utils (require :auto-save.utils.data)]
+                            (utils.not_in (get_buf_ft $1) [:oil]))
               :write_all_buffers false
               :noautocmd false
               :lockmarks false
