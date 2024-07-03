@@ -121,7 +121,8 @@
                                            :undo {:initial_mode :normal
                                                   :mappings {:n {:y tsu.yank_additions
                                                                  :Y tsu.yank_deletions
-                                                                 :u tsu.restore
-                                                                 :<cr> tsu.restore}}}}})
+                                                                 :d tsu.yank_deletions
+                                                                 :<c-r> tsu.restore
+                                                                 :<cr> tsu.yank_additions}}}}})
                    (ts.load_extension :fzf)
                    (ts.load_extension :undo))})]
