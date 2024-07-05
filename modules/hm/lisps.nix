@@ -28,8 +28,9 @@ in
              :main-opts
                ["-m" "nrepl.cmdline" "--middleware"
                 "[cider.nrepl/cider-middleware,cider.piggieback/wrap-cljs-repl]"]}
-          :outdated {:replace-deps {olical/depot {:mvn/version "2.3.0"}}
-                                :main-opts ["-m" "depot.outdated.main"]}
+          :outdated {;; Note that it is `:deps`, not `:extra-deps`
+               :deps {com.github.liquidz/antq {:mvn/version "RELEASE"}}
+               :main-opts ["-m" "antq.core"]}
                 }}
     '';
   };
