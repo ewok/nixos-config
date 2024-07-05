@@ -64,9 +64,9 @@
       md "Profiling | Stop")
 
 ;; Replace search
-(vim.cmd "
-nmap <expr>  MR  ':%s/\\(' . @/ . '\\)/\\1/g<LEFT><LEFT>'
-vmap <expr>  MR  ':s/\\(' . @/ . '\\)/\\1/g<LEFT><LEFT>'")
+; (vim.cmd "
+; nmap <expr>  MR  ':%s/\\(' . @/ . '\\)/\\1/g<LEFT><LEFT>'
+; vmap <expr>  MR  ':s/\\(' . @/ . '\\)/\\1/g<LEFT><LEFT>'")
 
 ;; Replace without yanking
 (map! [:v] :p :P md "Replace without yanking")

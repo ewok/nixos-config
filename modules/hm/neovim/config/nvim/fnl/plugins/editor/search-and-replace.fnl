@@ -1,4 +1,4 @@
-(local {: pack} (require :lib))
+(local {: pack : map} (require :lib))
 
 [(pack :MagicDuck/grug-far.nvim
        {:config #(let [grug (require :grug-far)]
@@ -20,6 +20,19 @@
                 :desc "Find and Replace [global]"}]})
  (pack :chrisgrieser/nvim-rip-substitute
        {:cmd [:RipSubstitute]
+        :init #(do
+                 (map :n :MR (fn []
+                               vim.cmd
+                               (.. ":RipSubstitute ("
+                                   (string.gsub (vim.fn.getreg "/") "[\\<>]" "")
+                                   ")<cr>"))
+                      {:noremap true :expr true})
+                 (map :v :MR (fn []
+                               vim.cmd
+                               (.. ":RipSubstitute ("
+                                   (string.gsub (vim.fn.getreg "/") "[\\<>]" "")
+                                   ")<cr>"))
+                      {:noremap true :expr true}))
         :config #(let [rs (require :rip-substitute)]
                    (rs.setup {:keymaps {:confirm :<c-l>
                                         :abort :<esc>
