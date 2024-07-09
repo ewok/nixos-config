@@ -2,8 +2,7 @@
 (local conf (require :conf))
 
 ; https://github.com/neovim/nvim-lspconfig/blob/master/doc/server_configurations.md
-[; (pack :zeioth/garbage-day.nvim {:event [:BufReadPre :BufNewFile] :opts {}})
- (pack :kosayoda/nvim-lightbulb
+[(pack :kosayoda/nvim-lightbulb
        {:event [:BufReadPost :BufNewFile]
         :config #(let [bulb (require :nvim-lightbulb)]
                    (bulb.setup {:ignore []
@@ -29,9 +28,6 @@
        {:branch :v3.x
         :event [:BufReadPre :BufNewFile]
         :dependencies [:neovim/nvim-lspconfig
-                       {1 :ray-x/lsp_signature.nvim
-                        :config #((-> (require :lsp_signature)
-                                      (. :setup)))}
                        {1 :SmiteshP/nvim-navic
                         :config #((-> (require :nvim-navic)
                                       (. :setup)) {:highlight true})}
@@ -83,14 +79,35 @@
                  (map :n :<leader>ll :<cmd>LspLog<CR> {:noremap true} :Log))
         :config #(let [icons conf.icons.diagnostic
                        lsp_zero (require :lsp-zero)
-                       sig (require :lsp_signature)
                        navic (require :nvim-navic)
-                       lsp (require :lspconfig)]
+                       lsp (require :lspconfig)
+                       cmp (require :cmp)
+                       signature (fn [args result ctx config]
+                                   (let [(bufnr winner) (vim.lsp.handlers.signature_help args
+                                                                                         result
+                                                                                         ctx
+                                                                                         config)
+                                         current_cursor_line (. (vim.api.nvim_win_get_cursor 0)
+                                                                1)]
+                                     (when (and winner
+                                                (> current_cursor_line 3))
+                                       (vim.api.nvim_win_set_config winner
+                                                                    {:anchor :SW
+                                                                     :relative :cursor
+                                                                     :row 0
+                                                                     :col -1
+                                                                     :border :rounded}))
+                                     (when (and bufnr winner) [bufnr winner])))]
                    (lsp_zero.on_attach (fn [client bufnr]
-                                         (when (not= client.name :null-ls)
-                                           (sig.on_attach {:bind true
-                                                           :handler_opts {:border :rounded}}
-                                                          bufnr))
+                                         (when (client.supports_method :textDocument/signatureHelp)
+                                           (tset vim.lsp.handlers
+                                                 :textDocument/signatureHelp
+                                                 (vim.lsp.with signature
+                                                   {}))
+                                           (vim.api.nvim_create_autocmd [:CursorHoldI]
+                                                                        {:buffer bufnr
+                                                                         :callback #(when (not (cmp.get_selected_entry))
+                                                                                      (vim.lsp.buf.signature_help))}))
                                          (when client.server_capabilities.documentSymbolProvider
                                            (navic.attach client bufnr))
                                          (map :n :<leader>cdw
