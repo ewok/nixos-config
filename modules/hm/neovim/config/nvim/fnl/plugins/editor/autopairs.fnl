@@ -16,4 +16,8 @@
 ;                   (tset (. (npairs.get_rule "'") 1) :not_filetypes
 ;                         conf.lisp-langs))})
 (pack :altermo/ultimate-autopair.nvim
-      {:event [:InsertEnter :CmdlineEnter] :branch :v0.6 :opts {}})
+      {:event [:InsertEnter :CmdlineEnter]
+       :branch :v0.6
+       :opts {:config_internal_pairs [{1 "'"
+                                       2 "'"
+                                       :nft [:fennel :clojure :commonlisp]}]}})
