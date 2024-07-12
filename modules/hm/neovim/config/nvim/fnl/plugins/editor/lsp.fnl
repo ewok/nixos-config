@@ -28,6 +28,7 @@
        {:branch :v3.x
         :event [:BufReadPre :BufNewFile]
         :dependencies [:neovim/nvim-lspconfig
+                       :ray-x/lsp_signature.nvim
                        {1 :SmiteshP/nvim-navic
                         :config #((-> (require :nvim-navic)
                                       (. :setup)) {:highlight true})}
@@ -81,7 +82,7 @@
                        lsp_zero (require :lsp-zero)
                        navic (require :nvim-navic)
                        lsp (require :lspconfig)
-                       cmp (require :cmp)
+                       sig (require :lsp_signature) ;; cmp (require :cmp)
                        signature (fn [args result ctx config]
                                    (let [(bufnr winner) (vim.lsp.handlers.signature_help args
                                                                                          result
@@ -100,14 +101,28 @@
                                      (when (and bufnr winner) [bufnr winner])))]
                    (lsp_zero.on_attach (fn [client bufnr]
                                          (when (client.supports_method :textDocument/signatureHelp)
+                                           (sig.on_attach {:bind true
+                                                           :handler_opts {:border :rounded}
+                                                           :floating_window false
+                                                           :hint_enable true
+                                                           :hint_prefix {:above "↙ "
+                                                                         :current "← "
+                                                                         :below "↖ "}}
+                                                          bufnr)
                                            (tset vim.lsp.handlers
                                                  :textDocument/signatureHelp
                                                  (vim.lsp.with signature
                                                    {}))
-                                           (vim.api.nvim_create_autocmd [:CursorHoldI]
-                                                                        {:buffer bufnr
-                                                                         :callback #(when (not (cmp.get_selected_entry))
-                                                                                      (vim.lsp.buf.signature_help))}))
+                                           (map :i :<C-S>
+                                                #(vim.lsp.buf.signature_help)
+                                                {:buffer bufnr :noremap true}
+                                                "[lsp] Show signature")
+                                           ;;(vim.api.nvim_create_autocmd [:CursorHoldI]
+                                           ;;                             {:buffer bufnr
+                                           ;;                              :callback #(when (not (cmp.visible))
+                                           ;;                              ;:callback #(when (not (cmp.get_selected_entry))
+                                           ;;                                           (vim.lsp.buf.signature_help))})
+                                           )
                                          (when client.server_capabilities.documentSymbolProvider
                                            (navic.attach client bufnr))
                                          (map :n :<leader>cdw

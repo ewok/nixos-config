@@ -6,7 +6,8 @@
                    (tset vim.g "conjure#mapping#prefix" :<leader>c)
                    (tset vim.g "conjure#mapping#def_word" :g)
                    (tset vim.g "conjure#mapping#doc_word" :h))})
- (pack :guns/vim-sexp {:ft [:python :clojure :fennel :lua]
+ (pack :guns/vim-sexp {:dependencies [:tpope/vim-repeat]
+                       :ft [:python :clojure :fennel :lua]
                        :init #(let [conf (require :conf)]
                                 (set vim.g.sexp_filetypes
                                      (table.concat conf.lisp_langs ","))
@@ -41,12 +42,12 @@
                                       :sexp_insert_at_list_tail :g>
                                       :sexp_splice_list :dsf
                                       :sexp_convolute :g?
-                                      :sexp_raise_list ""
-                                      :sexp_raise_element ""
-                                      :sexp_swap_list_backward ""
-                                      :sexp_swap_list_forward ""
-                                      :sexp_swap_element_backward ""
-                                      :sexp_swap_element_forward ""
+                                      :sexp_raise_list :gfr
+                                      :sexp_raise_element :ger
+                                      :sexp_swap_list_backward :gfh
+                                      :sexp_swap_list_forward :gfl
+                                      :sexp_swap_element_backward :geh
+                                      :sexp_swap_element_forward :gel
                                       :sexp_emit_head_element ""
                                       :sexp_emit_tail_element ""
                                       :sexp_capture_prev_element ""
