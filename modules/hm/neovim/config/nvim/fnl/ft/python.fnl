@@ -7,14 +7,21 @@
                         (set vim.opt_local.tabstop 4)
                         (set vim.opt_local.softtabstop 4)
                         (when wk-ok?
-                          (wk.register {:c {:name "Connect[conjure]"}
-                                        :ec {:name "Eval Comment[conjure]"}
-                                        :e {:name "Eval[conjure]"}
-                                        :l {:name "Log[conjure]"}
-                                        :r {:name "Reset[conjure]"}}
-                                       {:prefix :<leader>c
-                                        :mode :n
-                                        :buffer ev.buf}))
+                          (wk.add [{1 :<leader>cc
+                                    :buffer ev.buf
+                                    :group "Connect[conjure]"}
+                                   {1 :<leader>ce
+                                    :buffer ev.buf
+                                    :group "Eval[conjure]"}
+                                   {1 :<leader>cec
+                                    :buffer ev.buf
+                                    :group "Eval Comment[conjure]"}
+                                   {1 :<leader>cl
+                                    :buffer ev.buf
+                                    :group "Log[conjure]"}
+                                   {1 :<leader>cr
+                                    :buffer ev.buf
+                                    :group "Reset[conjure]"}]))
                         (lib.map :n :<leader>cv :<cmd>VenvSelect<cr>
                                  {:noremap true :buffer true}
                                  "Select VirtualEnv"))))

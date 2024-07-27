@@ -19,9 +19,10 @@
              :GpUnitTests]
        :init #(let [wk (require :which-key)
                     md {:noremap true :silent true :nowait true}]
-                (wk.register {:g {:name "generate into new .."}
-                              :w {:name :Whisper}}
-                             {:mode [:i :n :v] :prefix :<C-g>})
+                (wk.add [{1 :<C-g>g
+                          :name "generate into new .."
+                          :mode [:i :n :v]}
+                         {1 :<C-g>w :name :Whisper :mode [:i :n :v]}])
                 (do
                   (map [:n :i] :<C-g>c :<cmd>GpChatNew<cr> md "New Chat")
                   (map [:n :i] :<C-g>t :<cmd>GpChatToggle<cr> md "Toggle Chat")

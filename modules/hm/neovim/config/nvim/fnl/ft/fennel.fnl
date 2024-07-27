@@ -1,23 +1,30 @@
 (local lib (require :lib))
 
-(lib.reg_ft :fennel (fn [ev]
-                      (let [(wk-ok? wk) (pcall require :which-key)]
-                        (set vim.opt_local.expandtab true)
-                        (set vim.opt_local.shiftwidth 2)
-                        (set vim.opt_local.tabstop 2)
-                        (set vim.opt_local.softtabstop 2)
-                        (when wk-ok?
-                          (wk.register {:ec {:name "Eval Comment[conjure]"}
-                                        :e {:name "Eval[conjure]"}
-                                        :l {:name "Log[conjure]"}
-                                        :r {:name "Reset[conjure]"}
-                                        :t {:name "Test[conjure]"}
-                                        :p {1 :<cmd>FnlPeek<cr>
-                                            2 "[fnl] Convert buffer"
-                                            :noremap true}}
-                                       {:prefix :<leader>c
-                                        :mode :n
-                                        :buffer ev.buf})))))
+(lib.reg_ft :fennel
+            (fn [ev]
+              (let [(wk-ok? wk) (pcall require :which-key)]
+                (set vim.opt_local.expandtab true)
+                (set vim.opt_local.shiftwidth 2)
+                (set vim.opt_local.tabstop 2)
+                (set vim.opt_local.softtabstop 2)
+                (when wk-ok?
+                  (wk.add [{1 :<leader>ce
+                            :buffer ev.buf
+                            :group "Eval[conjure]"}
+                           {1 :<leader>cec
+                            :buffer ev.buf
+                            :group "Eval Comment[conjure]"}
+                           {1 :<leader>cl :buffer ev.buf :group "Log[conjure]"}
+                           {1 :<leader>cp
+                            2 :<cmd>FnlPeek<cr>
+                            :buffer ev.buf
+                            :desc "[fnl] Convert buffer"}
+                           {1 :<leader>cr
+                            :buffer ev.buf
+                            :group "Reset[conjure]"}
+                           {1 :<leader>ct
+                            :buffer ev.buf
+                            :group "Test[conjure]"}])))))
 
 (lib.reg_lsp :fennel_ls {:fennel-ls {:extra-globals :vim}})
 

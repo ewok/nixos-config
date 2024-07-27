@@ -107,9 +107,6 @@
                                     (each [_ x (ipairs conf.lisp_langs)]
                                       (reg-ft x
                                               #(do
-                                                 (map! :n :m
-                                                       "<cmd>WhichKey m<cr>"
-                                                       {:buffer true} :Menu)
                                                  (map! :n :mh #(head:activate)
                                                        {:buffer true}
                                                        "Move Head")

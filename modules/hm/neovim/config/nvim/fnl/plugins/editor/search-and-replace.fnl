@@ -20,19 +20,6 @@
                 :desc "Find and Replace [global]"}]})
  (pack :chrisgrieser/nvim-rip-substitute
        {:cmd [:RipSubstitute]
-        :init #(do
-                 (map :n :MR (fn []
-                               vim.cmd
-                               (.. ":RipSubstitute ("
-                                   (string.gsub (vim.fn.getreg "/") "[\\<>]" "")
-                                   ")<cr>"))
-                      {:noremap true :expr true})
-                 (map :v :MR (fn []
-                               vim.cmd
-                               (.. ":RipSubstitute ("
-                                   (string.gsub (vim.fn.getreg "/") "[\\<>]" "")
-                                   ")<cr>"))
-                      {:noremap true :expr true}))
         :config #(let [rs (require :rip-substitute)]
                    (rs.setup {:keymaps {:confirm :<c-l>
                                         :abort :<esc>

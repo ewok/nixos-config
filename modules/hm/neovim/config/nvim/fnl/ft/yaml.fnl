@@ -28,10 +28,9 @@
                            {:noremap true :buffer ev.buf}
                            "Check for deprecations")
                       (when wk_ok?
-                        (wk.register {:k {:name "[ft] Kustomize"}}
-                                     {:prefix :<leader>c
-                                      :mode :n
-                                      :buffer ev.buf})))))
+                        (wk.add {1 :<leader>k
+                                 :name "[ft] Kustomize"
+                                 :buffer ev.buf})))))
 
 (lib.reg_ft_once :yaml
                  #(let [null-ls (require :null-ls)]
