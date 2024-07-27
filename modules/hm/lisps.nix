@@ -14,6 +14,8 @@ in
       clj-kondo
       babashka-unwrapped
       leiningen
+      jdk
+      nodejs
     ];
     home.file.".clojure/deps.edn".text = ''
       {:deps {org.clojure/clojure {:mvn/version "1.11.3"}}
