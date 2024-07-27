@@ -208,6 +208,7 @@
                   elif [ "$1" == "s" ]; then
                     CMD="switch"
                   else
+                    echo "'$1' wrong, possible b(uild), s(witch)"
                     exit 1
                   fi
 
@@ -220,6 +221,7 @@
                   elif [ "$2" == "dw" ]; then
                     CMD="nix run nix-darwin -- $CMD"
                   else
+                    echo "'$2' wrong, possible options: h(ome), n(ixos), d(droid), dw(darwin)"
                     exit 1
                   fi
                   CMD="$CMD --flake .#$3"
