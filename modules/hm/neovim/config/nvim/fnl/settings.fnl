@@ -80,7 +80,7 @@
         :cursorline true
         :number true
         :foldenable false
-        :wrap false
+        :wrap true
         :list true
         :linebreak true
         :numberwidth 2
