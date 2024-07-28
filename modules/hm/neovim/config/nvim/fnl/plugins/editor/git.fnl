@@ -1,6 +1,7 @@
 (local {: pack : map : reg_ft} (require :lib))
 
-[(pack :FabijanZulj/blame.nvim
+[;;(pack :f-person/git-blame.nvim {:event :VeryLazy})
+ (pack :FabijanZulj/blame.nvim
        {:cmd :BlameToggle
         :keys [{1 :<leader>gb
                 2 #(let [pos (vim.fn.getcurpos)]
@@ -11,7 +12,7 @@
                                             (vim.fn.setpos "." pos)
                                             (vim.cmd "normal! zz"))))
                 :mode [:n]
-                :desc "Blame"}]
+                :desc :Blame}]
         :config #(let [blame (require :blame)]
                    (blame.setup {}))})
  (pack :NeogitOrg/neogit

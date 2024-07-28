@@ -100,7 +100,18 @@
                              :agents [{:name :ChatGPT4 :disable true}
                                       {:name :ChatGPT3-5 :disable true}
                                       {:name :CodeGPT4 :disable true}
-                                      {:name :CodeGPT3-5 :disable true}]
+                                      {:name :CodeGPT3-5 :disable true}
+                                      {:name :CodeGPT4o
+                                       :chat false
+                                       :command true
+                                       :model {:model :gpt-4o
+                                               :temperature 0.8
+                                               :top_p 1}
+                                       :system_prompt (.. "You are an AI working as a code editor.\\n\\n"
+                                                          "Please AVOID COMMENTARY OUTSIDE OF THE SNIPPET RESPONSE.\\n"
+                                                          "START AND END YOUR ANSWER WITH:\\n\\n```{{filetype}}\\n")}
+                                      ]
+
                              :hooks {:CodeReview (fn [gp params]
                                                    (let [template (.. "I have the following code from {{filename}}:\\n\\n"
                                                                       "```{{filetype}}\\n{{selection}}\\n```\\n\\n"
