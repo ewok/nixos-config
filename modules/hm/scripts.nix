@@ -1,6 +1,8 @@
 { config, lib, pkgs, ... }:
-with lib;
 let
+  inherit (lib) mkEnableOption mkIf;
+  inherit (pkgs) writeShellScriptBin;
+
   cfg = config.opt.scripts;
 in
 {
@@ -11,7 +13,7 @@ in
   config = mkIf cfg.enable {
     home.packages =
       let
-        copy-ssm = pkgs.writeShellScriptBin "aws-copy-ssm" ''
+        copy-ssm = writeShellScriptBin "aws-copy-ssm" ''
           # Assign arguments to variables
           SOURCE_AWS_PROFILE=$1
           DESTINATION_AWS_PROFILE=$2
@@ -44,13 +46,13 @@ in
           aws ssm put-parameter --name "$PARAMETER" --value "$value" --profile "$DESTINATION_AWS_PROFILE" --type "SecureString" --overwrite
         '';
 
-        convert = pkgs.writeShellScriptBin "convert-mov" ''
-        PARAM=''${1:-"720:-1"}
-        for v in *.MOV; do
-          ## Remove ext .mov
-          NAME=$(basename -s .MOV "$v")
-          ffmpeg -i "$NAME.MOV" -filter:v scale=$PARAM "''${NAME}_C.MOV"
-        done
+        convert = writeShellScriptBin "convert-mov" ''
+          PARAM=''${1:-"720:-1"}
+          for v in *.MOV; do
+            ## Remove ext .mov
+            NAME=$(basename -s .MOV "$v")
+            ffmpeg -i "$NAME.MOV" -filter:v scale=$PARAM "''${NAME}_C.MOV"
+          done
         '';
       in
       [

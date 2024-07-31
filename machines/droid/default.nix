@@ -1,6 +1,7 @@
-{ config, lib, pkgs, ... }:
+{ config, pkgs, ... }:
 let
   inherit (config) colors theme exchange_api_key openai_token fullName email workEmail authorizedKeys ssh_config;
+
   username = "nix-on-droid";
   homeDirectory = "/data/data/com.termux.nix/files/home";
 in

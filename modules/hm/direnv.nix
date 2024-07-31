@@ -1,6 +1,7 @@
 { config, lib, pkgs, ... }:
-with lib;
 let
+  inherit (lib) mkEnableOption mkIf;
+
   cfg = config.opt.direnv;
 in
 {
@@ -16,8 +17,8 @@ in
     };
 
     home.packages = with pkgs; [
-        direnv
-        nix-direnv
+      direnv
+      nix-direnv
     ];
 
     xdg.configFile."fish/conf.d/99_direnv.fish" = {
@@ -38,4 +39,3 @@ in
     };
   };
 }
-

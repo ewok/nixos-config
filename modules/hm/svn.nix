@@ -1,8 +1,10 @@
 { config, lib, pkgs, ... }:
-with lib;
 let
+  inherit (lib) mkEnableOption mkIf;
+  inherit (pkgs) writeScriptBin;
+
   cfg = config.opt.svn;
-  svn-rm-rm = pkgs.writeScriptBin "svn-rm-rm" ''
+  svn-rm-rm = writeScriptBin "svn-rm-rm" ''
     #!/usr/bin/env bash
     if [[ -n "$(command -v -- svn)" ]]
     then
@@ -14,7 +16,7 @@ let
     $CMD st | grep ! | cut -d! -f2| sed 's/^ *//' | sed 's/^/"/g' | sed 's/$/"/g'  | xargs $CMD rm
   '';
 
-  svn-add-add = pkgs.writeScriptBin "svn-add-add" ''
+  svn-add-add = writeScriptBin "svn-add-add" ''
     #!/usr/bin/env bash
     if [[ -n "$(command -v -- svn)" ]]
     then
@@ -32,13 +34,19 @@ in
   };
 
   config = mkIf cfg.enable {
-    home = {
-      packages = with pkgs; [
-        subversion
-        svn-add-add
-        svn-rm-rm
-      ];
-    };
+    home =
+      {
+        packages =
+          let
+            external = with pkgs; [
+              subversion
+            ];
+          in
+          external ++ [
+            svn-add-add
+            svn-rm-rm
+          ];
+      };
 
     home.file.".subversion/config".text = ''
       [auth]

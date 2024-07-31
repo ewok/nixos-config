@@ -1,8 +1,10 @@
 { config, lib, pkgs, ... }:
-with lib;
 let
+  inherit (lib) mkIf mkEnableOption;
+  inherit (pkgs) writeScriptBin;
+
   cfg = config.opt.bw;
-  bw-reset = pkgs.writeScriptBin "bw-reset" ''
+  bw-reset = writeScriptBin "bw-reset" ''
     #!/usr/bin/env fish
 
     if bw status 2>/dev/null | grep -q '"locked"'
@@ -17,11 +19,15 @@ in
 
   config = mkIf cfg.enable {
 
-    home.packages = with pkgs; [
-      bitwarden-cli
-      # nodePackages_latest.bitwarden-cli
-      bw-reset
-    ];
+    home.packages =
+      let
+        external = with pkgs; [
+          bitwarden-cli
+        ];
+      in
+      external ++ [
+        bw-reset
+      ];
 
     xdg.configFile."fish/conf.d/99_bw.fish" = {
       text = ''

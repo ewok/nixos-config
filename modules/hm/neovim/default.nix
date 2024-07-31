@@ -1,6 +1,7 @@
 { config, lib, pkgs, utils, ... }:
-with lib;
 let
+  inherit (lib) mkOption types mkIf mkEnableOption optionals;
+  inherit (pkgs) fetchurl stdenv autoPatchelfHook symlinkJoin writeShellScriptBin;
 
   cfg = config.opt.nvim;
   dag = config.lib.dag;
@@ -24,7 +25,7 @@ let
   #   nvim -c '$' -c 'startinsert!' "$NOTE"
   # '';
 
-  my-nvim = pkgs.symlinkJoin {
+  my-nvim = symlinkJoin {
     name = "my-neovim";
     paths = [
       pkgs.neovim
@@ -35,11 +36,11 @@ let
     '';
   };
 
-  vim-compile = pkgs.writeShellScriptBin "vim-compile" ''
+  vim-compile = writeShellScriptBin "vim-compile" ''
     ${my-nvim}/bin/nvim --headless --cmd 'lua _G.update=true'
   '';
 
-  clean-cache = pkgs.writeShellScriptBin "nvim-clean-cache" ''
+  clean-cache = writeShellScriptBin "nvim-clean-cache" ''
     set -e
     rm -rf ~/.cache/nvim
   '';
@@ -56,13 +57,13 @@ let
   version = "1.8.25";
   ls-system = "linux_arm";
   hash = "sha256-Gt48FrW9MF4xppmA4TsuEe3iJYn8DrKhtFmb8N7rO+s=";
-  packs = with pkgs; {
+  packs = {
     codeium-lsp = stdenv.mkDerivation
       {
         pname = "codeium-lsp";
         version = "v${version}";
 
-        src = pkgs.fetchurl {
+        src = fetchurl {
           url = "https://github.com/Exafunction/codeium/releases/download/language-server-v${version}/language_server_${ls-system}";
           sha256 = hash;
         };
@@ -137,83 +138,86 @@ in
       ${vim-compile}/bin/vim-compile
     '';
 
-    home.packages = with pkgs; let
-      androidPkgs = optionals cfg.android [ packs.codeium-lsp ];
-      orbPkgs = optionals cfg.orb [ packs.codeium-lsp ];
-    in
-    [
-      my-nvim
-      vim-compile
-      lazygit
-      clean-cache
-      ripgrep
-      fd
-      curl
-      gzip
+    home.packages =
+      let
+        androidPkgs = optionals cfg.android [ packs.codeium-lsp ];
+        orbPkgs = optionals cfg.orb [ packs.codeium-lsp ];
+        external = with pkgs; [
+          lazygit
+          ripgrep
+          fd
+          curl
+          gzip
 
-      python3
+          python3
 
-      # Langs
-      gcc # required for treesitter
-      # clang
-      # go
-      # gnumake
-      # cargo
-      # nodejs
+          # Langs
+          gcc # required for treesitter
+          # clang
+          # go
+          # gnumake
+          # cargo
+          # nodejs
 
-      tree-sitter
+          tree-sitter
 
-      # LSP:
-      clojure-lsp
-      gopls
-      # ltex-ls
-      lua-language-server
-      # nil
-      nixd
-      # nodePackages.bash-language-server
-      pyright
-      fennel-ls
-      terraform-ls
-      vscode-langservers-extracted
-      yaml-language-server
-      zk
+          # LSP:
+          clojure-lsp
+          gopls
+          # ltex-ls
+          lua-language-server
+          # nil
+          nixd
+          # nodePackages.bash-language-server
+          pyright
+          fennel-ls
+          terraform-ls
+          vscode-langservers-extracted
+          yaml-language-server
+          zk
 
-      # Linter
-      # ansible-lint
-      clj-kondo
-      # codespell
-      # hadolint   # too massive on macos
-      # markdownlint-cli
-      # pylint
-      # revive
-      # staticcheck
-      tflint
-      tfsec
-      # typos
-      # yamllint
+          # Linter
+          # ansible-lint
+          clj-kondo
+          # codespell
+          # hadolint   # too massive on macos
+          # markdownlint-cli
+          # pylint
+          # revive
+          # staticcheck
+          tflint
+          tfsec
+          # typos
+          # yamllint
 
-      # FMT
-      black
-      fnlfmt
-      # gofmt
-      # joker
-      jq
-      nixpkgs-fmt
-      # nodePackages.sql-formatter
-      nodePackages.prettier
-      # python311Packages.autopep8
-      shfmt
-      # statix
-      stylua
-      # yamllint
-      # yq
-      zprint
-      shellharden
-      shfmt
+          # FMT
+          black
+          fnlfmt
+          # gofmt
+          # joker
+          jq
+          nixpkgs-fmt
+          # nodePackages.sql-formatter
+          nodePackages.prettier
+          # python311Packages.autopep8
+          shfmt
+          # statix
+          stylua
+          # yamllint
+          # yq
+          zprint
+          shellharden
+          shfmt
 
-      # Manual
-      # manix
-    ] ++ androidPkgs ++ orbPkgs;
+          # Manual
+          # manix
+        ];
+      in
+      [
+        my-nvim
+        vim-compile
+        clean-cache
+      ] ++ external ++ androidPkgs ++ orbPkgs;
     xdg = {
       configFile = {
 

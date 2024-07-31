@@ -1,6 +1,7 @@
 { config, lib, pkgs, ... }:
-with lib;
 let
+  inherit (lib) mkEnableOption mkIf readFile;
+
   cfg = config.opt.vifm;
   open = pkgs.writeShellScriptBin "open" ''
     #!/usr/bin/env bash
@@ -38,21 +39,27 @@ in
   };
 
   config = mkIf cfg.enable {
-    # home-manager.config = {
-    home.packages = with pkgs; [
-      vifm
-      unzip
-      p7zip
-      sshfs
-      curlftpfs
-      ts
-      archivemount
-      dpkg
-      viu
-      trash-cli
-      open
-      xdg-open
-    ];
+    home.packages =
+      let
+        external = with pkgs; [
+          vifm
+          unzip
+          p7zip
+          sshfs
+          curlftpfs
+          ts
+          archivemount
+          dpkg
+          viu
+          trash-cli
+        ];
+
+      in
+      external
+      ++ [
+        open
+        xdg-open
+      ];
 
     xdg = {
       configFile = {
@@ -82,5 +89,4 @@ in
       };
     };
   };
-  # };
 }

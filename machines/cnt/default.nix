@@ -1,6 +1,7 @@
 { config, pkgs, ... }:
 let
   inherit (config) username colors theme exchange_api_key openai_token fullName email workEmail authorizedKeys ssh_config;
+
   homeDirectory = "/home/${username}";
 in
 {

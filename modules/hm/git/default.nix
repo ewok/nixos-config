@@ -1,6 +1,8 @@
 { config, lib, pkgs, utils, ... }:
-with lib;
 let
+  inherit (lib) mkEnableOption mkIf mkOption types;
+  inherit (pkgs) writeShellScriptBin symlinkJoin;
+
   cfg = config.opt.git;
   vars =
     {
@@ -11,7 +13,7 @@ let
       conf.full_name = cfg.fullName;
     };
 
-  git-sign-rebase = pkgs.writeShellScriptBin "git-sign-rebase" ''
+  git-sign-rebase = writeShellScriptBin "git-sign-rebase" ''
     if [ "$#" -eq 0 ]; then
       echo "Insert commit to rebase"
       exit 2
@@ -19,7 +21,7 @@ let
     git rebase --exec 'git commit --amend --no-edit -n -S' -i $1
   '';
 
-  git-env = pkgs.symlinkJoin {
+  git-env = symlinkJoin {
     name = "git-env";
     paths = with pkgs; [ gomp gitstats ];
     postBuild = ''
@@ -27,7 +29,7 @@ let
       ln -s $out/bin/gitstats $out/bin/git-stats
     '';
   };
-  gg = pkgs.symlinkJoin {
+  gg = symlinkJoin {
     name = "gg";
     paths = [ pkgs.lazygit ];
     postBuild = ''
@@ -46,21 +48,27 @@ in
   };
 
   config = mkIf cfg.enable {
-    home = {
-      packages = with pkgs; [
-        git
-        gitAndTools.git-crypt
-        gitAndTools.git-extras
-        gitAndTools.git-filter-repo
-        gitAndTools.git-trim
-        # gitAndTools.git-machete
-        # gitAndTools.git-octopus
-        gitAndTools.git-reparent
-        git-sign-rebase
-        git-env
-        gg
-      ];
-    };
+    home =
+      let
+        external = with pkgs; [
+          git
+          gitAndTools.git-crypt
+          gitAndTools.git-extras
+          gitAndTools.git-filter-repo
+          gitAndTools.git-trim
+          # gitAndTools.git-machete
+          # gitAndTools.git-octopus
+          gitAndTools.git-reparent
+        ];
+      in
+      {
+        packages =
+          external ++ [
+            git-sign-rebase
+            git-env
+            gg
+          ];
+      };
     xdg = {
       configFile = {
         "fish/conf.d/90_git-aliases.fish".source = ./config/90_git-aliases.fish;

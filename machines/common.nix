@@ -1,6 +1,7 @@
 { lib, ... }:
-with lib;
 let
+  inherit (lib) types mkOption;
+
   colors = {
 
     # # Catpuccin Frappe

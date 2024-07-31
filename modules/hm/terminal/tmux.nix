@@ -1,9 +1,11 @@
 { config, lib, pkgs, utils, ... }:
-with lib;
 let
+  inherit (lib) mkIf optionals;
+  inherit (pkgs) writeScriptBin;
+
   cfg = config.opt.terminal;
 
-  tm = pkgs.writeScriptBin "tm" ''
+  tm = writeScriptBin "tm" ''
     #!${pkgs.bash}/bin/bash
     if [[ $1 == "" ]];then
       SESSION="main"
@@ -13,7 +15,7 @@ let
     tmux attach -t $SESSION || tmux new -s $SESSION
   '';
 
-  tssh = pkgs.writeScriptBin "tssh" ''
+  tssh = writeScriptBin "tssh" ''
     #!${pkgs.bash}/bin/bash
     argv=( "$@" )
     C=1
@@ -29,7 +31,7 @@ let
     fi
   '';
 
-  zoxide-rm = pkgs.writeScriptBin "zoxide-rm" ''
+  zoxide-rm = writeScriptBin "zoxide-rm" ''
     #!${pkgs.bash}/bin/bash
     EXP=$(echo "$1" | sed "s|~|$HOME|g")
     ${pkgs.zoxide}/bin/zoxide remove "$EXP"
@@ -45,21 +47,24 @@ let
 in
 {
   config = mkIf (cfg.enable && cfg.tmux.enable) {
-    home.packages = with pkgs; let
-      optionalPkgs = optionals cfg.tmux.install [ tmux ];
-    in
-    [
-      sesh
-      zoxide
-      zoxide-rm
-      fzf
-      gnugrep
-      procps
-      tm
-      tssh
-      xsel
-      bc
-    ] ++ optionalPkgs;
+    home.packages =
+      let
+        optionalPkgs = optionals cfg.tmux.install [ pkgs.tmux ];
+        external = with pkgs; [
+          sesh
+          zoxide
+          fzf
+          gnugrep
+          procps
+          xsel
+          bc
+        ];
+      in
+      [
+        zoxide-rm
+        tm
+        tssh
+      ] ++ external ++ optionalPkgs;
     xdg.configFile."tmux/tmux.conf".source = utils.templateFile "tmux.conf" ./config/tmux.conf vars;
     xdg.configFile."tmux/tmux_blocks" = {
       source = utils.templateFile "tmux_blocks" ./config/tmux_blocks vars;

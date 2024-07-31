@@ -1,6 +1,7 @@
 { config, lib, pkgs, ... }:
-with lib;
 let
+  inherit (lib) mkEnableOption mkIf mkOption types;
+
   cfg = config.opt.ssh;
 in
 {

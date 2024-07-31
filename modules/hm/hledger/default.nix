@@ -1,6 +1,7 @@
 { config, lib, pkgs, utils, ... }:
-with lib;
 let
+  inherit (lib) mkEnableOption mkOption mkIf types;
+
   cfg = config.opt.hledger;
   vars = {
     conf.exchange.api_key = cfg.exchange_api_key;

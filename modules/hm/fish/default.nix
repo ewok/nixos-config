@@ -1,5 +1,7 @@
 { config, lib, pkgs, utils, ... }:
 let
+  inherit (lib) mkEnableOption mkOption types;
+
   cfg = config.opt.fish;
   vars = {
     darwin = cfg.darwin;
@@ -8,7 +10,7 @@ let
   };
 in
 {
-  options.opt.fish = with lib; {
+  options.opt.fish = {
     enable = mkEnableOption "fish";
     darwin = mkOption {
       type = types.bool;

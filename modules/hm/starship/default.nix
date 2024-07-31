@@ -1,6 +1,7 @@
 { config, lib, pkgs, ... }:
-with lib;
 let
+  inherit (lib) mkEnableOption mkIf;
+
   cfg = config.opt.starship;
 in
 {
@@ -9,18 +10,16 @@ in
   };
 
   config = mkIf cfg.enable {
-    # home-manager.config = { pkgs, ... }: {
-      home = {
-        packages = with pkgs; [
-          starship
-        ];
+    home = {
+      packages = with pkgs; [
+        starship
+      ];
+    };
+    xdg = {
+      configFile = {
+        "fish/conf.d/99_starship.fish".source = ./config/99_starship.fish;
+        "starship.toml".source = ./config/starship.toml;
       };
-      xdg = {
-        configFile = {
-          "fish/conf.d/99_starship.fish".source = ./config/99_starship.fish;
-          "starship.toml".source = ./config/starship.toml;
-        };
-      };
-    # };
+    };
   };
 }

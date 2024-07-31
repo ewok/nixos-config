@@ -1,6 +1,7 @@
 { config, lib, utils, pkgs, ... }:
-with lib;
 let
+  inherit (lib) mkIf;
+
   cfg = config.opt.terminal;
   vars = {
     steamdeck = cfg.steamdeck;

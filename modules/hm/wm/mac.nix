@@ -1,11 +1,13 @@
 { config, lib, pkgs, ... }:
-with lib;
 let
+  inherit (lib) mkIf;
+  inherit (pkgs) writeScriptBin system;
+
   cfg = config.opt.wm;
   # spacebar-sh = pkgs.writeScriptBin "spacebar.sh" ''
   #   ${readFile ./config/macos/spacebar.sh}
   # '';
-  home-profile = pkgs.writeScriptBin "home-profile" ''
+  home-profile = writeScriptBin "home-profile" ''
     displayplacer \
       "id:D6C2035F-7377-4A18-A1CD-BC0BA930526E res:1920x1080 \
       hz:75 color_depth:8 enabled:true scaling:off origin:(0,0) degree:0" \
@@ -13,7 +15,7 @@ let
       hz:120 color_depth:8 enabled:true scaling:on origin:(217,-982) degree:0" \
   '';
 
-  work-profile = pkgs.writeScriptBin "work-profile" ''
+  work-profile = writeScriptBin "work-profile" ''
     displayplacer "id:D6C2035F-7377-4A18-A1CD-BC0BA930526E res:1920x1080 \
     hz:75 color_depth:8 enabled:true scaling:off origin:(0,0) degree:0" \
     "id:37D8832A-2D66-02CA-B9F7-8F30A301B230 res:1512x982 \
@@ -21,7 +23,7 @@ let
   '';
 in
 {
-  config = mkIf (cfg.enable && (pkgs.system == "aarch64-darwin"))
+  config = mkIf (cfg.enable && (system == "aarch64-darwin"))
     {
       home.packages = [
         # spacebar-sh

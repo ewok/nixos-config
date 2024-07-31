@@ -1,6 +1,7 @@
-{ config, lib, pkgs, utils, ... }:
-with lib;
+{ config, lib, utils, ... }:
 let
+  inherit (lib) mkIf;
+
   cfg = config.opt.wm;
   # spacebar-sh = pkgs.writeScriptBin "spacebar.sh" ''
   #   ${readFile ./config/macos/spacebar.sh}

@@ -1,8 +1,8 @@
-{ config, lib, pkgs, utils, ... }:
-with lib;
+{ config, lib, pkgs, ... }:
 let
-  cfg = config.opt.openvpn;
+  inherit (lib) mkEnableOption mkIf;
 
+  cfg = config.opt.openvpn;
 in
 {
   options.opt = {
