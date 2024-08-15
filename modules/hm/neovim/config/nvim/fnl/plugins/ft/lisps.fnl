@@ -107,17 +107,17 @@
                                     (each [_ x (ipairs conf.lisp_langs)]
                                       (reg-ft x
                                               #(do
-                                                 (map! :n :mh #(head:activate)
+                                                 (map! :n :gmh #(head:activate)
                                                        {:buffer true}
                                                        "Move Head")
-                                                 (map! :n :ml #(tail:activate)
+                                                 (map! :n :gml #(tail:activate)
                                                        {:buffer true}
                                                        "Move Tail")
-                                                 (map! :n :me
+                                                 (map! :n :gme
                                                        #(element:activate)
                                                        {:buffer true}
                                                        "Move Element")
-                                                 (map! :n :mf #(form:activate)
+                                                 (map! :n :gmf #(form:activate)
                                                        {:buffer true}
                                                        "Move Form"))
                                               :lisp))))})]

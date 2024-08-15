@@ -76,10 +76,10 @@
  (pack :nvim-treesitter/nvim-treesitter-textobjects
        {:config #(let [configs (require :nvim-treesitter.configs)
                        ts_repeat_move (require :nvim-treesitter.textobjects.repeatable_move)]
-                   (vim.keymap.set [:n :x :o] ";"
-                                   ts_repeat_move.repeat_last_move)
-                   (vim.keymap.set [:n :x :o] ","
-                                   ts_repeat_move.repeat_last_move_opposite)
+                   ; (vim.keymap.set [:n :x :o] ";"
+                   ;                 ts_repeat_move.repeat_last_move)
+                   ; (vim.keymap.set [:n :x :o] ","
+                   ;                 ts_repeat_move.repeat_last_move_opposite)
                    (configs.setup {:textobjects {:select {:enable true
                                                           :lookahead true
                                                           :keymaps {:a= {:query "@assignment.outer"
@@ -123,8 +123,8 @@
                                                                     :ic {:query "@class.inner"
                                                                          :desc "Select inner part of a class"}}}
                                                  :swap {:enable true
-                                                        :swap_next {:m> "@parameter.inner"}
-                                                        :swap_previous {:m< "@parameter.inner"}}
+                                                        :swap_next {:gm> "@parameter.inner"}
+                                                        :swap_previous {:gm< "@parameter.inner"}}
                                                  :move {:enable true
                                                         :set_jumps true
                                                         :goto_next_start {"]f" {:query "@call.outer"
@@ -170,6 +170,7 @@
                                    :auto_install true
                                    :matchup {:enable false}
                                    :highlight {:enable true
+                                               :disable [:clojure]
                                                :additional_vim_regex_highlighting conf.treesitter_nvim_highlighting}
                                    :indent {:enable true
                                             :disable [:yaml :python :html :vue]}
