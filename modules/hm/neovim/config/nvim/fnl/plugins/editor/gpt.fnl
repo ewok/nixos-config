@@ -96,7 +96,7 @@
                        "[gpt] Code Unit tests")))
        :config #(let [gp (require :gp)]
                   (gp.setup {:openai_api_key conf.openai_token
-                             :image_dir ""
+                             :image {:store_dir ""}
                              :agents [{:name :ChatGPT4 :disable true}
                                       {:name :ChatGPT3-5 :disable true}
                                       {:name :CodeGPT4 :disable true}
@@ -109,9 +109,7 @@
                                                :top_p 1}
                                        :system_prompt (.. "You are an AI working as a code editor.\\n\\n"
                                                           "Please AVOID COMMENTARY OUTSIDE OF THE SNIPPET RESPONSE.\\n"
-                                                          "START AND END YOUR ANSWER WITH:\\n\\n```{{filetype}}\\n")}
-                                      ]
-
+                                                          "START AND END YOUR ANSWER WITH:\\n\\n```{{filetype}}\\n")}]
                              :hooks {:CodeReview (fn [gp params]
                                                    (let [template (.. "I have the following code from {{filename}}:\\n\\n"
                                                                       "```{{filetype}}\\n{{selection}}\\n```\\n\\n"
