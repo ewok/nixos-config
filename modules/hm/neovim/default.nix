@@ -158,6 +158,8 @@ in
           # gnumake
           # cargo
           # nodejs
+          jdt-language-server
+          gnumake
 
           tree-sitter
 
