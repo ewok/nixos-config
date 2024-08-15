@@ -1,6 +1,7 @@
 { config, pkgs, ... }:
 let
   inherit (config) colors theme username exchange_api_key openai_token fullName email workEmail authorizedKeys;
+  inherit (pkgs) writeShellScriptBin;
 
   homeDirectory = "/home/${username}";
   modules = map (n: ../../modules/hm + "/${n}") (builtins.attrNames (builtins.readDir ../../modules/hm));
@@ -83,6 +84,15 @@ in
           export ORB=true
           export OPEN_CMD=open
         '';
+
+        home.packages =
+          let
+            docker = writeShellScriptBin "docker" ''
+              mac docker $@
+            '';
+          in
+          [ docker ];
+
       };
     };
   };
