@@ -45,6 +45,7 @@ in
         htop
         tldr
         zip
+        whois
 
         # Move to backup module
         rclone
