@@ -35,4 +35,4 @@
 
 (lib.reg_ft_once :clojure
                  #(let [null-ls (require :null-ls)]
-                    (null-ls.register [null-ls.builtins.formatting.zprint])))
+                    (null-ls.register [null-ls.builtins.formatting.joker])))

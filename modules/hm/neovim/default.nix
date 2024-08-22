@@ -174,7 +174,7 @@ in
           pyright
           fennel-ls
           terraform-ls
-          vscode-langservers-extracted
+          # vscode-langservers-extracted
           yaml-language-server
           zk
 
@@ -208,6 +208,7 @@ in
           # yamllint
           # yq
           zprint
+          joker
           shellharden
           shfmt
 
