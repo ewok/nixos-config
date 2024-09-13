@@ -25,10 +25,27 @@ let
   #   nvim -c '$' -c 'startinsert!' "$NOTE"
   # '';
 
+  nvim = pkgs.writeShellScriptBin "nvim" ''
+    set -e
+    if [ "$#" -eq 0 ]; then
+      ${pkgs.neovim}/bin/nvim "$@"
+    else
+      if [ -f "$1" ]; then
+        if [ $(stat -c%s "$1") -gt 2097152 ]; then
+          ${pkgs.neovim}/bin/nvim -u NONE "$@"
+        else
+          ${pkgs.neovim}/bin/nvim "$@"
+        fi
+      else
+        ${pkgs.neovim}/bin/nvim "$@"
+      fi
+    fi
+  '';
+
   my-nvim = symlinkJoin {
     name = "my-neovim";
     paths = [
-      pkgs.neovim
+      nvim
     ];
     postBuild = ''
       ln -s $out/bin/nvim $out/bin/vim
@@ -53,6 +70,7 @@ let
     conf.orb = cfg.orb;
     conf.remote = cfg.remote;
   };
+
   # https://github.com/Exafunction/codeium/releases
   version = "1.8.25";
   ls-system = "linux_arm";

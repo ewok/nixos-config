@@ -16,7 +16,7 @@
                                                (vim.cmd "setlocal inccommand=")
                                                (vim.cmd "setlocal wrap")
                                                (vim.cmd "syntax off")
-                                               (vim.cmd :IndentBlanklineDisable)
+                                               ;(vim.cmd :IndentBlanklineDisable)
                                                (set vim.opt_local.foldmethod
                                                     :manual)
                                                (set vim.opt_local.spell false)
