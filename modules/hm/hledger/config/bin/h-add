@@ -1,4 +1,4 @@
 
-tmux split-window -v -l 75% viddy -t -n 5 -d h-bs
+tmux split-window -v -l 35% viddy -t -n 5 -d h-bs
 tmux split-window -h -l 44% viddy -t -n 5 -d h-budget -XUSD
 h-edit

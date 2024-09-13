@@ -71,7 +71,7 @@ function __kubectl_abbr_init
 
     abbr -a krun-box 'kubectl run --rm -i --tty busybox --image=yauritux/busybox-curl --restart=Never -- sh'
 
-    abbr -a kwk 'watch -n5 kubectl get kustomizations.kustomize.toolkit.fluxcd.io -A'
+    abbr -a kwk 'watch -n 5 kubectl get kustomizations.kustomize.toolkit.fluxcd.io -A'
     abbr -a frs 'flux reconcile source git flux-system'
 
 end

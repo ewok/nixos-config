@@ -108,9 +108,9 @@
             ./machines/common.nix
             ./machines/nixos
             home-manager.nixosModules.default
-            {
-              nixpkgs.overlays = overlays;
-            }
+            # {
+            #   nixpkgs.overlays = overlays;
+            # }
           ];
         };
 
@@ -125,9 +125,9 @@
             ./machines/common.nix
             ./machines/orb
             home-manager.nixosModules.default
-            {
-              nixpkgs.overlays = overlays;
-            }
+            # {
+            #   nixpkgs.overlays = overlays;
+            # }
           ];
         };
 
