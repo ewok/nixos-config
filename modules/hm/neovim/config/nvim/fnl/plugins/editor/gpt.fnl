@@ -1,4 +1,4 @@
-(local {: pack : map} (require :lib))
+(local {: pack : map : reg_ft} (require :lib))
 (local conf (require :conf))
 
 (pack :robitx/gp.nvim
@@ -16,7 +16,8 @@
              :GpImage
              :GpNextAgent
              :GpCodeReview
-             :GpUnitTests]
+             :GpUnitTests
+             :GpCommitMessage]
        :init #(let [wk (require :which-key)
                     md {:noremap true :silent true :nowait true}]
                 (wk.add [{1 :<C-g>g
@@ -93,7 +94,16 @@
                   (map :v :<leader>c1 ":<C-u>'<,'>GpCodeReview<cr>" md
                        "[gpt] Code review")
                   (map :v :<leader>c2 ":<C-u>'<,'>GpUnitTests<cr>" md
-                       "[gpt] Code Unit tests")))
+                       "[gpt] Code Unit tests")
+                  (reg_ft :NeogitDiffView
+                          (fn [ev]
+                            (do
+                              (map :n :cc ":%GpCommitMessage<cr>"
+                                   {:noremap true
+                                    :silent true
+                                    :nowait true
+                                    :buffer ev.buf}
+                                   "[gpt] Code Unit tests"))))))
        :config #(let [gp (require :gp)]
                   (gp.setup {:openai_api_key conf.openai_token
                              :image {:store_dir ""}
@@ -125,4 +135,28 @@
                                                         agent (gp.get_command_agent)]
                                                     (gp.Prompt params
                                                                gp.Target.enew
-                                                               agent template)))}}))})
+                                                               agent template)))
+                                     :CommitMessage (fn [gp params]
+                                                      (let [template (.. "suggest commit message based on the following diff:\\n"
+                                                                         "{{selection}}\\n"
+                                                                         "commit messages should:\\n"
+                                                                         "- follow conventional commits\\n"
+                                                                         "- have goal at the end\\n"
+                                                                         "- not set goal if type = chore\\n"
+                                                                         "- message structure must be:\\n"
+                                                                         "--START OF TEMPLATE--\\n"
+                                                                         "<type>[scope]: <description>\\n\\n"
+                                                                         "[body with details, one per line, started with a minus sign]\\n\\n"
+                                                                         "[goal]\\n"
+                                                                         "--END OF TEMPLATE--\\n\\n"
+                                                                         "example:\\n"
+                                                                         "fix(authentication): add password regex pattern\\n\\n"
+                                                                         "- `extends` key in config file is now used for extending other config files\\n"
+                                                                         "- passwords now are following security protocol\\n\\n"
+                                                                         "goal: enhance security level"
+                                                                         )
+                                                            agent (gp.get_command_agent)]
+                                                        (gp.Prompt params
+                                                                   (gp.Target.vnew :NeogitDiffViewCommit)
+                                                                   agent
+                                                                   template)))}}))})
