@@ -16,9 +16,9 @@
                    (gl.setup {:mappings :<localleader>gy}))
         :opts {:mappings nil}})
  (pack :axieax/urlview.nvim {:cmd [:UrlView]
-                             :keys [{1 :<leader>ou
+                             :keys [{1 :<leader>fu
                                      2 ":UrlView buffer picker=telescope<cr>"
                                      :mode :n
                                      :silent true
-                                     :desc "Open URL"}]
+                                     :desc "Find URL"}]
                              :config true})]

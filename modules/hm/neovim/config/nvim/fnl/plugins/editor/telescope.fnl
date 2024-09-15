@@ -28,21 +28,21 @@
                       {:silent true} "Find files in the current workspace")
                  (map :n :<leader>ff "<CMD>Telescope live_grep<CR>"
                       {:silent true} "Find string in the current workspace")
-                 (map :n :<leader>fh "<CMD>Telescope oldfiles<CR>"
-                      {:silent true} "Find telescope history")
+                 ;(map :n :<leader>fh "<CMD>Telescope oldfiles<CR>"
+                 ;     {:silent true} "Find telescope history")
                  (map :n :<leader>f. "<CMD>Telescope resume<CR>" {:silent true}
                       "Find last lookup")
-                 (map :n :<leader>fM "<CMD>Telescope marks<CR>" {:silent true}
+                 (map :n :<leader>fm "<CMD>Telescope marks<CR>" {:silent true}
                       "Find marks in the current workspace")
                  (map :n :<leader>f/
                       "<CMD>Telescope current_buffer_fuzzy_find<CR>"
                       {:silent true} "Find string in current buffer")
-                 (map :n "<leader>f:" "<cmd>Telescope command_history<cr>"
-                      {:silent true} "Find all command history")
+                 ;(map :n "<leader>f:" "<cmd>Telescope command_history<cr>"
+                 ;     {:silent true} "Find all command history")
+                 (map :n :<leader>fh "<cmd>Telescope help_tags<CR>"
+                      {:silent true} "Help tags")
                  (map :n :<leader>fss "<cmd>Telescope vim_options<CR>"
                       {:silent true} :Settings)
-                 (map :n :<leader>fH "<cmd>Telescope help_tags<CR>"
-                      {:silent true} "Help tags")
                  (map :n :<leader>fsa "<cmd>Telescope autocommands<CR>"
                       {:silent true} :Autocommands)
                  (map :n :<leader>fsf "<cmd>Telescope filetypes<CR>"
@@ -55,7 +55,7 @@
                       {:silent true} :Colorschemes)
                  (map :n :<leader>fj "<cmd>Telescope jumplist<CR>"
                       {:silent true} "Find jumps")
-                 (map :n :<leader>fm "<cmd>Telescope man_pages<CR>"
+                 (map :n :<leader>fM "<cmd>Telescope man_pages<CR>"
                       {:silent true} "Find man pages")
                  (map :n :<leader>u "<cmd>Telescope undo<CR>" {:silent true}
                       "Undo History"))

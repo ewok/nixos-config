@@ -1,18 +1,17 @@
 (local {: map : pack} (require :lib))
 
-(map :n :<leader>bw #(do
-                       (vim.cmd :BufOnly)
-                       (vim.cmd :LspRestart))
-     {:noremap true} "Wipe all buffers but one")
+(map :n :<C-w>O #(do
+                   (vim.cmd :BufOnly)
+                   (vim.cmd :LspRestart)) {:noremap true}
+     "Wipe all buffers but one")
 
-; (map :n :<Tab> :<cmd>bnext<cr> {:noremap true} :Tab)
-; (map :n :<S-Tab> :<cmd>bprev<cr> {:noremap true} :S-Tab)
+;; (map :n :<Tab> :<cmd>bnext<cr> {:noremap true} :Tab)
+;; (map :n :<S-Tab> :<cmd>bprev<cr> {:noremap true} :S-Tab)
 
 [(pack :famiu/bufdelete.nvim
        {:cmd [:Bdelete :Bwipeout]
         :init #(do
-                 (map :n :<leader>bd :<CMD>Bdelete<CR> {:noremap true}
-                      "Delete Buffer")
+                 ;(map :n :<leader>bd :<CMD>Bdelete<CR> {:noremap true} ;     "Delete Buffer")
                  (map :n :<C-W>d :<CMD>Bdelete<CR> {:silent true}
                       "Close current buffer")
                  (map :n :<C-W><C-D> :<CMD>Bdelete<CR> {:silent true}
@@ -42,17 +41,13 @@
                                                                  :hl :DiagnosticSignOk}
                                                         :unpinned {1 "󰤱 "
                                                                    :hl :DiagnosticSignError}}}})
-                   (map :n :<leader>ba "<cmd>Hbac pin_all<cr>" {:noremap true}
-                        "Pin all buffers")
-                   (map :n :<leader>bb "<cmd>Hbac toggle_pin<cr>"
-                        {:noremap true} "Pin Buffer")
-                   (map :n :<leader>bo "<cmd>Hbac close_unpinned<cr>"
-                        {:noremap true} "Close UnPinned buffers")
-                   (map :n :<leader>bu "<cmd>Hbac unpin_all<cr>"
-                        {:noremap true} "UnPin all buffers")
+                   ;;(map :n :<leader>ba "<cmd>Hbac pin_all<cr>" {:noremap true} ;     "Pin all buffers")
+                   ;;(map :n :<leader>bb "<cmd>Hbac toggle_pin<cr>" ;     {:noremap true} "Pin Buffer")
+                   ;;(map :n :<leader>bo "<cmd>Hbac close_unpinned<cr>" ;     {:noremap true} "Close UnPinned buffers")
+                   ;;(map :n :<leader>bu "<cmd>Hbac unpin_all<cr>" ;     {:noremap true} "UnPin all buffers")
                    (telescope.load_extension :hbac)
-                   (map :n :<leader>fb
+                   (map :n :<leader>b
                         #(let [themes (require :telescope.themes)
                                theme (themes.get_dropdown {})]
                            (telescope.extensions.hbac.buffers theme))
-                        {:silent true} "Find all buffers"))})]
+                        {:silent true} :Buffers))})]
