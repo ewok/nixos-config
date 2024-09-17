@@ -7,5 +7,5 @@
                                                 :window {:normal_hl :Keyword
                                                          :align :top}
                                                 :view {:stack_upwards false}}}))
-       :init #(map :n :<leader>on "<cmd>Fidget history<cr>" {:silent true}
+       :init #(map :n :<leader>oN "<cmd>Fidget history<cr>" {:silent true}
                    "Open notification history")})
