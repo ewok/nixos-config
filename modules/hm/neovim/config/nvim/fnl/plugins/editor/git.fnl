@@ -33,7 +33,9 @@
                               :mappings {:status {:gx :OpenTree := :Toggle}}
                               :auto_show_console true
                               :console_timeout 5000
-                              :disable_insert_on_commit true})
+                              :disable_insert_on_commit true
+                              :kind :tab
+                              :commit_editor {:kind :auto}})
                    (reg_ft :DiffviewFileHistory
                            (fn [ev]
                              (map :n :q :<cmd>tabclose<cr> {:buffer ev.buf}
