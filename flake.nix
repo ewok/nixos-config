@@ -200,7 +200,7 @@
                   elif [ "$1" == "update" ];then
                       nix flake update
                   fi
-                elif [ "$#" -eq 3 ]; then
+                elif [ "$#" -eq 2 ]; then
 
                   CMD=""
                   if [ "$1" == "b" ]; then
@@ -212,19 +212,27 @@
                     exit 1
                   fi
 
-                  if [ "$2" == "h" ]; then
+                # SteamDeck
+                # CNT
+                # RPI
+                  if [ "$2" == "sd" ] || [ "$2" == "cnt" ] || [ "$2" == "rpi" ]; then
                     CMD="nix run home-manager -- $CMD"
-                  elif [ "$2" == "n" ]; then
+                # nixos
+                # orb
+                  elif [ "$2" == "nixos" ] || [ "$2" == "orb" ]; then
                     CMD="sudo nixos-rebuild $CMD --impure"
-                  elif [ "$2" == "d" ]; then
+                # droid
+                  elif [ "$2" == "droid" ]; then
                     CMD="nix-on-droid $CMD"
-                  elif [ "$2" == "dw" ]; then
+                # mac
+                  elif [ "$2" == "mac" ]; then
                     CMD="nix run nix-darwin -- $CMD"
                   else
-                    echo "'$2' wrong, possible options: h(ome), n(ixos), d(droid), dw(darwin)"
+                    echo "'$2' wrong, possible options: sd, cnt, rpi, nixos, orb, droid, mac"
                     exit 1
                   fi
-                  CMD="$CMD --flake .#$3"
+                  CMD="$CMD --flake .#$2"
+
 
                   $CMD
                 fi
