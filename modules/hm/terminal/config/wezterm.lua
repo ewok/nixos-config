@@ -23,10 +23,10 @@ local function get_appearance()
 end
 
 function Scheme_for_appearance(appearance)
-    if file_exists("/tmp/theme_dark") then
+    if file_exists(wezterm.home_dir .. "/Documents/theme_dark") then
         return "{{theme}}"
     end
-    if file_exists("/tmp/theme_light") then
+    if file_exists(wezterm.home_dir .. "/Documents/theme_light") then
         return "{{light_theme}}"
     end
     if appearance():find("Light") then

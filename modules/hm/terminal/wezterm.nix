@@ -10,14 +10,14 @@ let
   };
   toggle_theme = pkgs.writeShellScriptBin "toggle-theme" ''
     if [ "$1" == "auto" ];then
-      rm -f /tmp/theme_dark
-      rm -f /tmp/theme_light
+      rm -f $HOME/Documents/theme_dark
+      rm -f $HOME/Documents/theme_light
     elif [ "$1" == "dark" ];then
-      touch /tmp/theme_dark
-      rm -f /tmp/theme_light
+      touch $HOME/Documents/theme_dark
+      rm -f $HOME/Documents/theme_light
     else
-      touch /tmp/theme_light
-      rm -f /tmp/theme_dark
+      touch $HOME/Documents/theme_light
+      rm -f $HOME/Documents/theme_dark
       fi
 
     if [ -z "$TMUX" ]; then
