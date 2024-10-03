@@ -48,7 +48,14 @@
         :config #(set vim.g.medieval_langs
                       [:python :ruby :sh :console=bash :bash :perl :fish :bb])})
  (pack :mickael-menu/zk-nvim
-       {:cmd [:ZkNew :ZkIndex :ZkNotes :ZkTags :ZkMatch]
+       {:cmd [:ZkNew
+              :ZkIndex
+              :ZkNotes
+              :ZkTags
+              :ZkMatch
+              :ZkBacklinks
+              :ZkNewFromTitleSelection
+              :ZkLinks]
         :init #(let [md {:noremap true :silent false}]
                  (map! :n :<leader>wn
                        "<cmd>ZkNew { title = vim.fn.input('Title: '), dir = 'notes' }<cr>"

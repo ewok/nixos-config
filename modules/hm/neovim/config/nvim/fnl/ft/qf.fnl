@@ -3,17 +3,17 @@
 (reg_ft :qf
         (fn [ev]
           (map [:n] :q :<cmd>bdelete<cr> {:silent true :buffer true} :Close)
-          (map :n :ri
+          (map :n :rr
                ":cdo s/\\<<c-r>=expand(\"<cword>\")<cr>\\>//gc<LEFT><LEFT><LEFT>"
                {:buffer ev.buf} "cdo <cword>")
-          (map :n :rI
+          (map :n :rR
                ":cdo %s/\\<<c-r>=expand(\"<cword>\")<cr>\\>//gc<LEFT><LEFT><LEFT>"
                {:buffer ev.buf} "cdo %<cword>")
-          (map :v :ri "y:cdo s/<c-r>0//gc<LEFT><LEFT><LEFT>" {:buffer ev.buf}
+          (map :v :rr "y:cdo s/<c-r>0//gc<LEFT><LEFT><LEFT>" {:buffer ev.buf}
                "cdo <visual>")
-          (map :n :ra ":cdo s///gc<LEFT><LEFT><LEFT><LEFT>" {:buffer ev.buf}
+          (map :n :ri ":cdo s///gc<LEFT><LEFT><LEFT><LEFT>" {:buffer ev.buf}
                "cdo <>")
-          (map :n :rA ":cdo %s///gc<LEFT><LEFT><LEFT><LEFT>" {:buffer ev.buf}
+          (map :n :rI ":cdo %s///gc<LEFT><LEFT><LEFT><LEFT>" {:buffer ev.buf}
                "cdo %<>")
           (vim.cmd "nmap <expr><buffer>  MR  ':cdo s/' . @/ . '//gc<LEFT><LEFT><LEFT>'")
           (map :n :r "<cmd>WhichKey r<cr>" {:buffer ev.buf} :Close)))

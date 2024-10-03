@@ -22,12 +22,11 @@
         :config #(let [telescope (require :telescope)
                        actions (require :hbac.telescope.actions)
                        hbac (require :hbac)]
-                   (hbac.setup {:autoclose true
+                   (hbac.setup {:autoclose false
                                 :threshold 10
                                 :close_buffers_with_windows false
-                                :telescope {:show_all_buffers true
-                                            :sort_mru true
-                                            :select_current true
+                                :telescope {:sort_mru true
+                                            :sort_lastused false
                                             :theme :dropdown
                                             :previewer false
                                             :use_default_mappings false
@@ -46,7 +45,7 @@
                    ;;(map :n :<leader>bo "<cmd>Hbac close_unpinned<cr>" ;     {:noremap true} "Close UnPinned buffers")
                    ;;(map :n :<leader>bu "<cmd>Hbac unpin_all<cr>" ;     {:noremap true} "UnPin all buffers")
                    (telescope.load_extension :hbac)
-                   (map :n :<leader>b
+                   (map :n ";"
                         #(let [themes (require :telescope.themes)
                                theme (themes.get_dropdown {})]
                            (telescope.extensions.hbac.buffers theme))

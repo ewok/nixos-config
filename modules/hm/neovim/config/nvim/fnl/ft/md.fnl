@@ -9,6 +9,8 @@
                (set vim.opt_local.softtabstop 4)
                (set vim.wo.foldlevel 2)
                (set vim.wo.conceallevel 2)
+               (set vim.opt_local.foldmethod :marker)
+               (set vim.opt_local.foldmarker "{{{,}}}")
                (map! [:n] :<leader>ce :<cmd>EvalBlock<CR> md "Run Block")
                ;;(map! [:v] :<CR> ":'<,'>ObsidianLinkNew<CR>" md
                ;;      "Create Link")
