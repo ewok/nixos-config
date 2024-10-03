@@ -34,21 +34,11 @@ in
         zoxide
         eza
         bat
-        dfc
         fd
         global
         viddy
         gnutar
-        procps
-        please-cli
-        fswatch
-        htop
-        tldr
         zip
-        whois
-
-        # Move to backup module
-        rclone
       ];
       file = {
         # ".profile".source = ./config/profile;
@@ -65,7 +55,7 @@ in
         "fish/fish_plugins".source = ./config/fish_plugins;
         "fish/functions/fisher.fish".source = pkgs.fetchurl {
           url = "https://raw.githubusercontent.com/jorgebucaran/fisher/HEAD/functions/fisher.fish";
-          hash = "sha256-lJvP+FmxQICLFU379pqgTZlYHsjs6XR5V0A+M3iaWGQ=";
+          hash = "sha256-WWQNB72hgvKtD9/p3Ip5n7efRubl/EYDVP/i4h91log=";
         };
         "fish/conf.d/01_openai.fish".text = ''
           export OPENAI_API_KEY="${cfg.openai_token}"
