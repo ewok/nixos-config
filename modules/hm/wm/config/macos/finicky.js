@@ -1,5 +1,5 @@
 module.exports = {
-  defaultBrowser: "Firefox",
+  defaultBrowser: "Vivaldi",
   options: {
     hideIcon: false
   },
@@ -8,47 +8,47 @@ module.exports = {
       match: ({ opener }) =>
         opener.bundleId === "com.tinyspeck.slackmacgap",
       browser: ({ urlString }) => ({
-        name: "Firefox",
-        args: ["-P", "work", `${urlString}`],
+        name: "Vivaldi",
+        args: ["--profile-directory=work", `${urlString}`],
       })
     },
     {
       match: ({ opener }) =>
         opener.path && opener.path.startsWith("/Applications/Slack.app"),
       browser: ({ urlString }) => ({
-        name: "Firefox",
-        args: ["-P", "work", `${urlString}`],
+        name: "Vivaldi",
+        args: ["--profile-directory=work", `${urlString}`],
       })
     },
     {
       match: ({ opener }) =>
         opener.path && opener.path.startsWith("/Applications/Microsoft Outlook.app"),
       browser: ({ urlString }) => ({
-        name: "Firefox",
-        args: ["-P", "work", `${urlString}`],
+        name: "Vivaldi",
+        args: ["--profile-directory=work", `${urlString}`],
       })
     },
     {
       match: ({ opener }) =>
         opener.path && opener.path.startsWith("/Applications/Microsoft Teams classic.app"),
       browser: ({ urlString }) => ({
-        name: "Firefox",
-        args: ["-P", "work", `${urlString}`],
+        name: "Vivaldi",
+        args: ["--profile-directory=work", `${urlString}`],
       })
     },
     {
       match: ["http://google.*"],
       browser: ({ urlString }) => ({
-        name: "Firefox",
-        args: ["-P", "home", `${urlString}`],
+        name: "Vivaldi",
+        args: ["--profile-directory=home", `${urlString}`],
       })
     },
     {
       match: ({ opener }) =>
         opener.path && opener.path.startsWith("/Applications/Telegram.app"),
       browser: ({ urlString }) => ({
-        name: "Firefox",
-        args: ["-P", "home", `${urlString}`],
+        name: "Vivaldi",
+        args: ["--profile-directory=home", `${urlString}`],
       })
     },
     // {
@@ -69,8 +69,8 @@ module.exports = {
         /.*databricks.com.*/
       ],
       browser: ({ urlString }) => ({
-        name: "Firefox",
-        args: ["-P", "work", `${urlString}`],
+        name: "Vivaldi",
+        args: ["--profile-directory=work", `${urlString}`],
       })
     },
     {
@@ -84,8 +84,8 @@ module.exports = {
       // Please note that control usually opens a tooltip menu instead of visiting a link
       match: () => finicky.getKeys().option,
       browser: ({ urlString }) => ({
-        name: "Firefox",
-        args: ["-P", "home", `${urlString}`],
+        name: "Vivaldi",
+        args: ["--profile-directory=home", `${urlString}`],
       })
     }
   ]

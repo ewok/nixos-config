@@ -14,6 +14,7 @@ in
       home = homeDirectory;
     };
 
+    system.stateVersion = 5;
     home-manager =
       {
         useGlobalPkgs = true;
