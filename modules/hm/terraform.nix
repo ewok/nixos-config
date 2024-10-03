@@ -16,5 +16,10 @@ in
       tfautomv
     ];
 
+    home.file.".terraformrc".text = ''
+      plugin_cache_dir   = "$HOME/.terraform.d/plugin-cache/"
+      disable_checkpoint = true
+      '';
+    home.file.".terraform.d/plugin-cache/.gitignore".text = "";
   };
 }
