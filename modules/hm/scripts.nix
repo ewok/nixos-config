@@ -54,10 +54,45 @@ in
             ffmpeg -i "$NAME.MOV" -filter:v scale=$PARAM "''${NAME}_C.MOV"
           done
         '';
+
+        mtu-find-the-best = writeShellScriptBin "mtu-find-the-best" ''
+          #!/bin/bash
+          set -e
+
+          # Target host; you can use a hostname or an IP address.
+          TARGET="8.8.8.8"
+
+          # Adjust these variables if needed.
+          MAX_MTU=1500
+          MIN_MTU=68  # Smallest possible MTU value for IPv4
+          MTU_INCREMENT=1
+
+          # Function to check if a packet size can be sent without fragmentation
+          function ping_with_size {
+              local size="$1"
+              ping -c 1 -M do -s $size $TARGET > /dev/null 2>&1
+              # ping -c 1 -D -s $size $TARGET > /dev/null 2>&1
+          }
+
+          # Binary search to find the largest MTU that allows a non-fragmented packet
+          while (( MIN_MTU < MAX_MTU )); do
+              MID_MTU=$(( (MIN_MTU + MAX_MTU + MTU_INCREMENT) / 2 ))
+
+              if ping_with_size $MID_MTU; then
+                  MIN_MTU=$MID_MTU
+              else
+                  MAX_MTU=$(( MID_MTU - MTU_INCREMENT ))
+              fi
+          done
+
+          echo "Optimal MTU size is: $((MIN_MTU + 28))"
+
+        '';
       in
       [
         copy-ssm
         convert
+        mtu-find-the-best
       ];
   };
 }
