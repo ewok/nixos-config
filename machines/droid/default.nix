@@ -61,6 +61,7 @@ in
               inherit authorizedKeys;
               config = ssh_config;
               enable = true;
+              homeDirectory = homeDirectory;
             };
             kube.enable = false;
             bw.enable = false;

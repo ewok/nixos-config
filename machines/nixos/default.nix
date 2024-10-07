@@ -1,24 +1,30 @@
 { config, pkgs, ... }:
 let
-  inherit (config) colors theme username exchange_api_key openai_token fullName email workEmail authorizedKeys;
+  inherit (config) colors theme username exchange_api_key openai_token fullName email workEmail authorizedKeys ssh_config;
 
   homeDirectory = "/home/${username}";
   modules = map (n: ../../modules/hm + "/${n}") (builtins.attrNames (builtins.readDir ../../modules/hm));
 in
 {
   imports = [
-    ./secrets.nix
+    # ./secrets.nix
     /etc/nixos/configuration.nix
   ];
 
   config = {
     nix.settings.trusted-users = [ "root" username ];
     services.tailscale.enable = true;
+    services.cron.enable = true;
+    virtualisation.docker.enable = true;
+
+    # Fix error not staring service
+    systemd.services.NetworkManager-wait-online.enable = false;
 
     users.users."${username}" = {
       name = "${username}";
       home = homeDirectory;
       isNormalUser = true;
+      extraGroups = [ "networkmanager" "wheel" "docker" ];
     };
 
     home-manager = {
@@ -38,11 +44,14 @@ in
             enable = true;
             inherit colors theme;
             openai_token = openai_token;
+            remote = true;
           };
           vifm.enable = true;
-          fish.enable = true;
-          fish.homeDirectory = homeDirectory;
-          fish.openai_token = openai_token;
+          fish = {
+            enable = true;
+            homeDirectory = homeDirectory;
+            inherit openai_token;
+          };
           starship.enable = true;
           git = {
             enable = true;
@@ -51,17 +60,19 @@ in
             homeEmail = email;
             inherit fullName workEmail;
           };
-          hledger.enable = true;
-          hledger.exchange_api_key = exchange_api_key;
+          hledger = {
+            enable = true;
+            inherit exchange_api_key;
+          };
           svn.enable = true;
           ssh = {
             inherit authorizedKeys;
+            config = ssh_config;
             enable = true;
+            homeDirectory = homeDirectory;
           };
-          kube.enable = true;
-          tf.enable = true;
           nix.enable = true;
-          lisps.enable = true;
+          lisps.enable = false;
           terminal = {
             enable = true;
             inherit colors theme;
@@ -70,13 +81,14 @@ in
             };
           };
           direnv.enable = true;
-          aws.enable = true;
           tailscale.enable = true;
+          scripts.enable = true;
+          syncthing.enable = true;
         };
 
         home.username = "${username}";
         home.homeDirectory = homeDirectory;
-        home.stateVersion = "23.11";
+        home.stateVersion = "24.05";
       };
     };
   };

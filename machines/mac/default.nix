@@ -45,6 +45,7 @@ in
               inherit authorizedKeys;
               config = ssh_config;
               enable = true;
+              homeDirectory = homeDirectory;
             };
             nix.enable = true;
             wm.enable = true;

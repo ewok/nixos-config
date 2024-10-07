@@ -59,6 +59,7 @@ in
           ssh = {
             inherit authorizedKeys;
             enable = true;
+            homeDirectory = homeDirectory;
           };
           kube.enable = true;
           tf.enable = true;
@@ -74,6 +75,7 @@ in
           direnv.enable = true;
           aws.enable = true;
           tailscale.enable = true;
+          scripts.enable = true;
         };
 
         home.username = "${username}";
