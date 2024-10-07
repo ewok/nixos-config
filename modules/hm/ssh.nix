@@ -9,6 +9,7 @@ in
     enable = mkEnableOption "ssh";
     config = mkOption { type = types.str; };
     authorizedKeys = mkOption { type = types.str; };
+    homeDirectory = mkOption { type = types.str; };
   };
 
   config = mkIf cfg.enable {
@@ -30,8 +31,15 @@ in
       matchBlocks = builtins.fromJSON cfg.config;
     };
 
-    home.file.".ssh/authorized_keys".text = ''
-      ${cfg.authorizedKeys}
-    '';
+    home.file.".ssh/authorized_keys_tmp" =
+      {
+        text = ''
+          ${cfg.authorizedKeys}
+        '';
+        onChange = ''
+          cp ${cfg.homeDirectory}/.ssh/authorized_keys_tmp ${cfg.homeDirectory}/.ssh/authorized_keys
+          chmod 0400 ${cfg.homeDirectory}/.ssh/authorized_keys
+        '';
+      };
   };
 }
