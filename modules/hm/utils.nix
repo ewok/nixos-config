@@ -11,6 +11,7 @@
       speedtest-cli
       tldr
       whois
+      flock
     ];
   };
 }
