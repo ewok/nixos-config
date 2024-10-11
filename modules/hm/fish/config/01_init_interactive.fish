@@ -7,6 +7,7 @@ if status is-interactive
 
   if command -vq -- viddy
     alias watch viddy
+    alias ww viddy
   end
 
     if command -vq -- eza
