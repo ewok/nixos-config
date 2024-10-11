@@ -10,6 +10,12 @@ M.config_dir = vim.fn.stdpath("config")
 M.cache_dir = vim.fn.stdpath("cache")
 M.notes_dir = path_join(M.home_dir, "Notes")
 
+M.packages = {
+    oil = false,
+    neotree = true,
+    hbac = false,
+}
+
 M.options = {
     transparent = true,
     float_border = true,

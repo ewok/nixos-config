@@ -1,4 +1,5 @@
 (local {: map : pack} (require :lib))
+(local conf (require :conf))
 
 (map :n :<C-w>O #(do
                    (vim.cmd :BufOnly)
@@ -17,7 +18,8 @@
                  (map :n :<C-W><C-D> :<CMD>Bdelete<CR> {:silent true}
                       "Close current buffer"))})
  (pack :axkirillov/hbac.nvim
-       {:event :BufReadPost
+       {:enabled conf.packages.hbac
+        :event :BufReadPost
         :dependencies [:nvim-telescope/telescope.nvim]
         :config #(let [telescope (require :telescope)
                        actions (require :hbac.telescope.actions)
