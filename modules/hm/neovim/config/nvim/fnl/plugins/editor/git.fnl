@@ -22,6 +22,14 @@
                 2 "<cmd>DiffviewFileHistory %<cr>"
                 :mode [:n]
                 :desc "File history"}
+               {1 :<leader>gfl
+                2 :<cmd>NeogitLog<cr>
+                :mode [:n]
+                :desc "File history"}
+               {1 :<leader>gfl
+                2 ":NeogitLog<cr>"
+                :mode [:v]
+                :desc "File history"}
                {1 :<leader>gP 2 "<cmd>Neogit push<cr>" :desc :Push...}
                {1 :<leader>gp 2 "<cmd>Neogit pull<cr>" :desc :Pull...}
                {1 :<leader>gl 2 "<cmd>Neogit log<cr>" :desc :Log...}

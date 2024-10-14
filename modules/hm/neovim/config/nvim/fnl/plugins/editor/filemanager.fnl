@@ -83,26 +83,7 @@
                                               }
                                  :git_status {:window {:mappings {";" {1 #(vim.api.nvim_exec "Neotree focus buffers float"
                                                                                              true)}
-                                                                  :S :git_add_all
-                                                                  :u :git_unstage_file
-                                                                  :s :git_add_file
-                                                                  :r :git_revert_file
-                                                                  :c :git_commit
-                                                                  :p :git_push
-                                                                  :P :git_commit_and_push
-                                                                  :gu :noop
-                                                                  :ga :noop
-                                                                  :gr :noop
-                                                                  :gc :noop
-                                                                  :gp :noop
-                                                                  :gg :noop
-                                                                  :d :noop
-                                                                  :y :noop
-                                                                  :x :noop
-                                                                  :m :noop
-                                                                  :a :noop
-                                                                  :w :noop
-                                                                  :A :noop}}}
+                                                                  :u :noop}}}
                                  :buffers {:bind_to_cwd false
                                            :follow_current_file {:enabled true
                                                                  :leave_dirs_open false}
