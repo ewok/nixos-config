@@ -194,6 +194,7 @@ in
           terraform-ls
           # vscode-langservers-extracted
           yaml-language-server
+          dockerfile-language-server-nodejs
           zk
 
           # Linter

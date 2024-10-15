@@ -1,6 +1,11 @@
 (local {: pack : map : reg_ft} (require :lib))
 
 [;;(pack :f-person/git-blame.nvim {:event :VeryLazy})
+ ;(pack :SuperBo/fugit2.nvim
+ ;      {:opts {:width 100}
+ ;       :dependencies [:chrisgrieser/nvim-tinygit]
+ ;       :cmd [:Fugit2 :Fugit2Diff :Fugit2Graph]})
+ ;(pack :tpope/vim-fugitive {:cmd :Git})
  (pack :FabijanZulj/blame.nvim
        {:cmd :BlameToggle
         :keys [{1 :<leader>gb

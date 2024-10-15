@@ -6,7 +6,6 @@
        {:enabled conf.packages.neotree
         :branch :v3.x
         :cmd :Neotree
-        :dependencies [:MunifTanjim/nui.nvim]
         :init #(do
                  (map :n ";"
                       "<CMD>Neotree buffers focus dir=/ reveal toggle float<CR>"
@@ -59,12 +58,13 @@
                                                                ;                              :hide_dotfiles false
                                                                ;                              :hide_gitignored false
                                                                ;                              :hide_hidden true
-                                                               :hide_by_name []
+                                                               :hide_by_name [:.direnv]
                                                                :hide_by_pattern [;"*.meta"
                                                                                  ;"*/src/*/tsconfig.json"
                                                                                  ]
                                                                :always_show [:.gitignored]
-                                                               :always_show_by_pattern [:.env*]
+                                                               :always_show_by_pattern [:.env*
+                                                                                        :.gitlab*]
                                                                :never_show [:.DS_Store
                                                                             :thumbs.db]
                                                                :never_show_by_pattern [:.null-ls_*]}
@@ -81,7 +81,7 @@
                                                                                }}
                                               ;commands = {} -- Add a custom command or override a global one using the same function name
                                               }
-                                 :git_status {:window {:mappings {";" {1 #(vim.api.nvim_exec "Neotree focus buffers float"
+                                 :git_status {:window {:mappings {";" {1 #(vim.api.nvim_exec "Neotree focus buffers float reveal dir=/"
                                                                                              true)}
                                                                   :u :noop}}}
                                  :buffers {:bind_to_cwd false
@@ -89,7 +89,7 @@
                                                                  :leave_dirs_open false}
                                            :group_empty_dirs true
                                            :show_unloaded true
-                                           :window {:mappings {";" {1 #(vim.api.nvim_exec "Neotree focus git_status float"
+                                           :window {:mappings {";" {1 #(vim.api.nvim_exec "Neotree focus git_status float reveal"
                                                                                           true)}
                                                                :u :noop
                                                                :bd :noop
