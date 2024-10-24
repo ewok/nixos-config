@@ -1,0 +1,14 @@
+#!/usr/bin/env bash
+
+DATE=date
+
+h \
+  -s bal \
+  --pretty-tables \
+  --budget -E \
+  ^exp ^equity:adj \
+  not:tag:clopen \
+  -b $($DATE +%Y-%m --date="${1:-1} month ago") \
+  -e $($DATE +%Y-%m --date="next month") \
+  -M --real "${@:2}" | rg -v 'Budget performance' | rg --color=always --passthru '\d\d\d%'
+  # -M --real $@       | rg -v 'Budget performance' | rg --color=always --passthru '\d\d\d%'
