@@ -3,6 +3,7 @@ let
   inherit (lib) mkEnableOption mkIf mkOption types;
 
   cfg = config.opt.ssh;
+  dag = config.lib.dag;
 in
 {
   options.opt.ssh = {
@@ -31,6 +32,10 @@ in
       matchBlocks = builtins.fromJSON cfg.config;
     };
 
+    home.activation.ssh-changes = dag.entryAnywhere ''
+      chmod 0700 ${cfg.homeDirectory}/.ssh || true
+      chmod 0600 ${cfg.homeDirectory}/.ssh/* || true
+    '';
     home.file.".ssh/authorized_keys_tmp" =
       {
         text = ''
