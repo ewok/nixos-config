@@ -17,6 +17,10 @@ in
     services.cron.enable = true;
     virtualisation.docker.enable = true;
 
+    # Enable nix-ld to allow standard programs to be executed
+    programs.nix-ld.enable = true;
+    programs.nix-ld.libraries = [ ];
+
     # Fix error not staring service
     systemd.services.NetworkManager-wait-online.enable = false;
 
@@ -84,6 +88,7 @@ in
           tailscale.enable = true;
           scripts.enable = true;
           syncthing.enable = true;
+          seafile.enable = true;
         };
 
         home.username = "${username}";

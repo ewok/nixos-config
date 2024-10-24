@@ -60,24 +60,24 @@
           ];
         };
 
-      homeConfigurations.cnt =
-        let
-          pkgs = import inputs.nixpkgs-unstable (nixpkgsDefaults // {
-            system = "x86_64-linux";
-          });
-          inherit modules;
-        in
-        home-manager.lib.homeManagerConfiguration {
-          inherit pkgs;
-          modules = [
-            ./machines/common.nix
-            ./machines/cnt
-            {
-              imports = modules;
-              _module.args.utils = import utils/lib.nix { inherit pkgs; };
-            }
-          ];
-        };
+      # homeConfigurations.cnt =
+      #   let
+      #     pkgs = import inputs.nixpkgs-unstable (nixpkgsDefaults // {
+      #       system = "x86_64-linux";
+      #     });
+      #     inherit modules;
+      #   in
+      #   home-manager.lib.homeManagerConfiguration {
+      #     inherit pkgs;
+      #     modules = [
+      #       ./machines/common.nix
+      #       ./machines/cnt
+      #       {
+      #         imports = modules;
+      #         _module.args.utils = import utils/lib.nix { inherit pkgs; };
+      #       }
+      #     ];
+      #   };
 
       homeConfigurations.rpi =
         let
@@ -90,7 +90,7 @@
           inherit pkgs;
           modules = [
             ./machines/common.nix
-            ./machines/cnt
+            ./machines/rpi
             {
               imports = modules;
               _module.args.utils = import utils/lib.nix { inherit pkgs; };
@@ -98,7 +98,7 @@
           ];
         };
 
-      nixosConfigurations.nixos =
+      nixosConfigurations.bup =
         let
           system = "aarch64-linux";
         in
@@ -106,7 +106,7 @@
           inherit system;
           modules = [
             ./machines/common.nix
-            ./machines/nixos
+            ./machines/bup
             home-manager.nixosModules.default
             # {
             #   nixpkgs.overlays = overlays;
@@ -215,11 +215,11 @@
                 # SteamDeck
                 # CNT
                 # RPI
-                  if [ "$2" == "sd" ] || [ "$2" == "cnt" ] || [ "$2" == "rpi" ]; then
+                  if [ "$2" == "sd" ] || [ "$2" == "rpi" ]; then
                     CMD="nix run home-manager -- $CMD"
                 # nixos
                 # orb
-                  elif [ "$2" == "nixos" ] || [ "$2" == "orb" ]; then
+                  elif [ "$2" == "bup" ] || [ "$2" == "orb" ]; then
                     CMD="sudo nixos-rebuild $CMD --impure"
                 # droid
                   elif [ "$2" == "droid" ]; then
@@ -228,7 +228,7 @@
                   elif [ "$2" == "mac" ]; then
                     CMD="nix run nix-darwin -- $CMD"
                   else
-                    echo "'$2' wrong, possible options: sd, cnt, rpi, nixos, orb, droid, mac"
+                    echo "'$2' wrong, possible options: sd, rpi, bup, orb, droid, mac"
                     exit 1
                   fi
                   CMD="$CMD --flake .#$2"

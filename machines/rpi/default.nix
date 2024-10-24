@@ -50,6 +50,7 @@ in
         };
         direnv.enable = true;
         scripts.enable = true;
+        syncthing.enable = true;
       };
 
     home.username = username;

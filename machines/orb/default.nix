@@ -16,6 +16,10 @@ in
     nix.settings.trusted-users = [ "root" username ];
     services.tailscale.enable = true;
 
+    # Enable nix-ld to allow standard programs to be executed
+    programs.nix-ld.enable = true;
+    programs.nix-ld.libraries = [ ];
+
     users.users."${username}" = {
       name = "${username}";
       home = homeDirectory;
@@ -76,6 +80,13 @@ in
           aws.enable = true;
           tailscale.enable = true;
           scripts.enable = true;
+          syncthing.enable = true;
+          rslsync = {
+            enable = false;
+            deviceName = "ewok-arch";
+            httpListenAddr = "0.0.0.0";
+            httpListenPort = 8888;
+          };
         };
 
         home.username = "${username}";
