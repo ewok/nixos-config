@@ -4,6 +4,8 @@
 (set vim.g.mapleader " ")
 (set vim.g.maplocalleader ",")
 
+(set vim.g.auto_load_session true)
+
 (when conf.options.pbclip
   (set vim.g.clipboard {:name :orb
                         :copy {:+ [:pbcopy] :* [:pbcopy]}
@@ -90,7 +92,7 @@
         :smartindent true
         :iskeyword "@,48-57,_,192-255"
         :fillchars "eob: "
-        :sessionoptions "buffers,curdir,folds,tabpages,winsize,globals,winpos"})
+        :sessionoptions "buffers,curdir,folds,help,tabpages,winsize,globals,winpos,localoptions"})
 
 (each [key value (pairs settings)]
   (let [key (tostring key)]

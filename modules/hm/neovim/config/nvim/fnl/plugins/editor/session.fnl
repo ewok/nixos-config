@@ -20,13 +20,16 @@
                                                                (vim.api.nvim_buf_get_name $1)))
                                                      false
                                                      _ true))
-                                    :extensions {:scope {} :hbac {}}})
+                                    :extensions {:scope {} {}}})
                   (when vim.g.auto_load_session
-                    (vim.fn.timer_start 1000
-                                        #(do
-                                           (resession.load (vim.fn.getcwd)
-                                                           {:silence_errors true})
-                                           (e))))
+                    (when (= (vim.fn.argc -1) 0)
+                      (resession.load (vim.fn.getcwd) {:silence_errors true})
+                      ;;(vim.fn.timer_start 300
+                      ;;                    #(do
+                      ;;                       (resession.load (vim.fn.getcwd)
+                      ;;                                       {:silence_errors true})
+                      ;;                       (e)))
+                      ))
                   (map :n :<leader>sl
                        #(do
                           (resession.load)
@@ -66,7 +69,7 @@
                                                    (vim.cmd :qall))))))
                        {:silent true} "Session Quit")
                   (map :n :<leader>sd
-                       #(let [(ok _) (pcall (resession.delete))]
+                       #(let [(ok _) (pcall resession.delete)]
                           (if ok
                               (vim.notify "Session deleted success" :INFO
                                           {:title :Session})
