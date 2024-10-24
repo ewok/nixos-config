@@ -1,7 +1,7 @@
 { config, lib, pkgs, utils, ... }:
 let
   inherit (lib) mkOption types mkIf mkEnableOption optionals;
-  inherit (pkgs) fetchurl stdenv autoPatchelfHook symlinkJoin writeShellScriptBin;
+  inherit (pkgs) symlinkJoin writeShellScriptBin;
 
   cfg = config.opt.nvim;
   dag = config.lib.dag;
@@ -70,41 +70,6 @@ let
     conf.orb = cfg.orb;
     conf.remote = cfg.remote;
   };
-
-  # https://github.com/Exafunction/codeium/releases
-  version = "1.8.25";
-  ls-system = "linux_arm";
-  hash = "sha256-Gt48FrW9MF4xppmA4TsuEe3iJYn8DrKhtFmb8N7rO+s=";
-  packs = {
-    codeium-lsp = stdenv.mkDerivation
-      {
-        pname = "codeium-lsp";
-        version = "v${version}";
-
-        src = fetchurl {
-          url = "https://github.com/Exafunction/codeium/releases/download/language-server-v${version}/language_server_${ls-system}";
-          sha256 = hash;
-        };
-
-        sourceRoot = ".";
-
-        phases = [ "installPhase" "fixupPhase" ];
-        nativeBuildInputs =
-          [
-            stdenv.cc.cc
-          ]
-          ++ (
-            if !stdenv.isDarwin
-            then [ autoPatchelfHook ]
-            else [ ]
-          );
-
-        installPhase = ''
-          mkdir -p $out/bin
-          install -m755 $src $out/bin/codeium-lsp
-        '';
-      };
-  };
 in
 {
   options.opt.nvim = {
@@ -158,8 +123,8 @@ in
 
     home.packages =
       let
-        androidPkgs = optionals cfg.android [ packs.codeium-lsp ];
-        orbPkgs = optionals cfg.orb [ packs.codeium-lsp ];
+        androidPkgs = optionals cfg.android [ ];
+        orbPkgs = optionals cfg.orb [ ];
         external = with pkgs; [
           lazygit
           ripgrep
@@ -186,8 +151,8 @@ in
           gopls
           # ltex-ls
           lua-language-server
-          # nil
-          nixd
+          nil
+          # nixd
           # nodePackages.bash-language-server
           pyright
           fennel-ls
