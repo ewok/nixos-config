@@ -7,7 +7,9 @@
                    "Open Outline Explorer")
        :config #(let [aerial (require :aerial)]
                   (aerial.setup {:icons conf.icons
-                                 :layout {:min_width 40}
+                                 :keymaps {:q :actions.close
+                                           :<esc> :actions.close}
+                                 :layout {:min_width 120}
                                  :show_guides true
                                  :backends [:lsp :treesitter :markdown :man]
                                  :update_events "TextChanged,InsertLeave"

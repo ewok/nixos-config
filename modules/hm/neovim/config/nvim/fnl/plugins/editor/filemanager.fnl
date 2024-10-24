@@ -10,8 +10,8 @@
                  (map :n ";"
                       "<CMD>Neotree buffers focus dir=/ reveal toggle float<CR>"
                       {:noremap true} "Open buffers")
-                 (map :n :<leader>fp "<CMD>Neotree left reveal<CR>"
-                      {:noremap true} "Open parent directory"))
+                 (map :n :<leader>n "<CMD>Neotree left reveal<CR>"
+                      {:noremap true} "NeoTree"))
         :config #(let [ntree (require :neo-tree)
                        command (require :neo-tree.command)]
                    (ntree.setup {:close_if_last_window true
@@ -32,18 +32,20 @@
                                           :mappings {:<space> {1 :toggle_node
                                                                :nowait true}
                                                      :l :open
-                                                     :P {1 :toggle_preview
+                                                     :<C-p> {1 :toggle_preview
                                                          :config {:use_float true
                                                                   :use_image_nvim false}}
-                                                     :<C-p> :focus_preview
-                                                     :s :open_split
-                                                     :v :open_vsplit
-                                                     :t :open_tabnew
+                                                     :L :focus_preview
+                                                     :<C-s> :open_split
+                                                     :<C-v> :open_vsplit
+                                                     :<C-t> :open_tabnew
                                                      :<cr> :open_drop
                                                      :h :close_node
                                                      :zc :close_all_nodes
                                                      :zo :expand_all_nodes
                                                      :a {1 :add
+                                                         :config {:show_path :relative}}
+                                                     :o {1 :add
                                                          :config {:show_path :relative}}
                                                      :A {1 :add_directory
                                                          :config {:show_path :relative}}
@@ -53,7 +55,32 @@
                                                          :config {:show_path :relative}}
                                                      :u :navigate_up
                                                      :C :noop
-                                                     :z :noop}}
+                                                     :z :noop
+                                                     :s {1 :show_help
+                                                         :nowait false
+                                                         :config {:title "Order by"
+                                                                  :prefix_key :s}}
+                                                     :oc :noop
+                                                     :od :noop
+                                                     :og :noop
+                                                     :om :noop
+                                                     :on :noop
+                                                     :os :noop
+                                                     :ot :noop
+                                                     :sc {1 :order_by_created
+                                                          :nowait false}
+                                                     :sd {1 :order_by_diagnostics
+                                                          :nowait false}
+                                                     :sg {1 :order_by_git_status
+                                                          :nowait false}
+                                                     :sm {1 :order_by_modified
+                                                          :nowait false}
+                                                     :sn {1 :order_by_name
+                                                          :nowait false}
+                                                     :ss {1 :order_by_size
+                                                          :nowait false}
+                                                     :st {1 :order_by_type
+                                                          :nowait false}}}
                                  :filesystem {:filtered_items {;:visible false
                                                                ;                              :hide_dotfiles false
                                                                ;                              :hide_gitignored false
@@ -73,7 +100,12 @@
                                               :group_empty_dirs true
                                               :hijack_netrw_behavior :open_default
                                               :use_libuv_file_watcher false
-                                              :window {:fuzzy_finder_mappings {:<down> :move_cursor_down
+                                              :window {:mappings {";" {1 #(do
+                                                                            ;(vim.api.nvim_exec "Neotree close"
+                                                                            ;                   true)
+                                                                            (vim.api.nvim_exec "Neotree focus git_status float"
+                                                                                               true))}}
+                                                       :fuzzy_finder_mappings {:<down> :move_cursor_down
                                                                                :<C-j> :move_cursor_down
                                                                                :<up> :move_cursor_up
                                                                                :<C-k> :move_cursor_up
@@ -81,16 +113,22 @@
                                                                                }}
                                               ;commands = {} -- Add a custom command or override a global one using the same function name
                                               }
-                                 :git_status {:window {:mappings {";" {1 #(vim.api.nvim_exec "Neotree focus buffers float reveal dir=/"
-                                                                                             true)}
+                                 :git_status {:window {:mappings {";" {1 #(do
+                                                                            (vim.api.nvim_exec "Neotree close"
+                                                                                               true)
+                                                                            (vim.api.nvim_exec "Neotree focus buffers float reveal dir=/"
+                                                                                               true))}
                                                                   :u :noop}}}
                                  :buffers {:bind_to_cwd false
                                            :follow_current_file {:enabled true
                                                                  :leave_dirs_open false}
                                            :group_empty_dirs true
                                            :show_unloaded true
-                                           :window {:mappings {";" {1 #(vim.api.nvim_exec "Neotree focus git_status float reveal"
-                                                                                          true)}
+                                           :window {:mappings {";" {1 #(do
+                                                                         (vim.api.nvim_exec "Neotree close"
+                                                                                            true)
+                                                                         (vim.api.nvim_exec "Neotree focus filesystem float reveal"
+                                                                                            true))}
                                                                :u :noop
                                                                :bd :noop
                                                                :d :buffer_delete}}}}))})
