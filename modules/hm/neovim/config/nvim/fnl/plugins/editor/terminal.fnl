@@ -11,13 +11,13 @@
                      (vim.cmd "vsplit term://bash"))
      {:noremap true :silent true} "VSplit window")
 
-(map :n :<leader>ot
+(map :n :<leader>ott
      #(do
         (set vim.g.tth false)
         (vim.cmd (.. "silent !~/.config/tmux/tmux_toggle '" (get_file_cwd)
                      "' false"))) {:silent true} "Open bottom terminal")
 
-(map :n :<leader>of
+(map :n :<leader>otf
      #(do
         (set vim.g.tth true)
         (vim.cmd (.. "silent !~/.config/tmux/tmux_toggle '" (get_file_cwd)

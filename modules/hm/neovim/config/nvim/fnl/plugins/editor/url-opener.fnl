@@ -5,11 +5,11 @@
                           :config true})
  (pack :ruifm/gitlinker.nvim
        {:keys [{:mode :n
-                1 :<leader>gx
+                1 :<leader>ogx
                 2 "<cmd>lua require'gitlinker'.get_buf_range_url('n', {action_callback = require'gitlinker.actions'.open_in_browser})<cr>"
                 :desc :GBrowse}
                {:mode :v
-                1 :<leader>gx
+                1 :<leader>ogx
                 2 "<cmd>lua require'gitlinker'.get_buf_range_url('v', {action_callback = require'gitlinker.actions'.open_in_browser})<cr>"
                 :desc :GBrowse}]
         :config #(let [gl (require :gitlinker)]

@@ -8,7 +8,7 @@
  ;(pack :tpope/vim-fugitive {:cmd :Git})
  (pack :FabijanZulj/blame.nvim
        {:cmd :BlameToggle
-        :keys [{1 :<leader>gb
+        :keys [{1 :<leader>tgb
                 2 #(let [pos (vim.fn.getcurpos)]
                      (vim.cmd "normal! gg")
                      (vim.cmd :BlameToggle)
@@ -22,23 +22,19 @@
                    (blame.setup {}))})
  (pack :NeogitOrg/neogit
        {:cmd [:Neogit :DiffviewOpenFileHistory]
-        :keys [{1 :<leader>gs 2 :<cmd>Neogit<cr> :mode [:n] :desc "Git Status"}
-               {1 :<leader>gfh
+        :keys [{1 :<leader>g 2 :<cmd>Neogit<cr> :mode [:n] :desc "Git Status"}
+               {1 :<leader>ogfd
                 2 "<cmd>DiffviewFileHistory %<cr>"
                 :mode [:n]
-                :desc "File history"}
-               {1 :<leader>gfl
+                :desc "File diff history"}
+               {1 :<leader>ogfl
                 2 :<cmd>NeogitLog<cr>
                 :mode [:n]
-                :desc "File history"}
-               {1 :<leader>gfl
+                :desc "File line history"}
+               {1 :<leader>ogfl
                 2 ":NeogitLog<cr>"
                 :mode [:v]
-                :desc "File history"}
-               {1 :<leader>gP 2 "<cmd>Neogit push<cr>" :desc :Push...}
-               {1 :<leader>gp 2 "<cmd>Neogit pull<cr>" :desc :Pull...}
-               {1 :<leader>gl 2 "<cmd>Neogit log<cr>" :desc :Log...}
-               {1 :<leader>gd 2 "<cmd>Neogit diff<cr>" :desc :Diff...}]
+                :desc "File line history"}]
         :dependencies [:sindrets/diffview.nvim]
         :config #(let [ng (require :neogit)]
                    (ng.setup {:use_per_project_settings true
@@ -58,8 +54,9 @@
        {:event [:BufReadPre :BufNewFile]
         :version false
         :config #(let [diff (require :mini.diff)]
-                   (map :n :<leader>gh "<cmd>lua MiniDiff.toggle_overlay()<cr>"
-                        {:noremap true} "Toggle githunk overlay")
+                   (map :n :<leader>tgh
+                        "<cmd>lua MiniDiff.toggle_overlay()<cr>" {:noremap true}
+                        "Toggle githunk overlay")
                    (diff.setup {:view {:style :sign
                                        :signs {:add "│"
                                                :change "│"

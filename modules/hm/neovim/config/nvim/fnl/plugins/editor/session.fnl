@@ -20,16 +20,15 @@
                                                                (vim.api.nvim_buf_get_name $1)))
                                                      false
                                                      _ true))
-                                    :extensions {:scope {} {}}})
+                                    :extensions {:scope {}}})
                   (when vim.g.auto_load_session
                     (when (= (vim.fn.argc -1) 0)
-                      (resession.load (vim.fn.getcwd) {:silence_errors true})
-                      ;;(vim.fn.timer_start 300
-                      ;;                    #(do
-                      ;;                       (resession.load (vim.fn.getcwd)
-                      ;;                                       {:silence_errors true})
-                      ;;                       (e)))
-                      ))
+                      ;(resession.load (vim.fn.getcwd) {:silence_errors true})
+                      (vim.fn.timer_start 200
+                                          #(do
+                                             (resession.load (vim.fn.getcwd)
+                                                             {:silence_errors true})
+                                             (e)))))
                   (map :n :<leader>sl
                        #(do
                           (resession.load)
