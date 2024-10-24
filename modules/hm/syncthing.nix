@@ -3,6 +3,7 @@ let
   inherit (lib) mkEnableOption mkIf;
 
   cfg = config.opt.syncthing;
+
 in
 {
   options.opt.syncthing = {
@@ -15,6 +16,8 @@ in
       syncthing
     ];
 
-    services.syncthing.enable = true;
+    services.syncthing = {
+      enable = true;
+    };
   };
 }
