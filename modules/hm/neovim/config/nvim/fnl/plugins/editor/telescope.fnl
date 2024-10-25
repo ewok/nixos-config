@@ -58,7 +58,7 @@
                  (map :n :<leader>fM "<cmd>Telescope man_pages<CR>"
                       {:silent true} "Find man pages")
                  (map :n :<leader>u "<cmd>Telescope undo<CR>" {:silent true}
-                      "Undo History"))
+                      "Open Undo History"))
         :config #(let [ts (require :telescope)
                        act (require :telescope.actions)
                        tsu (require :telescope-undo.actions)]

@@ -55,13 +55,13 @@
 (map! [:n] :<leader>yfp ":let @+=expand(\"%:p\")<CR>" md "Yank file path")
 
 ;; Profiling
-(map! [:n] :<leader>pS
+(map! [:n] :<leader>PS
       "<cmd>profile start /tmp/profile_vim.log|profile func *|profile file *<CR>"
-      md "Profiling | Start")
+      md "Start")
 
-(map! [:n] :<leader>pT
+(map! [:n] :<leader>PT
       "<cmd>profile stop|e /tmp/profile_vim.log|nmap <buffer> q :!rm /tmp/profile_vim.log<CR>"
-      md "Profiling | Stop")
+      md "Stop")
 
 ;; Replace search
 (vim.cmd "

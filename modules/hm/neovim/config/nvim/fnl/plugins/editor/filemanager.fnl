@@ -10,8 +10,8 @@
                  (map :n ";"
                       "<CMD>Neotree buffers focus dir=/ reveal toggle float<CR>"
                       {:noremap true} "Open buffers")
-                 (map :n :<leader>n "<CMD>Neotree left reveal<CR>"
-                      {:noremap true} "NeoTree"))
+                 (map :n :<leader>n "<CMD>Neotree toggle left reveal<CR>"
+                      {:noremap true} "Open NeoTree"))
         :config #(let [ntree (require :neo-tree)
                        command (require :neo-tree.command)]
                    (ntree.setup {:close_if_last_window true

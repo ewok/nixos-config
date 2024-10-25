@@ -23,14 +23,13 @@
                            {1 :<leader>cd :group :Diff/Diagnostics}
                            {1 :<leader>f :group :Find}
                            {1 :<leader>fs :group :Settings}
-                           {1 :<leader>j :desc "Goto Next buffer"}
-                           {1 :<leader>k :desc "Goto Prev buffer"}
                            {1 :<leader>l :group :Lsp}
                            {1 :<leader>o :group :Open}
                            {1 :<leader>og :group :Git...}
                            {1 :<leader>ot :group :Terminal...}
                            {1 :<leader>ogf :group :File...}
-                           {1 :<leader>p :group "Packages | Profiling"}
+                           {1 :<leader>p :group :Packages}
+                           {1 :<leader>P :group :Profiling}
                            {1 :<leader>s :group :Session}
                            {1 :<leader>t :group :Toggle}
                            {1 :<leader>th :desc "Dark/Light theme"}

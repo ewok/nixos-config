@@ -21,4 +21,4 @@
                            (set vim.o.laststatus 3)
                            (set vim.o.cmdheight 1))}
        :init #(map :n :<leader>z :<cmd>ZenMode<cr> {:silent true :nowait true}
-                   :Zoom)})
+                   "Toggle Zoom")})
