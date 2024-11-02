@@ -3,7 +3,7 @@ let
   inherit (config) colors theme username exchange_api_key openai_token fullName email workEmail authorizedKeys ssh_config;
 
   homeDirectory = "/home/${username}";
-  modules = map (n: ../../modules/hm + "/${n}") (builtins.attrNames (builtins.readDir ../../modules/hm));
+  modulesHm = map (n: ../../modules/hm + "/${n}") (builtins.attrNames (builtins.readDir ../../modules/hm));
 in
 {
   imports = [
@@ -24,6 +24,19 @@ in
     # Fix error not staring service
     systemd.services.NetworkManager-wait-online.enable = false;
 
+    services.minecraft-bedrock-server = {
+      enable = true;
+
+      # see here for more info: https://minecraft.gamepedia.com/Server.properties#server.properties
+      serverProperties = {
+        server-ip = "100.73.133.2";
+        motd = "My Minecraft server";
+        max-players = 5;
+        allow-cheats = true;
+        level-seed = "12212985734";
+      };
+    };
+
     users.users."${username}" = {
       name = "${username}";
       home = homeDirectory;
@@ -37,7 +50,7 @@ in
 
       users."${username}" = {
 
-        imports = modules;
+        imports = modulesHm;
 
         _module.args = {
           utils = import ../../utils/lib.nix { inherit pkgs; };
