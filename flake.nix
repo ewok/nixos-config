@@ -23,7 +23,7 @@
       inputs.home-manager.follows = "home-manager";
     };
     flake-utils.url = "github:numtide/flake-utils";
-    neovim-nightly-overlay.url = "github:nix-community/neovim-nightly-overlay";
+    # neovim-nightly-overlay.url = "github:nix-community/neovim-nightly-overlay";
   };
 
   outputs = { nixpkgs-unstable, home-manager, nix-on-droid, darwin, flake-utils, ... }@inputs:
@@ -34,10 +34,13 @@
           allowUnfree = true;
         };
       };
-      modules = map (n: ./modules/hm + "/${n}") (builtins.attrNames (builtins.readDir ./modules/hm));
+      modules = map (n: ./modules/nixos + "/${n}") (builtins.attrNames (builtins.readDir ./modules/nixos));
+      modulesHm = map (n: ./modules/hm + "/${n}") (builtins.attrNames (builtins.readDir ./modules/hm));
       overlays = [
-        inputs.neovim-nightly-overlay.overlays.default
+        # inputs.neovim-nightly-overlay.overlays.default
+        # (import ./overlays)
       ];
+      # overlays = map (n: ./overlays + "/${n}") (builtins.attrNames (builtins.readDir ./overlays));
     in
     {
 
@@ -46,7 +49,7 @@
           pkgs = import inputs.nixpkgs-unstable (nixpkgsDefaults // {
             system = "x86_64-linux";
           });
-          inherit modules;
+          inherit modulesHm;
         in
         home-manager.lib.homeManagerConfiguration {
           inherit pkgs;
@@ -54,7 +57,7 @@
             ./machines/common.nix
             ./machines/sd
             {
-              imports = modules;
+              imports = modulesHm;
               _module.args.utils = import utils/lib.nix { inherit pkgs; };
             }
           ];
@@ -84,7 +87,7 @@
           pkgs = import inputs.nixpkgs-unstable (nixpkgsDefaults // {
             system = "aarch64-linux";
           });
-          inherit modules;
+          inherit modulesHm;
         in
         home-manager.lib.homeManagerConfiguration {
           inherit pkgs;
@@ -92,7 +95,7 @@
             ./machines/common.nix
             ./machines/rpi
             {
-              imports = modules;
+              imports = modulesHm;
               _module.args.utils = import utils/lib.nix { inherit pkgs; };
             }
           ];
@@ -108,10 +111,10 @@
             ./machines/common.nix
             ./machines/bup
             home-manager.nixosModules.default
-            # {
-            #   nixpkgs.overlays = overlays;
-            # }
-          ];
+            {
+              nixpkgs.overlays = overlays;
+            }
+          ] ++ modules;
         };
 
 
@@ -125,10 +128,10 @@
             ./machines/common.nix
             ./machines/orb
             home-manager.nixosModules.default
-            # {
-            #   nixpkgs.overlays = overlays;
-            # }
-          ];
+            {
+              nixpkgs.overlays = overlays;
+            }
+          ] ++ modules;
         };
 
       darwinConfigurations.mac =
@@ -152,7 +155,7 @@
           pkgs = import inputs.nixpkgs-unstable (nixpkgsDefaults // {
             system = "aarch64-linux";
           });
-          inherit modules;
+          inherit modulesHm;
         in
         nix-on-droid.lib.nixOnDroidConfiguration {
           inherit pkgs;
@@ -161,11 +164,11 @@
             ./machines/droid
             {
               home-manager.config = {
-                imports = modules;
+                imports = modulesHm;
                 _module.args.utils = import utils/lib.nix { inherit pkgs; };
               };
             }
-          ];
+          ] ++ modules;
         };
 
     } // flake-utils.lib.eachDefaultSystem (system: {
