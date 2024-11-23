@@ -72,7 +72,6 @@ symbol = "⛵ "
 format = '[$symbol$context:$namespace]($style) '
 disabled = false
 contexts = [
-    { context_pattern =  ".*-tes(?P<cluster>[\\w-]+)-cluster", style = "green", context_alias = "tes$cluster" },
     { context_pattern =  ".*-prod(?P<cluster>[\\w-]+)-cluster", style = "red bold", context_alias = "prod$cluster" },
-    { context_pattern =  ".*-uat(?P<cluster>[\\w-]+)-cluster", style = "yellow bold", context_alias = "uat$cluster" },
+    { context_pattern =  ".*-(?P<cluster>[\\w-]+)-cluster", style = "green bold", context_alias = "$cluster" },
 ]

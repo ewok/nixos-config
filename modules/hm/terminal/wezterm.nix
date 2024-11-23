@@ -31,6 +31,7 @@ in
 {
   config = mkIf (cfg.enable && cfg.terminal == "wezterm") {
     home.file.".wezterm.lua".source = utils.templateFile ".wezterm.lua" ./config/wezterm.lua vars;
+    # home.file.".var/app/org.wezfurlong.wezterm/config/.wezterm.lua".source = utils.templateFile ".wezterm.lua" ./config/wezterm.lua vars;
     home.packages = [ toggle_theme ];
   };
 }
