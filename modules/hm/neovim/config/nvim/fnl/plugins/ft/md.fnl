@@ -43,6 +43,10 @@
  ;                                :w {:char "" :hl_group :ObsidianTodo}
  ;                                :u {:char "󰔵" :hl_group :ObsidianTodo}
  ;                                :d {:char "󰔳" :hl_group :ObsidianTodo}}}}})
+ ;(pack :renerocksai/telekasten.nvim
+ ;      {:cmd [:Telekasten]
+ ;       :config #(let [telekasten (require :telekasten)]
+ ;                  (telekasten.setup {:home (vim.fn.expand "~/Notes")}))})
  (pack :gpanders/vim-medieval
        {:ft [:markdown]
         :config #(set vim.g.medieval_langs

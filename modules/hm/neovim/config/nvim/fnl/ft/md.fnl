@@ -25,7 +25,7 @@
                (map! [:v] :<CR>
                      ":'<,'>ZkNewFromTitleSelection { dir = vim.fn.expand('%:p:h') }<CR>"
                      md "Create Link")
-               (map! [:n] :<leader>wb :<Cmd>ZkBacklinks<CR> md :Backlinks)
+               (map! [:n] :<leader>wb "<Cmd>ZkBacklinks { select = {'filename', 'path', 'absPath' } }<CR>" md :Backlinks)
                (map! [:n] :<leader>wl :<Cmd>ZkLinks<CR> md :Links)
                (map! :n :<leader>wTn "<cmd>MkdnTable 1 1<cr>" md "New Table")))
 

@@ -4,7 +4,7 @@
 (set vim.g.mapleader " ")
 (set vim.g.maplocalleader ",")
 
-(set vim.g.auto_load_session true)
+;(set vim.g.auto_load_session true)
 
 (when conf.options.pbclip
   (set vim.g.clipboard {:name :orb

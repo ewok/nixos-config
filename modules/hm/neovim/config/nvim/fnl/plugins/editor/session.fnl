@@ -54,19 +54,23 @@
                               (resession.save)
                               (vim.cmd :qall))
                             (do
-                              (vim.ui.input {:prompt "Session Name(enter to use path): "}
-                                            #(case $1
-                                               "" (do
-                                                    (resession.save (vim.fn.getcwd)
-                                                                    {:notify false})
-                                                    (vim.cmd :qall))
-                                               nil (vim.notify :Canceled :INFO
-                                                               {:title :Session})
-                                               _ (do
-                                                   (resession.save $1
-                                                                   {:notify false})
-                                                   (vim.cmd :qall))))))
-                       {:silent true} "Session Quit")
+                              (resession.save (vim.fn.getcwd) {:notify false})
+                              (vim.cmd :qall))
+                            ;;(do
+                            ;;  (vim.ui.input {:prompt "Session Name(enter to use path): "}
+                            ;;                #(case $1
+                            ;;                   "" (do
+                            ;;                        (resession.save (vim.fn.getcwd)
+                            ;;                                        {:notify false})
+                            ;;                        (vim.cmd :qall))
+                            ;;                   nil (vim.notify :Canceled :INFO
+                            ;;                                   {:title :Session})
+                            ;;                   _ (do
+                            ;;                       (resession.save $1
+                            ;;                                       {:notify false})
+                            ;;                       (vim.cmd :qall)))))
+                            ) {:silent true}
+                       "Session Quit")
                   (map :n :<leader>sd
                        #(let [(ok _) (pcall resession.delete)]
                           (if ok

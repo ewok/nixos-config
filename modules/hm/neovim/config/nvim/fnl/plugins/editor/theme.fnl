@@ -30,9 +30,9 @@
                                      :flavour :auto
                                      :background {:light :latte
                                                   :dark :macchiato}
-                                     :custom_highlights (fn [colors]
-                                                          {:Visual {:bg colors.overlay2}
-                                                           :VisualNOS {:bg colors.overlay2}})
+                                     ;:custom_highlights (fn [colors]
+                                     ;                     {:Visual {:bg colors.overlay4}
+                                     ;                      :VisualNOS {:bg colors.overlay4}})
                                      :integrations {:fidget true
                                                     :which_key true
                                                     :navic {:enabled true}}})

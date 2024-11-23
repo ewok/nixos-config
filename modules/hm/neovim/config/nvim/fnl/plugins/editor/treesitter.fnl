@@ -158,7 +158,9 @@
         :dependencies [:nvim-treesitter/nvim-treesitter-textobjects]
         :event [:BufReadPost :BufNewFile]
         :config #(let [configs (require :nvim-treesitter.configs)
-                       query (require :vim.treesitter.query)]
+                       query (require :vim.treesitter.query)
+                       install (require :nvim-treesitter.install)]
+                   (tset install :prefer_git true)
                    (configs.setup {:ensure_installed [:markdown_inline
                                                       :markdown
                                                       :c
