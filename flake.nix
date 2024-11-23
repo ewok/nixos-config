@@ -111,9 +111,9 @@
             ./machines/common.nix
             ./machines/bup
             home-manager.nixosModules.default
-            {
-              nixpkgs.overlays = overlays;
-            }
+            # {
+            #   nixpkgs.overlays = overlays;
+            # }
           ] ++ modules;
         };
 
@@ -168,7 +168,7 @@
                 _module.args.utils = import utils/lib.nix { inherit pkgs; };
               };
             }
-          ] ++ modules;
+          ];
         };
 
     } // flake-utils.lib.eachDefaultSystem (system: {
@@ -182,7 +182,7 @@
           packages =
             let
 
-              nixosMy = writeShellScriptBin "n" ''
+              nixosMy = writeShellScriptBin "nn" ''
                 if [ "$#" -eq 0 ]; then
                   echo "Provide a command as a first argument please."
                   echo "crypt, clean, update, b, s"
@@ -202,6 +202,8 @@
 
                   elif [ "$1" == "update" ];then
                       nix flake update
+                  elif [ "$1" == "repair" ];then
+                      nix-store --verify --check-contents --repair
                   fi
                 elif [ "$#" -eq 2 ]; then
 
@@ -219,7 +221,7 @@
                 # CNT
                 # RPI
                   if [ "$2" == "sd" ] || [ "$2" == "rpi" ]; then
-                    CMD="nix run home-manager -- $CMD"
+                    CMD="nix run home-manager -- -b backup $CMD"
                 # nixos
                 # orb
                   elif [ "$2" == "bup" ] || [ "$2" == "orb" ]; then
