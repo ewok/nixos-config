@@ -20,10 +20,19 @@ in
     programs.nix-ld.enable = true;
     programs.nix-ld.libraries = [ ];
 
+    i18n.supportedLocales = [
+      "en_US.UTF-8/UTF-8"
+      "ru_RU.UTF-8/UTF-8"
+    ];
+
     users.users."${username}" = {
       name = "${username}";
       home = homeDirectory;
-      isNormalUser = true;
+      isSystemUser = true;
+      group = "users";
+      createHome = true;
+      homeMode = "700";
+      useDefaultShell = true;
     };
 
     home-manager = {
@@ -53,7 +62,7 @@ in
           git = {
             enable = true;
             homePath = "${homeDirectory}/";
-            workPath = "${homeDirectory}/work/";
+            workPath = "/Users/${username}/work/";
             homeEmail = email;
             inherit fullName workEmail;
           };

@@ -2,7 +2,7 @@
 let
   inherit (config) colors theme exchange_api_key openai_token fullName email workEmail authorizedKeys ssh_config;
 
-  username = "deck";
+  username = "ataranchiev";
   homeDirectory = "/home/${username}";
 in
 {
@@ -29,7 +29,7 @@ in
           inherit fullName workEmail;
         };
         hledger = {
-          enable = true;
+          enable = false;
           inherit exchange_api_key;
         };
         svn.enable = true;
@@ -55,7 +55,7 @@ in
           inherit colors theme;
         };
         direnv.enable = true;
-        openvpn.enable = true;
+        openvpn.enable = false;
         scripts.enable = true;
       };
 

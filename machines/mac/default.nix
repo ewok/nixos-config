@@ -1,11 +1,14 @@
 { config, pkgs, ... }:
 let
-  inherit (config) colors theme username workEmail fullName authorizedKeys email ssh_config;
+  inherit (config) colors theme username workEmail fullName authorizedKeys email ssh_config openai_token;
 
   homeDirectory = "/Users/${username}";
   modules = map (n: ../../modules/hm + "/${n}") (builtins.attrNames (builtins.readDir ../../modules/hm));
 in
 {
+  imports = [
+    ./secrets.nix
+  ];
   config = {
     services.nix-daemon.enable = true;
 
@@ -29,6 +32,15 @@ in
           };
 
           opt = {
+            nvim = {
+              enable = true;
+              inherit colors theme;
+              orb = true;
+              openai_token = openai_token;
+            };
+            vifm.enable = true;
+            starship.enable = true;
+            svn.enable = true;
             fish = {
               enable = true;
               darwin = true;
@@ -43,17 +55,23 @@ in
             };
             ssh = {
               inherit authorizedKeys;
-              config = ssh_config;
               enable = true;
               homeDirectory = homeDirectory;
             };
+            kube.enable = true;
+            tf.enable = true;
+            lisps.enable = true;
             nix.enable = true;
             wm.enable = true;
+            wm.homePath = homeDirectory;
+            direnv.enable = true;
+            aws.enable = true;
+            scripts.enable = true;
             terminal = {
               enable = true;
               inherit colors theme;
               tmux = {
-                enable = false;
+                enable = true;
                 terminal = "xterm-256color";
                 install = false;
               };
