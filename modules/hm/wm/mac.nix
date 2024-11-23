@@ -1,4 +1,4 @@
-{ config, lib, pkgs, ... }:
+{ config, lib, pkgs, utils, ... }:
 let
   inherit (lib) mkIf;
   inherit (pkgs) writeScriptBin system;
@@ -21,6 +21,11 @@ let
     "id:37D8832A-2D66-02CA-B9F7-8F30A301B230 res:1512x982 \
     hz:120 color_depth:8 enabled:true scaling:on origin:(-1512,98) degree:0" \
   '';
+
+  vars =
+    {
+      homePath = cfg.homePath;
+    };
 in
 {
   config = mkIf (cfg.enable && (system == "aarch64-darwin"))
@@ -33,7 +38,7 @@ in
       # home.file.".skhdrc".source = ./config/macos/skhdrc;
       home.file."finicky.js".source = ./config/macos/finicky.js;
       home.file."bin/new-iterm-window.scpt".source = ./config/macos/new-iterm-window.scpt;
-      home.file.".aerospace.toml".source = ./config/macos/aerospace.toml;
+      home.file.".aerospace.toml".source = utils.templateFile "aerospace.toml" ./config/macos/aerospace.toml vars;
       # home.file.".yabairc" = {
       #   source = ./config/macos/yabairc;
       #   executable = true;

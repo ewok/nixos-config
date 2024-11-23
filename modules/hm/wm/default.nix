@@ -9,6 +9,10 @@ in
     linux = mkOption { type = types.bool; default = false; };
     macos = mkOption { type = types.bool; default = false; };
     steamos = mkOption { type = types.bool; default = false; };
+    homePath = mkOption {
+      type = types.str;
+      default = "~";
+    };
 
     terminal = mkOption {
       type = types.str;

@@ -26,10 +26,10 @@ in
         source = ./config/steamos/i3/i3exit;
         executable = true;
       };
-      home.file.".config" = {
-        source = ./config/steamos/kde;
-        recursive = true;
-      };
+      # home.file.".config" = {
+      #   source = ./config/steamos/kde;
+      #   recursive = true;
+      # };
       xdg.configFile."i3/config" = {
         source = utils.templateFile "config" ./config/steamos/i3/config vars;
         executable = true;
