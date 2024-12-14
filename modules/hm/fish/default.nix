@@ -31,7 +31,6 @@ in
     home = {
       packages = with pkgs; [
         fish
-        nushell
         carapace
         fzf
         zoxide
@@ -42,7 +41,7 @@ in
         viddy
         gnutar
         zip
-        nushell
+        # nushell
         # elvish
       ];
       file = {
@@ -85,6 +84,10 @@ in
         "fish/conf.d/01_init_interactive.fish".source = ./config/01_init_interactive.fish;
         "fish/conf.d/95_greeting.fish".source = ./config/95_greeting.fish;
         "fish/conf.d/99_zoxide.fish".source = ./config/99_zoxide.fish;
+        "fish/conf.d/99_carapace.fish".source = ./config/99_carapace.fish;
+
+        # disable brew completion
+        "fish/conf.d/brew.fish".text = "";
 
         "fish/fish_plugins".source = ./config/fish_plugins;
         "fish/functions/fisher.fish".source = pkgs.fetchurl {
@@ -112,9 +115,9 @@ in
           fi
         '';
 
-        "nushell/env.nu".source = utils.templateFile "env.nu" ./config/env.nu vars;
-        "nushell/config.nu".source = utils.templateFile "config.nu" ./config/config.nu vars;
-        "nushell/granted.nu".source = ./config/granted.nu;
+        # "nushell/env.nu".source = utils.templateFile "env.nu" ./config/env.nu vars;
+        # "nushell/config.nu".source = utils.templateFile "config.nu" ./config/config.nu vars;
+        # "nushell/granted.nu".source = ./config/granted.nu;
       };
     };
   };
