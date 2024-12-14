@@ -1,24 +1,51 @@
 (local {: pack} (require :lib))
 
-[(pack :chrishrb/gx.nvim {:keys [{1 :gx 2 :<cmd>Browse<cr> :mode [:n :x]}]
-                          :cmd [:Browse]
-                          :config true})
- (pack :ruifm/gitlinker.nvim
-       {:keys [{:mode :n
-                1 :<leader>ogx
-                2 "<cmd>lua require'gitlinker'.get_buf_range_url('n', {action_callback = require'gitlinker.actions'.open_in_browser})<cr>"
-                :desc :GBrowse}
-               {:mode :v
-                1 :<leader>ogx
-                2 "<cmd>lua require'gitlinker'.get_buf_range_url('v', {action_callback = require'gitlinker.actions'.open_in_browser})<cr>"
-                :desc :GBrowse}]
-        :config #(let [gl (require :gitlinker)]
-                   (gl.setup {:mappings :<localleader>gy}))
-        :opts {:mappings nil}})
- (pack :axieax/urlview.nvim {:cmd [:UrlView]
-                             :keys [{1 :<leader>fu
-                                     2 ":UrlView buffer picker=telescope<cr>"
-                                     :mode :n
-                                     :silent true
-                                     :desc "Find URL"}]
-                             :config true})]
+[(pack :ruifm/gitlinker.nvim {:opts {:opts {:print_url false} :mappings nil}})
+ (pack :chrishrb/gx.nvim
+       {:keys [{1 :gx 2 :<cmd>Browse<cr> :mode [:n :x]}]
+        :cmd [:Browse]
+        :init #(set vim.g.netrw_nogx 1)
+        :opts {:handler_options {:select_for_search true}
+               :handlers {:plugin true
+                          :github true
+                          :brewfile false
+                          :package_json false
+                          :search true
+                          :go true
+                          :gitlinker {:name :gitlinker
+                                      :handle (fn [mode _ _]
+                                                (let [linker (require :gitlinker)
+                                                      mode (if (= mode :n) :n
+                                                               :v)]
+                                                  (linker.get_buf_range_url mode
+                                                                            {}
+                                                                            {:silent true})))}
+                          :tf {:name :tf
+                               :filetype [:terraform]
+                               :handle (fn [mode line _]
+                                         (let [helper (require :gx.helper)
+                                               atype (helper.find line mode
+                                                                  "(%w+) ")]
+                                           (when (or (= atype :resource)
+                                                     (= atype :data))
+                                             (let [provider (helper.find line
+                                                                         mode
+                                                                         "%w+ \"(%w+)_.+\" ")
+                                                   resource (helper.find line
+                                                                         mode
+                                                                         "resource \"%w+_([a-zA-Z_]+)\" ")
+                                                   data (helper.find line mode
+                                                                     "data \"%w+_([a-zA-Z_]+)\" ")
+                                                   url (match provider
+                                                         :aws "https://registry.terraform.io/providers/hashicorp/aws/"
+                                                         :terraform "https://registry.terraform.io/providers/hashicorp/terraform/"
+                                                         :databricks "https://registry.terraform.io/providers/databricks/databricks/")]
+                                               (when url
+                                                 (if resource
+                                                     (.. url
+                                                         :latest/docs/resources/
+                                                         resource)
+                                                     (when data
+                                                       (.. url
+                                                           :latest/docs/data-sources/
+                                                           data))))))))}}}})]
