@@ -74,85 +74,80 @@
 
 [(pack :hiphish/rainbow-delimiters.nvim {:event [:BufReadPost :BufNewFile]})
  (pack :nvim-treesitter/nvim-treesitter-textobjects
-       {:config #(let [configs (require :nvim-treesitter.configs)
-                       ts_repeat_move (require :nvim-treesitter.textobjects.repeatable_move)]
-                   ; (vim.keymap.set [:n :x :o] ";"
-                   ;                 ts_repeat_move.repeat_last_move)
-                   ; (vim.keymap.set [:n :x :o] ","
-                   ;                 ts_repeat_move.repeat_last_move_opposite)
+       {:config #(let [configs (require :nvim-treesitter.configs)]
                    (configs.setup {:textobjects {:select {:enable true
                                                           :lookahead true
                                                           :keymaps {:a= {:query "@assignment.outer"
-                                                                         :desc "Select outer part of an assignment"}
+                                                                         :desc "[TS] Select outer part of an assignment"}
                                                                     :i= {:query "@assignment.inner"
-                                                                         :desc "Select inner part of an assignment"}
+                                                                         :desc "[TS] Select inner part of an assignment"}
                                                                     "[=" {:query "@assignment.lhs"
-                                                                          :desc "Select left hand side of an assignment"}
+                                                                          :desc "[TS] Select left hand side of an assignment"}
                                                                     "]=" {:query "@assignment.rhs"
-                                                                          :desc "Select right hand side of an assignment"}
+                                                                          :desc "[TS] Select right hand side of an assignment"}
                                                                     "a:" {:query "@property.outer"
-                                                                          :desc "Select outer part of an object property"}
+                                                                          :desc "[TS] Select outer part of an object property"}
                                                                     "i:" {:query "@property.inner"
-                                                                          :desc "Select inner part of an object property"}
+                                                                          :desc "[TS] Select inner part of an object property"}
                                                                     "[:" {:query "@property.lhs"
-                                                                          :desc "Select left part of an object property"}
+                                                                          :desc "[TS] Select left part of an object property"}
                                                                     "]:" {:query "@property.rhs"
-                                                                          :desc "Select right part of an object property"}
+                                                                          :desc "[TS] <Select> right part of an object property"}
                                                                     :aa {:query "@parameter.outer"
-                                                                         :desc "Select outer part of a parameter/argument"}
+                                                                         :desc "[TS] <Select> outer part of a parameter/argument"}
                                                                     :ia {:query "@parameter.inner"
-                                                                         :desc "Select inner part of a parameter/argument"}
+                                                                         :desc "[TS] <Select> inner part of a parameter/argument"}
                                                                     :ai {:query "@conditional.outer"
-                                                                         :desc "Select outer part of a conditional"}
+                                                                         :desc "[TS] <Select> outer part of a conditional"}
                                                                     :ii {:query "@conditional.inner"
-                                                                         :desc "Select inner part of a conditional"}
+                                                                         :desc "[TS] <Select> inner part of a conditional"}
                                                                     :al {:query "@loop.outer"
-                                                                         :desc "Select outer part of a loop"}
+                                                                         :desc "[TS] <Select> outer part of a loop"}
                                                                     :il {:query "@loop.inner"
-                                                                         :desc "Select inner part of a loop"}
+                                                                         :desc "[TS] <Select> inner part of a loop"}
                                                                     :af {:query "@call.outer"
-                                                                         :desc "Select outer part of a function call"}
+                                                                         :desc "[TS] <Select> outer part of a function call"}
                                                                     :if {:query "@call.inner"
-                                                                         :desc "Select inner part of a function call"}
+                                                                         :desc "[TS] <Select> inner part of a function call"}
                                                                     :am {:query "@function.outer"
-                                                                         :desc "Select outer part of a method/function definition"}
+                                                                         :desc "[TS] Select outer part of a method/function definition"}
                                                                     :im {:query "@function.inner"
-                                                                         :desc "Select inner part of a method/function definition"}
+                                                                         :desc "[TS] Select inner part of a method/function definition"}
                                                                     :ac {:query "@class.outer"
-                                                                         :desc "Select outer part of a class"}
+                                                                         :desc "[TS] Select outer part of a class"}
                                                                     :ic {:query "@class.inner"
-                                                                         :desc "Select inner part of a class"}}}
+                                                                         :desc "[TS] Select inner part of a class"}}}
                                                  :swap {:enable true
                                                         :swap_next {:gm> "@parameter.inner"}
                                                         :swap_previous {:gm< "@parameter.inner"}}
                                                  :move {:enable true
                                                         :set_jumps true
                                                         :goto_next_start {"]f" {:query "@call.outer"
-                                                                                :desc "Next function call start"}
+                                                                                :desc "[TS] <Next> function call start"}
                                                                           "]m" {:query "@function.outer"
-                                                                                :desc "Next method/function def start"}
+                                                                                :desc "[TS] <Next> method/function def start"}
                                                                           "]c" {:query "@class.outer"
-                                                                                :desc "Next class start"}
+                                                                                :desc "[TS] <Next> class start"}
                                                                           "]i" {:query "@conditional.outer"
-                                                                                :desc "Next conditional start"}
+                                                                                :desc "[TS] <Next> conditional start"}
                                                                           "]l" {:query "@loop.outer"
-                                                                                :desc "Next loop start"}
+                                                                                :desc "[TS] <Next> loop start"}
                                                                           "]s" {:query "@scope"
                                                                                 :query_group :locals
-                                                                                :desc "Next scope"}
+                                                                                :desc "[TS] <Next> scope"}
                                                                           "]z" {:query "@fold"
                                                                                 :query_group :folds
-                                                                                :desc "Next fold"}}
+                                                                                :desc "[TS] <Next> fold"}}
                                                         :goto_previous_start {"[f" {:query "@call.outer"
-                                                                                    :desc "Prev function call start"}
+                                                                                    :desc "[TS] <Prev> function call start"}
                                                                               "[m" {:query "@function.outer"
-                                                                                    :desc "Prev method/function def start"}
+                                                                                    :desc "[TS] <Prev> method/function def start"}
                                                                               "[c" {:query "@class.outer"
-                                                                                    :desc "Prev class start"}
+                                                                                    :desc "[TS] <Prev> class start"}
                                                                               "[i" {:query "@conditional.outer"
-                                                                                    :desc "Prev conditional start"}
+                                                                                    :desc "[TS] <Prev> conditional start"}
                                                                               "[l" {:query "@loop.outer"
-                                                                                    :desc "Prev loop start"}}}}}))})
+                                                                                    :desc "[TS] <Prev> loop start"}}}}}))})
  (pack :nvim-treesitter/nvim-treesitter
        {:build ":TSUpdate"
         :dependencies [:nvim-treesitter/nvim-treesitter-textobjects]

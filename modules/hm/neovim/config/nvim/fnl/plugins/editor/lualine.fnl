@@ -1,39 +1,7 @@
 (local {: pack : is_loaded : get_buf_ft} (require :lib))
 (local conf (require :conf))
 
-[
- ;(pack :freddiehaddad/feline.nvim
- ;      {:events :VeryLazy
- ;       :config #(let [feline (require :feline)
- ;                      vi-mode (require :feline.providers.vi_mode)]
- ;                  (feline.setup {:components {:active [[{:provider #(string.format "%s"
- ;                                                                                   (vi-mode.get_vim_mode))
- ;                                                         :hl #(:fg (vi-mode.get_mode_color)
- ;                                                                   :bg :none)
- ;                                                         :right_sep {:always_visible true
- ;                                                                     :str (string.format "%s"
- ;                                                                                         "  ")
- ;                                                                     :hl {:fg :none
- ;                                                                          :bg :none}}}]]}})
- ;                  (feline.winbar.setup {})
- ;                  (feline.statuscolumn.setup {}))})
- ;(pack :rebelot/heirline.nvim
- ;      {:event :VeryLazy
- ;       :dependencies [:Zeioth/heirline-components.nvim]
- ;       :config #(let [heirline (require :heirline)
- ;                      components (require :heirline-components.all)
- ;                      utils (require :heirline.utils)]
- ;                  (components.init.subscribe_to_events)
- ;                  (heirline.load_colors (components.hl.get_colors))
- ;                  (heirline.setup {:tabline [(components.component.tabline_buffers)
- ;                                             (utils.surround [conf.separator.left
- ;                                                              conf.separator_right]
- ;                                                             ""
- ;                                                             (components.component.tabline_tabpages))]
- ;                                   :statusline [(components.component.tabline_conditional_padding)]
- ;                                   :winbar [(components.component.tabline_conditional_padding)]
- ;                                   :statuscolumn [(components.component.tabline_conditional_padding)]}))})
- (pack :nvim-lualine/lualine.nvim
+[(pack :nvim-lualine/lualine.nvim
        {:event :VeryLazy
         :config #(let [ll (require :lualine)
                        opts {:extensions [:aerial]
@@ -95,7 +63,7 @@
                                                            ;{1 #" oil://%{v:lua.string.gsub(v:lua.require('oil').get_current_dir(), v:lua.os.getenv('HOME'), '~')}"
                                                            ; :cond #(= :oil
                                                            ;           (get_buf_ft 0))}
-                                                            ]}
+                                                           ]}
                              :tabline {:lualine_a [;{1 :buffers
                                                    ; :use_mode_colors true}
                                                    :tabs]
@@ -108,6 +76,4 @@
                                                          cwd)}]
                                        :lualine_y [{1 #(.. "buffers: "
                                                            (length (vim.api.nvim_list_bufs)))}]}}]
-                   (ll.setup opts))}
-        )
- ]
+                   (ll.setup opts))})]

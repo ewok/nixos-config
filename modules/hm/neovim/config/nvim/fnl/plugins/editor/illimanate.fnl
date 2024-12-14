@@ -9,5 +9,4 @@
                                          :under_cursor false
                                          :modes_denylist [:i]
                                          :providers [:regex :treesitter]
-                                         :filetypes_denylist conf.ui_ft})
-                  )})
+                                         :filetypes_denylist conf.ui_ft}))})

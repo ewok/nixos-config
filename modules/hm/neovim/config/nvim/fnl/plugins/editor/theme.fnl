@@ -18,9 +18,6 @@
                        (update-bg true)) {:noremap true}
      "Toggle theme Dark")
 
-; (map :n :<leader>tha #(os.execute "toggle-theme auto") {:noremap true}
-;      "Toggle theme Auto")
-
 (pack :catppuccin/nvim
       {:name :catppuccin
        :priority 1000

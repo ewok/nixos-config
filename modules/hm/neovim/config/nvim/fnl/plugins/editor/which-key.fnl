@@ -27,7 +27,7 @@
                            {1 :<leader>o :group :Open}
                            {1 :<leader>og :group :Git...}
                            {1 :<leader>ot :group :Terminal...}
-                           {1 :<leader>ogf :group :File...}
+                           {1 :<leader>gf :group :File...}
                            {1 :<leader>p :group :Packages}
                            {1 :<leader>P :group :Profiling}
                            {1 :<leader>s :group :Session}

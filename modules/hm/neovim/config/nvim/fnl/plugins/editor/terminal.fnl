@@ -31,9 +31,9 @@
                        "' false"))) {:silent true}
      "Toggle bottom or float terminal")
 
-; (map :n :<leader>gg
-;      #(vim.cmd (.. "silent !tmux popup -d " (vim.uv.cwd)
-;                    " -xC -yC -w90\\% -h90\\% -E lazygit")) {:silent true}
-;      "Open lazygit in bottom terminal")
+;(map :n :<leader>gg
+;     #(vim.cmd (.. "silent !tmux popup -d " (vim.uv.cwd)
+;                   " -xC -yC -w90\\% -h90\\% -E lazygit")) {:silent true}
+;     "Open lazygit in bottom terminal")
 
 []

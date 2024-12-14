@@ -1,14 +1,8 @@
 (local {: pack : map : reg_ft} (require :lib))
 
-[;;(pack :f-person/git-blame.nvim {:event :VeryLazy})
- ;(pack :SuperBo/fugit2.nvim
- ;      {:opts {:width 100}
- ;       :dependencies [:chrisgrieser/nvim-tinygit]
- ;       :cmd [:Fugit2 :Fugit2Diff :Fugit2Graph]})
- ;(pack :tpope/vim-fugitive {:cmd :Git})
- (pack :FabijanZulj/blame.nvim
+[(pack :FabijanZulj/blame.nvim
        {:cmd :BlameToggle
-        :keys [{1 :<leader>tgb
+        :keys [{1 :<leader>gb
                 2 #(let [pos (vim.fn.getcurpos)]
                      (vim.cmd "normal! gg")
                      (vim.cmd :BlameToggle)
@@ -22,19 +16,20 @@
                    (blame.setup {}))})
  (pack :NeogitOrg/neogit
        {:cmd [:Neogit :DiffviewOpenFileHistory]
-        :keys [{1 :<leader>g 2 :<cmd>Neogit<cr> :mode [:n] :desc "Git Status"}
-               {1 :<leader>ogfd
+        :keys [{1 :<leader>gs 2 :<cmd>Neogit<cr> :mode [:n] :desc "Git Status"}
+               {1 :<leader>gg 2 :<cmd>Neogit<cr> :mode [:n] :desc "Git Status"}
+               {1 :<leader>gfd
                 2 "<cmd>DiffviewFileHistory %<cr>"
                 :mode [:n]
-                :desc "File diff history"}
-               {1 :<leader>ogfl
+                :desc "Diff history"}
+               {1 :<leader>gfl
                 2 :<cmd>NeogitLog<cr>
                 :mode [:n]
-                :desc "File line history"}
-               {1 :<leader>ogfl
+                :desc "Line history"}
+               {1 :<leader>gfl
                 2 ":NeogitLog<cr>"
                 :mode [:v]
-                :desc "File line history"}]
+                :desc "Line history"}]
         :dependencies [:sindrets/diffview.nvim]
         :config #(let [ng (require :neogit)]
                    (ng.setup {:use_per_project_settings true
@@ -54,9 +49,8 @@
        {:event [:BufReadPre :BufNewFile]
         :version false
         :config #(let [diff (require :mini.diff)]
-                   (map :n :<leader>tgh
-                        "<cmd>lua MiniDiff.toggle_overlay()<cr>" {:noremap true}
-                        "Toggle githunk overlay")
+                   (map :n :<leader>gh "<cmd>lua MiniDiff.toggle_overlay()<cr>"
+                        {:noremap true} "Toggle githunk overlay")
                    (diff.setup {:view {:style :sign
                                        :signs {:add "│"
                                                :change "│"
@@ -67,4 +61,7 @@
                                            :goto_first ""
                                            :goto_prev "[g"
                                            :goto_next "]g"
-                                           :gotoGit_last ""}}))})]
+                                           :gotoGit_last ""}}))})
+ (pack :fredeeb/tardis.nvim
+       {:config true :cmd :Tardis :keys [{1 :<leader>gfh}]})
+ ]

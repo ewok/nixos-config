@@ -33,8 +33,8 @@
                                                                :nowait true}
                                                      :l :open
                                                      :<C-p> {1 :toggle_preview
-                                                         :config {:use_float true
-                                                                  :use_image_nvim false}}
+                                                             :config {:use_float true
+                                                                      :use_image_nvim false}}
                                                      :L :focus_preview
                                                      :<C-s> :open_split
                                                      :<C-v> :open_vsplit
@@ -81,11 +81,7 @@
                                                           :nowait false}
                                                      :st {1 :order_by_type
                                                           :nowait false}}}
-                                 :filesystem {:filtered_items {;:visible false
-                                                               ;                              :hide_dotfiles false
-                                                               ;                              :hide_gitignored false
-                                                               ;                              :hide_hidden true
-                                                               :hide_by_name [:.direnv]
+                                 :filesystem {:filtered_items {:hide_by_name [:.direnv]
                                                                :hide_by_pattern [;"*.meta"
                                                                                  ;"*/src/*/tsconfig.json"
                                                                                  ]
@@ -101,18 +97,12 @@
                                               :hijack_netrw_behavior :open_default
                                               :use_libuv_file_watcher false
                                               :window {:mappings {";" {1 #(do
-                                                                            ;(vim.api.nvim_exec "Neotree close"
-                                                                            ;                   true)
                                                                             (vim.api.nvim_exec "Neotree focus git_status float"
                                                                                                true))}}
                                                        :fuzzy_finder_mappings {:<down> :move_cursor_down
                                                                                :<C-j> :move_cursor_down
                                                                                :<up> :move_cursor_up
-                                                                               :<C-k> :move_cursor_up
-                                                                               ; '<key>' function(state) ... end,
-                                                                               }}
-                                              ;commands = {} -- Add a custom command or override a global one using the same function name
-                                              }
+                                                                               :<C-k> :move_cursor_up}}}
                                  :git_status {:window {:mappings {";" {1 #(do
                                                                             (vim.api.nvim_exec "Neotree close"
                                                                                                true)
@@ -136,8 +126,6 @@
        {:enabled conf.packages.oil
         :cmd :Oil
         :dependencies [(pack :refractalize/oil-git-status.nvim)]
-        ;:init #(do
-        ;         (map :n :<leader>fp :<CMD>Oil<CR> {} "Open parent directory"))
         :config #(let [oil (require :oil)
                        oil-git (require :oil-git-status)]
                    (reg_ft :oil
