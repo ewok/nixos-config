@@ -97,18 +97,18 @@
                                               :hijack_netrw_behavior :open_default
                                               :use_libuv_file_watcher false
                                               :window {:mappings {";" {1 #(do
-                                                                            (vim.api.nvim_exec "Neotree focus git_status float"
+                                                                            (vim.api.nvim_exec "Neotree focus buffers float reveal dir=/"
                                                                                                true))}}
                                                        :fuzzy_finder_mappings {:<down> :move_cursor_down
                                                                                :<C-j> :move_cursor_down
                                                                                :<up> :move_cursor_up
                                                                                :<C-k> :move_cursor_up}}}
-                                 :git_status {:window {:mappings {";" {1 #(do
-                                                                            (vim.api.nvim_exec "Neotree close"
-                                                                                               true)
-                                                                            (vim.api.nvim_exec "Neotree focus buffers float reveal dir=/"
-                                                                                               true))}
-                                                                  :u :noop}}}
+                                 ;;:git_status {:window {:mappings {";" {1 #(do
+                                 ;;                                           (vim.api.nvim_exec "Neotree close"
+                                 ;;                                                              true)
+                                 ;;                                           (vim.api.nvim_exec "Neotree focus buffers float reveal dir=/"
+                                 ;;                                                              true))}
+                                 ;;                                 :u :noop}}}
                                  :buffers {:bind_to_cwd false
                                            :follow_current_file {:enabled true
                                                                  :leave_dirs_open false}
