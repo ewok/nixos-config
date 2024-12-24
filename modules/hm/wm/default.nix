@@ -5,8 +5,7 @@ in
 {
   options.opt.wm = {
     enable = mkEnableOption "wm";
-    android = mkOption { type = types.bool; default = false; };
-    linux = mkOption { type = types.bool; default = false; };
+    sway = mkOption { type = types.bool; default = false; };
     macos = mkOption { type = types.bool; default = false; };
     steamos = mkOption { type = types.bool; default = false; };
     homePath = mkOption {
@@ -55,5 +54,5 @@ in
 
   };
 
-  imports = [ ./mac.nix ./steamos.nix ];
+  imports = [ ./mac.nix ./steamos.nix ./sway.nix ];
 }
