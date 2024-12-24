@@ -6,7 +6,7 @@ in
   options.opt = {
     terminal = {
       enable = mkEnableOption "terminal";
-      steamdeck = mkOption { type = types.bool; default = false; };
+      linux = mkOption { type = types.bool; default = false; };
       orb = mkOption { type = types.bool; default = false; };
       terminal = mkOption {
         type = types.str;
@@ -28,7 +28,7 @@ in
         enable = mkEnableOption "zellij";
         install = mkOption {
           type = types.bool;
-          default = true;
+          default = false;
         };
       };
 
@@ -68,5 +68,5 @@ in
 
     };
   };
-  imports = [ ./alacritty.nix ./wezterm.nix ./tmux.nix ./zellij.nix ];
+  imports = [ ./alacritty.nix ./wezterm.nix ./tmux.nix ./zellij.nix ./foot.nix ];
 }

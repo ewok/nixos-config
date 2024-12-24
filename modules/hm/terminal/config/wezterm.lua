@@ -39,7 +39,7 @@ local config = wezterm.config_builder()
 
 config.color_scheme = Scheme_for_appearance(get_appearance)
 
--- {{^steamdeck}}
+-- {{^linux}}
 -- MacOS
 config.font = wezterm.font("FiraCode Nerd Font Propo", {
     weight = "Bold",
@@ -55,8 +55,8 @@ config.freetype_load_target = "Light"
 --     saturation = 1.0,
 --     brightness = 0.9,  -- default is 1.0
 -- }
--- {{/steamdeck}}
--- {{#steamdeck}}
+-- {{/linux}}
+-- {{#linux}}
 -- SteamOs
 config.font = wezterm.font("FiraCode Nerd Font", {
     weight = "Regular",
@@ -71,7 +71,7 @@ config.font_shaper = "Harfbuzz"
 --     saturation = 1.0,
 --     brightness = 0.9,  -- default is 1.0
 -- }
--- {{/steamdeck}}
+-- {{/linux}}
 
 config.enable_tab_bar = false
 config.enable_scroll_bar = false

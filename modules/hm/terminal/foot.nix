@@ -4,9 +4,8 @@ let
 
   cfg = config.opt.terminal;
   vars = {
-    linux = cfg.linux;
-    theme = cfg.theme.name;
-    light_theme = cfg.theme.light_name;
+    conf.theme = cfg.theme;
+    conf.colors = cfg.colors;
   };
   toggle_theme = pkgs.writeShellScriptBin "toggle-theme" ''
     if [ "$1" == "auto" ];then
@@ -29,9 +28,8 @@ let
   '';
 in
 {
-  config = mkIf (cfg.enable && cfg.terminal == "wezterm") {
-    home.file.".wezterm.lua".source = utils.templateFile ".wezterm.lua" ./config/wezterm.lua vars;
-    # home.file.".var/app/org.wezfurlong.wezterm/config/.wezterm.lua".source = utils.templateFile ".wezterm.lua" ./config/wezterm.lua vars;
+  config = mkIf (cfg.enable && cfg.terminal == "foot") {
+    xdg.configFile."foot/foot.ini".source = utils.templateFile "foot.ini" ./config/foot.ini vars;
     home.packages = [ toggle_theme ];
   };
 }
