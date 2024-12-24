@@ -44,7 +44,7 @@
     in
     {
 
-      homeConfigurations.sd =
+      homeConfigurations.lgo =
         let
           pkgs = import inputs.nixpkgs-unstable (nixpkgsDefaults // {
             system = "x86_64-linux";
@@ -55,7 +55,7 @@
           inherit pkgs;
           modules = [
             ./machines/common.nix
-            ./machines/sd
+            ./machines/lgo
             {
               imports = modulesHm;
               _module.args.utils = import utils/lib.nix { inherit pkgs; };
@@ -220,7 +220,7 @@
                 # SteamDeck
                 # CNT
                 # RPI
-                  if [ "$2" == "sd" ] || [ "$2" == "rpi" ]; then
+                  if [ "$2" == "lgo" ] || [ "$2" == "rpi" ]; then
                     CMD="nix run home-manager -- -b backup $CMD"
                 # nixos
                 # orb
@@ -233,7 +233,7 @@
                   elif [ "$2" == "mac" ]; then
                     CMD="nix run nix-darwin -- $CMD"
                   else
-                    echo "'$2' wrong, possible options: sd, rpi, bup, orb, droid, mac"
+                    echo "'$2' wrong, possible options: lgo, rpi, bup, orb, droid, mac"
                     exit 1
                   fi
                   CMD="$CMD --flake .#$2"

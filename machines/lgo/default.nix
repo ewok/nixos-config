@@ -3,7 +3,8 @@ let
   inherit (config) colors theme exchange_api_key openai_token fullName email workEmail authorizedKeys ssh_config;
 
   username = "ataranchiev";
-  homeDirectory = "/home/${username}";
+  homeDirectory = "/var/home/${username}";
+  terminal = "foot";
 in
 {
   config = {
@@ -28,10 +29,6 @@ in
           homeEmail = email;
           inherit fullName workEmail;
         };
-        hledger = {
-          enable = false;
-          inherit exchange_api_key;
-        };
         svn.enable = true;
         ssh = {
           inherit authorizedKeys;
@@ -43,22 +40,29 @@ in
         lisps.enable = true;
         terminal = {
           enable = true;
-          inherit colors theme;
-          steamdeck = true;
+          inherit colors theme terminal;
+          linux = true;
           tmux = {
             enable = true;
           };
         };
         wm = {
           enable = true;
-          steamos = true;
-          inherit colors theme;
+          sway = true;
+          inherit colors theme terminal;
         };
         direnv.enable = true;
-        openvpn.enable = false;
         scripts.enable = true;
       };
 
+      xdg.configFile."sway/config.d/99-displays.conf".text = ''
+        set $lgo       "Lenovo Group Limited Go Display 0x00888888"
+        set $lgo-touch "NVTK0603:00 0603:F001"
+        input $lgo-touch map_to_output $lgo
+
+        set $hidpi "Xiaomi Corporation Redmi 27 NU 3948623Z90496"
+        output $hidpi scale 1.6
+      '';
     home.username = username;
     home.homeDirectory = homeDirectory;
     home.stateVersion = "23.11";
