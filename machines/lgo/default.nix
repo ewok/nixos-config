@@ -56,10 +56,6 @@ in
       };
 
       xdg.configFile."sway/config.d/99-displays.conf".text = ''
-        set $lgo       "Lenovo Group Limited Go Display 0x00888888"
-        set $lgo-touch "NVTK0603:00 0603:F001"
-        input $lgo-touch map_to_output $lgo
-
         set $hidpi "Xiaomi Corporation Redmi 27 NU 3948623Z90496"
         output $hidpi scale 1.6
       '';
