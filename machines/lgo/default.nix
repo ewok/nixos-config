@@ -59,9 +59,16 @@ in
         scripts.enable = true;
       };
 
-    xdg.configFile."sway/config.d/99-displays.conf".text = ''
+    xdg.configFile."sway/config.d/99-myconf.conf".text = ''
       set $hidpi "Xiaomi Corporation Redmi 27 NU 3948623Z90496"
       output $hidpi scale 1.6
+
+      input * {
+          xkb_layout "us,ru"
+          xkb_options "grp:win_space_toggle"
+          repeat_delay 200
+          repeat_rate 30
+      }
     '';
     home.username = username;
     home.homeDirectory = homeDirectory;
