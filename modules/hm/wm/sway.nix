@@ -8,6 +8,7 @@ let
     conf.theme = cfg.theme;
     conf.terminal = cfg.terminal;
     conf.folders.bin = "/home/deck/bin";
+    conf.wallpaper = cfg.wallpaper;
   };
 
 in

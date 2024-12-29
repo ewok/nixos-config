@@ -50,6 +50,10 @@ in
           enable = true;
           sway = true;
           inherit colors theme terminal;
+          wallpaper = builtins.fetchurl {
+            url = "https://github.com/zhichaoh/catppuccin-wallpapers/raw/1023077979591cdeca76aae94e0359da1707a60e/landscapes/Clearday.jpg";
+            sha256 = "1558rwh6a0by1sim6y41qh8pvdw7815n4bhqvrmxnsxnrid9w2wc";
+          };
         };
         direnv.enable = true;
         scripts.enable = true;

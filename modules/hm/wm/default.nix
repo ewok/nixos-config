@@ -28,6 +28,10 @@ in
         alt_separator_right = "";
       };
     };
+    wallpaper = mkOption {
+      type = types.str;
+      default = "/usr/share/backgrounds/default.png";
+    };
 
     colors = mkOption {
       type = types.attrsOf types.str;

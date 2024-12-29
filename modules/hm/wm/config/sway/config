@@ -20,7 +20,8 @@ set $menu $rofi_cmd -show combi -combi-modes drun#run -modes combi
 ################################################################################################
 
 # Default wallpaper (more resolutions are available in /usr/share/backgrounds/sway/)
-output * bg /usr/share/backgrounds/default.png fill
+output * bg {{ conf.wallpaper }} fill
+# output * bg /usr/share/backgrounds/default.png fill
 
 # Configure border style <normal|1pixel|pixel xx|none|pixel>
 default_border pixel 2
