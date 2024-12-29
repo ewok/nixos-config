@@ -6,6 +6,7 @@ let
   vars = {
     conf.theme = cfg.theme;
     conf.colors = cfg.colors;
+    conf.monospace_font_size = lib.strings.toInt(cfg.theme.monospace_font_size) + 1;
   };
   toggle_theme = pkgs.writeShellScriptBin "toggle-theme" ''
     if [ "$1" == "auto" ];then
