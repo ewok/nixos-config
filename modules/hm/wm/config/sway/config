@@ -53,15 +53,15 @@ bindsym $mod_a+Return exec $term
 bindsym $mod+Return exec $term
 
 # kill focused window
-bindsym $mod_a+q kill
+bindsym --to-code $mod_a+q kill
 
 # start program launcher
-bindsym $mod_a+d exec $menu
+bindsym --to-code $mod_a+d exec $menu
 
 # Lock screen
-bindsym $mod+$mod_a+l exec --no-startup-id "{{ conf.folders.bin }}/swayexit lock"
+# bindsym $mod+$mod_a+l exec --no-startup-id "{{ conf.folders.bin }}/swayexit lock"
 
-bindsym $mod_a+n exec --no-startup-id dunstctl history-pop
+bindsym --to-code $mod_a+n exec --no-startup-id dunstctl history-pop
 
 # change focus
 bindsym $mod+$left focus left
@@ -76,33 +76,33 @@ bindsym $mod+Shift+$right move right
 bindsym $mod+bracketleft split toggle
 
 # enter fullscreen mode for the focused container
-bindsym $mod+f fullscreen
+bindsym --to-code $mod+f fullscreen
 
-bindsym $mod+e layout toggle split
-bindsym $mod+s layout stacking
-bindsym $mod+t layout tabbed
+bindsym --to-code $mod+e layout toggle split
+bindsym --to-code $mod+s layout stacking
+bindsym --to-code $mod+t layout tabbed
 
 # bindsym $mod+s splith
 # bindsym $mod+v splitv
 
 # change focus between tiling / floating windows
-bindsym $mod_a+space focus mode_toggle
+bindsym $mod+$mod_a+space focus mode_toggle
 
 # toggle sticky
-bindsym $mod+p sticky toggle,exec notify-send 'sticky'
+bindsym --to-code $mod+p sticky toggle,exec notify-send 'sticky'
 
 # toggle floating
-bindsym $mod+$mod_a+f floating toggle,exec notify-send 'floating'
+bindsym --to-code $mod+$mod_a+f floating toggle,exec notify-send 'floating'
 
 # choose parent window
-bindsym $mod+a focus parent
+bindsym --to-code $mod+a focus parent
 
 # rename window
-bindsym $mod+$mod_a+n exec i3-input -F 'rename workspace to "%s"' -P 'New name: ', mode "default"
+bindsym --to-code $mod+$mod_a+n exec echo | rofi -dmenu -p "New name: " | xargs swaymsg 'rename workspace to ', mode "default"
 
 #navigate workspaces next / previous
-bindsym $mod+n workspace next
-bindsym $mod+b workspace prev
+bindsym --to-code $mod+n workspace next
+bindsym --to-code $mod+b workspace prev
 
 # bindsym $mod+braceleft move workspace to output left
 # bindsym $mod+braceright move workspace to output right
@@ -111,22 +111,23 @@ bindsym $mod+b workspace prev
 # bindsym $mod_a+Shift+j move workspace to output down
 # bindsym $mod_a+Shift+k move workspace to output up
 
-bindsym $mod+Shift+b move workspace to output left
-bindsym $mod+Shift+n move workspace to output right
+bindsym --to-code $mod+Shift+b move workspace to output left
+bindsym --to-code $mod+Shift+n move workspace to output right
 
 # Workspace names
 # to display names or symbols instead of plain workspace numbers you can use
 # something like: set $ws1 1:mail
 #                 set $ws2 2:
+
 set $ws1 1:
-set $ws2 2:
-set $ws3 3:
-set $ws4 4:
-set $ws5 5:
-set $ws6 6:
-set $ws7 7:
-set $ws8 8:
-set $ws9 9:
+set $ws2 2:
+set $ws3 3:
+set $ws4 4:
+set $ws5 5:
+set $ws6 6:
+set $ws7 7:
+set $ws8 8:
+set $ws9 9:
 
 # switch to workspace
 bindsym $mod+1 workspace $ws1
@@ -165,17 +166,17 @@ bindsym $mod+0 mode "$mode_system"
 bindsym $mod_a+0 mode "$mode_system"
 
 mode "$mode_system" {
-    bindsym l exec swayexit lock, mode "default"
-    bindsym s exec --no-startup-id swayexit suspend, mode "default"
-    bindsym Shift+e exec --no-startup-id swayexit logout, mode "default"
-    bindsym Shift+r exec --no-startup-id swayexit reboot, mode "default"
-    bindsym Shift+s exec --no-startup-id swayexit shutdown, mode "default"
-    bindsym r reload, mode "default"
+    bindsym --to-code l exec swayexit lock, mode "default"
+    bindsym --to-code s exec --no-startup-id swayexit suspend, mode "default"
+    bindsym --to-code Shift+e exec --no-startup-id swayexit logout, mode "default"
+    bindsym --to-code Shift+r exec --no-startup-id swayexit reboot, mode "default"
+    bindsym --to-code Shift+s exec --no-startup-id swayexit shutdown, mode "default"
+    bindsym --to-code r reload, mode "default"
 
     # exit system mode: "Enter" or "Escape{{ conf.folders.bin }}/"
     bindsym Return mode "default"
     bindsym Escape mode "default"
-    bindsym Ctrl+m mode "default"
+    bindsym --to-code Ctrl+m mode "default"
 }
 
 # Resize window (you can also use the mouse for that)
@@ -194,7 +195,7 @@ mode "resize" {
         # exit resize mode: Enter or Escape
         bindsym Return mode "default"
         bindsym Escape mode "default"
-        bindsym Ctrl+m mode "default"
+        bindsym --to-code Ctrl+m mode "default"
 }
 
 
