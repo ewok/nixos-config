@@ -27,6 +27,21 @@ let
     fi
     $CMD st | grep '?' | cut -d'?' -f2| sed 's/^ *//' | sed 's/^/"/g' | sed 's/$/"/g' | xargs $CMD add
   '';
+
+  svn-update = writeScriptBin "svn-update" ''
+    #!/usr/bin/env bash
+    if [[ -n "$(command -v -- svn)" ]]
+    then
+    CMD=svn
+    else
+    echo "svn not found"
+    exit 1
+    fi
+    $CMD st | grep '?' | cut -d'?' -f2| sed 's/^ *//' | sed 's/^/"/g' | sed 's/$/"/g' | xargs $CMD add
+    $CMD st | grep ! | cut -d! -f2| sed 's/^ *//' | sed 's/^/"/g' | sed 's/$/"/g'  | xargs $CMD rm
+    svn commit -m update
+    svn status
+  '';
 in
 {
   options.opt.svn = {
@@ -45,6 +60,7 @@ in
           external ++ [
             svn-add-add
             svn-rm-rm
+            svn-update
           ];
       };
 
