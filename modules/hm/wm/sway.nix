@@ -26,9 +26,15 @@ in
       xdg.configFile."waybar/style.css" = {
         source = utils.templateFile "style.css" ./config/sway/style.css vars;
       };
-      xdg.configFile."sway/config.d/80-custom.conf".text = ''
-        for_window [title="Picture in picture"] floating enable, sticky enable
-        for_window [title="Picture-in-Picture"] floating enable, sticky enable
+      # xdg.configFile."sway/config.d/80-custom.conf".text = ''
+      #   for_window [title="Picture in picture"] floating enable, sticky enable
+      #   for_window [title="Picture-in-Picture"] floating enable, sticky enable
+      # '';
+      xdg.configFile."bash/profile.d/90_sway.sh".text = ''
+        case ":$PATH:" in
+            *":/var/lib/flatpak/exports/bin:"*) ;;
+            *) export PATH=/var/lib/flatpak/exports/bin:$PATH ;;
+        esac
       '';
     };
 }
