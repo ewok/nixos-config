@@ -65,8 +65,8 @@
 
 ;; Replace search
 (vim.cmd "
-nmap <expr>  MR  ':%s/\\(' . @/ . '\\)/' . @/ . '/g<LEFT><LEFT>'
-vmap <expr>  MR  ':s/\\(' . @/ . '\\)/' . @/ . '/g<LEFT><LEFT>'")
+nmap <expr>  MR  ':%s/\\(' . @/ . '\\)/\\1/g<LEFT><LEFT>'
+vmap <expr>  MR  ':s/\\(' . @/ . '\\)/\\1/g<LEFT><LEFT>'")
 
 ;; Replace without yanking
 (map! [:v] :p :P md "Replace without yanking")
