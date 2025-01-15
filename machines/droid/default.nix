@@ -23,7 +23,7 @@ in
       which
     ];
 
-    terminal.font = "${pkgs.nerdfonts.override { fonts = [ "FiraCode" ]; }}/share/fonts/truetype/NerdFonts/FiraCodeNerdFontMono-Regular.ttf";
+    terminal.font = "${pkgs.nerd-fonts.fira-code}/share/fonts/truetype/NerdFonts/FiraCode/FiraCodeNerdFontMono-Regular.ttf";
 
     home-manager = {
       useGlobalPkgs = true;
@@ -53,7 +53,7 @@ in
               inherit fullName workEmail;
             };
             hledger = {
-              enable = true;
+              enable = false;
               inherit exchange_api_key;
             };
             svn.enable = true;
@@ -79,7 +79,7 @@ in
 
         home.username = username;
         home.homeDirectory = homeDirectory;
-        home.stateVersion = "23.11";
+        home.stateVersion = "24.11";
 
         # TODO: Inherit Theme
         home.activation = {
