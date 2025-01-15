@@ -59,6 +59,7 @@ in
           # gitAndTools.git-machete
           # gitAndTools.git-octopus
           gitAndTools.git-reparent
+          gitAndTools.git-lfs
         ];
       in
       {
