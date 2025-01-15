@@ -37,9 +37,10 @@ let
     echo "svn not found"
     exit 1
     fi
-    $CMD st | grep '?' | cut -d'?' -f2| sed 's/^ *//' | sed 's/^/"/g' | sed 's/$/"/g' | xargs $CMD add
-    $CMD st | grep ! | cut -d! -f2| sed 's/^ *//' | sed 's/^/"/g' | sed 's/$/"/g'  | xargs $CMD rm
-    svn commit -m update
+    $CMD st | grep '?' | cut -d'?' -f2| sed 's/^ *//' | sed 's/^/"/g' | sed 's/$/"/g' | xargs $CMD add || true
+    $CMD st | grep ! | cut -d! -f2| sed 's/^ *//' | sed 's/^/"/g' | sed 's/$/"/g'  | xargs $CMD rm || true
+    svn up || true
+    svn commit -m update || true
     svn status
   '';
 in
