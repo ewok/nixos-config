@@ -100,7 +100,10 @@ in
           direnv.enable = true;
           tailscale.enable = true;
           scripts.enable = true;
-          syncthing.enable = true;
+          syncthing = {
+            enable = true;
+            guiAddress = "100.73.133.2:8384";
+          };
           seafile.enable = true;
         };
 

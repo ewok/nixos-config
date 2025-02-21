@@ -89,7 +89,9 @@ in
           aws.enable = true;
           tailscale.enable = true;
           scripts.enable = true;
-          syncthing.enable = true;
+          syncthing = {
+            enable = true;
+          };
           rslsync = {
             enable = false;
             deviceName = "ewok-arch";
