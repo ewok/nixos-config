@@ -43,6 +43,9 @@ in
         zip
         # nushell
         # elvish
+        exiftool
+        tcpdump
+        netcat
       ];
       file = {
         # ".profile".source = ./config/profile;

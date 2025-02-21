@@ -170,6 +170,9 @@ in
   config = {
     inherit colors;
     inherit theme;
+
+    # nixpkgs.config.allowUnfree = true;
+
     nix = {
       extraOptions = ''
         # keep-outputs = true
