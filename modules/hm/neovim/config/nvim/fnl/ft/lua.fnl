@@ -23,7 +23,7 @@
                                  :buffer ev.buf
                                  :group "Reset[conjure]"}])))))
 
-(lib.reg_lsp :lua_ls {:Lua {:diagnostics.globals [:vim]}})
+(lib.reg_lsp :lua_ls {:settings {:Lua {:diagnostics.globals [:vim]}}})
 
 (lib.reg_ft_once :lua
                  #(let [null-ls (require :null-ls)]

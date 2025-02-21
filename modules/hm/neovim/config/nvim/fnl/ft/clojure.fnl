@@ -1,4 +1,5 @@
 (local lib (require :lib))
+(local util (require :lspconfig.util))
 
 (lib.reg_ft :clojure
             (fn [ev]
@@ -31,7 +32,10 @@
                             :buffer ev.buf
                             :group "View[conjure]"}])))))
 
-(lib.reg_lsp :clojure_lsp {})
+(lib.reg_lsp :clojure_lsp
+             {:root_dir (util.root_pattern :project.clj :deps.edn :build.boot
+                                           :shadow-cljs.edn :bb.edn)
+              })
 
 (lib.reg_ft_once :clojure
                  #(let [null-ls (require :null-ls)]

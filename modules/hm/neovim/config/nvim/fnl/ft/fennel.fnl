@@ -26,7 +26,7 @@
                             :buffer ev.buf
                             :group "Test[conjure]"}])))))
 
-(lib.reg_lsp :fennel_ls {:fennel-ls {:extra-globals :vim}})
+(lib.reg_lsp :fennel_ls {:settings {:fennel-ls {:extra-globals :vim}}})
 
 (lib.reg_ft_once :fennel
                  #(let [null-ls (require :null-ls)]
