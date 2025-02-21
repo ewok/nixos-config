@@ -22,7 +22,7 @@
                                                 "/" "_")]
                        git))) :.md)))
 
-(map! :n :<leader>on open_mind {:noremap true :silent true} "Open CWD note")
+(map! :n :<leader>wn open_mind {:noremap true :silent true} "Open Project note")
 
 ;; Windows manipulation
 (map! [:n] :<C-W>t "<cmd>tab split<CR>" md "Open in tab")
