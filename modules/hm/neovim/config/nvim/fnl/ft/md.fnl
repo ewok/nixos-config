@@ -12,28 +12,33 @@
                          (set vim.opt_local.foldmarker "{{{,}}}")
                          (map! [:n] :<leader>ce :<cmd>EvalBlock<CR> md
                                "Run Block")
-                         ;;(map! [:v] :<CR> ":'<,'>ObsidianLinkNew<CR>" md
-                         ;;      "Create Link")
-                         ;;(map! [:n] :<leader>wb :<Cmd>ObsidianBacklinks<CR> md
-                         ;;      :Backlinks)
-                         ;;(map! [:n] :<leader>wl :<Cmd>ObsidianLinks<CR> md
-                         ;;      :Links)
-                         ;;(map! [:n] :<leader>wx :<Cmd>ObsidianOpen<CR> md
-                         ;;      :Links)
-                         (map! [:n] :<CR>
-                               "<Cmd>lua vim.lsp.buf.definition()<CR>" md
-                               "Open Link")
-                         (map! [:v] :<CR>
-                               ":'<,'>ZkNewFromTitleSelection { dir = vim.fn.expand('%:p:h') }<CR>"
-                               md "Create Link")
-                         (map! [:n] :<leader>wb
-                               "<Cmd>ZkBacklinks { select = {'filename', 'path', 'absPath' } }<CR>"
-                               md :Backlinks)
-                         (map! [:n] :<leader>wl :<Cmd>ZkLinks<CR> md :Links)
-                         (map! :n :<leader>wTn "<cmd>MkdnTable 1 1<cr>" md
-                               "New Table")))
+                         (map! [:v] :<CR> ":'<,'>ObsidianLinkNew<CR>" md
+                               "Create Link")
+                         (map! [:n] :<leader>wb :<Cmd>ObsidianBacklinks<CR> md
+                               :Backlinks)
+                         (map! [:n] :<leader>wl :<Cmd>ObsidianLinks<CR> md
+                               :Links)
+                         (map! [:n] :<leader>wx :<Cmd>ObsidianOpen<CR> md
+                               :Links)
+                         (map! [:n] :<leader>wr :<Cmd>ObsidianRename<CR> md
+                               :Links)
+                         (map! [:n] :g<space> :<Cmd>ObsidianToggleCheckbox<CR> md
+                               :Links)
+                         ;(map! [:n] :<CR>
+                         ;      "<Cmd>lua vim.lsp.buf.definition()<CR>" md
+                         ;      "Open Link")
+                         ;(map! [:v] :<CR>
+                         ;      ":'<,'>ZkNewFromTitleSelection { dir = vim.fn.expand('%:p:h') }<CR>"
+                         ;      md "Create Link")
+                         ;(map! [:n] :<leader>wb
+                         ;      "<Cmd>ZkBacklinks { select = {'filename', 'path', 'absPath' } }<CR>"
+                         ;      md :Backlinks)
+                         ;(map! [:n] :<leader>wl :<Cmd>ZkLinks<CR> md :Links)
+                         ;(map! :n :<leader>wTn "<cmd>MkdnTable 1 1<cr>" md
+                         ;      "New Table")
+                         ))
 
-(lib.reg_lsp :zk {})
+;(lib.reg_lsp :zk {})
 
 (lib.reg_ft_once :markdown
                  #(let [null-ls (require :null-ls)]
