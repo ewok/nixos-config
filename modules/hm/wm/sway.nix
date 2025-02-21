@@ -1,4 +1,4 @@
-{ config, lib, utils, ... }:
+{ config, lib, utils, pkgs, ... }:
 let
   inherit (lib) mkIf;
 
@@ -15,8 +15,15 @@ in
 {
   config = mkIf (cfg.enable && cfg.sway)
     {
+      home.packages = [
+        pkgs.libqalculate
+      ];
       home.file."bin/swayexit" = {
         source = ./config/sway/swayexit;
+        executable = true;
+      };
+      home.file."bin/=" = {
+        source = ./config/sway/calc;
         executable = true;
       };
       xdg.configFile."sway/config" = {
@@ -26,10 +33,10 @@ in
       xdg.configFile."waybar/style.css" = {
         source = utils.templateFile "style.css" ./config/sway/style.css vars;
       };
-      # xdg.configFile."sway/config.d/80-custom.conf".text = ''
-      #   for_window [title="Picture in picture"] floating enable, sticky enable
-      #   for_window [title="Picture-in-Picture"] floating enable, sticky enable
-      # '';
+      xdg.configFile."sway/config.d/80-custom.conf".text = ''
+        for_window [class="steam"] floating enable
+        # for_window [title="Picture-in-Picture"] floating enable, sticky enable
+      '';
       xdg.configFile."bash/profile.d/90_sway.sh".text = ''
         case ":$PATH:" in
             *":/var/lib/flatpak/exports/bin:"*) ;;
