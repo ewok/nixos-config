@@ -6,7 +6,12 @@
         entry2-under (string.find entry2.completion_item.label "^_+")]
     (< (or entry1-under 0) (or entry2-under 0))))
 
-(local duplicate_keywords {:snippy 1 :nvim_lsp 1 :buffer 0 :path 0 :cmdline 0})
+(local duplicate_keywords {:snippy 0
+                           :nvim_lsp 1
+                           :conjure 0
+                           :buffer 0
+                           :path 0
+                           :cmdline 0})
 
 (pack :hrsh7th/nvim-cmp
       {:dependencies [{1 :hrsh7th/cmp-nvim-lsp
@@ -18,7 +23,8 @@
                        :config false
                        :event :CmdlineEnter}
                       {1 :hrsh7th/cmp-calc :config false :event :InsertEnter}
-                      :dcampos/cmp-snippy]
+                      ;:dcampos/cmp-snippy
+                      :PaterJason/cmp-conjure]
        :event [:InsertEnter :CmdlineEnter]
        :config #(let [cmp (require :cmp)
                       types (require :cmp.types)
@@ -91,10 +97,10 @@
                             :snippet {:expand (fn [args]
                                                 (let [snippy (require :snippy)]
                                                   (snippy.expand_snippet args.body)))}
-                            :sources [{:name :codeium}
-                                      {:name :calc}
-                                      {:name :snippy}
+                            :sources [{:name :calc}
                                       {:name :nvim_lsp}
+                                      {:name :conjure}
+                                      {:name :snippy}
                                       {:name :path}
                                       {:name :buffer}]
                             :mapping gen_mapping
@@ -111,7 +117,7 @@
                                      :documentation (cmp.config.window.bordered {:winhighlight "Normal:NormalFloat,FloatBorder:FloatBorder,CursorLine:PmenuSel,Search:None"})}
                             :kind_icons conf.icons.lsp_kind
                             :formatting {:format (fn [entry vim_item]
-                                                   (let [max_width 40]
+                                                   (let [max_width 80]
                                                      (if (and (not= max_width 0)
                                                               (> (length vim_item.abbr)
                                                                  max_width))
