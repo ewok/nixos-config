@@ -5,7 +5,10 @@
         :config #(do
                    (tset vim.g "conjure#mapping#prefix" :<leader>c)
                    (tset vim.g "conjure#mapping#def_word" :g)
-                   (tset vim.g "conjure#mapping#doc_word" :h))})
+                   (tset vim.g "conjure#mapping#doc_word" :h)
+                   (vim.api.nvim_create_autocmd [:DirChanged]
+                                                {:pattern ["*"]
+                                                 :command "execute 'ConjureClientState' . getcwd()"}))})
  (pack :guns/vim-sexp {:dependencies [:tpope/vim-repeat]
                        :ft [:python :clojure :fennel :lua]
                        :init #(let [conf (require :conf)]
