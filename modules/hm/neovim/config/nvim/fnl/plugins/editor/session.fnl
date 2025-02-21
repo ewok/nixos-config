@@ -2,7 +2,7 @@
 
 (pack :stevearc/resession.nvim
       {:event [:VeryLazy]
-       :dependencies [(pack :tiagovla/scope.nvim {:config true})]
+       ;;:dependencies [(pack :tiagovla/scope.nvim {:config true})]
        :config #(let [resession (require :resession)
                       e #(pcall #(vim.cmd "silent e"))]
                   (resession.setup {:buf_filter #(let [buftype (-> (. vim.bo $1)
@@ -20,7 +20,8 @@
                                                                (vim.api.nvim_buf_get_name $1)))
                                                      false
                                                      _ true))
-                                    :extensions {:scope {}}})
+                                    ;;:extensions {:scope {}}
+                                    })
                   (when vim.g.auto_load_session
                     (when (= (vim.fn.argc -1) 0)
                       ;(resession.load (vim.fn.getcwd) {:silence_errors true})
