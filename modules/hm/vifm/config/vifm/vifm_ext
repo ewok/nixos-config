@@ -111,13 +111,13 @@ filextype *.html,*.htm
         \ {Default}
         \ open %c %i &,
 
-filextype *.bmp,*.gif,*.ico,*.jpeg,*.jpg,*.png,*.svg,*.svgz,*.tga,*.tiff,*.xmb,*.xcf,*.xpm,*.xspf,*.xwd
+filextype *.bmp,*.gif,*.ico,*.jpeg,*.jpg,*.png,*.svg,*.svgz,*.tga,*.tiff,*.xmb,*.xcf,*.xpm,*.xspf,*.xwd,*.heic,*.nef
         \ {Default}
         \ open %c %i &,
 
-filextype *.heic
-        \ {Default}
-        \ viewnior %c %i &,
+"filextype *.heic
+"        \ {Default}
+"        \ viewnior %c %i &,
 
 filextype *.cr2,*.dng,*.3fr,*.ari,*.arw,*.bay,*.crw,*.cr3,*.cap,*.data,*.dcs,*.dcr,*drf,*.eip,*.erf,*.fff
         \ {Default}
