@@ -6,3 +6,6 @@
 result/
 .envrc
 shell.nix
+.lsp
+.clj-kondo
+.tool-versions
