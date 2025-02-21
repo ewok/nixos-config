@@ -14,6 +14,7 @@ M.packages = {
     oil = false,
     neotree = true,
     hbac = false,
+    aerial = false,
 }
 
 M.options = {
@@ -164,9 +165,10 @@ M.icons.source = {
     calc = "",
     cmdline = "",
     codeium = "",
-    nvim_lsp = "",
     path = "",
     snippy = "",
+    nvim_lsp = "",
+    conjure = "λ",
 }
 
 M.in_tmux = os.getenv("TMUX") ~= nil

@@ -3,6 +3,7 @@
 
 (pack :stevearc/aerial.nvim
       {:cmd [:AerialToggle]
+       :enabled conf.packages.aerial
        :init #(map :n :<C-P> "<cmd>AerialToggle float<cr>" {:silent true}
                    "Open Outline Explorer")
        :config #(let [aerial (require :aerial)]
