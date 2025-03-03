@@ -104,22 +104,42 @@
                                     :nowait true
                                     :buffer ev.buf}
                                    "[gpt] Code Unit tests"))))))
-       :config #(let [gp (require :gp)]
+       :config #(let [gp (require :gp)
+                      defaults (require :gp.defaults)]
                   (gp.setup {:openai_api_key conf.openai_token
                              :image {:store_dir ""}
                              :agents [{:name :ChatGPT4 :disable true}
-                                      {:name :ChatGPT3-5 :disable true}
                                       {:name :CodeGPT4 :disable true}
+                                      {:name :ChatGPT3-5 :disable true}
                                       {:name :CodeGPT3-5 :disable true}
-                                      {:name :CodeGPT4o
+                                      {:name :CodeGPT4o-mini :disable true}
+                                      {:name :ChatGPT4o-mini :disable true}
+                                      {:provider :openai
+                                       :name :CodeGPT45preview
                                        :chat false
                                        :command true
-                                       :model {:model :gpt-4o
-                                               :temperature 0.8
+                                       :model {:model :gpt-4.5-preview
+                                               :temperature 0.7
                                                :top_p 1}
-                                       :system_prompt (.. "You are an AI working as a code editor.\\n\\n"
-                                                          "Please AVOID COMMENTARY OUTSIDE OF THE SNIPPET RESPONSE.\\n"
-                                                          "START AND END YOUR ANSWER WITH:\\n\\n```{{filetype}}\\n")}]
+                                       :system_prompt "Please return ONLY code snippets.\\nSTART AND END YOUR ANSWER WITH:\\n\\n```"}
+                                      {:provider :openai
+                                       :name :ChatGPT45preview
+                                       :chat true
+                                       :command false
+                                       :model {:model :gpt-4.5-preview
+                                               :temperature 1.1
+                                               :top_p 1}
+                                       :system_prompt defaults.chat_system_prompt}
+                                      ;;{:name :CodeGPT4o
+                                      ;; :chat false
+                                      ;; :command true
+                                      ;; :model {:model :gpt-4o
+                                      ;;         :temperature 0.8
+                                      ;;         :top_p 1}
+                                      ;; :system_prompt (.. "You are an AI working as a code editor.\\n\\n"
+                                      ;;                    "Please AVOID COMMENTARY OUTSIDE OF THE SNIPPET RESPONSE.\\n"
+                                      ;;                    "START AND END YOUR ANSWER WITH:\\n\\n```{{filetype}}\\n")}
+                                      ]
                              :hooks {:CodeReview (fn [gp params]
                                                    (let [template (.. "I have the following code from {{filename}}:\\n\\n"
                                                                       "```{{filetype}}\\n{{selection}}\\n```\\n\\n"
@@ -153,8 +173,7 @@
                                                                          "fix(authentication): add password regex pattern\\n\\n"
                                                                          "- `extends` key in config file is now used for extending other config files\\n"
                                                                          "- passwords now are following security protocol\\n\\n"
-                                                                         "goal: enhance security level"
-                                                                         )
+                                                                         "goal: enhance security level")
                                                             agent (gp.get_command_agent)]
                                                         (gp.Prompt params
                                                                    (gp.Target.vnew :NeogitDiffViewCommit)
