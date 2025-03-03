@@ -12,6 +12,7 @@
       tldr
       whois
       flock
+      yt-dlp
     ];
   };
 }
