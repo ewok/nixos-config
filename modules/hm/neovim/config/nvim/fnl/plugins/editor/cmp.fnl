@@ -29,26 +29,33 @@
        :config #(let [cmp (require :cmp)
                       types (require :cmp.types)
                       gen_mapping {:<c-space> (cmp.mapping #(if (cmp.visible)
-                                                                (cmp.abort)
+                                                                (do
+                                                                  (cmp.abort)
+                                                                  (when vim.g.copilot_loaded
+                                                                    (vim.fn.copilot#Suggest)))
                                                                 (cmp.complete))
                                                            [:i :s :c])
                                    :<cr> (cmp.mapping (cmp.mapping.confirm)
                                                       [:i :s :c])
                                    :<c-l> (cmp.mapping #(if (cmp.visible)
                                                             (cmp.confirm)
-                                                            ($1))
+                                                            (when vim.g.copilot_loaded
+                                                              (vim.api.nvim_feedkeys (vim.fn.copilot#Accept (vim.api.nvim_replace_termcodes :<C-l>
+                                                                                                                                            true
+                                                                                                                                            true
+                                                                                                                                            true))
+                                                                                     :n
+                                                                                     true)))
                                                        [:i :s :c])
-                                   :<Tab> (cmp.mapping #(if (cmp.visible)
+                                   :<c-j> (cmp.mapping #(if (cmp.visible)
                                                             (cmp.select_next_item {:behavior cmp.SelectBehavior.Insert})
-                                                            ($1))
+                                                            (when vim.g.copilot_loaded
+                                                              (vim.fn.copilot#Next)))
                                                        [:i :s])
-                                   :<S-Tab> (cmp.mapping #(if (cmp.visible)
-                                                              (cmp.select_prev_item {:behavior cmp.SelectBehavior.Insert})
-                                                              ($1))
-                                                         [:i :s])
-                                   :<c-j> (cmp.mapping #(cmp.select_next_item {:behavior cmp.SelectBehavior.Insert})
-                                                       [:i :s])
-                                   :<c-k> (cmp.mapping #(cmp.select_prev_item {:behavior cmp.SelectBehavior.Insert})
+                                   :<c-k> (cmp.mapping #(if (cmp.visible)
+                                                            (cmp.select_prev_item {:behavior cmp.SelectBehavior.Insert})
+                                                            (when vim.g.copilot_loaded
+                                                              (vim.fn.copilot#Previous)))
                                                        [:i :s])
                                    :<c-b> (cmp.mapping (cmp.mapping.scroll_docs -4)
                                                        [:i :s])
@@ -66,7 +73,9 @@
                                                        [:i :s :c])
                                    :<c-h> (cmp.mapping #(if (cmp.visible)
                                                             (cmp.abort)
-                                                            $1)
+                                                            ;$1
+                                                            (when vim.g.copilot_loaded
+                                                              (vim.fn.copilot#Dismiss)))
                                                        [:i :s :c])}
                       c_mapping {:<Tab> (cmp.mapping #(if (cmp.visible)
                                                           (cmp.select_next_item {:behavior cmp.SelectBehavior.Insert})

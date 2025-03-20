@@ -2,6 +2,7 @@
 
 (pack :Exafunction/codeium.nvim
       {:cmd [:Codeium]
+       :enabled false
        :keys [{1 :<leader>tc
                2 #(do
                     (vim.notify "Codeium Enabled" :INFO {:title :Codeium}))
