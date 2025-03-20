@@ -34,7 +34,9 @@
         :config #(let [ng (require :neogit)]
                    (ng.setup {:use_per_project_settings true
                               :remember_settings true
-                              :mappings {:status {:gx :OpenTree := :Toggle}}
+                              :mappings {:status {:gx :OpenTree := :Toggle}
+                                         :finder {:<c-j> :Next
+                                                  :<c-k> :Previous}}
                               :auto_show_console true
                               :console_timeout 500
                               :disable_insert_on_commit true
@@ -63,5 +65,4 @@
                                            :goto_next "]g"
                                            :gotoGit_last ""}}))})
  (pack :fredeeb/tardis.nvim
-       {:config true :cmd :Tardis :keys [{1 :<leader>gfh}]})
- ]
+       {:config true :cmd :Tardis :keys [{1 :<leader>gfh}]})]
