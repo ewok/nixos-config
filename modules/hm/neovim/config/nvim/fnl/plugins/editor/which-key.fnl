@@ -25,7 +25,7 @@
                            {1 :<leader>fs :group :Settings}
                            {1 :<leader>l :group :Lsp}
                            {1 :<leader>o :group :Open}
-                           {1 :<leader>og :group :Git...}
+                           {1 :<leader>g :group :Git...}
                            {1 :<leader>ot :group :Terminal...}
                            {1 :<leader>gf :group :File...}
                            {1 :<leader>p :group :Packages}
