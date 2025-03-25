@@ -131,6 +131,7 @@ in
           fd
           curl
           gzip
+          par
 
           python3
 
