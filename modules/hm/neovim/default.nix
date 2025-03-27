@@ -208,7 +208,6 @@ in
       ] ++ external ++ androidPkgs ++ orbPkgs;
     xdg = {
       configFile = {
-
         "nvim/init.lua".source = ./config/nvim/init.lua;
         "nvim/init.fnl".source = utils.templateFile "init.fnl" ./config/nvim/init.fnl vars;
 

@@ -2,6 +2,26 @@ add_newline = false
 scan_timeout = 10
 # format = '${env_var.PROJECT}$all'
 
+palette = 'my'
+
+[palettes.my]
+black = '#{{ conf.colors.base00 }}'
+red = '#{{ conf.colors.base08 }}'
+green = '#{{ conf.colors.base0B }}'
+blue = '#{{ conf.colors.base0D }}'
+yellow = '#{{ conf.colors.base0A }}'
+purple = '#{{ conf.colors.base0E }}'
+cyan = '#{{ conf.colors.base0C }}'
+white = '#{{ conf.colors.base05 }}'
+bright-black = '#{{ conf.colors.base03 }}'
+bright-red = '#{{ conf.colors.base09 }}'
+bright-green = '#{{ conf.colors.base01 }}'
+bright-blue = '#{{ conf.colors.base04 }}'
+bright-yellow = '#{{ conf.colors.base02 }}'
+bright-purple = '#{{ conf.colors.base06 }}'
+bright-cyan = '#{{ conf.colors.base0F }}'
+bright-white = '#{{ conf.colors.base07 }}'
+
 [custom.direnv]
 format = "[\\(d\\)]($style) "
 style = "red"

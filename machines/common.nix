@@ -4,7 +4,7 @@ let
 
   colors = {
 
-    # # Catpuccin Frappe
+    # Catpuccin Frappe
     # base00 = "303446"; #303446 base
     # base01 = "292c3c"; #292c3c mantle
     # base02 = "414559"; #414559 surface0
@@ -23,24 +23,24 @@ let
     # base0F = "eebebe"; #eebebe flamingo
 
     # Catpuccin Macchiato
-    base00 = "24273a"; #24273a base
-    base01 = "1e2030"; #1e2030 mantle
-    base02 = "363a4f"; #363a4f surface0
-    base03 = "494d64"; #494d64 surface1
-    base04 = "5b6078"; #5b6078 surface2
-    base05 = "cad3f5"; #cad3f5 text
-    base06 = "f4dbd6"; #f4dbd6 rosewater
-    base07 = "b7bdf8"; #b7bdf8 lavender
-    base08 = "ed8796"; #ed8796 red
-    base09 = "f5a97f"; #f5a97f peach
-    base0A = "eed49f"; #eed49f yellow
-    base0B = "a6da95"; #a6da95 green
-    base0C = "8bd5ca"; #8bd5ca teal
-    base0D = "8aadf4"; #8aadf4 blue
-    base0E = "c6a0f6"; #c6a0f6 mauve
-    base0F = "f0c6c6"; #f0c6c6 flamingo
+    # base00 = "24273a"; #24273a base
+    # base01 = "1e2030"; #1e2030 mantle
+    # base02 = "363a4f"; #363a4f surface0
+    # base03 = "494d64"; #494d64 surface1
+    # base04 = "5b6078"; #5b6078 surface2
+    # base05 = "cad3f5"; #cad3f5 text
+    # base06 = "f4dbd6"; #f4dbd6 rosewater
+    # base07 = "b7bdf8"; #b7bdf8 lavender
+    # base08 = "ed8796"; #ed8796 red
+    # base09 = "f5a97f"; #f5a97f peach
+    # base0A = "eed49f"; #eed49f yellow
+    # base0B = "a6da95"; #a6da95 green
+    # base0C = "8bd5ca"; #8bd5ca teal
+    # base0D = "8aadf4"; #8aadf4 blue
+    # base0E = "c6a0f6"; #c6a0f6 mauve
+    # base0F = "f0c6c6"; #f0c6c6 flamingo
 
-    # # Catpuccin Mocha
+    # Catpuccin Mocha
     # base00 = "1e1e2e"; #1e1e2e ; base
     # base01 = "181825"; #181825 ; mantle
     # base02 = "313244"; #313244 ; surface0
@@ -58,7 +58,7 @@ let
     # base0E = "cba6f7"; #cba6f7 ; mauve
     # base0F = "f2cdcd"; #f2cdcd ; flamingo
 
-    # # Nightfox
+    # Nightfox
     # base00 = "192330"; # #192330
     # base01 = "212e3f"; # #212e3f
     # base02 = "29394f"; # #29394f
@@ -76,7 +76,7 @@ let
     # base0E = "9d79d6"; # #9d79d6
     # base0F = "d67ad2"; # #d67ad2
 
-    # # Onedark
+    # Onedark
     # base00 = "282c34"; # #282c34
     # base01 = "353b45"; # #353b45
     # base02 = "3e4451"; # #3e4451
@@ -94,14 +94,35 @@ let
     # base0E = "c678dd"; # #c678dd
     # base0F = "be5046"; # #be5046
 
+    # Github base16 theme
+    base00 = "333333"; # #333333
+    base01 = "3c3c3c"; # #3c3c3c
+    base02 = "464646"; # #464646
+    base03 = "585858"; # #585858
+    base04 = "b8b8b8"; # #b8b8b8
+    base05 = "d8d8d8"; # #d8d8d8
+    base06 = "e8e8e8"; # #e8e8e8
+    base07 = "f8f8f8"; # #f8f8f8
+    base08 = "ed6a43"; # #ed6a43
+    base09 = "0086b3"; # #0086b3
+    base0A = "795da3"; # #795da3
+    base0B = "183691"; # #183691
+    base0C = "183691"; # #183691
+    base0D = "795da3"; # #795da3
+    base0E = "a71d5d"; # #a71d5d
+    base0F = "333333"; # #333333
   };
   theme = {
     separator_left = "";
     separator_right = "";
     alt_separator_left = "";
     alt_separator_right = "";
-    name = "catppuccin-macchiato";
-    light_name = "catppuccin-latte";
+    name = "Github Dark";
+    light_name = "Github";
+    name_vim = "github_dark_default";
+    light_name_vim = "github_light";
+    # name = "catppuccin-macchiato";
+    # light_name = "catppuccin-latte";
     # name = "nightfox";
     # light_name = "dayfox";
     # name = "onedark";
@@ -153,18 +174,23 @@ in
         base0F = mkOption { type = types.str; };
       };
 
-      theme = {
-        name = mkOption { type = types.str; };
-        light_name = mkOption { type = types.str; };
-        separator_left = mkOption { type = types.str; };
-        separator_right = mkOption { type = types.str; };
-        alt_separator_left = mkOption { type = types.str; };
-        alt_separator_right = mkOption { type = types.str; };
-        regular_font = mkOption { type = types.str; };
-        regular_font_size = mkOption { type = types.str; };
-        monospace_font = mkOption { type = types.str; };
-        monospace_font_size = mkOption { type = types.str; };
+      theme = mkOption {
+        type = types.attrsOf types.str;
       };
+      # theme = {
+      #   name = mkOption { type = types.str; };
+      #   light_name = mkOption { type = types.str; };
+      #   name_vim = mkOption { type = types.str; };
+      #   light_name_vim = mkOption { type = types.str; };
+      #   separator_left = mkOption { type = types.str; };
+      #   separator_right = mkOption { type = types.str; };
+      #   alt_separator_left = mkOption { type = types.str; };
+      #   alt_separator_right = mkOption { type = types.str; };
+      #   regular_font = mkOption { type = types.str; };
+      #   regular_font_size = mkOption { type = types.str; };
+      #   monospace_font = mkOption { type = types.str; };
+      #   monospace_font_size = mkOption { type = types.str; };
+      # };
     };
 
   config = {

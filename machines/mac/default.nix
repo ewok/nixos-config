@@ -10,7 +10,7 @@ in
     ./secrets.nix
   ];
   config = {
-    services.nix-daemon.enable = true;
+    # services.nix-daemon.enable = true;
 
     users.users."${username}" = {
       name = "${username}";
