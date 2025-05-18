@@ -73,6 +73,7 @@ in
     xdg = {
       configFile = {
         "fish/conf.d/90_git-aliases.fish".source = ./config/90_git-aliases.fish;
+        "nushell/autoload/git-aliases.nu".source = ./config/git-aliases.nu;
         "git/config".source = utils.templateFile "config" ./config/git/config vars;
         "git/home.cfg".source = utils.templateFile "config" ./config/git/home.cfg vars;
         "git/work.cfg".source = utils.templateFile "config" ./config/git/work.cfg vars;

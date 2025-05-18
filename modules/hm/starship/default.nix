@@ -45,7 +45,10 @@ in
       configFile = {
         "fish/conf.d/99_starship.fish".source = ./config/99_starship.fish;
         "starship.toml".source = utils.templateFile "starship.toml" ./config/starship.toml vars;
-
+        "nushell/autoload/starship.nu".text = ''
+          mkdir ($nu.data-dir | path join "vendor/autoload")
+          starship init nu | save -f ($nu.data-dir | path join "vendor/autoload/starship.nu")
+        '';
       };
     };
   };

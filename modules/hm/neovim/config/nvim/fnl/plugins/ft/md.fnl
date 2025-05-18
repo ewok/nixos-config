@@ -86,7 +86,7 @@
  (pack :gpanders/vim-medieval
        {:ft [:markdown]
         :config #(set vim.g.medieval_langs
-                      [:python :ruby :sh :console=bash :bash :perl :fish :bb])})
+                      [:python :ruby :sh :console=bash :bash :perl :fish :nu :bb])})
  (pack :epwalsh/obsidian.nvim
        {:version "*"
         :init #(let [md {:noremap true :silent false}]

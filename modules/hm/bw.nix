@@ -29,6 +29,7 @@ in
         bw-reset
       ];
 
+    # TODO: add to nushell config
     xdg.configFile."fish/conf.d/99_bw.fish" = {
       text = ''
         if status --is-interactive

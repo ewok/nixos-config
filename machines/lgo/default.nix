@@ -16,10 +16,11 @@ in
           inherit colors theme openai_token;
         };
         vifm.enable = true;
-        fish = {
+        shell = {
           enable = true;
           homeDirectory = homeDirectory;
           inherit openai_token;
+          shell = "nu";
         };
         starship.enable = true;
         starship.colors = colors;

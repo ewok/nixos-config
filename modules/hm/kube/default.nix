@@ -28,5 +28,6 @@ in
       ];
     };
     xdg.configFile."fish/conf.d/90_kube.fish".source = ./config/90_kube.fish;
+    xdg.configFile."nushell/autoload/kube.nu".source = ./config/kube.nu;
   };
 }

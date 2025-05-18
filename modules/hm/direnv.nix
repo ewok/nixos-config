@@ -37,5 +37,18 @@ in
         end
       '';
     };
+    xdg.configFile."nushell/autoload/direnv.nu" = {
+      text = ''
+        $env.config.hooks.env_change.PWD = (
+            $env.config.hooks.env_change.PWD | append { ||
+              if (which direnv | is-empty) {
+                  return
+              }
+              direnv export json | from json | default {} | load-env
+              $env.PATH = $env.PATH | split row (char env_sep)
+          }
+        )
+      '';
+    };
   };
 }

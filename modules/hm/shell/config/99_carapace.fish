@@ -5,4 +5,6 @@ if status --is-login
     carapace --list | awk '{print $1}' | xargs -I{} touch ~/.config/fish/completions/{}.fish # disable auto-loaded completions (#185)
 end
 
-carapace _carapace | source
+if status is-interactive
+    carapace _carapace | source
+end

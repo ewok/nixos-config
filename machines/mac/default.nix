@@ -42,7 +42,7 @@ in
             starship.enable = true;
             starship.colors = colors;
             svn.enable = true;
-            fish = {
+            shell = {
               enable = true;
               darwin = true;
               homeDirectory = homeDirectory;

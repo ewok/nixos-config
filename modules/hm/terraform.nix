@@ -26,5 +26,11 @@ in
         source "$HOME/.nix-profile/share/asdf-vm/asdf.fish"
       '';
     };
+    xdg.configFile."nushell/autoload/asdf.nu" = {
+      text = ''
+        $env.ASDF_DIR = "~/.nix-profile/share/asdf-vm"
+        source "~/.nix-profile/share/asdf-vm/asdf.nu"
+      '';
+    };
   };
 }

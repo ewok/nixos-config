@@ -86,6 +86,16 @@ in
               cd "$dst"
           end
         '';
+        "nushell/autoload/vifm.nu".text = ''
+          def --env vifm [...all] {
+              let dst = (command vifm --choose-dir - ...$all)
+              if ($dst == "") {
+                  echo "Directory picking cancelled/failed"
+                  return 1
+              }
+              cd $dst
+          }
+        '';
       };
     };
   };

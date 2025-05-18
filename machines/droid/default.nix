@@ -39,7 +39,7 @@ in
               android = true;
             };
             vifm.enable = true;
-            fish = {
+            shell = {
               enable = true;
               homeDirectory = homeDirectory;
               inherit openai_token;

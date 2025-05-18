@@ -16,9 +16,9 @@ function fish_greeting
   # end
 
     # Use prompt at the botttom
-  if command -vq -- tput
-    tput cup 9999 0
-  end
+  # if command -vq -- tput
+  #   tput cup 9999 0
+  # end
 
   if command -vq -- tmux
 

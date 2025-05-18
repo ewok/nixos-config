@@ -31,11 +31,11 @@ fi
 # fi
 
 {{#darwin}}
-if [[ $(ps -p "$PPID" -o comm=) != "fish" && -z $BASH_EXECUTION_STRING ]]
+if [[ $(ps -p "$PPID" -o comm=) != "{{ shell }}" && -z $BASH_EXECUTION_STRING ]]
 {{/darwin}}
 {{#linux}}
-if [[ $(ps --no-header --pid="$PPID" --format=comm) != "fish" && -z $BASH_EXECUTION_STRING ]]
+if [[ $(ps --no-header --pid="$PPID" --format=comm) != "{{ shell }}" && -z $BASH_EXECUTION_STRING ]]
 {{/linux}}
 then
-  exec fish
+  exec {{ shell }}
 fi

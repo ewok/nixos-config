@@ -55,9 +55,9 @@ in
             openai_token = openai_token;
           };
           vifm.enable = true;
-          fish.enable = true;
-          fish.homeDirectory = homeDirectory;
-          fish.openai_token = openai_token;
+          shell.enable = true;
+          shell.homeDirectory = homeDirectory;
+          shell.openai_token = openai_token;
           starship.enable = true;
           starship.colors = colors;
           git = {
