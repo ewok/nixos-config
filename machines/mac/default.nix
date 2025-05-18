@@ -40,6 +40,7 @@ in
             };
             vifm.enable = true;
             starship.enable = true;
+            starship.colors = colors;
             svn.enable = true;
             fish = {
               enable = true;

@@ -5,8 +5,8 @@ let
   cfg = config.opt.terminal;
   vars = {
     linux = cfg.linux;
-    theme = cfg.theme.name;
-    light_theme = cfg.theme.light_name;
+    theme = cfg.theme;
+    monospace_font_size = lib.strings.toInt(cfg.theme.monospace_font_size) + 1;
   };
   toggle_theme = pkgs.writeShellScriptBin "toggle-theme" ''
     if [ "$1" == "auto" ];then
@@ -27,11 +27,22 @@ let
     fi
 
   '';
+
+  wezterm-bin = pkgs.writeShellScriptBin "wezterm" ''
+    if command -v flatpak > /dev/null && flatpak list | grep -q "org.wezfurlong.wezterm"; then
+      WEZTERM_CMD="flatpak run org.wezfurlong.wezterm"
+    else
+      WEZTERM_CMD="wezterm"
+    fi
+    $WEZTERM_CMD "$@"
+  '';
+
 in
 {
   config = mkIf (cfg.enable && cfg.terminal == "wezterm") {
     home.file.".wezterm.lua".source = utils.templateFile ".wezterm.lua" ./config/wezterm.lua vars;
+    xdg.configFile."wezterm/wezterm.lua".source = utils.templateFile ".wezterm.lua" ./config/wezterm.lua vars;
     # home.file.".var/app/org.wezfurlong.wezterm/config/.wezterm.lua".source = utils.templateFile ".wezterm.lua" ./config/wezterm.lua vars;
-    home.packages = [ toggle_theme ];
+    home.packages = [ toggle_theme wezterm-bin ];
   };
 }

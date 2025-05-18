@@ -4,7 +4,7 @@ let
 
   username = "ataranchiev";
   homeDirectory = "/var/home/${username}";
-  terminal = "foot";
+  terminal = "wezterm";
 in
 {
   config = {
@@ -22,6 +22,7 @@ in
           inherit openai_token;
         };
         starship.enable = true;
+        starship.colors = colors;
         git = {
           enable = true;
           homePath = "${homeDirectory}/";

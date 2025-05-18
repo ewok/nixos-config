@@ -24,15 +24,15 @@ end
 
 function Scheme_for_appearance(appearance)
     if file_exists(wezterm.home_dir .. "/Documents/theme_dark") then
-        return "{{theme}}"
+        return "{{theme.name}}"
     end
     if file_exists(wezterm.home_dir .. "/Documents/theme_light") then
-        return "{{light_theme}}"
+        return "{{theme.light_name}}"
     end
     if appearance():find("Light") then
-        return "{{light_theme}}"
+        return "{{theme.light_name}}"
     end
-    return "{{theme}}"
+    return "{{theme.name}}"
 end
 
 local config = wezterm.config_builder()
@@ -58,11 +58,11 @@ config.freetype_load_target = "Light"
 -- {{/linux}}
 -- {{#linux}}
 -- SteamOs
-config.font = wezterm.font("FiraCode Nerd Font", {
+config.font = wezterm.font("{{ theme.monospace_font }}", {
     weight = "Regular",
     stretch = "Condensed",
 })
-config.font_size = 10.0
+config.font_size = {{ monospace_font_size }}.0
 config.font_shaper = "Harfbuzz"
 -- config.freetype_load_target = "Light"
 -- config.freetype_load_target = "HorizontalLcd"
