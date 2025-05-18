@@ -284,3 +284,7 @@ window#waybar.bottom #mode {
 #keyboard-state {
     color: #{{ conf.colors.base0B }};
 }
+
+#privacy-item {
+    color: #ff0000;
+}

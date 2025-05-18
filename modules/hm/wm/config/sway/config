@@ -57,6 +57,7 @@ bindsym --to-code $mod_a+q kill
 
 # start program launcher
 bindsym --to-code $mod_a+d exec $menu
+bindsym Menu exec $menu
 
 # Lock screen
 # bindsym $mod+$mod_a+l exec --no-startup-id "{{ conf.folders.bin }}/swayexit lock"
@@ -197,6 +198,29 @@ mode "resize" {
         bindsym Escape mode "default"
         bindsym --to-code Ctrl+m mode "default"
 }
+
+# Waydroid managing
+set $mode_waydroid (up|down|left|right) rotation, (q)uit, (s)tart
+
+bindsym $mod+w mode "$mode_waydroid"
+
+mode "$mode_waydroid" {
+        # These bindings trigger as soon as you enter the resize mode
+        bindsym $up    exec adb shell settings put system user_rotation 0
+        bindsym $down  exec adb shell settings put system user_rotation 2
+        bindsym $left  exec adb shell settings put system user_rotation 1
+        bindsym $right exec adb shell settings put system user_rotation 3
+        bindsym q exec waydroid session stop, mode "default"
+
+        bindsym Return mode "default"
+        bindsym Escape mode "default"
+        bindsym --to-code Ctrl+m mode "default"
+}
+
+bindsym $mod+Up  exec rotate.sh 2
+bindsym $mod+Down  exec rotate.sh 3
+bindsym $mod+Left  exec rotate.sh 1
+bindsym $mod+Right  exec rotate.sh 4
 
 
 ################################################################################################

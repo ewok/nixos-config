@@ -26,6 +26,33 @@ in
         source = ./config/sway/calc;
         executable = true;
       };
+      home.file."bin/rotate.sh" = {
+        source = ./config/sway/wrotate.sh;
+        executable = true;
+      };
+      home.file."bin/w-stop" = {
+        text = "waydroid session stop";
+        executable = true;
+      };
+      home.file."bin/w-size" = {
+        text = ''#/usr/bin/bash
+          set -e
+          if [ "$1" == "1" ];then
+            W=770
+            H=1280
+          elif [ "$1" == "2" ];then
+            W=1920
+            H=1080
+          else
+            W=1280
+            H=770
+          fi
+          waydroid prop set persist.waydroid.height "$H"
+          waydroid prop set persist.waydroid.width "$W"
+          waydroid session stop
+          '';
+        executable = true;
+      };
       xdg.configFile."sway/config" = {
         source = utils.templateFile "config" ./config/sway/config vars;
         executable = true;
