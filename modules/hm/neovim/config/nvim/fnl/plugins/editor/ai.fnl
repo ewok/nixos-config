@@ -1,20 +1,26 @@
 (local {: pack : map : reg_ft} (require :lib))
 (local conf (require :conf))
 [(pack :github/copilot.vim
-       {;;:event [:InsertEnter]
+       {:event :InsertEnter
+        :cmd :Copilot
         :keys [{1 :<leader>co
                 2 #(do
                      (set vim.g.copilot_enabled (not vim.g.copilot_enabled))
+                     (if vim.g.copilot_enabled
+                         (do
+                           (vim.cmd "Copilot enable")
+                           (vim.schedule #(vim.cmd "Copilot status")))
+                         (vim.cmd "Copilot disable"))
                      (vim.notify (string.format "Copilot Enabled %s"
                                                 vim.g.copilot_enabled)
                                  :INFO {:title :Copilot}))
                 :mode :n
                 :desc "Toggle Copilot"}]
         :config #(do
-                   (set vim.g.copilot_loaded true))
+                   (set vim.g.copilot_loaded true)
+                   (set vim.g.copilot_enabled false))
         :init #(do
-                 (set vim.g.copilot_no_maps true)
-                 (set vim.g.copilot_enabled false))})
+                 (set vim.g.copilot_no_maps true))})
  (pack :robitx/gp.nvim
        {:cmd [:GpChatNew
               :GpChatToggle
@@ -31,6 +37,7 @@
               :GpNextAgent
               :GpCodeReview
               :GpUnitTests
+              :GpExplain
               :GpCommitMessage]
         :init #(let [wk (require :which-key)
                      md {:noremap true :silent true :nowait true}]
@@ -109,6 +116,8 @@
                         "[gpt] Code review")
                    (map :v :<leader>c2 ":<C-u>'<,'>GpUnitTests<cr>" md
                         "[gpt] Code Unit tests")
+                   (map :v :<leader>c3 ":<C-u>'<,'>GpExplain<cr>" md
+                        "[gpt] Code Explain")
                    (reg_ft :NeogitDiffView
                            (fn [ev]
                              (do
@@ -124,36 +133,28 @@
                               :image {:store_dir ""}
                               :agents [{:name :ChatGPT4 :disable true}
                                        {:name :CodeGPT4 :disable true}
+                                       {:name :ChatGPT4o :disable true}
+                                       {:name :CodeGPT4o :disable true}
                                        {:name :ChatGPT3-5 :disable true}
                                        {:name :CodeGPT3-5 :disable true}
                                        {:name :CodeGPT4o-mini :disable true}
                                        {:name :ChatGPT4o-mini :disable true}
                                        {:provider :openai
-                                        :name :CodeGPT45preview
-                                        :chat false
-                                        :command true
-                                        :model {:model :gpt-4.5-preview
-                                                :temperature 0.7
-                                                :top_p 1}
-                                        :system_prompt "Please return ONLY code snippets.\\nSTART AND END YOUR ANSWER WITH:\\n\\n```"}
-                                       {:provider :openai
-                                        :name :ChatGPT45preview
+                                        :name :ChatGPT41
                                         :chat true
                                         :command false
-                                        :model {:model :gpt-4.5-preview
+                                        :model {:model :gpt-4.1
                                                 :temperature 1.1
                                                 :top_p 1}
                                         :system_prompt defaults.chat_system_prompt}
-                                       ;;{:name :CodeGPT4o
-                                       ;; :chat false
-                                       ;; :command true
-                                       ;; :model {:model :gpt-4o
-                                       ;;         :temperature 0.8
-                                       ;;         :top_p 1}
-                                       ;; :system_prompt (.. "You are an AI working as a code editor.\\n\\n"
-                                       ;;                    "Please AVOID COMMENTARY OUTSIDE OF THE SNIPPET RESPONSE.\\n"
-                                       ;;                    "START AND END YOUR ANSWER WITH:\\n\\n```{{filetype}}\\n")}
-                                       ]
+                                       {:provider :openai
+                                        :name :CodeGPT41mini
+                                        :chat false
+                                        :command true
+                                        :model {:model :gpt-4.1-mini
+                                                :temperature 0.7
+                                                :top_p 1}
+                                        :system_prompt "Please return ONLY code snippets.\\nSTART AND END YOUR ANSWER WITH:\\n\\n```"}]
                               :hooks {:CodeReview (fn [gp params]
                                                     (let [template (.. "I have the following code from {{filename}}:\\n\\n"
                                                                        "```{{filetype}}\\n{{selection}}\\n```\\n\\n"
@@ -170,6 +171,14 @@
                                                      (gp.Prompt params
                                                                 gp.Target.enew
                                                                 agent template)))
+                                      :Explain (fn [gp params]
+                                                 (let [template (.. "I have the following code from {{filename}}:\\n\\n"
+                                                                    "```{{filetype}}\\n{{selection}}\\n```\\n\\n"
+                                                                    "Please respond by explaining the code above.")
+                                                       agent (gp.get_command_agent)]
+                                                   (gp.Prompt params
+                                                              gp.Target.popup
+                                                              agent template)))
                                       :CommitMessage (fn [gp params]
                                                        (let [template (.. "suggest commit message based on the following diff:\\n"
                                                                           "{{selection}}\\n"

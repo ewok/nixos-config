@@ -24,7 +24,8 @@
                        :event :CmdlineEnter}
                       {1 :hrsh7th/cmp-calc :config false :event :InsertEnter}
                       ;:dcampos/cmp-snippy
-                      :PaterJason/cmp-conjure]
+                      :PaterJason/cmp-conjure
+                       ]
        :event [:InsertEnter :CmdlineEnter]
        :config #(let [cmp (require :cmp)
                       types (require :cmp.types)
@@ -101,7 +102,8 @@
                                                                                  :n
                                                                                  true))
                                                      [:c])}
-                      opts {:preselect types.cmp.PreselectMode.None
+                      opts {:experimental {:ghost_text true}
+                            :preselect types.cmp.PreselectMode.None
                             :confirmation {:default_behavior cmp.ConfirmBehavior.Insert}
                             :snippet {:expand (fn [args]
                                                 (let [snippy (require :snippy)]

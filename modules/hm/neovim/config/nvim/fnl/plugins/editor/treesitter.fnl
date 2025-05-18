@@ -81,17 +81,17 @@
                                                                          :desc "[TS] Select outer part of an assignment"}
                                                                     :i= {:query "@assignment.inner"
                                                                          :desc "[TS] Select inner part of an assignment"}
-                                                                    "[=" {:query "@assignment.lhs"
+                                                                    "=h" {:query "@assignment.lhs"
                                                                           :desc "[TS] Select left hand side of an assignment"}
-                                                                    "]=" {:query "@assignment.rhs"
+                                                                    "=l" {:query "@assignment.rhs"
                                                                           :desc "[TS] Select right hand side of an assignment"}
                                                                     "a:" {:query "@property.outer"
                                                                           :desc "[TS] Select outer part of an object property"}
                                                                     "i:" {:query "@property.inner"
                                                                           :desc "[TS] Select inner part of an object property"}
-                                                                    "[:" {:query "@property.lhs"
+                                                                    "h:" {:query "@property.lhs"
                                                                           :desc "[TS] Select left part of an object property"}
-                                                                    "]:" {:query "@property.rhs"
+                                                                    "l:" {:query "@property.rhs"
                                                                           :desc "[TS] <Select> right part of an object property"}
                                                                     :aa {:query "@parameter.outer"
                                                                          :desc "[TS] <Select> outer part of a parameter/argument"}

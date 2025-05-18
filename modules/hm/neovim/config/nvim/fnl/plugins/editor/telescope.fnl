@@ -28,8 +28,13 @@
                       {:silent true} "Find files in the current workspace")
                  (map :n :<leader>ff "<CMD>Telescope live_grep<CR>"
                       {:silent true} "Find string in the current workspace")
-                 ;(map :n :<leader>fh "<CMD>Telescope oldfiles<CR>"
-                 ;     {:silent true} "Find telescope history")
+                 (map :n :<leader>f*
+                      ":Telescope live_grep default_text=<c-r>/<cr>"
+                      {:silent true} "Find string in the current workspace")
+                 (map :n :<leader>fc
+                      ":Telescope live_grep default_text=<c-r>=expand(\"<cword>\")<cr><cr>"
+                      {:silent true} "Find string in the current workspace")
+                 ;(map :n :<leader>fh "<CMD>Telescope oldfiles<CR>" ;     {:silent true} "Find telescope history")
                  (map :n :<leader>f. "<CMD>Telescope resume<CR>" {:silent true}
                       "Find last lookup")
                  (map :n :<leader>fm "<CMD>Telescope marks<CR>" {:silent true}
@@ -37,8 +42,7 @@
                  (map :n :<leader>f/
                       "<CMD>Telescope current_buffer_fuzzy_find<CR>"
                       {:silent true} "Find string in current buffer")
-                 ;(map :n "<leader>f:" "<cmd>Telescope command_history<cr>"
-                 ;     {:silent true} "Find all command history")
+                 ;(map :n "<leader>f:" "<cmd>Telescope command_history<cr>" ;     {:silent true} "Find all command history")
                  (map :n :<leader>fh "<cmd>Telescope help_tags<CR>"
                       {:silent true} "Help tags")
                  (map :n :<leader>fss "<cmd>Telescope vim_options<CR>"

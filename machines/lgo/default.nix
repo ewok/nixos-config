@@ -1,6 +1,7 @@
 { config, pkgs, ... }:
 let
   inherit (config) colors theme exchange_api_key openai_token fullName email workEmail authorizedKeys ssh_config;
+  inherit (pkgs) writeShellScriptBin;
 
   username = "ataranchiev";
   homeDirectory = "/var/home/${username}";
@@ -72,6 +73,26 @@ in
           repeat_rate 30
       }
     '';
+
+    # file /etc/udev/rules.d/99-otd.rules
+    home.packages =
+      let
+        ujust-install-otd = writeShellScriptBin "ujust-install-otd" ''
+          sudo mkdir -p /etc/udev/rules.d/
+          sudo tee /etc/udev/rules.d/99-otd.rules > /dev/null <<EOF
+          SUBSYSTEM=="hidraw", ACTION=="add", ATTRS{idVendor}=="256c", ATTRS{idProduct}=="0064", RUN+="/usr/bin/su ${username} -c 'systemctl --user start opentabletdriver.service'"
+          SUBSYSTEM=="hidraw", ACTION=="remove", ATTRS{idVendor}=="256c", ATTRS{idProduct}=="0064", RUN+="/usr/bin/su ${username} -c 'systemctl --user stop opentabletdriver.service'"
+          EOF
+          sudo udevadm control --reload-rules
+        '';
+        ujust-uninstall-otd = writeShellScriptBin "ujust-uninstall-otd" ''
+          # switch to sudo root:
+          sudo rm /etc/udev/rules.d/99-otd.rules
+          sudo udevadm control --reload-rules
+        '';
+      in
+      [ ujust-install-otd ujust-uninstall-otd ];
+
     home.username = username;
     home.homeDirectory = homeDirectory;
     home.stateVersion = "23.11";

@@ -99,7 +99,7 @@ filextype *.fb2,*.epub,*.awz,*.mobi,*.cbr,*.cbz
         " \ {View in Foliate}
         " \ $HOME/.local/bin/run host flatpak run --command=com.github.johnfactotum.Foliate --file-forwarding com.github.johnfactotum.Foliate @@u "file://%d/%f" %i &,
 
-filextype *.avi,*.mp4,*.wmv,*.dat,*.3gp,*.ogv,*.mkv,*.mpg,*.vob,*.flv,*.m2v,*.mov,*.webm,*.ts,*.m4v
+filextype *.avi,*.mp4,*.wmv,*.dat,*.3gp,*.ogv,*.mkv,*.mpg,*.vob,*.flv,*.m2v,*.mov,*.webm,*.ts,*.m4v,*.flac
         \ {Default}
         \ open %c %i &,
 

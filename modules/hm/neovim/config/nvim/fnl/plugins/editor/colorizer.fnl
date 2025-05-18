@@ -2,7 +2,7 @@
 
 (pack :brenoprata10/nvim-highlight-colors
       {:cmd [:HighlightColors]
-       :init #(map :n :<leader>tC "<cmd>HighlightColors On<CR>" {:silent true}
+       :init #(map :n :<leader>tc "<cmd>HighlightColors On<CR>" {:silent true}
                    "Code Colorizer")
        :config #(let [nhc (require :nvim-highlight-colors)]
                   (nhc.setup {:render :background
