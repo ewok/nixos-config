@@ -55,9 +55,12 @@ in
             openai_token = openai_token;
           };
           vifm.enable = true;
-          shell.enable = true;
-          shell.homeDirectory = homeDirectory;
-          shell.openai_token = openai_token;
+          shell = {
+            enable = true;
+            homeDirectory = homeDirectory;
+            openai_token = openai_token;
+            shell = "nu";
+          };
           starship.enable = true;
           starship.colors = colors;
           git = {

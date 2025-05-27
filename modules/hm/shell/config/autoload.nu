@@ -10,7 +10,14 @@ carapace _carapace nushell | save -f ($nu.data-dir | path join "vendor/autoload/
 zoxide init nushell | save -f ($nu.data-dir | path join "vendor/autoload/zoxide.nu")
 
 $env.OPENAI_API_KEY = "{{ openAiToken }}"
-alias ww = viddy
+# alias ww = viddy --shell /home/ataranchiev/.nix-profile/bin/nu
 alias ll = eza -la --git
 alias tree = eza --tree
 alias cat = bat
+
+def ww [
+    --times(-n): int = 2, # time between retries
+    command: string, # command to run
+] {
+    viddy -n $times --shell /home/ataranchiev/.nix-profile/bin/nu $"($command)"
+}

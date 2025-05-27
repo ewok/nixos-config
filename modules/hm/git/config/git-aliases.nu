@@ -1,3 +1,10 @@
+# H
+
+$env._git_log_medium_format = '%C(bold)Commit:%C(reset) %C(green)%H%C(red)%d%n%C(bold)Author:%C(reset) %C(cyan)%an <%ae>%n%C(bold)Date:%C(reset)   %C(blue)%ai (%ar)%C(reset)%n%+B'
+$env._git_log_oneline_format = '%C(green)%h%C(reset) %s%C(red)%d%C(reset)%n'
+$env._git_log_brief_format = '%C(green)%h%C(reset) %s%n%C(blue)(%ar by %an)%C(red)%d%C(reset)%n'
+$env._git_log_some = '%Cred%h%Creset -%C(auto)%d%Creset %s %Cgreen(%ad) %C(bold blue)<%an>%Creset'
+
 # GIT
   alias ga    = git add
   alias gA    = git cherry-pick --no-commit
@@ -17,23 +24,23 @@
   alias gfa   = git fetch --all
   alias gf    = git fetch
   alias g     = git
-  alias glb   = git log --topo-order --pretty=format:"$_git_log_brief_format"
+  alias glb   = do { ^git log --topo-order $"--pretty=format:($env._git_log_brief_format)" }
+  alias gldiff = do { ^git log --topo-order --stat --patch --full-diff $"--pretty=format:($env._git_log_medium_format)" }
+  alias glga  = do { ^git log --topo-order --graph $"--pretty=format:($env._git_log_oneline_format)" --all }
+  alias glgas = do { ^git log --topo-order --graph $"--pretty=format:($env._git_log_oneline_format)" --all --stat }
+  alias glg   = do { ^git log --topo-order --graph $"--pretty=format:($env._git_log_oneline_format)" }
+  alias gl    = do { ^git log --topo-order $"--pretty=format:($env._git_log_medium_format)" }
+  alias glgsa = do { ^git log --topo-order --graph $"--pretty=format:($env._git_log_oneline_format)" --stat --all }
+  alias glgs  = do { ^git log --topo-order --graph $"--pretty=format:($env._git_log_oneline_format)" --stat }
+  alias gloga = do { ^git log --date=short --graph $"--pretty=($env._git_log_some)" --all }
+  alias glogat = do { ^git log --graph $"--pretty=($env._git_log_some)" --all }
+  alias glog  = do { ^git log --date=short --graph $"--pretty=($env._git_log_some)" }
+  alias glo   = do { ^git log --topo-order $"--pretty=format:($env._git_log_oneline_format)" }
+  alias glogta = do { ^git log --graph $"--pretty=($env._git_log_some)" --all }
+  alias glogt = do { ^git log --graph $"--pretty=($env._git_log_some)" }
+  alias gls   = do { ^git log --topo-order --stat $"--pretty=format:($env._git_log_medium_format)" }
   alias glC   = git shortlog --summary --numbered
-  alias gldiff = git log --topo-order --stat --patch --full-diff --pretty=format:"$_git_log_medium_format"
-  alias glga  = git log --topo-order --graph --pretty=format:"$_git_log_oneline_format" --all
-  alias glgas = git log --topo-order --graph --pretty=format:"$_git_log_oneline_format" --all --stat
-  alias glg   = git log --topo-order --graph --pretty=format:"$_git_log_oneline_format"
-  alias gl    = git log --topo-order --pretty=format:"$_git_log_medium_format"
-  alias glgsa = git log --topo-order --graph --pretty=format:"$_git_log_oneline_format" --stat --all
-  alias glgs  = git log --topo-order --graph --pretty=format:"$_git_log_oneline_format" --stat
-  alias gloga = git log --date=short --graph --pretty="$_git_log_some" --all
-  alias glogat = git log --graph --pretty="$_git_log_some" --all
-  alias glog  = git log --date=short --graph --pretty="$_git_log_some"
-  alias glo   = git log --topo-order --pretty=format:"$_git_log_oneline_format"
-  alias glogta = git log --graph --pretty="$_git_log_some" --all
-  alias glogt = git log --graph --pretty="$_git_log_some"
   alias glS   = git log --show-signature
-  alias gls   = git log --topo-order --stat --pretty=format:"$_git_log_medium_format"
   alias gma   = git merge --abort
   alias gmC   = git merge --no-commit
   alias gmf   = git merge --ff-only

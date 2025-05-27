@@ -28,8 +28,15 @@ in
     };
     xdg.configFile."nushell/autoload/asdf.nu" = {
       text = ''
-        $env.ASDF_DIR = "~/.nix-profile/share/asdf-vm"
-        source "~/.nix-profile/share/asdf-vm/asdf.nu"
+        let shims_dir = (
+          if ( $env | get --ignore-errors ASDF_DATA_DIR | is-empty ) {
+            $env.HOME | path join '.asdf'
+          } else {
+            $env.ASDF_DATA_DIR
+          } | path join 'shims'
+        )
+        $env.PATH = ( $env.PATH | split row (char esep) | where { |p| $p != $shims_dir } | prepend $shims_dir )
+        # source "~/.nix-profile/share/asdf-vm/asdf.nu"
       '';
     };
   };

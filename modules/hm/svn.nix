@@ -13,7 +13,7 @@ let
     echo "svn not found"
     exit 1
     fi
-    $CMD st | grep ! | cut -d! -f2| sed 's/^ *//' | sed 's/^/"/g' | sed 's/$/"/g'  | xargs $CMD rm
+    $CMD st | grep ! | cut -d! -f2| sed 's/^ *//' | sed 's/^/"/g' | sed 's/$/"/g'  | xargs $CMD rm 2>/dev/null
   '';
 
   svn-add-add = writeScriptBin "svn-add-add" ''
@@ -25,7 +25,7 @@ let
     echo "svn not found"
     exit 1
     fi
-    $CMD st | grep '?' | cut -d'?' -f2| sed 's/^ *//' | sed 's/^/"/g' | sed 's/$/"/g' | xargs $CMD add
+    $CMD st | grep '?' | cut -d'?' -f2| sed 's/^ *//' | sed 's/^/"/g' | sed 's/$/"/g' | xargs $CMD add 2>/dev/null
   '';
 
   svn-update = writeScriptBin "svn-update" ''
@@ -37,8 +37,8 @@ let
     echo "svn not found"
     exit 1
     fi
-    $CMD st | grep '?' | cut -d'?' -f2| sed 's/^ *//' | sed 's/^/"/g' | sed 's/$/"/g' | xargs $CMD add || true
-    $CMD st | grep ! | cut -d! -f2| sed 's/^ *//' | sed 's/^/"/g' | sed 's/$/"/g'  | xargs $CMD rm || true
+    $CMD st | grep '?' | cut -d'?' -f2| sed 's/^ *//' | sed 's/^/"/g' | sed 's/$/"/g' | xargs $CMD add 2>/dev/null || true
+    $CMD st | grep ! | cut -d! -f2| sed 's/^ *//' | sed 's/^/"/g' | sed 's/$/"/g'  | xargs $CMD rm 2>/dev/null || true
     svn up || true
     svn commit -m update || true
     svn status
