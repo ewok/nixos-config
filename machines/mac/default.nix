@@ -17,7 +17,8 @@ in
       home = homeDirectory;
     };
 
-    system.stateVersion = 5;
+    nix.enable = false;
+    system.stateVersion = 6;
     home-manager =
       {
         useGlobalPkgs = true;
@@ -41,7 +42,7 @@ in
             vifm.enable = true;
             starship.enable = true;
             starship.colors = colors;
-            svn.enable = true;
+            svn.enable = false;
             shell = {
               enable = true;
               darwin = true;
@@ -59,15 +60,15 @@ in
               enable = true;
               homeDirectory = homeDirectory;
             };
-            kube.enable = true;
-            tf.enable = true;
-            lisps.enable = true;
+            kube.enable = false;
+            tf.enable = false;
+            lisps.enable = false;
             nix.enable = true;
             wm.enable = true;
             wm.homePath = homeDirectory;
             direnv.enable = true;
-            aws.enable = true;
-            scripts.enable = true;
+            aws.enable = false;
+            scripts.enable = false;
             terminal = {
               enable = true;
               inherit colors theme;
@@ -80,7 +81,7 @@ in
           };
 
           home.username = "${username}";
-          home.stateVersion = "23.11";
+          home.stateVersion = "24.05";
 
           programs.fish = {
             enable = true;

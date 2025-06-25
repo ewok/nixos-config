@@ -19,6 +19,7 @@ in
     home.packages = with pkgs; [
       direnv
       nix-direnv
+      nvd
     ];
 
     xdg.configFile."fish/conf.d/99_direnv.fish" = {

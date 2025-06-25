@@ -1,7 +1,8 @@
 { config, pkgs, ... }:
 let
-  inherit (config) colors theme username exchange_api_key openai_token fullName email workEmail authorizedKeys ssh_config;
+  inherit (config) colors theme exchange_api_key openai_token fullName email workEmail authorizedKeys ssh_config;
 
+  username = "ataranchiev";
   homeDirectory = "/home/${username}";
   modulesHm = map (n: ../../modules/hm + "/${n}") (builtins.attrNames (builtins.readDir ../../modules/hm));
 in

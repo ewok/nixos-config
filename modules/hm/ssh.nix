@@ -32,9 +32,11 @@ in
       matchBlocks = builtins.fromJSON cfg.config;
     };
 
+    # programs.mosh.enable = true;
+
     home.activation.ssh-changes = dag.entryAnywhere ''
       chmod 0700 ${cfg.homeDirectory}/.ssh || true
-      chmod 0600 ${cfg.homeDirectory}/.ssh/* || true
+      find ${cfg.homeDirectory}/.ssh -maxdepth 1 -type f -exec chmod 0600 {} \; || true
     '';
     home.file.".ssh/authorized_keys_tmp" =
       {

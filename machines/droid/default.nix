@@ -43,6 +43,7 @@ in
               enable = true;
               homeDirectory = homeDirectory;
               inherit openai_token;
+              shell = "nu";
             };
             starship.enable = true;
             starship.colors = colors;

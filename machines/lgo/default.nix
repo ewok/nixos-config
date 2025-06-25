@@ -60,6 +60,7 @@ in
         };
         direnv.enable = true;
         scripts.enable = true;
+        tf.enable = true;
       };
 
     xdg.configFile."sway/config.d/99-myconf.conf".text = ''

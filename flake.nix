@@ -231,7 +231,7 @@
                     CMD="nix-on-droid $CMD"
                 # mac
                   elif [ "$2" == "mac" ]; then
-                    CMD="nix run nix-darwin -- $CMD"
+                    CMD="sudo nix run nix-darwin -- $CMD"
                   else
                     echo "'$2' wrong, possible options: lgo, rpi, bup, orb, droid, mac"
                     exit 1

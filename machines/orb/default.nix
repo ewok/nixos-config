@@ -65,7 +65,7 @@ in
           starship.colors = colors;
           git = {
             enable = true;
-            homePath = "${homeDirectory}/";
+            homePath = "/Users/${username}/";
             workPath = "/Users/${username}/work/";
             homeEmail = email;
             inherit fullName workEmail;

@@ -20,9 +20,9 @@ in
       };
       xdg = {
         configFile = {
-          "nushell/config.nu".source = utils.templateFile "config.nu" ./config/config.nu vars;
+          "nushell/config.nu".source = ./config/config.nu;
           "nushell/autoload/granted.nu".source = ./config/granted.nu;
-          "nushell/autoload/autoload.nu".source = ./config/autoload.nu;
+          "nushell/autoload/autoload.nu".source = utils.templateFile "autoload.nu" ./config/autoload.nu vars;
         };
       };
     };

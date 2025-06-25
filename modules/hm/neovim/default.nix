@@ -54,7 +54,7 @@ let
   };
 
   vim-compile = writeShellScriptBin "vim-compile" ''
-    ${my-nvim}/bin/nvim --headless --cmd 'lua _G.update=true'
+    ${my-nvim}/bin/nvim --headless --cmd 'lua _G.update=true' || true
   '';
 
   clean-cache = writeShellScriptBin "nvim-clean-cache" ''
@@ -158,7 +158,7 @@ in
           pyright
           fennel-ls
           terraform-ls
-          # vscode-langservers-extracted
+          vscode-langservers-extracted
           yaml-language-server
           dockerfile-language-server-nodejs
           zk
@@ -199,6 +199,10 @@ in
 
           # Manual
           # manix
+          # Kustomize stuff
+          kustomize
+          kubeconform
+          kubent
         ];
       in
       [

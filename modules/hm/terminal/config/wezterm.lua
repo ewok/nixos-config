@@ -42,7 +42,7 @@ config.color_scheme = Scheme_for_appearance(get_appearance)
 -- {{^linux}}
 -- MacOS
 config.font = wezterm.font("FiraCode Nerd Font Propo", {
-    weight = "Bold",
+    weight = "Regular",
     stretch = "Condensed",
 })
 config.font_size = 14.6

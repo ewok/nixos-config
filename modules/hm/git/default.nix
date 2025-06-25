@@ -60,6 +60,7 @@ in
           # gitAndTools.git-octopus
           gitAndTools.git-reparent
           gitAndTools.git-lfs
+          gh
         ];
       in
       {

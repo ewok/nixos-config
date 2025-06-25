@@ -15,6 +15,21 @@ alias ll = eza -la --git
 alias tree = eza --tree
 alias cat = bat
 
+def nix-flake-new [
+    template?: string, # command to run
+] {
+    match $template {
+        null =>  {
+          print "Choose a template:"
+          nix flake show templates
+        }
+        _ =>  {
+
+      nix flake init --template $"templates#($template)"
+        }
+    }
+}
+
 def ww [
     --times(-n): int = 2, # time between retries
     command: string, # command to run
