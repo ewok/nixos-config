@@ -34,8 +34,7 @@
 
 (lib.reg_lsp :clojure_lsp
              {:root_dir (util.root_pattern :project.clj :deps.edn :build.boot
-                                           :shadow-cljs.edn :bb.edn)
-              })
+                                           :shadow-cljs.edn :bb.edn)})
 
 (lib.reg_ft_once :clojure
                  #(let [null-ls (require :null-ls)]

@@ -14,7 +14,7 @@ M.packages = {
     oil = false,
     neotree = true,
     hbac = false,
-    aerial = false,
+    aerial = true,
 }
 
 M.options = {

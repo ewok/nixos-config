@@ -6,7 +6,7 @@
 
 (fn umap [mode lhs options]
   "Unmap keybinding"
-  (vim.keymap.del mode lhs options))
+  (pcall vim.keymap.del mode lhs options))
 
 (lambda reg_ft [ft fun ?postfix]
   "Register function for filetype"
