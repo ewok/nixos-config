@@ -10,8 +10,9 @@
                  (map :n ";"
                       "<CMD>Neotree buffers focus dir=/ reveal toggle float<CR>"
                       {:noremap true} "Open buffers")
-                 (map :n :<leader>n "<CMD>Neotree toggle left reveal<CR>"
-                      {:noremap true} "Open NeoTree"))
+                 ;; (map :n :<leader>n "<CMD>Neotree toggle left reveal<CR>"
+                 ;;      {:noremap true} "Open NeoTree")
+                 )
         :config #(let [ntree (require :neo-tree)
                        command (require :neo-tree.command)]
                    (ntree.setup {:close_if_last_window true
@@ -97,18 +98,21 @@
                                               :hijack_netrw_behavior :open_default
                                               :use_libuv_file_watcher false
                                               :window {:mappings {";" {1 #(do
-                                                                            (vim.api.nvim_exec "Neotree focus buffers float reveal dir=/"
-                                                                                               true))}}
+                                                                            (vim.api.nvim_exec "Neotree close"
+                                                                                               true)
+                                                                            ; (vim.api.nvim_exec "Neotree focus buffers left reveal dir=/"
+                                                                            ;                    true)
+                                                                            )}}
                                                        :fuzzy_finder_mappings {:<down> :move_cursor_down
                                                                                :<C-j> :move_cursor_down
                                                                                :<up> :move_cursor_up
                                                                                :<C-k> :move_cursor_up}}}
-                                 ;;:git_status {:window {:mappings {";" {1 #(do
-                                 ;;                                           (vim.api.nvim_exec "Neotree close"
-                                 ;;                                                              true)
-                                 ;;                                           (vim.api.nvim_exec "Neotree focus buffers float reveal dir=/"
-                                 ;;                                                              true))}
-                                 ;;                                 :u :noop}}}
+                                 ; :git_status {:window {:mappings {";" {1 #(do
+                                 ;                                           (vim.api.nvim_exec "Neotree close"
+                                 ;                                                              true)
+                                 ;                                           (vim.api.nvim_exec "Neotree focus buffers left reveal dir=/"
+                                 ;                                                              true))}
+                                 ;                                 :u :noop}}}
                                  :buffers {:bind_to_cwd false
                                            :follow_current_file {:enabled true
                                                                  :leave_dirs_open false}
