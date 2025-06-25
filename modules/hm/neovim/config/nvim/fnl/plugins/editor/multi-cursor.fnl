@@ -1,15 +1,29 @@
-(local {: pack} (require :lib))
+(local {: pack : map} (require :lib))
 
-(pack :mg979/vim-visual-multi
-      {:keys [{1 :<c-n> :mode :n}]
-       :config #(do
-                  (set vim.g.VM_Extend_hl :DiffAdd)
-                  (set vim.g.VM_Cursor_hl :Visual)
-                  (set vim.g.VM_Mono_hl :DiffText)
-                  (set vim.g.VM_Insert_hl :DiffChange)
-                  (set vim.g.VM_default_mappings 0)
-                  (set vim.g.VM_maps
-                       {"Find Under" :<c-n>
-                        "Find Prev" :<c-p>
-                        "Skip Region" :<c-s>
-                        "Remove Region" :<c-d>}))})
+(pack :jake-stewart/multicursor.nvim
+      {:branch :1.0
+       :keys [{1 :<c-n> :mode [:n :x]}
+              {1 :<c-q> :mode [:n :x]}
+              {1 :<up> :mode [:n :x]}
+              {1 :<down> :mode [:n :x]}]
+       :config #(let [mc (require :multicursor-nvim)]
+                  (mc.setup)
+                  (mc.addKeymapLayer (fn [layerSet]
+                                       (layerSet [:n :x] :<c-k> mc.prevCursor)
+                                       (layerSet [:n :x] :<c-j> mc.nextCursor)
+                                       (layerSet [:n :x] :<c-p>
+                                                 #(mc.matchAddCursor -1))
+                                       (layerSet [:n :x] :<c-s>
+                                                 #(mc.matchSkipCursor 1))
+                                       (layerSet [:n :x] "*"
+                                                 mc.matchAllAddCursors)
+                                       (layerSet [:n :x] :<c-x> mc.deleteCursor)
+                                       (layerSet [:n :x] :<esc>
+                                                 (fn []
+                                                   (if (not (mc.cursorsEnabled))
+                                                       (mc.enableCursors)
+                                                       (mc.clearCursors))))))
+                  (map [:n :x] :<up> #(mc.lineAddCursor -1) {} :None)
+                  (map [:n :x] :<down> #(mc.lineAddCursor 1) {} :None)
+                  (map [:n :x] :<c-n> #(mc.matchAddCursor 1) {} :None)
+                  (map [:n :x] :<c-q> #(mc.toggleCursor) {} :None))})
