@@ -130,6 +130,8 @@
         :config #(let [gp (require :gp)
                        defaults (require :gp.defaults)]
                    (gp.setup {:openai_api_key conf.openai_token
+                              :chat_finder_pattern "topic: "
+                              :chat_free_cursor true
                               :image {:store_dir ""}
                               :agents [{:name :ChatGPT4 :disable true}
                                        {:name :CodeGPT4 :disable true}
@@ -137,6 +139,8 @@
                                        {:name :CodeGPT4o :disable true}
                                        {:name :ChatGPT3-5 :disable true}
                                        {:name :CodeGPT3-5 :disable true}
+                                       {:name :CodeGPT-o3-mini :disable true}
+                                       {:name :ChatGPT-o3-mini :disable true}
                                        {:name :CodeGPT4o-mini :disable true}
                                        {:name :ChatGPT4o-mini :disable true}
                                        {:provider :openai
