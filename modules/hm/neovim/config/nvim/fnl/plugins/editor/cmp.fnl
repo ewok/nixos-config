@@ -24,7 +24,10 @@
                        :event :CmdlineEnter}
                       {1 :hrsh7th/cmp-calc :config false :event :InsertEnter}
                       ;:dcampos/cmp-snippy
-                      :PaterJason/cmp-conjure]
+                      :PaterJason/cmp-conjure
+                      {1 "https://gitlab.com/msvechla/cmp-jira.git"
+                       :event :InsertEnter
+                       :opts {:file_types [:gitcommit :markdown]}}]
        :event [:InsertEnter :CmdlineEnter]
        :config #(let [cmp (require :cmp)
                       types (require :cmp.types)
@@ -107,7 +110,9 @@
                             :snippet {:expand (fn [args]
                                                 (let [snippy (require :snippy)]
                                                   (snippy.expand_snippet args.body)))}
-                            :sources [{:name :calc}
+                            :sources [{:name :cmp_jira}
+                                      {:name :codecompanion}
+                                      {:name :calc}
                                       {:name :nvim_lsp}
                                       {:name :conjure}
                                       {:name :snippy}

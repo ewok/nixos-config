@@ -9,7 +9,7 @@
                 (set vim.opt_local.tabstop 2)
                 (set vim.opt_local.softtabstop 2)
                 (when wk-ok?
-                  (wk.add [{1 :<leader>cc
+                  (wk.add [{1 :<leader>cC
                             :buffer ev.buf
                             :group "Connect[conjure]"}
                            {1 :<leader>cec
