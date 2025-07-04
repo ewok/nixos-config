@@ -26,7 +26,7 @@
     # neovim-nightly-overlay.url = "github:nix-community/neovim-nightly-overlay";
   };
 
-  outputs = { nixpkgs-unstable, home-manager, nix-on-droid, darwin, flake-utils, ... }@inputs:
+  outputs = { self, nixpkgs-unstable, home-manager, nix-on-droid, darwin, flake-utils, ... }@inputs:
 
     let
       nixpkgsDefaults = {
@@ -38,11 +38,12 @@
       modulesHm = map (n: ./modules/hm + "/${n}") (builtins.attrNames (builtins.readDir ./modules/hm));
       overlays = [
         # inputs.neovim-nightly-overlay.overlays.default
-        # (import ./overlays)
+        self.overlays.default
       ];
-      # overlays = map (n: ./overlays + "/${n}") (builtins.attrNames (builtins.readDir ./overlays));
     in
     {
+
+      overlays.default = import ./overlays { inherit inputs; };
 
       homeConfigurations.lgo =
         let
@@ -59,6 +60,9 @@
             {
               imports = modulesHm;
               _module.args.utils = import utils/lib.nix { inherit pkgs; };
+            }
+            {
+              nixpkgs.overlays = overlays;
             }
           ];
         };
