@@ -9,3 +9,4 @@ shell.nix
 .lsp
 .clj-kondo
 .tool-versions
+__pycache__

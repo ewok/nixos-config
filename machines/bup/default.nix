@@ -30,7 +30,7 @@ in
 
       # see here for more info: https://minecraft.gamepedia.com/Server.properties#server.properties
       serverProperties = {
-        server-ip = "100.73.133.2";
+        server-ip = "100.95.245.70";
         motd = "My Minecraft server";
         max-players = 5;
         allow-cheats = true;
@@ -80,7 +80,7 @@ in
             inherit fullName workEmail;
           };
           hledger = {
-            enable = true;
+            enable = false;
             inherit exchange_api_key;
           };
           svn.enable = true;
@@ -104,14 +104,14 @@ in
           scripts.enable = true;
           syncthing = {
             enable = true;
-            guiAddress = "100.73.133.2:8384";
+            guiAddress = "100.95.245.70:8384";
           };
-          seafile.enable = true;
+          seafile.enable = false;
         };
 
         home.username = "${username}";
         home.homeDirectory = homeDirectory;
-        home.stateVersion = "24.05";
+        home.stateVersion = "25.05";
       };
     };
   };

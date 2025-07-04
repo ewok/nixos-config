@@ -1,12 +1,16 @@
-{ config, lib, pkgs, ... }:
+{ config, lib, pkgs, username, ... }:
 let
-  inherit (lib) mkEnableOption mkIf;
+  inherit (lib) mkEnableOption mkIf mkOption;
 
   cfg = config.opt.tf;
 in
 {
   options.opt.tf = {
     enable = mkEnableOption "tf";
+    cacheFolder = mkOption {
+      type = lib.types.str;
+      default = "$HOME/.terraform.d/plugin-cache/";
+    };
   };
 
   config = mkIf cfg.enable {
@@ -17,7 +21,7 @@ in
     ];
 
     home.file.".terraformrc".text = ''
-      plugin_cache_dir   = "$HOME/.terraform.d/plugin-cache/"
+      # plugin_cache_dir   = "${cfg.cacheFolder}"
       disable_checkpoint = true
     '';
     home.file.".terraform.d/plugin-cache/.gitignore".text = "";

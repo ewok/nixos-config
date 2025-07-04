@@ -11,10 +11,10 @@ let
   #   { inherit pkgs; };
 in
 {
-  home.activation.report-changes = dag.entryAnywhere ''
-    # if [ "$oldGenPath" != "" ]; then
-      ${pkgs.nvd}/bin/nvd history --profile ~/.nix-profile
-      # diff $oldGenPath $newGenPath
-    # fi
-  '';
+  # home.activation.report-changes = dag.entryAnywhere ''
+  #   # if [ "$oldGenPath" != "" ]; then
+  #     ${pkgs.nvd}/bin/nvd history --profile ~/.nix-profile
+  #     # diff $oldGenPath $newGenPath
+  #   # fi
+  # '';
 }

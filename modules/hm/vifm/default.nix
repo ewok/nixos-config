@@ -49,7 +49,7 @@ in
           curlftpfs
           ts
           archivemount
-          dpkg
+          # dpkg
           viu
           trash-cli
         ];

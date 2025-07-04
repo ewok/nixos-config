@@ -8,7 +8,7 @@ let
     pname = "minecraft-bedrock-server";
     version = pkgver;
     src = fetchurl {
-      url = "http://ewok-bup.ewok.email:8080/bedrock-server-${pkgver}.zip";
+      url = "http://ewok-vps.ewok.email:8080/bedrock-server-${pkgver}.zip";
       sha256 = "sha256-Fc9ooB4i/y3Hfj4Tdq1PIJX+6rOTGZDCtLtcCYCCZXo=";
     };
     sourceRoot = ".";

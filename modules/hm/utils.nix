@@ -5,6 +5,7 @@
       dfc
       fswatch
       htop
+      atop
       please-cli
       procps
       rclone

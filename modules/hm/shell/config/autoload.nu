@@ -32,7 +32,7 @@ def nix-flake-new [
 
 def ww [
     --times(-n): int = 2, # time between retries
-    command: string, # command to run
+    ...command: string, # command to run
 ] {
-    viddy -n $times --shell /home/ataranchiev/.nix-profile/bin/nu $"($command)"
+    ^viddy -n $times --shell ~/.nix-profile/bin/nu ...$command
 }
