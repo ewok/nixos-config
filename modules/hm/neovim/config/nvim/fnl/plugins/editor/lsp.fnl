@@ -219,7 +219,7 @@
         :config #(let [icons conf.icons.diagnostic
                        lsp_zero (require :lsp-zero)
                        lsp (require :lspconfig) ; sig (require :lsp_signature)
-                       ]
+                       blink (require :blink.cmp)]
                    (lsp_zero.set_sign_icons {:error icons.Error
                                              :warn icons.Warn
                                              :hint icons.Hint
@@ -227,6 +227,8 @@
                    (each [lsp-name settings (pairs lsps)]
                      (let [server (. lsp lsp-name)]
                        (set settings.handlers [lsp_zero.default_setup])
+                       (set settings.capabilities
+                            (blink.get_lsp_capabilities settings.capabilities))
                        (server.setup settings))))})
  (pack :nvimtools/none-ls.nvim
        {:config #(let [nl (require :null-ls)]
