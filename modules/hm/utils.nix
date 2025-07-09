@@ -1,11 +1,14 @@
-{ pkgs, ... }:
+{ pkgs, lib, ... }:
+let
+  inherit (pkgs) system;
+  inherit (lib) optionals;
+in
 {
   config = {
     home.packages = with pkgs; [
       dfc
       fswatch
       htop
-      atop
       please-cli
       procps
       rclone
@@ -14,6 +17,7 @@
       whois
       flock
       yt-dlp
-    ];
+      aria2
+    ] ++ optionals (system != "aarch64-darwin") [ pkgs.atop ];
   };
 }
