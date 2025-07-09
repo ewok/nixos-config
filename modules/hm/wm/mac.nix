@@ -38,11 +38,22 @@ in
       # home.file.".skhdrc".source = ./config/macos/skhdrc;
       home.file."finicky.js".source = ./config/macos/finicky.js;
       home.file."bin/new-iterm-window.scpt".source = ./config/macos/new-iterm-window.scpt;
-      home.file.".aerospace.toml".source = utils.templateFile "aerospace.toml" ./config/macos/aerospace.toml vars;
-      # home.file.".yabairc" = {
-      #   source = ./config/macos/yabairc;
-      #   executable = true;
-      # };
+      # home.file.".aerospace.toml".source = utils.templateFile "aerospace.toml" ./config/macos/aerospace.toml vars;
+      home.file.".yabairc" = {
+        source = ./config/macos/yabairc;
+        executable = true;
+      };
+      home.file.".hammerspoon/init.lua".source = ./config/macos/hammerspoon.lua;
+
+    xdg.configFile."fish/conf.d/99_brew.fish" = {
+      text = ''
+        set --global --export HOMEBREW_PREFIX "/opt/homebrew";
+        set --global --export HOMEBREW_CELLAR "/opt/homebrew/Cellar";
+        set --global --export HOMEBREW_REPOSITORY "/opt/homebrew";
+        fish_add_path --global --move --path "/opt/homebrew/bin" "/opt/homebrew/sbin";
+        if not contains "/opt/homebrew/share/info" $INFOPATH; set --global --export INFOPATH "/opt/homebrew/share/info" $INFOPATH; end;
+      '';
+    };
       # xdg.configFile."spacebar/spacebarrc" = {
       #   source = ./config/macos/spacebarrc;
       #   executable = true;

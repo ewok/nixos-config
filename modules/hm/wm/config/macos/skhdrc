@@ -1,8 +1,8 @@
 # # focus window
-# ctrl + cmd - h : yabai -m window --focus west
-# ctrl + cmd - j : yabai -m window --focus south
-# ctrl + cmd - k : yabai -m window --focus north
-# ctrl + cmd - l : yabai -m window --focus east
+cmd - h : yabai -m window --focus west
+cmd - j : yabai -m window --focus south
+cmd - k : yabai -m window --focus north
+cmd - l : yabai -m window --focus east
 #
 # # move managed window
 # cmd + shift - h : yabai -m window --warp west
@@ -33,7 +33,7 @@
 # shift + cmd - 9 : yabai -m window --space  9; yabai -m space --focus 8
 #
 # # toggle window zoom
-# ctrl + cmd - f : yabai -m window --toggle zoom-fullscreen
+alt - f : yabai -m window --toggle zoom-fullscreen
 #
 # # toggle window split type
 # ctrl + cmd - e : yabai -m window --toggle split
@@ -44,8 +44,8 @@
 ## Other
 # cmd - return : osascript ~/bin/new-iterm-window.scpt
 # ctrl + cmd - return : osascript ~/bin/new-iterm-window.scpt
-cmd - return : wezterm
-ctrl + cmd - return : wezterm
+# cmd - return : wezterm
+# ctrl + cmd - return : wezterm
 
 # # add an on_enter command to the default mode
 # :: default : yabai -m config active_window_border_color 0xff775759
@@ -70,26 +70,26 @@ ctrl + cmd - return : wezterm
 
 ## Application specific
 
-cmd - j [
-  "Microsoft Edge" : skhd -k "ctrl - tab"
-]
-
-cmd - k [
-  "Microsoft Edge" : skhd -k "ctrl + shift - tab"
-]
-
-alt + shift - j [
-  "Microsoft Edge" : skhd -k "down"
-]
-
-alt - j [
-  "Microsoft Edge" : skhd -k "pagedown"
-]
-
-alt + shift - k [
-  "Microsoft Edge" : skhd -k "up"
-]
-
-alt - k [
-  "Microsoft Edge" : skhd -k "pageup"
-]
+# cmd - j [
+#   "Microsoft Edge" : skhd -k "ctrl - tab"
+# ]
+#
+# cmd - k [
+#   "Microsoft Edge" : skhd -k "ctrl + shift - tab"
+# ]
+#
+# alt + shift - j [
+#   "Microsoft Edge" : skhd -k "down"
+# ]
+#
+# alt - j [
+#   "Microsoft Edge" : skhd -k "pagedown"
+# ]
+#
+# alt + shift - k [
+#   "Microsoft Edge" : skhd -k "up"
+# ]
+#
+# alt - k [
+#   "Microsoft Edge" : skhd -k "pageup"
+# ]
