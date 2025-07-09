@@ -62,9 +62,9 @@ in
 
     xdg = {
       configFile = {
-        "bash/profile.d/01_path.sh".source = utils.templateFile "01_path.sh" ./config/01_path.sh vars;
-        "bash/profile.d/02_lang.sh".source = ./config/02_lang.sh;
-        "bash/profile.d/00_hostname.sh".text = ''
+        "bash/rc.d/01_path.sh".source = utils.templateFile "01_path.sh" ./config/01_path.sh vars;
+        "bash/rc.d/02_lang.sh".source = ./config/02_lang.sh;
+        "bash/rc.d/00_hostname.sh".text = ''
           if [ -z "$HOSTNAME" ] && command -v hostnamectl >/dev/null 2>&1; then
             export HOSTNAME=$(hostnamectl --transient 2>/dev/null)
           fi
