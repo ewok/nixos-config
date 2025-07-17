@@ -21,7 +21,7 @@ in
     ];
 
     home.file.".terraformrc".text = ''
-      # plugin_cache_dir   = "${cfg.cacheFolder}"
+      plugin_cache_dir   = "${cfg.cacheFolder}"
       disable_checkpoint = true
     '';
     home.file.".terraform.d/plugin-cache/.gitignore".text = "";

@@ -133,7 +133,7 @@ local function moveWindowToSpace(spaceNumber)
 
     -- Calculate window header position (near top-left)
     local frame = win:frame()
-    local headerX = frame.x + 60
+    local headerX = frame.x + 100
     local headerY = frame.y + 10
 
     -- Store current mouse position

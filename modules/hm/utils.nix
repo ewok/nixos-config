@@ -16,8 +16,12 @@ in
       tldr
       whois
       flock
-      yt-dlp
-      aria2
-    ] ++ optionals (system != "aarch64-darwin") [ pkgs.atop ];
+    ] ++ optionals (system != "aarch64-darwin") [
+      pkgs.atop
+      pkgs.jpeginfo
+      pkgs.yt-dlp
+      pkgs.aria2
+      pkgs.sqlite
+    ];
   };
 }
