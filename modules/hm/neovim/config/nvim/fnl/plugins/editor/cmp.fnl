@@ -70,7 +70,10 @@
                                   :path
                                   :snippets
                                   :buffer
-                                  :codecompanion]
+                                  :codecompanion
+                                  :obsidian
+                                  :obsidian_new
+                                  :obsidian_tags]
                         :providers {:conjure {:name :conjure
                                               :module :blink.compat.source
                                               :score_offset -3
@@ -84,7 +87,13 @@
                                            :score_offset -3
                                            :opts {}}
                                     :path {:opts {:get_cwd (fn [_]
-                                                             (vim.fn.getcwd))}}}}
+                                                             (vim.fn.getcwd))}}
+                                    :obsidian {:name :obsidian
+                                               :module :blink.compat.source}
+                                    :obsidian_new {:name :obsidian_new
+                                                   :module :blink.compat.source}
+                                    :obsidian_tags {:name :obsidian_tags
+                                                    :module :blink.compat.source}}}
               :signature {:window {:border :singe} :enabled true}
               :fuzzy {:sorts [:exact :score :sort_text]}
               :cmdline {:keymap {:preset :none

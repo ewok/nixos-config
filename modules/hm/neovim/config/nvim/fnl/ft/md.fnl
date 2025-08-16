@@ -12,19 +12,24 @@
                          (set vim.opt_local.foldmarker "{{{,}}}")
                          (map! [:n] :<leader>ce :<cmd>EvalBlock<CR> md
                                "Run Block")
-                         (map! [:v] :<CR> ":'<,'>ObsidianLinkNew<CR>" md
+                         (map! [:v] :<CR> ":'<,'>Obsidian link_new<CR>" md
                                "Create Link")
-                         (map! [:n] :<leader>wb :<Cmd>ObsidianBacklinks<CR> md
+                         (map! [:n] :<leader>wb "<Cmd>Obsidian backlinks<CR>" md
                                :Backlinks)
-                         (map! [:n] :<leader>wl :<Cmd>ObsidianLinks<CR> md
+                         (map! [:n] :<leader>wl "<Cmd>Obsidian links<CR>" md
                                :Links)
-                         (map! [:n] :<leader>wx :<Cmd>ObsidianOpen<CR> md
+                         (map! [:n] :<leader>wt "<Cmd>Obsidian open<CR>" md
                                :Links)
-                         (map! [:n] :<leader>wr :<Cmd>ObsidianRename<CR> md
+                         (map! [:n] :<leader>wr "<Cmd>Obsidian rename<CR>" md
                                :Links)
-                         (map! [:n] :g<space> :<Cmd>ObsidianToggleCheckbox<CR> md
+                         (map! [:n] :<leader>wt "<Cmd>Obsidian template<CR>" md
+                               :Template)
+                         (map! [:n] :g<space> "<Cmd>Obsidian toggle_checkbox<CR>" md
                                :Links)
-                         ;(map! [:n] :<CR>
+                         (map! :n :<CR>
+                              "<Cmd>Obsidian follow_link<CR>" md
+                              "Open Link")
+                         ; (map! [:n] :<CR>
                          ;      "<Cmd>lua vim.lsp.buf.definition()<CR>" md
                          ;      "Open Link")
                          ;(map! [:v] :<CR>

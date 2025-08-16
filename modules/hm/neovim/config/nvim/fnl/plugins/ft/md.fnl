@@ -86,30 +86,61 @@
  (pack :gpanders/vim-medieval
        {:ft [:markdown]
         :config #(set vim.g.medieval_langs
-                      [:python :ruby :sh :console=bash :bash :perl :fish :nu :bb])})
- (pack :epwalsh/obsidian.nvim
+                      [:python
+                       :ruby
+                       :sh
+                       :console=bash
+                       :bash
+                       :perl
+                       :fish
+                       :nu
+                       :bb])})
+ (pack :obsidian-nvim/obsidian.nvim
        {:version "*"
         :init #(let [md {:noremap true :silent false}]
-                 (map! :n :<leader>wo :<cmd>ObsidianQuickSwitch<cr> md
+                 (map! :n :<leader>wo "<cmd>Obsidian quick_switch<cr>" md
                        "Open note")
-                 (map! :n :<leader>wt :<cmd>ObsidianTags<cr> md "Open tag")
-                 (map! :n :<leader>wf :<cmd>ObsidianSearch<cr> md
+                 (map! :n :<leader>wt "<cmd>Obsidian tags<cr>" md "Open tag")
+                 (map! :n :<leader>wf "<cmd>Obsidian search<cr>" md
                        "Find in notes"))
-        :cmd [:ObsidianQuickSwitch :ObsidianTags :ObsidianSearch]
+        :cmd [:Obsidian]
         :ft :markdown
         :event [(.. "BufReadPre " conf.notes_dir :/**.md)
                 (.. "BufNewFile " conf.notes_dir :/**.md)]
-        :opts {:workspaces [{:name :notes :path "~/Notes"}]
+        :opts {:legacy_commands false
+               :workspaces [{:name :notes :path "~/Notes"}]
                :daily_notes {:folder :calendar/daily
                              :date_format "%Y-%m-%d"
                              :alias_format "%B %-d, %Y"
                              :default_tags [:dailyNote]
-                             :template nil}
+                             :template :diary}
                :wiki_link_func :use_alias_only
                :disable_frontmatter true
                :note_id_func #(.. $1)
-               :completion {:nvim_cmp true :min_chars 1}
+               :completion {:nvim_cmp true :blink true :min_chars 1}
                :templates {:folder :hidden/templates}
+               :checkbox {:order [" "
+                                  :x
+                                  "/"
+                                  "-"
+                                  ">"
+                                  "<"
+                                  "?"
+                                  "!"
+                                  "*"
+                                  "\""
+                                  :l
+                                  :b
+                                  :i
+                                  :S
+                                  :i
+                                  :p
+                                  :c
+                                  :f
+                                  :k
+                                  :w
+                                  :u
+                                  :d]}
                :ui {:enable false
                     :checkboxes {" " {:char " " :hl_group :ObsidianTodo}
                                  :x {:char "󰄳 " :hl_group :ObsidianDone}
@@ -154,7 +185,7 @@
                  (map! :n :<leader>wo
                        "<cmd>ZkNotes { sort = { 'modified' }, select = { 'absPath', 'path' } }<cr>"
                        md "Open note")
-                 (map! :n :<leader>wt :<cmd>ZkTags<cr> md "Open tag")
+                 (map! :n :<leader>wT :<cmd>ZkTags<cr> md "Open tag")
                  (map! :n :<leader>wf
                        "<cmd>ZkNotes { sort = { 'modified' }, match = { vim.fn.input('Search: ') }, select = { 'absPath', 'path' } }<cr>"
                        md "Find in notes")
