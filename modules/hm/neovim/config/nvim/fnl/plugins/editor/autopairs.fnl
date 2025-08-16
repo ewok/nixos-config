@@ -6,7 +6,8 @@
                       conf (require :conf)]
                   (npairs.setup {:disable_filetype [:TelescopePrompt
                                                     :clojure
-                                                    :fennel]
+                                                    :fennel
+                                                    :markdown]
                                  :disable_in_macro true
                                  :disable_in_visualblock true
                                  :disable_in_replace_mode true

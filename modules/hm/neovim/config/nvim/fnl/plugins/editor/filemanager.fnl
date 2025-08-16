@@ -6,13 +6,9 @@
        {:enabled conf.packages.neotree
         :branch :v3.x
         :cmd :Neotree
-        :init #(do
-                 (map :n ";"
-                      "<CMD>Neotree buffers focus dir=/ reveal toggle float<CR>"
-                      {:noremap true} "Open buffers")
-                 ;; (map :n :<leader>n "<CMD>Neotree toggle left reveal<CR>"
-                 ;;      {:noremap true} "Open NeoTree")
-                 )
+        :init #(map :n ";"
+                    "<CMD>Neotree buffers focus dir=/ reveal toggle float<CR>"
+                    {:noremap true} "Open buffers")
         :config #(let [ntree (require :neo-tree)
                        command (require :neo-tree.command)]
                    (ntree.setup {:close_if_last_window true
@@ -36,7 +32,7 @@
                                                      :<C-p> {1 :toggle_preview
                                                              :config {:use_float true
                                                                       :use_image_nvim false}}
-                                                     :L :focus_preview
+                                                     :<C-l> :focus_preview
                                                      :<C-s> :open_split
                                                      :<C-v> :open_vsplit
                                                      :<C-t> :open_tabnew
@@ -81,7 +77,8 @@
                                                      :ss {1 :order_by_size
                                                           :nowait false}
                                                      :st {1 :order_by_type
-                                                          :nowait false}}}
+                                                          :nowait false}
+                                                     :/ :noop}}
                                  :filesystem {:filtered_items {:hide_by_name [:.direnv]
                                                                :hide_by_pattern [;"*.meta"
                                                                                  ;"*/src/*/tsconfig.json"
@@ -97,16 +94,8 @@
                                               :group_empty_dirs true
                                               :hijack_netrw_behavior :open_default
                                               :use_libuv_file_watcher false
-                                              :window {:mappings {";" {1 #(do
-                                                                            (vim.api.nvim_exec "Neotree close"
-                                                                                               true)
-                                                                            ; (vim.api.nvim_exec "Neotree focus buffers left reveal dir=/"
-                                                                            ;                    true)
-                                                                            )}}
-                                                       :fuzzy_finder_mappings {:<down> :move_cursor_down
-                                                                               :<C-j> :move_cursor_down
-                                                                               :<up> :move_cursor_up
-                                                                               :<C-k> :move_cursor_up}}}
+                                              :window {:mappings {";" {1 #(vim.api.nvim_exec "Neotree close"
+                                                                                             true)}}}}
                                  ; :git_status {:window {:mappings {";" {1 #(do
                                  ;                                           (vim.api.nvim_exec "Neotree close"
                                  ;                                                              true)
