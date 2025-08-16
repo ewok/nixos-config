@@ -167,11 +167,11 @@ bindsym $mod+0 mode "$mode_system"
 bindsym $mod_a+0 mode "$mode_system"
 
 mode "$mode_system" {
-    bindsym --to-code l exec swayexit lock, mode "default"
-    bindsym --to-code s exec --no-startup-id swayexit suspend, mode "default"
-    bindsym --to-code Shift+e exec --no-startup-id swayexit logout, mode "default"
-    bindsym --to-code Shift+r exec --no-startup-id swayexit reboot, mode "default"
-    bindsym --to-code Shift+s exec --no-startup-id swayexit shutdown, mode "default"
+    bindsym --to-code l exec ~/bin/swayexit lock, mode "default"
+    bindsym --to-code s exec --no-startup-id ~/bin/swayexit suspend, mode "default"
+    bindsym --to-code Shift+e exec --no-startup-id ~/bin/swayexit logout, mode "default"
+    bindsym --to-code Shift+r exec --no-startup-id ~/bin/swayexit reboot, mode "default"
+    bindsym --to-code Shift+s exec --no-startup-id ~/bin/swayexit shutdown, mode "default"
     bindsym --to-code r reload, mode "default"
 
     # exit system mode: "Enter" or "Escape{{ conf.folders.bin }}/"

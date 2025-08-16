@@ -44,6 +44,7 @@ in
         external = with pkgs; [
           vifm
           unzip
+          unrar
           p7zip
           sshfs
           curlftpfs

@@ -22,6 +22,9 @@ in
       pkgs.yt-dlp
       pkgs.aria2
       pkgs.sqlite
+      pkgs.iproute2
+      pkgs.net-tools
+      pkgs.openssl
     ];
   };
 }

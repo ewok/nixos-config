@@ -50,6 +50,7 @@ let
     postBuild = ''
       ln -s $out/bin/nvim $out/bin/vim
       ln -s $out/bin/nvim $out/bin/vi
+      ln -s $out/bin/nvim $out/bin/v
     '';
   };
 
