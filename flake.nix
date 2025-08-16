@@ -67,25 +67,6 @@
           ];
         };
 
-      # homeConfigurations.cnt =
-      #   let
-      #     pkgs = import inputs.nixpkgs-unstable (nixpkgsDefaults // {
-      #       system = "x86_64-linux";
-      #     });
-      #     inherit modules;
-      #   in
-      #   home-manager.lib.homeManagerConfiguration {
-      #     inherit pkgs;
-      #     modules = [
-      #       ./machines/common.nix
-      #       ./machines/cnt
-      #       {
-      #         imports = modules;
-      #         _module.args.utils = import utils/lib.nix { inherit pkgs; };
-      #       }
-      #     ];
-      #   };
-
       homeConfigurations.rpi =
         let
           pkgs = import inputs.nixpkgs-unstable (nixpkgsDefaults // {
@@ -107,10 +88,14 @@
 
       nixosConfigurations.bup =
         let
-          system = "aarch64-linux";
+          system = "x86_64-linux";
+          pkgs = import inputs.nixpkgs-unstable (nixpkgsDefaults // {
+            system = "x86_64-linux";
+          });
         in
         nixpkgs-unstable.lib.nixosSystem {
           inherit system;
+          inherit pkgs;
           modules = [
             ./machines/common.nix
             ./machines/bup
@@ -125,9 +110,13 @@
       nixosConfigurations.orb =
         let
           system = "aarch64-linux";
+          pkgs = import inputs.nixpkgs-unstable (nixpkgsDefaults // {
+            system = "aarch64-linux";
+          });
         in
         nixpkgs-unstable.lib.nixosSystem {
           inherit system;
+          inherit pkgs;
           modules = [
             ./machines/common.nix
             ./machines/orb
