@@ -36,7 +36,7 @@ in
         work-profile
       ];
       # home.file.".skhdrc".source = ./config/macos/skhdrc;
-      home.file."finicky.js".source = ./config/macos/finicky.js;
+      home.file.".finicky.js".source = ./config/macos/finicky.js;
       home.file."bin/new-iterm-window.scpt".source = ./config/macos/new-iterm-window.scpt;
       # home.file.".aerospace.toml".source = utils.templateFile "aerospace.toml" ./config/macos/aerospace.toml vars;
       home.file.".yabairc" = {

@@ -1,56 +1,57 @@
-module.exports = {
+export default {
   defaultBrowser: "Vivaldi",
   options: {
     hideIcon: false
   },
   handlers: [
     {
-      match: ({ opener }) =>
-        opener.bundleId === "com.tinyspeck.slackmacgap",
-      browser: ({ urlString }) => ({
+      match: (url, opts) =>
+        opts.opener.bundleId === "com.tinyspeck.slackmacgap",
+      browser: (urlString) => ({
         name: "Vivaldi",
-        args: ["--profile-directory=work", `${urlString}`],
+        profile: "work"
       })
     },
-    {
-      match: ({ opener }) =>
-        opener.path && opener.path.startsWith("/Applications/Slack.app"),
-      browser: ({ urlString }) => ({
-        name: "Vivaldi",
-        args: ["--profile-directory=work", `${urlString}`],
-      })
-    },
-    {
-      match: ({ opener }) =>
-        opener.path && opener.path.startsWith("/Applications/Microsoft Outlook.app"),
-      browser: ({ urlString }) => ({
-        name: "Vivaldi",
-        args: ["--profile-directory=work", `${urlString}`],
-      })
-    },
-    {
-      match: ({ opener }) =>
-        opener.path && opener.path.startsWith("/Applications/Microsoft Teams classic.app"),
-      browser: ({ urlString }) => ({
-        name: "Vivaldi",
-        args: ["--profile-directory=work", `${urlString}`],
-      })
-    },
-    {
+  {
+    match: (url, opts) =>
+      opts.opener && opts.opener.path && opts.opener.path.startsWith("/Applications/Slack.app"),
+    browser: (urlString) => ({
+      name: "Vivaldi",
+        profile: "work"
+    })
+  },
+  {
+    match: (url, opts) =>
+      opts.opener && opts.opener.path && opts.opener.path.startsWith("/Applications/Microsoft Outlook.app"),
+    browser: (urlString) => ({
+      name: "Vivaldi",
+        profile: "work"
+    })
+  },
+  {
+    match: (url, opts) =>
+      opts.opener && opts.opener.path && opts.opener.path.startsWith("/Applications/Microsoft Teams classic.app"),
+    browser: (urlString) => ({
+      name: "Vivaldi",
+        profile: "work"
+    })
+  },
+  {
       match: ["http://google.*"],
-      browser: ({ urlString }) => ({
-        name: "Vivaldi",
-        args: ["--profile-directory=home", `${urlString}`],
-      })
-    },
-    {
-      match: ({ opener }) =>
-        opener.path && opener.path.startsWith("/Applications/Telegram.app"),
-      browser: ({ urlString }) => ({
-        name: "Vivaldi",
-        args: ["--profile-directory=home", `${urlString}`],
-      })
-    },
+    browser: (urlString) => ({
+      name: "Vivaldi",
+        profile: "home"
+    })
+  },
+  {
+    match: (url, opts) =>
+      opts.opener && opts.opener.path && opts.opener.path.startsWith("/Applications/Telegram.app"),
+    browser: (urlString) => ({
+      name: "Vivaldi",
+        profile: "home"
+    })
+  },
+
     // {
     //   match: finicky.matchHostnames(["gitlab.com", "fhl.world", "atlassian.net", "sharepoint.com", "amazon.com", "awsapps.com"]),
     //   // Opens the first running browsers in the list. If none are running, the first one will be started.
@@ -68,9 +69,9 @@ module.exports = {
         /.*amazonaws.com.*/,
         /.*databricks.com.*/
       ],
-      browser: ({ urlString }) => ({
+      browser: (urlString) => ({
         name: "Vivaldi",
-        args: ["--profile-directory=work", `${urlString}`],
+        profile: "work"
       })
     },
     {
@@ -83,9 +84,9 @@ module.exports = {
       // Valid keys are: shift, option, command, control, capsLock, and function.
       // Please note that control usually opens a tooltip menu instead of visiting a link
       match: () => finicky.getKeys().option,
-      browser: ({ urlString }) => ({
+      browser: (urlString) => ({
         name: "Vivaldi",
-        args: ["--profile-directory=home", `${urlString}`],
+        profile: "home"
       })
     }
   ]
