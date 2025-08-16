@@ -31,6 +31,21 @@ def nix-flake-new [
     }
 }
 
+def nix-flake-dev-new [
+    template?: string, # command to run
+] {
+    match $template {
+        null =>  {
+          print "Choose a template:"
+          nix flake show "https://flakehub.com/f/the-nix-way/dev-templates/*"
+        }
+        _ =>  {
+
+      nix flake init --template $"https://flakehub.com/f/the-nix-way/dev-templates/*#($template)"
+        }
+    }
+}
+
 def ww [
     --times(-n): int = 2, # time between retries
     ...command: string, # command to run

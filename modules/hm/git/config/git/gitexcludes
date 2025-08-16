@@ -6,6 +6,9 @@
 result/
 .envrc
 shell.nix
+devenv.nix
+devenv.lock
+devenv.yaml
 .lsp
 .clj-kondo
 .tool-versions
