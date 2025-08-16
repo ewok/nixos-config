@@ -7,6 +7,7 @@ $env.GPG_TTY = (tty)
 mkdir ($nu.data-dir | path join "vendor/autoload")
 $env.CARAPACE_BRIDGES = 'zsh,fish,bash,inshellisense' # optional
 carapace _carapace nushell | save -f ($nu.data-dir | path join "vendor/autoload/carapace.nu")
+sed -i 's/get -i/get -o/gi' ($nu.data-dir | path join "vendor/autoload/carapace.nu")
 zoxide init nushell | save -f ($nu.data-dir | path join "vendor/autoload/zoxide.nu")
 
 $env.OPENAI_API_KEY = "{{ openAiToken }}"

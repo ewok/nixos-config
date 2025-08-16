@@ -33,7 +33,7 @@ in
     xdg.configFile."nushell/autoload/asdf.nu" = {
       text = ''
         let shims_dir = (
-          if ( $env | get --ignore-errors ASDF_DATA_DIR | is-empty ) {
+          if ( $env | get -o ASDF_DATA_DIR | is-empty ) {
             $env.HOME | path join '.asdf'
           } else {
             $env.ASDF_DATA_DIR

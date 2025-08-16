@@ -25,7 +25,7 @@ export def --env --wrapped assume [...rest: string] {
   let granted_status = $output.exit_code
 
   # First line is the command
-  let command = $granted_output | get -i 0 | default "" | str trim | split row " "
+  let command = $granted_output | get -o 0 | default "" | str trim | split row " "
 
   let flag = $command | get 0
   # Collect environment variables to set
