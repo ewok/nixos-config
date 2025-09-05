@@ -176,6 +176,10 @@
             let
 
               nixosMy = writeShellScriptBin "nn" ''
+
+                SUBS_CHECK="--connect-timeout 5 http://ewok-lgo.ewok.email:5000"
+                SUBS_CMD="--option substituters http://ewok-lgo.ewok.email:5000 --option trusted-public-keys ewok-lgo.ewok.email:rezvQJxpUcXH3TEgkoM9dJTdceSmf0c+LBoJ3r+9hf4="
+
                 if [ "$#" -eq 0 ]; then
                   echo "Provide a command as a first argument please."
                   echo "crypt, clean, update, b, s"
@@ -214,17 +218,29 @@
                 # CNT
                 # RPI
                   if [ "$2" == "lgo" ] || [ "$2" == "rpi" ]; then
-                    CMD="nix run home-manager -- -b backup $CMD"
+                    if curl --silent $SUBS_CHECK > /dev/null; then
+                        CMD="nix $SUBS_CMD run home-manager -- -b backup $CMD"
+                    else
+                        CMD="nix run home-manager -- -b backup $CMD"
+                    fi
                 # nixos
                 # orb
                   elif [ "$2" == "bup" ] || [ "$2" == "orb" ]; then
-                    CMD="sudo nixos-rebuild $CMD --impure"
+                    if curl --silent $SUBS_CHECK > /dev/null; then
+                      CMD="sudo nixos-rebuild $SUBS_CMD $CMD --impure"
+                    else
+                      CMD="sudo nixos-rebuild $CMD --impure"
+                    fi
                 # droid
                   elif [ "$2" == "droid" ]; then
                     CMD="nix-on-droid $CMD"
                 # mac
                   elif [ "$2" == "mac" ]; then
-                    CMD="sudo nix run nix-darwin -- $CMD"
+                    if curl --silent $SUBS_CHECK > /dev/null; then
+                      CMD="sudo nix $SUBS_CMD run nix-darwin -- $CMD"
+                    else
+                      CMD="sudo nix run nix-darwin -- $CMD"
+                    fi
                   else
                     echo "'$2' wrong, possible options: lgo, rpi, bup, orb, droid, mac"
                     exit 1

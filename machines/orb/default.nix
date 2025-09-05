@@ -14,13 +14,6 @@ in
 
   config = {
     nix.settings.trusted-users = [ "root" username ];
-    nix.settings.substituters = [
-      "http://ewok-lgo.ewok.email:5001"
-    ];
-    nix.settings.trusted-public-keys = [
-      "ewok-lgo.ewok.email:rezvQJxpUcXH4TEgkoM9dJTdceSmf0c+LBoJ3r+9hf4="
-      "cache.nixos.org0:6NCHdD59X431o0gWypbMrAURkbJ16ZPMQFGspcDShjY="
-    ];
 
     services.tailscale.enable = true;
 

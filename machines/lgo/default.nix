@@ -10,14 +10,6 @@ in
 {
   config = {
 
-    nix.settings.substituters = [
-      "http://ewok-lgo.ewok.email:5000"
-    ];
-    nix.settings.trusted-public-keys = [
-      "ewok-lgo.ewok.email:rezvQJxpUcXH3TEgkoM9dJTdceSmf0c+LBoJ3r+9hf4="
-      "cache.nixos.org-1:6NCHdD59X431o0gWypbMrAURkbJ16ZPMQFGspcDShjY="
-    ];
-
     nix.settings.trusted-users = [ "root" username ];
 
     opt =
