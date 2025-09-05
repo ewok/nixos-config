@@ -21,13 +21,12 @@
                  (vim.cmd "cab cc CodeCompanion")
                  (reg_ft :gitcommit
                          (fn [ev]
-                           (do
-                             (map :n :cc ":CodeCompanion /commit<cr>"
-                                  {:noremap true
-                                   :silent true
-                                   :nowait true
-                                   :buffer ev.buf}
-                                  "[gpt] Add commit")))))
+                           (map :n :cc ":CodeCompanion /commit<cr>"
+                                {:noremap true
+                                :silent true
+                                :nowait true
+                                :buffer ev.buf}
+                                "[gpt] Add commit"))))
         :config #(let [c (require :codecompanion)]
                    (c.setup {:prompt_library {"Add Prompt" {:strategy :inline
                                                             :description "Prompt the LLM from Neovim"

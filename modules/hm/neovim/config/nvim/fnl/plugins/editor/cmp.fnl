@@ -21,8 +21,8 @@
 (pack :saghen/blink.cmp
       {:dependencies [:rafamadriz/friendly-snippets
                       :PaterJason/cmp-conjure
-                      {1 "https://gitlab.com/msvechla/cmp-jira.git"
-                       :opts {:file_types [:gitcommit :markdown]}}
+                      ; {1 "https://gitlab.com/msvechla/cmp-jira.git"
+                      ;  :opts {:file_types [:gitcommit :markdown]}}
                       :hrsh7th/cmp-calc
                       (pack :saghen/blink.compat {:version :2.* :opts {}})]
        :opts {:keymap {:preset :none
@@ -64,7 +64,7 @@
                                            :window {:border :single}}
                            :ghost_text {:enabled false}}
               :sources {:default [:calc
-                                  :cmp_jira
+                                  ; :cmp_jira
                                   :conjure
                                   :lsp
                                   :path
@@ -78,10 +78,10 @@
                                               :module :blink.compat.source
                                               :score_offset -3
                                               :opts {}}
-                                    :cmp_jira {:name :cmp_jira
-                                               :module :blink.compat.source
-                                               :score_offset -3
-                                               :opts {}}
+                                    ; :cmp_jira {:name :cmp_jira
+                                    ;            :module :blink.compat.source
+                                    ;            :score_offset -3
+                                    ;            :opts {}}
                                     :calc {:name :calc
                                            :module :blink.compat.source
                                            :score_offset -3

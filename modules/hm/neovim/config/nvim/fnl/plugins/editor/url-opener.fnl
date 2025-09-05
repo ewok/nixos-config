@@ -39,6 +39,7 @@
                                                    url (match provider
                                                          :aws "https://registry.terraform.io/providers/hashicorp/aws/"
                                                          :terraform "https://registry.terraform.io/providers/hashicorp/terraform/"
+                                                         :gitlab "https://registry.terraform.io/providers/gitlabhq/gitlab/"
                                                          :databricks "https://registry.terraform.io/providers/databricks/databricks/")]
                                                (when url
                                                  (if resource
