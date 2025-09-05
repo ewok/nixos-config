@@ -1,7 +1,8 @@
 export default {
   defaultBrowser: "Vivaldi",
   options: {
-    hideIcon: false
+    hideIcon: false,
+    profile: "work"
   },
   handlers: [
     {
@@ -79,15 +80,15 @@ export default {
       // Don't open any browser for this url, effectively blocking it
       browser: null
     },
-    {
-      // Open links in Safari when the option key is pressed
-      // Valid keys are: shift, option, command, control, capsLock, and function.
-      // Please note that control usually opens a tooltip menu instead of visiting a link
-      match: () => finicky.getKeys().option,
-      browser: (urlString) => ({
-        name: "Vivaldi",
-        profile: "home"
-      })
-    }
+    // {
+    //   // Open links in Safari when the option key is pressed
+    //   // Valid keys are: shift, option, command, control, capsLock, and function.
+    //   // Please note that control usually opens a tooltip menu instead of visiting a link
+    //   match: () => finicky.getKeys().option,
+    //   browser: (urlString) => ({
+    //     name: "Vivaldi",
+    //     profile: "worwwh"
+    //   })
+    // }
   ]
 };
