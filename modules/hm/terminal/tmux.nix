@@ -119,5 +119,9 @@ in
       source = utils.templateFile "tmux_toggle" ./config/tmux_toggle vars;
       executable = true;
     };
+    xdg.configFile."tmux/sesh" = {
+      source = utils.templateFile "sesh" ./config/sesh.sh vars;
+      executable = true;
+    };
   };
 }

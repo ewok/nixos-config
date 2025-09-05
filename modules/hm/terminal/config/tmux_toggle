@@ -2,48 +2,44 @@
 
 set -uo pipefail
 
-CWD_I="${1:-}"
+CWD_I="${1:-$(tmux display-message -p -F "#{pane_current_path}")}"
 FORCE="${2:-}"
-LIST_PANES="$(tmux list-panes -F '#F')"
-PANE_ZOOMED="$(echo "${LIST_PANES}" | grep Z)"
-PANE_COUNT="$(echo "${LIST_PANES}" | wc -l | bc)"
 
 TMUX_SESS=$(tmux display-message -p -F "#{session_name}")
-FLOAT_TERM=$(tmux display-message -p -F "#{@${TMUX_SESS}_float}")
 
-if [[ "$TMUX_SESS" == popup* ]]; then
-    tmux detach-client
-    exit 0
-fi
-
-if [[ -n "$FORCE" ]]; then
-    FLOAT_TERM=$FORCE
-    tmux set -g "@${TMUX_SESS}_float" $FLOAT_TERM
-fi
-
-if [ "$FLOAT_TERM" = "" ]; then
-    FLOAT_TERM=true
-fi
-
-if [[ -n "$CWD_I" ]]; then
-    CURRENT_WD="$CWD_I"
+if [[ "$FORCE" = "f" ]]; then
+	FLOAT_TERM="true"
+	tmux set -g "@${TMUX_SESS}_float" true
+elif [[ "$FORCE" = "t" ]]; then
+	FLOAT_TERM="false"
+	tmux set -g "@${TMUX_SESS}_float" false
 else
-    CURRENT_WD="#{pane_current_path}"
+	FLOAT_TERM=$(tmux display-message -p -F "#{@${TMUX_SESS}_float}")
 fi
 
-if [ ${FLOAT_TERM} = "true" ]; then
-    if [[ "$TMUX_SESS" == popup* ]]; then
-        tmux detach-client
-    else
-        tmux popup -d ${CURRENT_WD} -xC -yC -w90% -h90% -E \
-            "tmux attach -t popup_$TMUX_SESS || tmux new -s popup_$TMUX_SESS \; set-option detach-on-destroy on \; set status-right '' \; set status-left ''"
-    fi
+if [ "$FLOAT_TERM" != "false" ]; then
+
+	slug=$(echo "$CWD_I" | tr '[:upper:]' '[:lower:]' | sed ' s/[^a-zA-Z0-9]/_/g')
+
+	if [[ "$TMUX_SESS" == popup* ]]; then
+		tmux detach-client
+	else
+		tmux popup -d "$CWD_I" -xC -yC -w90% -h90% -E \
+			"tmux attach -t popup_$slug || tmux new -s popup_$slug \; set-option detach-on-destroy on \; set status-right '' \; set status-left ''"
+	fi
+
 else
-    if [ "${PANE_COUNT}" = 1 ]; then
-        tmux split-window -c ${CURRENT_WD} -v -l 20%
-    elif [ -n "${PANE_ZOOMED}" ]; then
-        tmux select-pane -t:.-
-    else
-        tmux resize-pane -Z -t1
-    fi
+
+	LIST_PANES="$(tmux list-panes -F '#F')"
+	PANE_COUNT="$(echo "$LIST_PANES" | wc -l | bc)"
+	PANE_ZOOMED="$(echo "$LIST_PANES" | grep Z)"
+
+	if [ "$PANE_COUNT" = 1 ]; then
+		tmux split-window -c "$CWD_I" -v -l 20%
+	elif [ "$PANE_ZOOMED" != "" ]; then
+		tmux select-pane -t:.-
+	else
+		tmux resize-pane -Z -t1
+	fi
+
 fi

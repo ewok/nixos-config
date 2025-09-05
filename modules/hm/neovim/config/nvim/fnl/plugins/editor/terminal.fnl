@@ -2,33 +2,33 @@
 (local conf (require :conf))
 
 (map :n :<C-W>S #(if conf.in_tmux
-                     (vim.cmd "silent !tmux split-window -v -l 20\\%")
+                     (vim.cmd "silent !tmux split-window -v -l 20\\% -c %:p:h")
                      (vim.cmd "split term://bash"))
      {:noremap true :silent true} "Split window")
 
 (map :n :<C-W>V #(if conf.in_tmux
-                     (vim.cmd "silent !tmux split-window -h -l 20\\%")
+                     (vim.cmd "silent !tmux split-window -h -l 20\\% -c %:p:h")
                      (vim.cmd "vsplit term://bash"))
      {:noremap true :silent true} "VSplit window")
 
 (map :n :<leader>ott
      #(do
-        (set vim.g.tth false)
+        (set vim.g.tth true)
         (vim.cmd (.. "silent !~/.config/tmux/tmux_toggle '" (get_file_cwd)
-                     "' false"))) {:silent true} "Open bottom terminal")
+                     "' t"))) {:silent true} "Open bottom terminal")
 
 (map :n :<leader>otf
      #(do
-        (set vim.g.tth true)
+        (set vim.g.tth false)
         (vim.cmd (.. "silent !~/.config/tmux/tmux_toggle '" (get_file_cwd)
-                     "' true"))) {:silent true} "Open floating terminal")
+                     "' f"))) {:silent true} "Open floating terminal")
 
 (map :n :<c-space>
      #(if vim.g.tth
           (vim.cmd (.. "silent !~/.config/tmux/tmux_toggle '" (get_file_cwd)
-                       "' true"))
+                       "' t"))
           (vim.cmd (.. "silent !~/.config/tmux/tmux_toggle '" (get_file_cwd)
-                       "' false"))) {:silent true}
+                       "' f"))) {:silent true}
      "Toggle bottom or float terminal")
 
 ;(map :n :<leader>gg
