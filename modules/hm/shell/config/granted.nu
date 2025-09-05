@@ -2,7 +2,7 @@
 # Save this file to `granted.nu` in your nushell config dir, then add `use granted.nu *` in your config.nu
 
 # assume - https://granted.dev
-export def --env --wrapped assume [...rest: string] {
+export def --env --wrapped assume [...args: string] {
   const var_names = [
     "AWS_ACCESS_KEY_ID",
     "AWS_SECRET_ACCESS_KEY",
@@ -19,10 +19,11 @@ export def --env --wrapped assume [...rest: string] {
 
   # Run assumego and collect its output
   let output = with-env {GRANTED_ALIAS_CONFIGURED: "true"} {
-    assumego $rest
-  } | complete
-  let granted_output = $output.stdout | lines
-  let granted_status = $output.exit_code
+    assumego ...$args
+  }
+
+  let granted_output = $output | lines
+  let granted_status = $env.LAST_EXIT_CODE
 
   # First line is the command
   let command = $granted_output | get -o 0 | default "" | str trim | split row " "
