@@ -1,4 +1,4 @@
-(local {: path_join :set set! : cmd!} (require :lib))
+(local {: path_join :set set!} (require :lib))
 (local conf (require :conf))
 
 (set vim.g.mapleader " ")
@@ -92,7 +92,9 @@
         :smartindent true
         :iskeyword "@,48-57,_,192-255"
         :fillchars "eob: "
-        :sessionoptions "buffers,curdir,folds,help,tabpages,winsize,globals,winpos,localoptions"})
+        :sessionoptions "buffers,curdir,folds,help,tabpages,winsize,globals,winpos,localoptions"
+        :formatoptions :jq
+        :langmap "ËЙЦУКЕНГШЩЗХЪФЫВАПРОЛДЖЭЯЧСМИТЬБЮ;~QWERTYUIOP{}ASDFGHJKL:\\\"ZXCVBNM<>,ёйцукенгшщзхъфывапролджэячсмить;`qwertyuiop[]asdfghjkl\\;'zxcvbnm"})
 
 (each [key value (pairs settings)]
   (let [key (tostring key)]
