@@ -13,22 +13,22 @@
 
 (map :n :<leader>ott
      #(do
-        (set vim.g.tth true)
+        (set vim.g.tth false)
         (vim.cmd (.. "silent !~/.config/tmux/tmux_toggle '" (get_file_cwd)
                      "' t"))) {:silent true} "Open bottom terminal")
 
 (map :n :<leader>otf
      #(do
-        (set vim.g.tth false)
+        (set vim.g.tth true)
         (vim.cmd (.. "silent !~/.config/tmux/tmux_toggle '" (get_file_cwd)
                      "' f"))) {:silent true} "Open floating terminal")
 
 (map :n :<c-space>
      #(if vim.g.tth
           (vim.cmd (.. "silent !~/.config/tmux/tmux_toggle '" (get_file_cwd)
-                       "' t"))
+                       "' f"))
           (vim.cmd (.. "silent !~/.config/tmux/tmux_toggle '" (get_file_cwd)
-                       "' f"))) {:silent true}
+                       "' t"))) {:silent true}
      "Toggle bottom or float terminal")
 
 ;(map :n :<leader>gg
