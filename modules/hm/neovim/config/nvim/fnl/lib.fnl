@@ -17,7 +17,7 @@
 
 (lambda path_join [...]
   "Join path"
-  (table.concat (vim.tbl_flatten [...]) "/"))
+  (table.concat (: (: (vim.iter [...]) :flatten) :totable) "/"))
 
 (lambda set! [scope key val act]
   "Set option:
@@ -31,7 +31,7 @@
 
 (lambda cmd! [...]
   "Execute command"
-  (vim.cmd (table.concat (vim.tbl_flatten [...]) "\n")))
+  (vim.cmd (table.concat (: (: (vim.iter [...]) :flatten) :totable) "\n")))
 
 (lambda exists? [name]
   "Check if variable exists"

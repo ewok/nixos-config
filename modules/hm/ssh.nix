@@ -16,20 +16,27 @@ in
   config = mkIf cfg.enable {
     programs.ssh = {
       enable = true;
-      compression = true;
-      serverAliveInterval = 10;
-      serverAliveCountMax = 3;
-      userKnownHostsFile = "/dev/null";
-      # controlMaster = "auto";
-      # controlPath = "/tmp/ssh_mux_%h_%p_%r";
-      # controlPersist = "1h";
+      enableDefaultConfig = false;
       extraOptionOverrides = {
         "StrictHostKeyChecking" = "no";
         "PubkeyAcceptedKeyTypes" = "+ssh-rsa";
         "HostKeyAlgorithms" = "+ssh-rsa";
       };
 
-      matchBlocks = builtins.fromJSON cfg.config;
+      matchBlocks = (builtins.fromJSON cfg.config) // {
+        "*" = {
+          forwardAgent = false;
+          serverAliveInterval = 10;
+          serverAliveCountMax = 3;
+          compression = true;
+          addKeysToAgent = "no";
+          hashKnownHosts = false;
+          userKnownHostsFile = "/dev/null";
+          controlMaster = "auto";
+          controlPath = "/tmp/ssh_mux_%h_%p_%r";
+          controlPersist = "1h";
+        };
+      };
     };
 
     # programs.mosh.enable = true;
