@@ -42,7 +42,8 @@ alt("r", { "space --rotate 90" })
 altShift("f", { "window --toggle float", "window --grid 4:4:1:1:2:2" })
 
 -- special characters
-alt("s", { "space --layout stack" })
+-- alt("s", { "space --layout stack" })
+alt("s", { "space --layout float" })
 alt("e", { "space --layout bsp" })
 
 alt("q", { "window --toggle split" })
