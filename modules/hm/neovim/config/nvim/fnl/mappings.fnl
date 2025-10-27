@@ -12,7 +12,7 @@
 
 ;; Open current cwd note page
 (fn open_mind [] ; git remote get-url origin 2>/dev/null | sed 's/^.*://;s/.git$//'
-  (vim.cmd (.. "e " conf.notes_dir :/mind/
+  (vim.cmd (.. "e " conf.notes_dir :/projects/mind/
                (let [git# (io.popen "git remote get-url origin 2>/dev/null | sed 's/^.*://;s/.git$//'")
                      git (git#:read :*a)]
                  (if (= git "")
