@@ -32,7 +32,7 @@ let
     if command -v flatpak > /dev/null && flatpak list | grep -q "org.wezfurlong.wezterm"; then
       WEZTERM_CMD="flatpak run org.wezfurlong.wezterm"
     else
-      WEZTERM_CMD="wezterm"
+      WEZTERM_CMD="/usr/bin/wezterm"
     fi
     $WEZTERM_CMD "$@"
   '';
