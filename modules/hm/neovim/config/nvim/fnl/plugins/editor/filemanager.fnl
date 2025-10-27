@@ -1,16 +1,41 @@
-(local {: pack : map : reg_ft} (require :lib))
+(local {: pack : map : reg_ft : umap} (require :lib))
 
 (local conf (require :conf))
 
 [(pack :nvim-neo-tree/neo-tree.nvim
        {:enabled conf.packages.neotree
         :branch :v3.x
-        :cmd :Neotree
+        :cmd :Neotreefilee
         :init #(map :n ";"
                     "<CMD>Neotree buffers focus dir=/ reveal toggle float<CR>"
                     {:noremap true} "Open buffers")
         :config #(let [ntree (require :neo-tree)
-                       command (require :neo-tree.command)]
+                       command (require :neo-tree.command)
+                       call-filesystem {1 #(do
+                                             (vim.api.nvim_exec "Neotree close"
+                                                                true)
+                                             (vim.api.nvim_exec "Neotree focus filesystem float reveal"
+                                                                true))}
+                       call-close {1 #(vim.api.nvim_exec "Neotree close" true)}
+                       ;; call-gitstatus {1 #(do
+                       ;;                      (vim.api.nvim_exec "Neotree close"
+                       ;;                                         true)
+                       ;;                      (vim.api.nvim_exec "Neotree focus git_status float reveal"
+                       ;;                                         true))}
+                       call-oil {1 (fn [p]
+                                     (let [p-tree p.tree
+                                           p-path (. p-tree._.node_id_by_linenr
+                                                     p.position.lnum)
+                                           p-type (. (. p-tree.nodes.by_id
+                                                        p-path)
+                                                     :type)]
+                                       (vim.api.nvim_exec (.. "Oil "
+                                                              (if (= p-type
+                                                                     :directory)
+                                                                  p-path
+                                                                  (vim.fn.fnamemodify p-path
+                                                                                      ":h")))
+                                                          true)))}]
                    (ntree.setup {:close_if_last_window true
                                  :popup_border_style :rounded
                                  :enable_git_status true
@@ -36,7 +61,7 @@
                                                      :<C-s> :open_split
                                                      :<C-v> :open_vsplit
                                                      :<C-t> :open_tabnew
-                                                     :<cr> :open_drop
+                                                     :<cr> :open
                                                      :h :close_node
                                                      :zc :close_all_nodes
                                                      :zo :expand_all_nodes
@@ -94,68 +119,105 @@
                                               :group_empty_dirs true
                                               :hijack_netrw_behavior :open_default
                                               :use_libuv_file_watcher false
-                                              :window {:mappings {";" {1 #(vim.api.nvim_exec "Neotree close"
-                                                                                             true)}}}}
-                                 ; :git_status {:window {:mappings {";" {1 #(do
-                                 ;                                           (vim.api.nvim_exec "Neotree close"
-                                 ;                                                              true)
-                                 ;                                           (vim.api.nvim_exec "Neotree focus buffers left reveal dir=/"
-                                 ;                                                              true))}
-                                 ;                                 :u :noop}}}
+                                              :window {:mappings {";" call-close
+                                                                  :ga :git_add_file
+                                                                  :gs :git_add_file
+                                                                  :gu :git_unstage_file
+                                                                  :b :noop
+                                                                  :i call-oil}}}
+                                 ; :git_status {:window {:mappings {";" call-close
+                                 ;                                  :s :git_add_file
+                                 ;                                  :u :git_unstage_file
+                                 ;                                  :b :noop
+                                 ;                                  :gg :noop
+                                 ;                                  :gp :noop
+                                 ;                                  :gu :noop
+                                 ;                                  :gU :noop
+                                 ;                                  :gc :noop
+                                 ;                                  :gr :noop
+                                 ;                                  :sc :noop
+                                 ;                                  :sd :noop
+                                 ;                                  :sg :noop
+                                 ;                                  :sm :noop
+                                 ;                                  :sn :noop
+                                 ;                                  :ss :noop
+                                 ;                                  :st :noop}}}
                                  :buffers {:bind_to_cwd false
                                            :follow_current_file {:enabled true
                                                                  :leave_dirs_open false}
                                            :group_empty_dirs true
                                            :show_unloaded true
-                                           :window {:mappings {";" {1 #(do
-                                                                         (vim.api.nvim_exec "Neotree close"
-                                                                                            true)
-                                                                         (vim.api.nvim_exec "Neotree focus filesystem float reveal"
-                                                                                            true))}
-                                                               :u :noop
+                                           :window {:mappings {";" call-filesystem
+                                                               :ga :git_add_file
+                                                               :gs :git_add_file
+                                                               :gu :git_unstage_file
                                                                :bd :noop
+                                                               :i call-oil
                                                                :d :buffer_delete}}}}))})
  (pack :stevearc/oil.nvim
        {:enabled conf.packages.oil
         :cmd :Oil
         :dependencies [(pack :refractalize/oil-git-status.nvim)]
+        ; :init (map :n ";" :<CMD>Oil<CR> {:noremap true} "Open Oil")
         :config #(let [oil (require :oil)
                        oil-git (require :oil-git-status)]
                    (reg_ft :oil
                            (fn [ev]
-                             (map :n :<C-T>
+                             (map :n :<C-t>
                                   #(do
                                      (vim.cmd "tab split")
                                      (oil.select))
                                   {:buffer ev.buf} "Open in Tab")
-                             (map [:n :x] :H :<left> {:buffer ev.buf})
-                             (map [:n :x] :L :<right> {:buffer ev.buf})
-                             (map [:n :x] :J :<down> {:buffer ev.buf})
-                             (map [:n :x] :K :<up> {:buffer ev.buf})
-                             (map :n "=" :<cmd>w<cr> {:buffer ev.buf})))
-                   (oil.setup {:default_file_explorer true
+                             ;; (map [:n :x] :L :<right> {:buffer ev.buf})
+                             ;; (map [:n :x] :H :<left> {:buffer ev.buf})
+                             ;; (map [:n :x] :<C-j> :<down> {:buffer ev.buf})
+                             ;; (map [:n :x] :<C-k> :<up> {:buffer ev.buf})
+                             ;; (map [:n :x] :gi
+                             ;;      #(do
+                             ;;         (each [_ x (ipairs [:l
+                             ;;                             :h
+                             ;;                             :u
+                             ;;                             :<C-t>
+                             ;;                             :<C-V>
+                             ;;                             :<C-S>
+                             ;;                             :<C-p>])]
+                             ;;           (umap [:n] x {:buffer ev.buf}))
+                             ;;         (vim.notify "Editing is on" :INFO
+                             ;;                     {:title :Oil}))
+                             ;;      {:buffer ev.buf})
+                             (map :n :w :<cmd>w<cr> {:buffer ev.buf})))
+                   (oil.setup {:float {:padding 2
+                                       :max_width 0.5
+                                       :max_height 0.8
+                                       :border :rounded
+                                       :win_options {:winblend 0}
+                                       :get_win_title nil
+                                       :preview_split :auto}
+                               :default_file_explorer true
                                :columns [:icon]
                                :skip_confirm_for_simple_edits false
                                :prompt_save_on_select_new_entry true
                                :cleanup_delay_ms 2000
                                :win_options {:signcolumn "yes:2"}
-                               :delete_to_trash true
+                               :delete_to_trash false
                                :use_default_keymaps false
                                :view_options {:show_hidden true}
                                :keymaps {:g? :actions.show_help
                                          :<CR> :actions.select
-                                         :l :actions.select
-                                         :<C-V> :actions.select_vsplit
-                                         :<C-S> :actions.select_split
+                                         ; :l :actions.select
+                                         :<C-v> :actions.select_vsplit
+                                         :<C-s> :actions.select_split
                                          :<C-p> :actions.preview
+                                         ; :h :actions.parent
+                                         ; :u :actions.parent
                                          :q :actions.close
+                                         ; :<Esc> :actions.close
+                                         ; ";" :actions.close
                                          :R :actions.refresh
-                                         :h :actions.parent
                                          "@" :actions.open_cwd
-                                         :cd :actions.cd
-                                         :cD :actions.tcd
+                                         :. :actions.cd
                                          :gs :actions.change_sort
                                          :gx :actions.open_external
-                                         :g. :actions.toggle_hidden
+                                         ; :H :actions.toggle_hidden
                                          "g\\" :actions.toggle_trash}})
                    (oil-git.setup {}))})]

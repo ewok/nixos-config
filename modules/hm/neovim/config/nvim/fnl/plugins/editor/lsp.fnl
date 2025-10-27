@@ -1,133 +1,6 @@
 (local {: pack : map : lsps : umap : open-file} (require :lib))
 (local conf (require :conf))
 
-(map :n :<leader>li :<cmd>LspInfo<CR> {:noremap true} :Info)
-(map :n :<leader>ls :<cmd>LspStart<CR> {:noremap true} :Start)
-(map :n :<leader>lS :<cmd>LspStop<CR> {:noremap true} :Stop)
-(map :n :<leader>lr :<cmd>LspRestart<CR> {:noremap true} :Restart)
-
-(map :n :<leader>ll :<cmd>LspLog<CR> {:noremap true} :Log)
-; (each [_ x (ipairs [:gra :grn :gri :grr])]
-;   (umap :n x {}))
-
-(tset vim.lsp.handlers :textDocument/hover
-      (vim.lsp.with vim.lsp.handlers.hover
-        {:border :rounded}))
-
-(tset vim.lsp.handlers :textDocument/signatureHelp
-      (vim.lsp.with vim.lsp.handlers.signature_help
-        {:border :rounded}))
-
-(vim.api.nvim_create_autocmd :LspAttach
-                             {:desc "LSP navic"
-                              :callback (fn [event]
-                                          (let [client (let [id (vim.tbl_get event
-                                                                             :data
-                                                                             :client_id)]
-                                                         (and id
-                                                              (vim.lsp.get_client_by_id id)))
-                                                bufnr event.buf]
-                                            (when client
-                                              (do
-                                                (map :n :<leader>cdw
-                                                     "<cmd>lua vim.diagnostic.setqflist()<cr>"
-                                                     {:buffer bufnr
-                                                      :noremap true}
-                                                     "[lsp] Code workspace diagnostics")
-                                                (map :n :<leader>cdd
-                                                     "<cmd>lua vim.diagnostic.setloclist()<cr>"
-                                                     {:buffer bufnr
-                                                      :noremap true}
-                                                     "[lsp] Code document diagnostics")
-                                                (map :n :K
-                                                     "<cmd>lua vim.lsp.buf.hover()<cr>"
-                                                     {:buffer bufnr
-                                                      :noremap true}
-                                                     "[lsp] Hover documentation")
-                                                (map :n :gd
-                                                     "<cmd>lua require('goto-preview').goto_preview_definition()<cr>"
-                                                     ; "<CMD>Glance definitions<CR>"
-                                                     ; "<cmd>vsplit | lua vim.lsp.buf.definition()<cr>"
-                                                     {:buffer bufnr
-                                                      :noremap true}
-                                                     "[lsp] Go to definition")
-                                                (map :n :gD
-                                                     "<cmd>lua require('goto-preview').goto_preview_declaration()<cr>"
-                                                     ; "<cmd>vsplit | lua vim.lsp.buf.declaration()<cr>"
-                                                     {:buffer bufnr
-                                                      :noremap true}
-                                                     "[lsp] Go to declaration")
-                                                (map :n :gi
-                                                     "<cmd>lua require('goto-preview').goto_preview_implementation()<cr>"
-                                                     ; "<CMD>Glance implementations<CR>"
-                                                     ; "<cmd>vsplit | lua vim.lsp.buf.implementation()<cr>"
-                                                     {:buffer bufnr
-                                                      :noremap true}
-                                                     "[lsp] Go to implementation")
-                                                (map :n :go
-                                                     "<cmd>lua require('goto-preview').goto_preview_type_definition()<cr>"
-                                                     ; "<CMD>Glance type_definitions<CR>"
-                                                     ; "<cmd>lua vim.lsp.buf.type_definition()<cr>"
-                                                     {:buffer bufnr
-                                                      :noremap true}
-                                                     "[lsp] Go to type definition")
-                                                (map :n :gr
-                                                     "<cmd>lua require('goto-preview').goto_preview_references()<cr>"
-                                                     ; "<CMD>Glance references<CR>"
-                                                     ; "<cmd>lua vim.lsp.buf.references()<cr>"
-                                                     {:buffer bufnr
-                                                      :noremap true}
-                                                     "[lsp] Go to reference")
-                                                (map :n :gP
-                                                     "<cmd>lua require('goto-preview').close_all_win()<cr>"
-                                                     {:buffer bufnr
-                                                      :noremap true}
-                                                     "[lsp] Close all float preview")
-                                                (map :n :<leader>cn
-                                                     "<cmd>lua vim.lsp.buf.rename()<cr>"
-                                                     {:buffer bufnr
-                                                      :noremap true}
-                                                     "[lsp] Rename symbol")
-                                                (map :n :<leader>ca
-                                                     "<cmd>lua vim.lsp.buf.code_action()<cr>"
-                                                     {:buffer bufnr
-                                                      :noremap true}
-                                                     "[lsp] Execute code action")
-                                                (map :n :gl
-                                                     "<cmd>lua vim.diagnostic.open_float()<cr>"
-                                                     {:buffer bufnr
-                                                      :noremap true}
-                                                     "[lsp] Show diagnostic")
-                                                (map :n "[d"
-                                                     "<cmd>lua vim.diagnostic.goto_prev()<cr>"
-                                                     {:buffer bufnr
-                                                      :noremap true}
-                                                     "[lsp] Prev diagnostic")
-                                                (map :n "]d"
-                                                     "<cmd>lua vim.diagnostic.goto_next()<cr>"
-                                                     {:buffer bufnr
-                                                      :noremap true}
-                                                     "[lsp] Next diagnostic")
-                                                (when client.server_capabilities.signatureHelpProvider
-                                                  (map :i :<C-S>
-                                                       #(vim.lsp.buf.signature_help)
-                                                       {:buffer bufnr
-                                                        :noremap true}
-                                                       "[lsp] Show signature"))
-                                                (if vim.lsp.buf.range_code_action
-                                                    (map :x :<leader>ca
-                                                         "<cmd>lua vim.lsp.buf.range_code_action()<cr>"
-                                                         {:buffer bufnr
-                                                          :noremap true}
-                                                         "[lsp] Execute code action")
-                                                    (map :x :<leader>ca
-                                                         "<cmd>lua vim.lsp.buf.code_action()<cr>"
-                                                         {:buffer bufnr
-                                                          :noremap true}
-                                                         "[lsp] Execute code action"))
-                                                (vim.diagnostic.config {:virtual_text true})))))})
-
-; https://github.com/neovim/nvim-lspconfig/blob/master/doc/server_configurations.md
 [(pack :kosayoda/nvim-lightbulb
        {:event [:BufReadPost :BufNewFile]
         :config #(let [bulb (require :nvim-lightbulb)]
@@ -200,36 +73,6 @@
                                                                     :<C-t>
                                                                     :q])]
                                                   (umap [:n] x {:buffer $1}))}))})
- ; (pack :neovim/nvim-lspconfig
- ;       {:event [:BufReadPre :BufNewFile]
- ;        :config #(let [lsp (require :lspconfig)]
- ;                   (each [lsp-name settings (pairs lsps)]
- ;                     (let [server (. lsp lsp-name)]
- ;                       (print lsp-name)
- ;                       (vim.lsp.config lsp-name settings)
- ;                       (vim.lsp.enable lsp-name))))})
- (pack :VonHeikemen/lsp-zero.nvim
-       {:branch :v4.x
-        :event [:BufReadPre :BufNewFile]
-        :dependencies [; :ray-x/lsp_signature.nvim
-                       ; {1 :SmiteshP/nvim-navic
-                       ;  :config #((-> (require :nvim-navic)
-                       ;                (. :setup)) {:highlight true})}
-                       ]
-        :config #(let [icons conf.icons.diagnostic
-                       lsp_zero (require :lsp-zero)
-                       lsp (require :lspconfig) ; sig (require :lsp_signature)
-                       blink (require :blink.cmp)]
-                   (lsp_zero.set_sign_icons {:error icons.Error
-                                             :warn icons.Warn
-                                             :hint icons.Hint
-                                             :info icons.Info})
-                   (each [lsp-name settings (pairs lsps)]
-                     (let [server (. lsp lsp-name)]
-                       (set settings.handlers [lsp_zero.default_setup])
-                       (set settings.capabilities
-                            (blink.get_lsp_capabilities settings.capabilities))
-                       (server.setup settings))))})
  (pack :nvimtools/none-ls.nvim
        {:config #(let [nl (require :null-ls)]
                    (nl.setup))
@@ -266,4 +109,148 @@
                                                                   false)))))
                                           : bufnr}))
                 :mode [:n :v]
-                :desc "[null] Format file or range"}]})]
+                :desc "[null] Format file or range"}]})
+ (pack :neovim/nvim-lspconfig
+       {:event [:BufReadPre :BufNewFile]
+        :init #(do
+                 (map :n :<leader>li :<cmd>LspInfo<CR> {:noremap true} :Info)
+                 (map :n :<leader>ls :<cmd>LspStart<CR> {:noremap true} :Start)
+                 (map :n :<leader>lS :<cmd>LspStop<CR> {:noremap true} :Stop)
+                 (map :n :<leader>lr :<cmd>LspRestart<CR> {:noremap true}
+                      :Restart)
+                 (map :n :<leader>ll :<cmd>LspLog<CR> {:noremap true} :Log)
+                 ;; (each [_ x (ipairs [:gra :grn :gri :grr])]
+                 ;;   (umap :n x {}))
+                 ;; FIX: does not work
+                 )
+        :cmd [:LspInfo :LspStart :LspStop :LspRestart :LspLog]
+        :config #(let [blink (require :blink.cmp)]
+                   (tset vim.lsp.handlers :textDocument/hover
+                         (vim.lsp.with vim.lsp.handlers.hover
+                           {:border :rounded}))
+                   (tset vim.lsp.handlers :textDocument/signatureHelp
+                         (vim.lsp.with vim.lsp.handlers.signature_help
+                           {:border :rounded}))
+                   (each [typ icon (pairs (. conf.icons :diagnostic))]
+                     (let [hl (.. :DiagnosticSign typ)]
+                       (vim.fn.sign_define hl {:text icon :texthl hl :numhl hl})))
+                   (vim.api.nvim_create_autocmd :LspAttach
+                                                {:desc "LSP navic"
+                                                 :callback (fn [event]
+                                                             (let [client (let [id (vim.tbl_get event
+                                                                                                :data
+                                                                                                :client_id)]
+                                                                            (and id
+                                                                                 (vim.lsp.get_client_by_id id)))
+                                                                   bufnr event.buf]
+                                                               (when client
+                                                                 (do
+                                                                   (map :n
+                                                                        :<leader>cdw
+                                                                        "<cmd>lua vim.diagnostic.setqflist()<cr>"
+                                                                        {:buffer bufnr
+                                                                         :noremap true}
+                                                                        "[lsp] Code workspace diagnostics")
+                                                                   (map :n
+                                                                        :<leader>cdd
+                                                                        "<cmd>lua vim.diagnostic.setloclist()<cr>"
+                                                                        {:buffer bufnr
+                                                                         :noremap true}
+                                                                        "[lsp] Code document diagnostics")
+                                                                   (map :n :K
+                                                                        "<cmd>lua vim.lsp.buf.hover()<cr>"
+                                                                        {:buffer bufnr
+                                                                         :noremap true}
+                                                                        "[lsp] Hover documentation")
+                                                                   (map :n :gd
+                                                                        "<cmd>lua require('goto-preview').goto_preview_definition()<cr>"
+                                                                        ; "<CMD>Glance definitions<CR>"
+                                                                        ; "<cmd>vsplit | lua vim.lsp.buf.definition()<cr>"
+                                                                        {:buffer bufnr
+                                                                         :noremap true}
+                                                                        "[lsp] Go to definition")
+                                                                   (map :n :gD
+                                                                        "<cmd>lua require('goto-preview').goto_preview_declaration()<cr>"
+                                                                        ; "<cmd>vsplit | lua vim.lsp.buf.declaration()<cr>"
+                                                                        {:buffer bufnr
+                                                                         :noremap true}
+                                                                        "[lsp] Go to declaration")
+                                                                   (map :n :gi
+                                                                        "<cmd>lua require('goto-preview').goto_preview_implementation()<cr>"
+                                                                        ; "<CMD>Glance implementations<CR>"
+                                                                        ; "<cmd>vsplit | lua vim.lsp.buf.implementation()<cr>"
+                                                                        {:buffer bufnr
+                                                                         :noremap true}
+                                                                        "[lsp] Go to implementation")
+                                                                   (map :n :go
+                                                                        "<cmd>lua require('goto-preview').goto_preview_type_definition()<cr>"
+                                                                        ; "<CMD>Glance type_definitions<CR>"
+                                                                        ; "<cmd>lua vim.lsp.buf.type_definition()<cr>"
+                                                                        {:buffer bufnr
+                                                                         :noremap true}
+                                                                        "[lsp] Go to type definition")
+                                                                   (map :n :gr
+                                                                        "<cmd>lua require('goto-preview').goto_preview_references()<cr>"
+                                                                        ; "<CMD>Glance references<CR>"
+                                                                        ; "<cmd>lua vim.lsp.buf.references()<cr>"
+                                                                        {:buffer bufnr
+                                                                         :noremap true}
+                                                                        "[lsp] Go to reference")
+                                                                   (map :n :gP
+                                                                        "<cmd>lua require('goto-preview').close_all_win()<cr>"
+                                                                        {:buffer bufnr
+                                                                         :noremap true}
+                                                                        "[lsp] Close all float preview")
+                                                                   (map :n
+                                                                        :<leader>cn
+                                                                        "<cmd>lua vim.lsp.buf.rename()<cr>"
+                                                                        {:buffer bufnr
+                                                                         :noremap true}
+                                                                        "[lsp] Rename symbol")
+                                                                   (map :n
+                                                                        :<leader>ca
+                                                                        "<cmd>lua vim.lsp.buf.code_action()<cr>"
+                                                                        {:buffer bufnr
+                                                                         :noremap true}
+                                                                        "[lsp] Execute code action")
+                                                                   (map :n :gl
+                                                                        "<cmd>lua vim.diagnostic.open_float()<cr>"
+                                                                        {:buffer bufnr
+                                                                         :noremap true}
+                                                                        "[lsp] Show diagnostic")
+                                                                   (map :n "[d"
+                                                                        "<cmd>lua vim.diagnostic.goto_prev()<cr>"
+                                                                        {:buffer bufnr
+                                                                         :noremap true}
+                                                                        "[lsp] Prev diagnostic")
+                                                                   (map :n "]d"
+                                                                        "<cmd>lua vim.diagnostic.goto_next()<cr>"
+                                                                        {:buffer bufnr
+                                                                         :noremap true}
+                                                                        "[lsp] Next diagnostic")
+                                                                   (when client.server_capabilities.signatureHelpProvider
+                                                                     (map :i
+                                                                          :<C-S>
+                                                                          #(vim.lsp.buf.signature_help)
+                                                                          {:buffer bufnr
+                                                                           :noremap true}
+                                                                          "[lsp] Show signature"))
+                                                                   (if vim.lsp.buf.range_code_action
+                                                                       (map :x
+                                                                            :<leader>ca
+                                                                            "<cmd>lua vim.lsp.buf.range_code_action()<cr>"
+                                                                            {:buffer bufnr
+                                                                             :noremap true}
+                                                                            "[lsp] Execute code action")
+                                                                       (map :x
+                                                                            :<leader>ca
+                                                                            "<cmd>lua vim.lsp.buf.code_action()<cr>"
+                                                                            {:buffer bufnr
+                                                                             :noremap true}
+                                                                            "[lsp] Execute code action"))
+                                                                   (vim.diagnostic.config {:virtual_text true})))))})
+                   (each [lsp-name settings (pairs lsps)]
+                     (set settings.capabilities
+                          (blink.get_lsp_capabilities settings.capabilities))
+                     (vim.lsp.enable lsp-name)
+                     (vim.lsp.config lsp-name settings)))})]

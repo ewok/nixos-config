@@ -1,15 +1,17 @@
 (local lib (require :lib))
-(local util (require :lspconfig.util))
 
 (lib.reg_lsp :terraformls
-             {:root_dir (util.root_pattern [:.terraform
-                                            :.terraform.lock.hcl
-                                            :tfstate.tf
-                                            :versions.tf
-                                            :provider.tf]
-                                           :.git)})
+             {:root_markers [:.terraform
+                             :.terraform.lock.hcl
+                             :tfstate.tf
+                             :versions.tf
+                             :provider.tf]})
 
-(lib.reg_lsp :tflint {})
+(lib.reg_lsp :tflint {:root_markers [:.terraform
+                                     :.terraform.lock.hcl
+                                     :tfstate.tf
+                                     :versions.tf
+                                     :provider.tf]})
 
 (lib.reg_ft_once :terraform
                  #(let [null-ls (require :null-ls)]
