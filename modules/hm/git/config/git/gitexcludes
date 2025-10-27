@@ -9,6 +9,8 @@ shell.nix
 devenv.nix
 devenv.lock
 devenv.yaml
+.devenv/
+.devenv.flake.nix
 .lsp
 .clj-kondo
 .tool-versions

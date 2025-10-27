@@ -219,7 +219,7 @@
                 # RPI
                   if [ "$2" == "lgo" ] || [ "$2" == "rpi" ]; then
                     if curl --silent $SUBS_CHECK > /dev/null; then
-                        CMD="nix $SUBS_CMD run home-manager -- -b backup $CMD"
+                        CMD="nix run home-manager -- -b backup $SUBS_CMD $CMD"
                     else
                         CMD="nix run home-manager -- -b backup $CMD"
                     fi
@@ -237,7 +237,7 @@
                 # mac
                   elif [ "$2" == "mac" ]; then
                     if curl --silent $SUBS_CHECK > /dev/null; then
-                      CMD="sudo nix $SUBS_CMD run nix-darwin -- $CMD"
+                      CMD="sudo nix run nix-darwin -- $SUBS_CMD $CMD"
                     else
                       CMD="sudo nix run nix-darwin -- $CMD"
                     fi
