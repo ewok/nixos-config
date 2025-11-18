@@ -52,14 +52,14 @@ in
       let
         external = with pkgs; [
           git
-          gitAndTools.git-crypt
-          gitAndTools.git-extras
-          gitAndTools.git-filter-repo
-          gitAndTools.git-trim
+          git-crypt
+          git-extras
+          git-filter-repo
+          git-trim
           # gitAndTools.git-machete
           # gitAndTools.git-octopus
-          gitAndTools.git-reparent
-          gitAndTools.git-lfs
+          git-reparent
+          git-lfs
           gh
         ];
       in
