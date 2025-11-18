@@ -10,7 +10,7 @@ set $right l
 
 set $term {{ conf.terminal }}
 
-set $rofi_cmd rofi \
+set $rofi_cmd  exec env PATH=$PATH:$HOME/bin rofi \
         -terminal '$term'
 
 set $menu $rofi_cmd -show combi -combi-modes drun#run -modes combi
