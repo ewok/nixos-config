@@ -55,7 +55,7 @@ in
             orb = true;
             openai_token = openai_token;
           };
-          vifm.enable = true;
+          yazi.enable = true;
           shell = {
             enable = true;
             homeDirectory = homeDirectory;
