@@ -44,33 +44,33 @@ let
     conf.orb = cfg.orb;
   };
 
-  packs =
-    let
-      pname = "sesh";
-      version = "2";
-      hash = "sha256-EKIekXABLnCAPMJNRPTdPXeWI5KK0HStyPT/OK7U8R8=";
-    in
-    {
-      sesh-v2 = buildGoModule
-        {
-          inherit pname version hash;
-
-          src = fetchFromGitHub {
-            owner = "joshmedeski";
-            repo = "sesh";
-            rev = "v${version}";
-            hash = hash;
-          };
-
-          vendorHash = "sha256-a45P6yt93l0CnL5mrOotQmE/1r0unjoToXqSJ+spimg=";
-
-          ldflags = [ "-s" "-w" ];
-
-          overrideModAttrs = (_: {
-            TZ = "CDT";
-          });
-        };
-    };
+  # packs =
+  #   let
+  #     pname = "sesh";
+  #     version = "2";
+  #     hash = "sha256-EKIekXABLnCAPMJNRPTdPXeWI5KK0HStyPT/OK7U8R8=";
+  #   in
+  #   {
+  #     sesh-v2 = buildGoModule
+  #       {
+  #         inherit pname version hash;
+  #
+  #         src = fetchFromGitHub {
+  #           owner = "joshmedeski";
+  #           repo = "sesh";
+  #           rev = "v${version}";
+  #           hash = hash;
+  #         };
+  #
+  #         vendorHash = "sha256-a45P6yt93l0CnL5mrOotQmE/1r0unjoToXqSJ+spimg=";
+  #
+  #         ldflags = [ "-s" "-w" ];
+  #
+  #         overrideModAttrs = (_: {
+  #           TZ = "CDT";
+  #         });
+  #       };
+  #   };
 
 in
 {
@@ -122,6 +122,11 @@ in
     xdg.configFile."tmux/sesh" = {
       source = utils.templateFile "sesh" ./config/sesh.sh vars;
       executable = true;
+    };
+    xdg.configFile."sesh/sesh.toml" = {
+      text = ''
+        dir_length = 2
+      '';
     };
   };
 }
