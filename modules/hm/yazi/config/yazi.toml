@@ -1,0 +1,4 @@
+[mgr]
+show_hidden = true
+sort_sensitive = true
+# linemode = "full"
