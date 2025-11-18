@@ -1,0 +1,5 @@
+#!/usr/bin/env bash
+
+export MANGOHUD_CONFIG="battery,battery_time,fps_value,ram,vram,swap,battery_watt,horizontal,fsr"
+
+gamemoderun gamescope --mangoapp -W 1920 -H 1080 -w 1920 -h 1080 -f -r 60 --force-grab-cursor -F fsr -- $@
