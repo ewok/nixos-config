@@ -5,7 +5,7 @@
 [(pack :nvim-neo-tree/neo-tree.nvim
        {:enabled conf.packages.neotree
         :branch :v3.x
-        :cmd :Neotreefilee
+        :cmd :Neotree
         :init #(map :n ";"
                     "<CMD>Neotree buffers focus dir=/ reveal toggle float<CR>"
                     {:noremap true} "Open buffers")

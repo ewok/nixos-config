@@ -1,7 +1,9 @@
 (local {: pack : map} (require :lib))
 (local conf (require :conf))
 
-[:debugloop/telescope-undo.nvim
+[(pack :jiaoshijie/undotree
+       {:init #(map :n :<leader>u "<cmd>lua require('undotree').toggle()<cr>"
+                    {:silent true} "Toggle Undo Tree")})
  (pack :nvim-telescope/telescope-fzf-native.nvim {:build :make})
  (pack :folke/todo-comments.nvim
        {:keys [{1 :<leader>fd
@@ -60,12 +62,9 @@
                  (map :n :<leader>fj "<cmd>Telescope jumplist<CR>"
                       {:silent true} "Find jumps")
                  (map :n :<leader>fM "<cmd>Telescope man_pages<CR>"
-                      {:silent true} "Find man pages")
-                 (map :n :<leader>u "<cmd>Telescope undo<CR>" {:silent true}
-                      "Open Undo History"))
+                      {:silent true} "Find man pages"))
         :config #(let [ts (require :telescope)
-                       act (require :telescope.actions)
-                       tsu (require :telescope-undo.actions)]
+                       act (require :telescope.actions)]
                    (ts.setup {:defaults {:vimgrep_arguments [:rg
                                                              :--color=never
                                                              :--no-heading
@@ -121,12 +120,5 @@
                               :extensions {:fzf {:fuzzy true
                                                  :override_generic_sorter true
                                                  :override_file_sorter true
-                                                 :case_mode :smart_case}
-                                           :undo {:initial_mode :normal
-                                                  :mappings {:n {:y tsu.yank_additions
-                                                                 :Y tsu.yank_deletions
-                                                                 :d tsu.yank_deletions
-                                                                 :<c-r> tsu.restore
-                                                                 :<cr> tsu.yank_additions}}}}})
-                   (ts.load_extension :fzf)
-                   (ts.load_extension :undo))})]
+                                                 :case_mode :smart_case}}})
+                   (ts.load_extension :fzf))})]

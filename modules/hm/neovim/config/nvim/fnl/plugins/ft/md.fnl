@@ -115,7 +115,7 @@
                              :default_tags [:dailyNote]
                              :template :diary}
                :wiki_link_func :use_alias_only
-               :disable_frontmatter true
+               :frontamatter {:enabled false}
                :note_id_func #(.. $1)
                :completion {:nvim_cmp true :blink true :min_chars 1}
                :templates {:folder :hidden/templates}
@@ -141,32 +141,33 @@
                                   :w
                                   :u
                                   :d]}
-               :ui {:enable false
-                    :checkboxes {" " {:char " " :hl_group :ObsidianTodo}
-                                 :x {:char "󰄳 " :hl_group :ObsidianDone}
-                                 :/ {:char "󱎖 "
-                                     :hl_group :ObsidianImportant}
-                                 :- {:char " " :hl_group :ObsidianDone}
-                                 :> {:char " "
-                                     :hl_group :ObsidianRightArrow}
-                                 :< {:char " "
-                                     :hl_group :ObsidianRightArrow}
-                                 :? {:char " " :hl_group :ObsidianTodo}
-                                 :! {:char " " :hl_group :ObsidianTodo}
-                                 :* {:char " " :hl_group :ObsidianTodo}
-                                 "\"" {:char " " :hl_group :ObsidianTodo}
-                                 :l {:char " " :hl_group :ObsidianTodo}
-                                 :b {:char " " :hl_group :ObsidianTodo}
-                                 :i {:char "󱩎 " :hl_group :ObsidianTodo}
-                                 :S {:char " " :hl_group :ObsidianTodo}
-                                 :i {:char "󱩎 " :hl_group :ObsidianTodo}
-                                 :p {:char "󰔓 " :hl_group :ObsidianTodo}
-                                 :c {:char "󰔑 " :hl_group :ObsidianTodo}
-                                 :f {:char " " :hl_group :ObsidianTodo}
-                                 :k {:char " " :hl_group :ObsidianTodo}
-                                 :w {:char " " :hl_group :ObsidianTodo}
-                                 :u {:char "󰔵 " :hl_group :ObsidianTodo}
-                                 :d {:char "󰔳 " :hl_group :ObsidianTodo}}}}})
+               ; :ui {:enable false
+               ;      :checkboxes {" " {:char " " :hl_group :ObsidianTodo}
+               ;                   :x {:char "󰄳 " :hl_group :ObsidianDone}
+               ;                   :/ {:char "󱎖 "
+               ;                       :hl_group :ObsidianImportant}
+               ;                   :- {:char " " :hl_group :ObsidianDone}
+               ;                   :> {:char " "
+               ;                       :hl_group :ObsidianRightArrow}
+               ;                   :< {:char " "
+               ;                       :hl_group :ObsidianRightArrow}
+               ;                   :? {:char " " :hl_group :ObsidianTodo}
+               ;                   :! {:char " " :hl_group :ObsidianTodo}
+               ;                   :* {:char " " :hl_group :ObsidianTodo}
+               ;                   "\"" {:char " " :hl_group :ObsidianTodo}
+               ;                   :l {:char " " :hl_group :ObsidianTodo}
+               ;                   :b {:char " " :hl_group :ObsidianTodo}
+               ;                   :i {:char "󱩎 " :hl_group :ObsidianTodo}
+               ;                   :S {:char " " :hl_group :ObsidianTodo}
+               ;                   :i {:char "󱩎 " :hl_group :ObsidianTodo}
+               ;                   :p {:char "󰔓 " :hl_group :ObsidianTodo}
+               ;                   :c {:char "󰔑 " :hl_group :ObsidianTodo}
+               ;                   :f {:char " " :hl_group :ObsidianTodo}
+               ;                   :k {:char " " :hl_group :ObsidianTodo}
+               ;                   :w {:char " " :hl_group :ObsidianTodo}
+               ;                   :u {:char "󰔵 " :hl_group :ObsidianTodo}
+               ;                   :d {:char "󰔳 " :hl_group :ObsidianTodo}}}
+               }})
  (pack :mickael-menu/zk-nvim
        {:enabled false
         :cmd [:ZkNew

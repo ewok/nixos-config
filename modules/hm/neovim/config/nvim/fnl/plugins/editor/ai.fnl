@@ -101,19 +101,18 @@ Given the git diff listed below, please generate a commit message for me:
         :cmd :Copilot
         :keys [{1 :<leader>co
                 2 #(do
-                     (set vim.g.copilot_enabled (not vim.g.copilot_enabled))
-                     (if vim.g.copilot_enabled
-                         (do
-                           (vim.cmd "Copilot enable")
-                           (vim.schedule #(vim.cmd "Copilot status")))
-                         (vim.cmd "Copilot disable"))
-                     (vim.notify (string.format "Copilot Enabled %s"
-                                                vim.g.copilot_enabled)
-                                 :INFO {:title :Copilot}))
+                     (vim.cmd "Copilot enable")
+                     (vim.schedule #(vim.cmd "Copilot status"))
+                     (vim.notify "Copilot Enabled" :INFO {:title :Copilot}))
                 :mode :n
-                :desc "Toggle Copilot"}]
+                :desc "Start Copilot"}
+               {1 :<leader>cO
+                2 #(do
+                     (vim.cmd "Copilot disable")
+                     (vim.notify "Copilot Disabled" :INFO {:title :Copilot}))
+                :mode :n
+                :desc "Stop Copilot"}]
         :config #(do
-                   (set vim.g.copilot_loaded true)
-                   (set vim.g.copilot_enabled false))
+                   (set vim.g.copilot_loaded true))
         :init #(do
                  (set vim.g.copilot_no_maps true))})]
