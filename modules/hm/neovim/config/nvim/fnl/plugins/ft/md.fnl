@@ -109,11 +109,10 @@
                 (.. "BufNewFile " conf.notes_dir :/**.md)]
         :opts {:legacy_commands false
                :workspaces [{:name :notes :path "~/Notes"}]
-               :daily_notes {:folder :calendar/daily
+               :daily_notes {:folder :daily
                              :date_format "%Y-%m-%d"
                              :alias_format "%B %-d, %Y"
-                             :default_tags [:dailyNote]
-                             :template :diary}
+                             :template "hidden/templates/__daily"}
                :wiki_link_func :use_alias_only
                :frontamatter {:enabled false}
                :note_id_func #(.. $1)
