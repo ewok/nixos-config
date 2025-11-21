@@ -91,7 +91,7 @@ Given the git diff listed below, please generate a commit message for me:
                              :strategies {:chat {:adapter {:name :openai
                                                            :model :gpt-4o}}
                                           :inline {:adapter {:name :openai
-                                                             :model :gpt-5-mini}}}
+                                                             :model :gpt-4o-mini}}}
                              :extensions {:mcphub {:callback :mcphub.extensions.codecompanion
                                                    :opts {:make_vars true
                                                           :make_slash_commands true

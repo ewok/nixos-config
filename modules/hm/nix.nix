@@ -35,7 +35,7 @@ in
       # cachix use nix-community
       cachix
       nix-index
-      ncps
+      # ncps
       # nix-serve
       devenv
     ];

@@ -18,7 +18,6 @@ in
           enable = true;
           inherit colors theme openai_token;
         };
-        # vifm.enable = true;
         yazi.enable = true;
         shell = {
           enable = true;
