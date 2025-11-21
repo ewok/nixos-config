@@ -1,28 +1,33 @@
 [mgr]
 show_hidden = true
+show_symlink = true
 sort_sensitive = true
-ratio = [1, 2, 5]
+ratio = [1, 3, 4]
 
 [plugin]
 prepend_previewers = [
-  { name = "*.csv", run = "duckdb" },
-  { name = "*.tsv", run = "duckdb" },
-  # { name = "*.json", run = "duckdb" },
-  { name = "*.parquet", run = "duckdb" },
-  # { name = "*.txt", run = "duckdb" },
-  { name = "*.xlsx", run = "duckdb" },
-  { name = "*.db", run = "duckdb" },
-  { name = "*.duckdb", run = "duckdb" },
   # { mime = "image/{jpeg,png,webp}", run  = "zoom 5" }
+{ mime = "{audio,video,image}/*", run = "mediainfo"},
+{ mime = "application/subrip", run = "mediainfo" },
+{ mime = "application/postscript", run = "mediainfo" },
+{ name = "*.tar*", run = 'piper --format=plain -- tar tf "$1"' },
+{ name = "*.tsv", run  = 'piper -- duckdb -box -c "select * from file;" "$1"' },
+{ name = "*.parquet", run  = 'piper -- duckdb -box -c "select * from file;" "$1"' },
+{ name = "*.xlsx", run  = 'piper -- duckdb -box -c "select * from file;" "$1"' },
+{ name = "*.db", run  = 'piper -- duckdb -box -c ".tables" "$1"' },
+{ name = "*.duckdb", run  = 'piper -- duckdb -box -c ".tables" "$1"' },
+{ name = "*.csv", run  = 'piper -- rich-cli -j --left --panel=rounded --guides --line-numbers --force-terminal "$1"' },
+{ name = "*.ipynb", run  = 'piper -- rich-cli -j --left --panel=rounded --guides --line-numbers --force-terminal "$1"' },
+{ name = "*.md", run  = 'piper -- rich-cli -j --left --panel=rounded --guides --line-numbers --force-terminal "$1"' },
+{ name = "*.rst", run  = 'piper -- rich-cli -j --left --panel=rounded --guides --line-numbers --force-terminal "$1"' },
+
+{ name = "*.json", run  = 'piper -- cat "$1" | jq -C' },
 ]
 
 prepend_preloaders = [
-  { name = "*.csv", run = "duckdb", multi = false },
-  { name = "*.tsv", run = "duckdb", multi = false },
-  # { name = "*.json", run = "duckdb", multi = false },
-  { name = "*.parquet", run = "duckdb", multi = false },
-  # { name = "*.txt", run = "duckdb", multi = false },
-  { name = "*.xlsx", run = "duckdb", multi = false }
+{ mime = "{audio,video,image}/*", run = "mediainfo" },
+{ mime = "application/subrip", run = "mediainfo" },
+{ mime = "application/postscript", run = "mediainfo" },
 ]
 
 [[plugin.prepend_fetchers]]
@@ -34,3 +39,6 @@ run  = "git"
 id   = "git"
 name = "*/"
 run  = "git"
+
+[tasks]
+image_alloc      = 1073741824        # = 1024*1024*1024 = 1024MB

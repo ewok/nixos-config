@@ -1,6 +1,15 @@
 {
   description = "ewoks envs";
 
+  nixConfig = {
+    extra-substituters = [
+      "https://yazi.cachix.org"
+    ];
+    extra-trusted-public-keys = [
+      "yazi.cachix.org-1:Dcdz63NZKfvUCbDGngQDAZq6kOroIrFoyO064uvLh8k="
+    ];
+  };
+
   inputs = {
     nixpkgs-unstable.url = "github:NixOS/nixpkgs/nixos-unstable";
 
@@ -24,6 +33,8 @@
     };
     flake-utils.url = "github:numtide/flake-utils";
     # neovim-nightly-overlay.url = "github:nix-community/neovim-nightly-overlay";
+
+    # yazi.url = "github:sxyazi/yazi";
   };
 
   outputs = { self, nixpkgs-unstable, home-manager, nix-on-droid, darwin, flake-utils, ... }@inputs:
@@ -38,6 +49,7 @@
       modulesHm = map (n: ./modules/hm + "/${n}") (builtins.attrNames (builtins.readDir ./modules/hm));
       overlays = [
         # inputs.neovim-nightly-overlay.overlays.default
+        # yazi.overlays.default
         self.overlays.default
       ];
     in
