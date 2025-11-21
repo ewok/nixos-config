@@ -1,4 +1,36 @@
 [mgr]
 show_hidden = true
 sort_sensitive = true
-# linemode = "full"
+ratio = [1, 2, 5]
+
+[plugin]
+prepend_previewers = [
+  { name = "*.csv", run = "duckdb" },
+  { name = "*.tsv", run = "duckdb" },
+  # { name = "*.json", run = "duckdb" },
+  { name = "*.parquet", run = "duckdb" },
+  # { name = "*.txt", run = "duckdb" },
+  { name = "*.xlsx", run = "duckdb" },
+  { name = "*.db", run = "duckdb" },
+  { name = "*.duckdb", run = "duckdb" },
+  # { mime = "image/{jpeg,png,webp}", run  = "zoom 5" }
+]
+
+prepend_preloaders = [
+  { name = "*.csv", run = "duckdb", multi = false },
+  { name = "*.tsv", run = "duckdb", multi = false },
+  # { name = "*.json", run = "duckdb", multi = false },
+  { name = "*.parquet", run = "duckdb", multi = false },
+  # { name = "*.txt", run = "duckdb", multi = false },
+  { name = "*.xlsx", run = "duckdb", multi = false }
+]
+
+[[plugin.prepend_fetchers]]
+id   = "git"
+name = "*"
+run  = "git"
+
+[[plugin.prepend_fetchers]]
+id   = "git"
+name = "*/"
+run  = "git"
