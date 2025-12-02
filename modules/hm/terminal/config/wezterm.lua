@@ -48,6 +48,7 @@ config.font = wezterm.font("FiraCode Nerd Font Propo", {
 config.font_size = 14.6
 config.font_shaper = "Harfbuzz"
 config.freetype_load_target = "Light"
+config.window_decorations = "RESIZE"
 -- config.line_height = 0.9
 -- config.freetype_load_target = "HorizontalLcd"
 -- config.foreground_text_hsb = {
@@ -56,6 +57,7 @@ config.freetype_load_target = "Light"
 --     brightness = 0.9,  -- default is 1.0
 -- }
 -- {{/linux}}
+
 -- {{#linux}}
 -- SteamOs
 config.font = wezterm.font("{{ theme.monospace_font }}", {
@@ -64,6 +66,7 @@ config.font = wezterm.font("{{ theme.monospace_font }}", {
 })
 config.font_size = {{ monospace_font_size }}.0
 config.font_shaper = "Harfbuzz"
+config.window_decorations = "NONE"
 -- config.freetype_load_target = "Light"
 -- config.freetype_load_target = "HorizontalLcd"
 -- config.foreground_text_hsb = {
@@ -76,7 +79,7 @@ config.font_shaper = "Harfbuzz"
 config.enable_tab_bar = false
 config.enable_scroll_bar = false
 config.window_close_confirmation = "NeverPrompt"
-config.window_decorations = "NONE"
 config.warn_about_missing_glyphs = false
+config.max_fps = 120
 
 return config
