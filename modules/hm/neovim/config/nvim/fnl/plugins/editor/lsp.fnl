@@ -39,40 +39,6 @@
                                                                  (when client.server_capabilities.documentSymbolProvider
                                                                    (navic.attach client
                                                                                  event.buf)))))}))})
- (pack :rmagatti/goto-preview
-       {:config #(let [gp (require :goto-preview)
-                       select-to-edit-map {:default :edit
-                                           :horizontal :new
-                                           :vertical :vnew
-                                           :tab :tabedit}]
-                   (fn open-preview [preview-win type]
-                     (fn []
-                       (let [command (. select-to-edit-map type)
-                             orig-window (. (vim.api.nvim_win_get_config preview-win)
-                                            :win)
-                             cursor-position (vim.api.nvim_win_get_cursor preview-win)
-                             filename (vim.api.nvim_buf_get_name 0)]
-                         (vim.api.nvim_win_close preview-win
-                                                 gp.conf.force_close)
-                         (open-file orig-window filename cursor-position
-                                    command))))
-
-                   (fn post-open-hook [buf win]
-                     (map :n :<C-v> (open-preview win :vertical) {:buffer buf})
-                     (map :n :<CR> (open-preview win :default) {:buffer buf})
-                     (map :n :<C-s> (open-preview win :horizontal)
-                          {:buffer buf})
-                     (map :n :<C-t> (open-preview win :tab) {:buffer buf})
-                     (map :n :q :<cmd>q<cr> {:buffer buf}))
-
-                   (gp.setup {:stack_floating_preview_windows false
-                              :post_open_hook post-open-hook
-                              :post_close_hook #(each [_ x (ipairs [:<C-v>
-                                                                    :<CR>
-                                                                    :<C-s>
-                                                                    :<C-t>
-                                                                    :q])]
-                                                  (umap [:n] x {:buffer $1}))}))})
  (pack :nvimtools/none-ls.nvim
        {:config #(let [nl (require :null-ls)]
                    (nl.setup))
@@ -119,10 +85,8 @@
                  (map :n :<leader>lr :<cmd>LspRestart<CR> {:noremap true}
                       :Restart)
                  (map :n :<leader>ll :<cmd>LspLog<CR> {:noremap true} :Log)
-                 ;; (each [_ x (ipairs [:gra :grn :gri :grr])]
-                 ;;   (umap :n x {}))
-                 ;; FIX: does not work
-                 )
+                 (each [_ x (ipairs [:gra :grn :gri :grr :grt])]
+                   (pcall umap :n x {})))
         :cmd [:LspInfo :LspStart :LspStop :LspRestart :LspLog]
         :config #(let [blink (require :blink.cmp)]
                    (tset vim.lsp.handlers :textDocument/hover
@@ -133,7 +97,8 @@
                            {:border :rounded}))
                    (each [typ icon (pairs (. conf.icons :diagnostic))]
                      (let [hl (.. :DiagnosticSign typ)]
-                       (vim.fn.sign_define hl {:text icon :texthl hl :numhl hl})))
+                       ;; numhl hl - to highlight numbers as well
+                       (vim.fn.sign_define hl {:text icon :texthl hl})))
                    (vim.api.nvim_create_autocmd :LspAttach
                                                 {:desc "LSP navic"
                                                  :callback (fn [event]
@@ -153,7 +118,8 @@
                                                                         "[lsp] Code workspace diagnostics")
                                                                    (map :n
                                                                         :<leader>cdd
-                                                                        "<cmd>lua vim.diagnostic.setloclist()<cr>"
+                                                                        ; "<cmd>lua vim.diagnostic.setloclist()<cr>"
+                                                                        "<cmd>lua require('telescope.builtin').diagnostics()<cr>"
                                                                         {:buffer bufnr
                                                                          :noremap true}
                                                                         "[lsp] Code document diagnostics")
@@ -163,44 +129,49 @@
                                                                          :noremap true}
                                                                         "[lsp] Hover documentation")
                                                                    (map :n :gd
-                                                                        "<cmd>lua require('goto-preview').goto_preview_definition()<cr>"
+                                                                        ; "<cmd>lua require('goto-preview').goto_preview_definition()<cr>"
+                                                                        "<cmd>lua require('telescope.builtin').lsp_definitions()<cr>"
                                                                         ; "<CMD>Glance definitions<CR>"
                                                                         ; "<cmd>vsplit | lua vim.lsp.buf.definition()<cr>"
                                                                         {:buffer bufnr
                                                                          :noremap true}
                                                                         "[lsp] Go to definition")
                                                                    (map :n :gD
-                                                                        "<cmd>lua require('goto-preview').goto_preview_declaration()<cr>"
-                                                                        ; "<cmd>vsplit | lua vim.lsp.buf.declaration()<cr>"
+                                                                        ; "<cmd>lua require('goto-preview').goto_preview_declaration()<cr>"
+                                                                        ; "<cmd>lua require('telescope.builtin').lsp_declarations()<cr>"
+                                                                        "<cmd>vsplit | lua vim.lsp.buf.declaration()<cr>"
                                                                         {:buffer bufnr
                                                                          :noremap true}
                                                                         "[lsp] Go to declaration")
                                                                    (map :n :gi
-                                                                        "<cmd>lua require('goto-preview').goto_preview_implementation()<cr>"
+                                                                        ; "<cmd>lua require('goto-preview').goto_preview_implementation()<cr>"
+                                                                        "<cmd>lua require('telescope.builtin').lsp_implementations()<cr>"
                                                                         ; "<CMD>Glance implementations<CR>"
                                                                         ; "<cmd>vsplit | lua vim.lsp.buf.implementation()<cr>"
                                                                         {:buffer bufnr
                                                                          :noremap true}
                                                                         "[lsp] Go to implementation")
                                                                    (map :n :go
-                                                                        "<cmd>lua require('goto-preview').goto_preview_type_definition()<cr>"
+                                                                        ; "<cmd>lua require('goto-preview').goto_preview_type_definition()<cr>"
+                                                                        "<cmd>lua require('telescope.builtin').lsp_type_definitions()<cr>"
                                                                         ; "<CMD>Glance type_definitions<CR>"
                                                                         ; "<cmd>lua vim.lsp.buf.type_definition()<cr>"
                                                                         {:buffer bufnr
                                                                          :noremap true}
                                                                         "[lsp] Go to type definition")
                                                                    (map :n :gr
-                                                                        "<cmd>lua require('goto-preview').goto_preview_references()<cr>"
+                                                                        ; "<cmd>lua require('goto-preview').goto_preview_references()<cr>"
+                                                                        "<cmd>lua require('telescope.builtin').lsp_references()<cr>"
                                                                         ; "<CMD>Glance references<CR>"
                                                                         ; "<cmd>lua vim.lsp.buf.references()<cr>"
                                                                         {:buffer bufnr
                                                                          :noremap true}
                                                                         "[lsp] Go to reference")
-                                                                   (map :n :gP
-                                                                        "<cmd>lua require('goto-preview').close_all_win()<cr>"
-                                                                        {:buffer bufnr
-                                                                         :noremap true}
-                                                                        "[lsp] Close all float preview")
+                                                                   ; (map :n :gP
+                                                                   ;      "<cmd>lua require('goto-preview').close_all_win()<cr>"
+                                                                   ;      {:buffer bufnr
+                                                                   ;       :noremap true}
+                                                                   ;      "[lsp] Close all float preview")
                                                                    (map :n
                                                                         :<leader>cn
                                                                         "<cmd>lua vim.lsp.buf.rename()<cr>"
@@ -248,7 +219,7 @@
                                                                             {:buffer bufnr
                                                                              :noremap true}
                                                                             "[lsp] Execute code action"))
-                                                                   (vim.diagnostic.config {:virtual_text true})))))})
+                                                                   (vim.diagnostic.config {:virtual_lines {:current_line true}})))))})
                    (each [lsp-name settings (pairs lsps)]
                      (set settings.capabilities
                           (blink.get_lsp_capabilities settings.capabilities))

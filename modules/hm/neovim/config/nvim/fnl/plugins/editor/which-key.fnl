@@ -18,8 +18,7 @@
                                      :separator conf.icons.wk.separator
                                      :group conf.icons.wk.group}
                              :win {:border :single}})
-                  (wk.add [{1 :<leader>b :group :Buffer}
-                           {1 :<leader>c :group :Code}
+                  (wk.add [{1 :<leader>c :group :Code}
                            {1 :<leader>cd :group :Diff/Diagnostics}
                            {1 :<leader>f :group :Find}
                            {1 :<leader>fs :group :Settings}

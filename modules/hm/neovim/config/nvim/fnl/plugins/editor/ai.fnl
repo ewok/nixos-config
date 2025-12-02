@@ -112,7 +112,5 @@ Given the git diff listed below, please generate a commit message for me:
                      (vim.notify "Copilot Disabled" :INFO {:title :Copilot}))
                 :mode :n
                 :desc "Stop Copilot"}]
-        :config #(do
-                   (set vim.g.copilot_loaded true))
-        :init #(do
-                 (set vim.g.copilot_no_maps true))})]
+        :config #(set vim.g.copilot_loaded true)
+        :init #(set vim.g.copilot_no_maps true)})]

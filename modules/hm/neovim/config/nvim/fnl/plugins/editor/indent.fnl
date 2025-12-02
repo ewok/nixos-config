@@ -2,7 +2,7 @@
 
 (pack :nvimdev/indentmini.nvim
       {:event :BufEnter
-       :commit :15ba2c35a89d314a33d50dff06497c6b509ec8e6
+       ; :commit :15ba2c35a89d314a33d50dff06497c6b509ec8e6
        :config #(do
                   ((-> (require :indentmini) (. :setup)) {; char = "┊",
                                                           ; char = "╎",

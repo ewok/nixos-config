@@ -130,6 +130,17 @@
   (pcall vim.cmd (string.format "%s %s" command filename))
   (vim.api.nvim_win_set_cursor 0 cursor-position))
 
+;; Function to recursively find an existing directory name from a given filename
+(fn get-existing-up-dir [name]
+  (let [stat (vim.uv.fs_stat name)]
+    (if stat
+        name ; If the given name exists, return it.
+        (let [parent (vim.fs.dirname name)] ; Get the dirname of the given name
+          (if (= parent name) ; If name has no more components to strip
+              nil (get-existing-up-dir parent)
+              ; Recursively check the parent directory
+              )))))
+
 {: open-file
  : close_sidebar
  : cmd!
@@ -154,4 +165,5 @@
  :set set!
  : t
  : toggle_sidebar
- : umap}
+ : umap
+ : get-existing-up-dir}

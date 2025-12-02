@@ -1,4 +1,4 @@
-(local {: pack : is_loaded : get_buf_ft} (require :lib))
+(local {: pack : is_loaded} (require :lib))
 (local conf (require :conf))
 
 [(pack :nvim-lualine/lualine.nvim
@@ -37,13 +37,7 @@
                                                             "%#DiagnosticSignOk#󰐃"
                                                             "%#DiagnosticSignError#󰤱"))
                                                    :cond #(is_loaded :hbac)}
-                                                  {1 :filename
-                                                   :path 4
-                                                   :cond #(not= :oil
-                                                                (get_buf_ft 0))}
-                                                  {1 #" oil://%{v:lua.string.gsub(v:lua.require('oil').get_current_dir(), v:lua.os.getenv('HOME'), '~')}"
-                                                   :cond #(= :oil
-                                                             (get_buf_ft 0))}
+                                                  {1 :filename :path 4}
                                                   {1 #"%{%v:lua.require'nvim-navic'.get_location()%}"
                                                    :cond #(is_loaded :nvim-navic)}]}
                              :inactive_winbar {:lualine_c [{1 #(let [cur_buf (vim.api.nvim_get_current_buf)
@@ -55,12 +49,7 @@
                                                                      "%#DiagnosticSignError#󰤱"))
                                                             :cond #(is_loaded :hbac)}
                                                            {1 :filename
-                                                            :path 4
-                                                            :cond #(not= :oil
-                                                                         (get_buf_ft 0))}
-                                                           {1 #" oil://%{v:lua.string.gsub(v:lua.require('oil').get_current_dir(), v:lua.os.getenv('HOME'), '~')}"
-                                                            :cond #(= :oil
-                                                                      (get_buf_ft 0))}]}
+                                                            :path 4}]}
                              :tabline {:lualine_a [;{1 :buffers
                                                    ; :use_mode_colors true}
                                                    :tabs]

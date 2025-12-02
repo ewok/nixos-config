@@ -1,4 +1,4 @@
-(local {: pack : map} (require :lib))
+(local {: pack} (require :lib))
 
 [(pack :MagicDuck/grug-far.nvim
        {:config #(let [grug (require :grug-far)]

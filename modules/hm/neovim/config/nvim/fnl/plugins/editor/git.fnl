@@ -22,6 +22,10 @@
                 2 "<cmd>DiffviewFileHistory %<cr>"
                 :mode [:n]
                 :desc "Diff history"}
+               {1 :<leader>gd
+                2 ":DiffviewOpen "
+                :mode [:n]
+                :desc "Open Diff"}
                {1 :<leader>gfl
                 2 :<cmd>NeogitLog<cr>
                 :mode [:n]
@@ -43,6 +47,10 @@
                               ;:kind :tab
                               ;:commit_editor {:kind :auto}
                               })
+                   (reg_ft :DiffviewFiles
+                           (fn [ev]
+                             (map :n :q :<cmd>tabclose<cr> {:buffer ev.buf}
+                                  :Close)))
                    (reg_ft :DiffviewFileHistory
                            (fn [ev]
                              (map :n :q :<cmd>tabclose<cr> {:buffer ev.buf}
@@ -53,20 +61,18 @@
         :config #(let [diff (require :mini.diff)]
                    (map :n :<leader>gh "<cmd>lua MiniDiff.toggle_overlay()<cr>"
                         {:noremap true} "Toggle githunk overlay")
-                   (diff.setup {:view {:style :sign
-                                       :signs {:add "+"
-                                               :change "~"
-                                               :delete "▁"
-                                               ;:add "│"
-                                               ;:change "│"
-                                               ;:delete "_"
-                                               }}
+                   (diff.setup {; :view {:style :sign
+                                ;         :signs {:add "+"
+                                ;                 :change "~"
+                                ;                 :delete "▁"
+                                ;                 ;:add "│"
+                                ;                 ;:change "│"
+                                ;                 ;:delete "_"
+                                ;                 }}
                                 :mappings {:apply :gh
                                            :reset :gH
                                            :textobject :gh
                                            :goto_first ""
                                            :goto_prev "[g"
                                            :goto_next "]g"
-                                           :gotoGit_last ""}}))})
- (pack :fredeeb/tardis.nvim
-       {:config true :cmd :Tardis :keys [{1 :<leader>gfh}]})]
+                                           :gotoGit_last ""}}))})]

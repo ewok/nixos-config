@@ -11,9 +11,6 @@ M.cache_dir = vim.fn.stdpath("cache")
 M.notes_dir = path_join(M.home_dir, "Notes")
 
 M.packages = {
-    oil = true,
-    neotree = true,
-    hbac = false,
     aerial = true,
 }
 

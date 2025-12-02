@@ -5,5 +5,4 @@
  ;; TODO: Deprecated, to be substituted with something else
  (pack :stevearc/dressing.nvim {:event :VeryLazy :config false})
  (pack :nvimtools/hydra.nvim {:config true})
- (pack :MunifTanjim/nui.nvim)
- ]
+ (pack :MunifTanjim/nui.nvim)]

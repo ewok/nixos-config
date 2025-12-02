@@ -24,39 +24,24 @@
                        (update-bg true)) {:noremap true}
      "Toggle theme Dark")
 
-[
- (pack :catppuccin/nvim
+[(pack :catppuccin/nvim
        {:name :catppuccin
-       :priority 1000
-       :lazy false
-       :config #(let [catppuccin (require :catppuccin)]
-                  (catppuccin.setup {:no_italic true
-                                    :flavour :auto
-                                    :background {:light :latte
-                                    :dark :macchiato}
-                                    ;:custom_highlights (fn [colors]
-                                    ;                     {:Visual {:bg colors.overlay4}
-                                    ;                      :VisualNOS {:bg colors.overlay4}})
-                                    :integrations {:fidget true
-                                    :which_key true
-                                    :navic {:enabled true}}})
-                  (vim.cmd.colorscheme :catppuccin)
-                  (update-bg true)
-                  (vim.api.nvim_create_augroup :toggle-theme {:clear true})
-                  (vim.api.nvim_create_autocmd [:FocusGained]
-                                               {:group :toggle-theme
-                                               :callback update-bg})
-                  )})
-
- ;(pack :projekt0n/github-nvim-theme
- ;      {:priority 1000
- ;      :lazy false
- ;      :config #(let [theme (require :github-theme)]
- ;                 (theme.setup {})
- ;                 (vim.cmd.colorscheme :github_dark)
- ;                 (update-bg true)
- ;                 (vim.api.nvim_create_augroup :toggle-theme {:clear true})
- ;                 (vim.api.nvim_create_autocmd [:FocusGained]
- ;                                              {:group :toggle-theme
- ;                                              :callback update-bg}))})
- ]
+        :priority 1000
+        :lazy false
+        :config #(let [catppuccin (require :catppuccin)]
+                   (catppuccin.setup {:no_italic true
+                                      :flavour :auto
+                                      :background {:light :latte
+                                                   :dark :macchiato}
+                                      ;:custom_highlights (fn [colors]
+                                      ;                     {:Visual {:bg colors.overlay4}
+                                      ;                      :VisualNOS {:bg colors.overlay4}})
+                                      :integrations {:fidget true
+                                                     :which_key true
+                                                     :navic {:enabled true}}})
+                   (vim.cmd.colorscheme :catppuccin)
+                   (update-bg true)
+                   (vim.api.nvim_create_augroup :toggle-theme {:clear true})
+                   (vim.api.nvim_create_autocmd [:FocusGained]
+                                                {:group :toggle-theme
+                                                 :callback update-bg}))})]

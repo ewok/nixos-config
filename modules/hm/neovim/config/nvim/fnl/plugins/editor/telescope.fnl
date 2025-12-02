@@ -1,10 +1,7 @@
-(local {: pack : map} (require :lib))
+(local {: pack : map : get-existing-up-dir} (require :lib))
 (local conf (require :conf))
 
-[(pack :jiaoshijie/undotree
-       {:init #(map :n :<leader>u "<cmd>lua require('undotree').toggle()<cr>"
-                    {:silent true} "Toggle Undo Tree")})
- (pack :nvim-telescope/telescope-fzf-native.nvim {:build :make})
+[(pack :nvim-telescope/telescope-fzf-native.nvim {:build :make})
  (pack :folke/todo-comments.nvim
        {:keys [{1 :<leader>fd
                 2 #(let [ts (require :telescope)]
@@ -36,7 +33,6 @@
                  (map :n :<leader>fc
                       ":Telescope live_grep default_text=<c-r>=expand(\"<cword>\")<cr><cr>"
                       {:silent true} "Find string in the current workspace")
-                 ;(map :n :<leader>fh "<CMD>Telescope oldfiles<CR>" ;     {:silent true} "Find telescope history")
                  (map :n :<leader>f. "<CMD>Telescope resume<CR>" {:silent true}
                       "Find last lookup")
                  (map :n :<leader>fm "<CMD>Telescope marks<CR>" {:silent true}
@@ -44,7 +40,8 @@
                  (map :n :<leader>f/
                       "<CMD>Telescope current_buffer_fuzzy_find<CR>"
                       {:silent true} "Find string in current buffer")
-                 ;(map :n "<leader>f:" "<cmd>Telescope command_history<cr>" ;     {:silent true} "Find all command history")
+                 (map :n "<leader>f:" "<cmd>Telescope command_history<cr>"
+                      {:silent true} "Find all command history")
                  (map :n :<leader>fh "<cmd>Telescope help_tags<CR>"
                       {:silent true} "Help tags")
                  (map :n :<leader>fss "<cmd>Telescope vim_options<CR>"
@@ -62,7 +59,9 @@
                  (map :n :<leader>fj "<cmd>Telescope jumplist<CR>"
                       {:silent true} "Find jumps")
                  (map :n :<leader>fM "<cmd>Telescope man_pages<CR>"
-                      {:silent true} "Find man pages"))
+                      {:silent true} "Find man pages")
+                 (map :n ";" "<cmd>Telescope buffers initial_mode=normal<CR>"
+                      {:silent true} :Buffers))
         :config #(let [ts (require :telescope)
                        act (require :telescope.actions)]
                    (ts.setup {:defaults {:vimgrep_arguments [:rg
@@ -106,17 +105,30 @@
                                                         :<esc> act.close}
                                                     :n {:<esc> act.close
                                                         :q act.close
-                                                        :a act.close
-                                                        :i act.close
-                                                        :A act.close
-                                                        :I act.close}}}
+                                                        :l act.select_default
+                                                        :s act.select_horizontal
+                                                        :v act.select_vertical
+                                                        :t act.select_tab
+                                                        :/ #(vim.cmd :startinsert)
+                                                        :<c-q> (+ act.smart_send_to_qflist
+                                                                  act.open_qflist)
+                                                        :<c-i> (+ act.toggle_selection
+                                                                  act.move_selection_previous)}}}
                               :pickers {:buffers {:show_all_buffers true
                                                   :sort_mru true
                                                   :select_current true
                                                   :theme :dropdown
                                                   :previewer false
-                                                  :mappings {:i {:<c-d> (+ act.delete_buffer
-                                                                           act.move_to_top)}}}}
+                                                  :layout_config {:width 0.6}
+                                                  :path_display [:truncate]
+                                                  :mappings {:i {:<c-d> act.delete_buffer}
+                                                             :n {";" (fn [bufnr]
+                                                                       (let [mf (require :mini.files)]
+                                                                         (act.close bufnr)
+                                                                         (mf.open (get-existing-up-dir (vim.api.nvim_buf_get_name 0))
+                                                                                  false)))
+                                                                 :dd false
+                                                                 :d act.delete_buffer}}}}
                               :extensions {:fzf {:fuzzy true
                                                  :override_generic_sorter true
                                                  :override_file_sorter true

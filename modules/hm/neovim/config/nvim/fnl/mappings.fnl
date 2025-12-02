@@ -41,8 +41,8 @@
 (map! [:n] :zO :zczO md "Open all folds under cursor")
 (map! [:n] :zC "zcV:foldc!<CR>" md "Close all folds under cursor")
 (map! [:n] :z<Space> "mzzMzvzz15<c-e>`z" md "Show only current Fold")
-(map! [:n] :<Space><Space> "za\"{{{\"" md "Toggle Fold")
-(map! [:x] :<Space><Space> "zf\"}}}\"" md "Toggle Fold")
+(map! [:n] :<Space><CR> "za\"{{{\"" md "Toggle Fold")
+(map! [:x] :<Space><CR> "zf\"}}}\"" md "Toggle Fold")
 
 ;; Yank
 (map! [:n] :<leader>yy "<cmd>.w! ~/.vbuf<CR>" md "Yank to ~/.vbuf")
