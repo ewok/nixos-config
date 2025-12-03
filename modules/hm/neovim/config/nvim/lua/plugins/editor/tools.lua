@@ -1,3 +1,7 @@
+local lib = require("lib")
+local conf = require("conf")
+local map = lib.map
+
 return {
     {
         "folke/flash.nvim",

@@ -132,14 +132,15 @@ return {
                         map(
                             "n",
                             "<leader>cdw",
-                            "<cmd>lua vim.diagnostic.setqflist()<cr>",
+                            -- "<cmd>lua vim.diagnostic.setqflist()<cr>",
+                            "<cmd>lua require('telescope.builtin').diagnostics()<cr>",
                             { buffer = bufnr, noremap = true },
                             "[lsp] Code workspace diagnostics"
                         )
                         map(
                             "n",
                             "<leader>cdd",
-                            "<cmd>lua require('telescope.builtin').diagnostics()<cr>",
+                            "<cmd>lua vim.diagnostic.setloclist()<cr>",
                             { buffer = bufnr, noremap = true },
                             "[lsp] Code document diagnostics"
                         )

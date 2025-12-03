@@ -4,7 +4,6 @@ local map = lib.map
 return {
     "nvim-mini/mini.files",
     version = "*",
-    dependencies = { "nvim-mini/mini.icons" },
     config = function()
         local mini_files = require("mini.files")
         mini_files.setup({

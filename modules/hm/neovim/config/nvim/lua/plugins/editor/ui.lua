@@ -1,6 +1,7 @@
 local lib = require("lib")
 local is_loaded = lib.is_loaded
 local conf = require("conf")
+local map = lib.map
 
 return {
     {
