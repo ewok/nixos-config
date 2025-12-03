@@ -26,8 +26,8 @@ M.options = {
     auto_toggle_rnu = true,
     auto_hide_cursorline = true,
     rainbow_parents = false,
-    theme = M.is_nix and "{{ conf.theme.name_vim }}" or "onedark",
-    light_theme = M.is_nix and "{{ conf.theme.light_name_vim }}" or "onedark",
+    theme = M.is_nix and "{{ conf.theme.name_vim }}" or "catppuccin",
+    light_theme = M.is_nix and "{{ conf.theme.light_name_vim }}" or "catppuccin",
     spelllang = { "nospell", "en_us", "ru_ru" },
     large_file_size = 1024 * 1024 * 20,
     direnv = false,
@@ -38,6 +38,7 @@ M.options = {
     pbclip = "{{ conf.orb }}" == "true" and true or false,
     tmuxclip = "{{ conf.remote }}" == "true" and true or false,
     remote = "{{ conf.remote }}" == "true" and true or false,
+    show_virtual_lines = true,
 }
 
 M.separator = M.is_nix
@@ -194,5 +195,50 @@ M.ui_ft = {
 }
 --
 M.openai_token = M.is_nix and "{{ conf.openai_token }}" or ""
+
+M.lazy_config = {
+    defaults = { lazy = true },
+    ui = {
+        icons = {
+            ft = "",
+            lazy = "󰂠",
+            loaded = "",
+            not_loaded = "",
+        },
+    },
+    performance = {
+        rtp = {
+            disabled_plugins = {
+                "2html_plugin",
+                "tohtml",
+                "getscript",
+                "getscriptPlugin",
+                -- "gzip",
+                "logipat",
+                "netrw",
+                "netrwPlugin",
+                "netrwSettings",
+                "netrwFileHandlers",
+                "matchit",
+                -- "tar",
+                -- "tarPlugin",
+                "rrhelper",
+                "spellfile_plugin",
+                "vimball",
+                "vimballPlugin",
+                -- "zip",
+                -- "zipPlugin",
+                "tutor",
+                "rplugin",
+                "syntax",
+                "synmenu",
+                "optwin",
+                "compiler",
+                "bugreport",
+                "ftplugin",
+            },
+        },
+    },
+}
 
 return M

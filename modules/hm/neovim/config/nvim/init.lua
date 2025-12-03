@@ -1,52 +1,44 @@
--- pick your plugin manager
+require("base.settings")
+require("base.pre")
+require("base.mappings")
+local lazy_config = require("conf").lazy_config
 
-local pack = "lazy"
+-- bootstrap lazy and all plugins
+local lazypath = vim.fn.stdpath("data") .. "/lazy/lazy.nvim"
 
-local function bootstrap(url, ref)
-    local name = url:gsub(".*/", "")
-    local path
+if not vim.loop.fs_stat(lazypath) then
+    local repo = "https://github.com/folke/lazy.nvim.git"
+    vim.fn.system({ "git", "clone", "--filter=blob:none", repo, "--branch=stable", lazypath })
+end
 
-    if pack == "lazy" then
-        path = vim.fn.stdpath("data") .. "/lazy/" .. name
-        vim.opt.rtp:prepend(path)
-    else
-        path = vim.fn.stdpath("data") .. "/site/pack/" .. pack .. "/start/" .. name
-    end
+vim.opt.rtp:prepend(lazypath)
 
-    if vim.fn.isdirectory(path) == 0 then
-        print(name .. ": installing in data dir...")
+-- validate that lazy is available
+if not pcall(require, "lazy") then
+    vim.api.nvim_echo({
+        { string.format("Unable to load lazy from: %s\n", lazypath), "ErrorMsg" },
+        { "Press any key to exit...", "MoreMsg" },
+    }, true, {})
+    vim.fn.getchar()
+    vim.cmd.quit()
+else
+    -- load plugins
+    local lazy = require("lazy")
+    lazy.setup({
+        { import = "plugins/base" },
+        { import = "plugins/ft" },
+        { import = "plugins/editor" },
+    }, lazy_config)
+end
 
-        vim.fn.system({ "git", "clone", url, path })
-        if ref then
-            vim.fn.system({ "git", "-C", path, "checkout", ref })
-        end
-
-        vim.cmd("redraw")
-        print(name .. ": finished installing")
-
-        _G.update = true
-    end
-
-    local ok, tang = pcall(require, "tangerine")
-    if ok then
-        tang.setup({
-            keymaps = {
-                eval_buffer = "<Nop>",
-                peek_buffer = "<Nop>",
-                goto_output = "<Nop>",
-                float = {
-                    kill = "q",
-                },
-            },
-        })
-        if _G.update == true then
-            vim.cmd([[
-                FnlClean
-                FnlCompile!
-                q]])
+local ft_path = vim.fn.stdpath("config") .. "/lua/ft"
+if vim.loop.fs_stat(ft_path) then
+    for _, file in ipairs(vim.fn.readdir(ft_path)) do
+        local match = file:match("^(.*)%.lua$")
+        if match then
+            require("ft." .. match)
         end
     end
 end
 
--- bootstrap("https://github.com/udayvir-singh/tangerine.nvim", "v2.8")
-bootstrap("https://github.com/udayvir-singh/tangerine.nvim")
+require("base.post")

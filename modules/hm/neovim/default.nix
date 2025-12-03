@@ -54,9 +54,9 @@ let
     '';
   };
 
-  vim-compile = writeShellScriptBin "vim-compile" ''
-    ${my-nvim}/bin/nvim --headless --cmd 'lua _G.update=true' || true
-  '';
+  # vim-compile = writeShellScriptBin "vim-compile" ''
+  #   ${my-nvim}/bin/nvim --headless --cmd 'lua _G.update=true' || true
+  # '';
 
   clean-cache = writeShellScriptBin "nvim-clean-cache" ''
     set -e
@@ -118,9 +118,9 @@ in
 
   config = mkIf cfg.enable {
 
-    home.activation.nvim-changes = dag.entryAnywhere ''
-      ${vim-compile}/bin/vim-compile
-    '';
+    # home.activation.nvim-changes = dag.entryAnywhere ''
+    #   ${vim-compile}/bin/vim-compile
+    # '';
 
     home.packages =
       let
@@ -208,17 +208,18 @@ in
       in
       [
         my-nvim
-        vim-compile
+        # vim-compile
         clean-cache
       ] ++ external ++ androidPkgs ++ orbPkgs;
     xdg = {
       configFile = {
         "nvim/init.lua".source = ./config/nvim/init.lua;
-        "nvim/init.fnl".source = utils.templateFile "init.fnl" ./config/nvim/init.fnl vars;
-
-        "nvim/fnl".source = ./config/nvim/fnl;
-
         "nvim/lua/conf.lua".source = utils.templateFile "conf.lua" ./config/nvim/lua/conf.lua vars;
+        "nvim/lua/lib.lua".source = ./config/nvim/lua/lib.lua;
+        "nvim/lua/base".source = ./config/nvim/lua/base;
+        "nvim/lua/ft".source = ./config/nvim/lua/ft;
+        "nvim/lua/plugins".source = ./config/nvim/lua/plugins;
+
         "bash/profile.d/20_nvim_vars.sh".text = ''
           export EDITOR="vim"
           export VISUAL="vim"
