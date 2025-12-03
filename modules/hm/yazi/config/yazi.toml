@@ -10,7 +10,9 @@ prepend_previewers = [
 { mime = "{audio,video,image}/*", run = "mediainfo"},
 { mime = "application/subrip", run = "mediainfo" },
 { mime = "application/postscript", run = "mediainfo" },
-{ name = "*.tar*", run = 'piper --format=plain -- tar tf "$1"' },
+
+{ name = "*.tar.gz", run = 'piper --format=plain -- tar tf "$1"' },
+{ name = "*.tar.bz", run = 'piper --format=plain -- tar tf "$1"' },
 { name = "*.tsv", run  = 'piper -- duckdb -box -c "select * from file;" "$1"' },
 { name = "*.parquet", run  = 'piper -- duckdb -box -c "select * from file;" "$1"' },
 { name = "*.xlsx", run  = 'piper -- duckdb -box -c "select * from file;" "$1"' },
@@ -30,15 +32,11 @@ prepend_preloaders = [
 { mime = "application/postscript", run = "mediainfo" },
 ]
 
-[[plugin.prepend_fetchers]]
-id   = "git"
-name = "*"
-run  = "git"
+prepend_fetchers = [
+{ id   = "git", name = "*", run  = "git" },
+{ id   = "git", name = "*/", run  = "git" },
+]
 
-[[plugin.prepend_fetchers]]
-id   = "git"
-name = "*/"
-run  = "git"
 
 [tasks]
 image_alloc      = 1073741824        # = 1024*1024*1024 = 1024MB
