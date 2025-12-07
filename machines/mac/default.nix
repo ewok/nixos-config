@@ -72,6 +72,7 @@ in
             terminal = {
               enable = true;
               inherit colors theme;
+              terminal = "ghostty";
               tmux = {
                 enable = true;
                 terminal = "xterm-256color";

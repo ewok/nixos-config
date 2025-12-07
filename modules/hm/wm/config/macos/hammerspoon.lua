@@ -122,7 +122,7 @@ end
 -- end
 
 hs.hotkey.bind({ "alt" }, "return", function()
-	hs.execute("open -a Wezterm -n")
+	hs.execute("open -a Ghostty -n")
 end)
 
 local function moveWindowToSpace(spaceNumber)

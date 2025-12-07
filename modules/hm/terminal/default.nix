@@ -68,5 +68,5 @@ in
 
     };
   };
-  imports = [ ./alacritty.nix ./wezterm.nix ./tmux.nix ./zellij.nix ./foot.nix ];
+  imports = [ ./alacritty.nix ./wezterm.nix ./tmux.nix ./zellij.nix ./foot.nix ./ghostty.nix ];
 }

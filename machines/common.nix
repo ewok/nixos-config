@@ -125,13 +125,18 @@ let
     light_name = "catppuccin-latte";
     name_vim = "catppuccin-macchiato";
     light_name_vim = "catppuccin-latte";
+    nice_name = "Catppuccin Macchiato";
+    nice_light_name = "Catppuccin Latte";
     # name = "nightfox";
     # light_name = "dayfox";
     # name = "onedark";
     regular_font = "FiraCode Nerd Font";
     regular_font_size = "10";
-    monospace_font = "FiraCode Nerd Font Mono Med";
-    monospace_font_size = "10";
+    # monospace_font = "JetBrain Mono";
+    # monospace_font = "FiraCode Nerd Font Mono";
+    monospace_font = "Maple Mono NF";
+    # monospace_font = "Maple Mono Normal NF";
+    monospace_font_size = "11";
   };
 in
 {

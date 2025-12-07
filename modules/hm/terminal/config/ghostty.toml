@@ -1,0 +1,9 @@
+font-family = "{{ conf.theme.monospace_font }}"
+# font-size = {{ conf.theme.monospace_font_size }}
+theme = {{ conf.theme.nice_name }}
+# theme = dark:{{ conf.theme.nice_name }},light:{{ conf.theme.nice_light_name }}
+shell-integration-features = ssh-terminfo,ssh-env,sudo
+window-decoration = none
+quit-after-last-window-closed = true
+keybind = global:ctrl+backquote=toggle_quick_terminal
+quick-terminal-size = 80%
