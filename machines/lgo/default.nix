@@ -43,7 +43,9 @@ in
           homeDirectory = homeDirectory;
         };
         nix.enable = true;
-        lisps.enable = true;
+        languages.go.enable = true;
+        languages.lisps.enable = true;
+        languages.zig.enable = true;
         terminal = {
           enable = true;
           inherit colors theme terminal;

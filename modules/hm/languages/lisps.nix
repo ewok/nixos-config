@@ -1,9 +1,9 @@
 { config, lib, pkgs, ... }:
 let
-  cfg = config.opt.lisps;
+  cfg = config.opt.languages.lisps;
 in
 {
-  options.opt.lisps = {
+  options.opt.languages.lisps = {
     enable = lib.mkEnableOption "lisps";
   };
 

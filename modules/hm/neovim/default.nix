@@ -162,7 +162,8 @@ in
           vscode-langservers-extracted
           yaml-language-server
           dockerfile-language-server
-          zk
+          # zk
+          zls
 
           # Linter
           # ansible-lint
@@ -177,6 +178,7 @@ in
           tfsec
           # typos
           # yamllint
+          golangci-lint
 
           # FMT
           black
