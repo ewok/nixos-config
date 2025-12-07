@@ -28,7 +28,7 @@ return {
                 group = conf.icons.wk.group,
             },
             win = {
-                border = "single",
+                border = conf.options.float_border,
             },
         })
         wk.add({

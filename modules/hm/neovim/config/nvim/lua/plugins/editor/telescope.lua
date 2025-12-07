@@ -5,6 +5,7 @@ local conf = require("conf")
 
 return {
     { "nvim-telescope/telescope-fzf-native.nvim", build = "make" },
+    { "nvim-telescope/telescope-ui-select.nvim" },
     {
         "folke/todo-comments.nvim",
         keys = {
@@ -132,8 +133,8 @@ return {
                             ["<c-s>"] = act.select_horizontal,
                             ["<c-v>"] = act.select_vertical,
                             ["<c-t>"] = act.select_tab,
-                            ["<c-q>"] = { act.smart_send_to_qflist, act.open_qflist },
-                            ["<c-i>"] = { act.toggle_selection, act.move_selection_previous },
+                            ["<c-q>"] = act.smart_send_to_qflist + act.open_qflist,
+                            ["<c-i>"] = act.toggle_selection + act.move_selection_previous,
                             ["<esc>"] = act.close,
                         },
                         n = {
@@ -146,8 +147,8 @@ return {
                             ["/"] = function()
                                 vim.cmd("startinsert")
                             end,
-                            ["<c-q>"] = { act.smart_send_to_qflist, act.open_qflist },
-                            ["<c-i>"] = { act.toggle_selection, act.move_selection_previous },
+                            ["<c-q>"] = act.smart_send_to_qflist + act.open_qflist,
+                            ["<c-i>"] = act.toggle_selection + act.move_selection_next,
                         },
                     },
                 },
@@ -159,19 +160,20 @@ return {
                         theme = "dropdown",
                         previewer = false,
                         layout_config = { width = 0.6 },
-                        path_display = { "truncate" },
+                        -- truncate
+                        path_display = { "filename_first" },
                         mappings = {
                             i = {
                                 ["<c-d>"] = act.delete_buffer,
                             },
                             n = {
                                 [";"] = function(bufnr)
-                                    local mf = require("mini.files")
                                     act.close(bufnr)
-                                    mf.open(get_existing_up_dir(vim.api.nvim_buf_get_name(0)), false)
+                                    vim.cmd("Oil")
+                                    -- local mf = require("mini.files")
+                                    -- mf.open(get_existing_up_dir(vim.api.nvim_buf_get_name(0)), false)
                                 end,
-                                dd = false,
-                                d = act.delete_buffer,
+                                dd = act.delete_buffer,
                             },
                         },
                     },
@@ -183,9 +185,13 @@ return {
                         override_file_sorter = true,
                         case_mode = "smart_case",
                     },
+                    ["ui-select"] = {
+                        require("telescope.themes").get_dropdown({}),
+                    },
                 },
             })
             ts.load_extension("fzf")
+            ts.load_extension("ui-select")
         end,
     },
 }

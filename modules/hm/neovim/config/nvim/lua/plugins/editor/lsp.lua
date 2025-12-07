@@ -6,6 +6,42 @@ local conf = require("conf")
 
 return {
     {
+        "stevearc/aerial.nvim",
+        cmd = { "AerialToggle" },
+        enabled = conf.packages.aerial,
+        init = function()
+            map("n", "<C-P>", "<cmd>AerialToggle float<cr>", { silent = true }, "Open Outline Explorer")
+        end,
+        config = function()
+            require("aerial").setup({
+                icons = conf.icons,
+                keymaps = { q = "actions.close", ["<esc>"] = "actions.close" },
+                layout = { min_width = 120 },
+                show_guides = true,
+                backends = { "lsp", "treesitter", "markdown", "man" },
+                update_events = "TextChanged,InsertLeave",
+                -- on_attach = on_attach,
+                lsp = { diagnostics_trigger_update = false, update_when_errors = true, update_delay = 300 },
+                guides = {
+                    mid_item = "├─",
+                    last_item = "└─",
+                    nested_top = "│ ",
+                    whitespace = "  ",
+                },
+                filter_kind = {
+                    "Module",
+                    "Struct",
+                    "Interface",
+                    "Class",
+                    "Constructor",
+                    "Enum",
+                    "Function",
+                    "Method",
+                },
+            })
+        end,
+    },
+    {
         "kosayoda/nvim-lightbulb",
         event = { "BufReadPost", "BufNewFile" },
         config = function()
@@ -17,10 +53,10 @@ return {
                 virtual_text = { enabled = false, text = "💡", hl_mode = "replace" },
                 status_text = { enabled = false, text = "💡", text_unavailable = "" },
             })
-            vim.fn.sign_define(
-                "LightBulbSign",
-                { text = "💡", texthl = "DiagnosticSignWarn", linehl = "", numhl = "" }
-            )
+            -- vim.fn.sign_define(
+            --     "LightBulbSign",
+            --     { text = "💡", texthl = "DiagnosticSignWarn", linehl = "", numhl = "" }
+            -- )
             vim.api.nvim_create_autocmd({ "CursorHold", "CursorHoldI" }, {
                 pattern = "*",
                 callback = function()
@@ -48,6 +84,7 @@ return {
         end,
     },
     {
+        -- https://github.com/nvimtools/none-ls.nvim/blob/main/doc/BUILTINS.md
         "nvimtools/none-ls.nvim",
         config = function()
             local nl = require("null-ls")
@@ -61,8 +98,8 @@ return {
                     local meth = require("null-ls.methods")
                     local bufnr = vim.api.nvim_get_current_buf()
 
-                    local function formatting_enabled(bufnr)
-                        local ft = vim.api.nvim_buf_get_option(bufnr, "filetype")
+                    local function formatting_enabled(buf)
+                        local ft = vim.api.nvim_get_option_value("filetype", { buf = buf })
                         local generators = gen.get_available(ft, meth.internal.FORMATTING)
                         return #generators > 0
                     end
@@ -113,22 +150,34 @@ return {
         cmd = { "LspInfo", "LspStart", "LspStop", "LspRestart", "LspLog" },
         config = function()
             local blink = require("blink.cmp")
-            vim.lsp.handlers["textDocument/hover"] = vim.lsp.with(vim.lsp.handlers.hover, { border = "rounded" })
-            vim.lsp.handlers["textDocument/signatureHelp"] =
-                vim.lsp.with(vim.lsp.handlers.signature_help, { border = "rounded" })
 
-            for typ, icon in pairs(conf.icons.diagnostic) do
-                local hl = "DiagnosticSign" .. typ
-                vim.fn.sign_define(hl, { text = icon, texthl = hl })
-            end
+            vim.diagnostic.config({
+                signs = {
+                    text = {
+                        [vim.diagnostic.severity.ERROR] = conf.icons.diagnostic.Error,
+                        [vim.diagnostic.severity.WARN] = conf.icons.diagnostic.Warn,
+                        [vim.diagnostic.severity.INFO] = conf.icons.diagnostic.Info,
+                        [vim.diagnostic.severity.HINT] = conf.icons.diagnostic.Hint,
+                    },
+                },
+            })
 
             vim.api.nvim_create_autocmd("LspAttach", {
-                desc = "LSP navic",
+                desc = "LSP config",
                 callback = function(event)
                     local client_id = vim.tbl_get(event, "data", "client_id")
                     local client = client_id and vim.lsp.get_client_by_id(client_id)
                     local bufnr = event.buf
+
                     if client then
+                        -- Signature help keymap
+                        if client.server_capabilities.signatureHelpProvider then
+                            map("i", "<C-S>", function()
+                                vim.lsp.buf.signature_help({ border = conf.options.float_border })
+                            end, { buffer = bufnr, noremap = true }, "[lsp] Show signature")
+                        end
+
+                        -- General LSP keymaps
                         map(
                             "n",
                             "<leader>cdw",
@@ -144,13 +193,9 @@ return {
                             { buffer = bufnr, noremap = true },
                             "[lsp] Code document diagnostics"
                         )
-                        map(
-                            "n",
-                            "K",
-                            "<cmd>lua vim.lsp.buf.hover()<cr>",
-                            { buffer = bufnr, noremap = true },
-                            "[lsp] Hover documentation"
-                        )
+                        map("n", "K", function()
+                            vim.lsp.buf.hover({ border = conf.options.float_border })
+                        end, { buffer = bufnr, noremap = true }, "[lsp] Hover documentation")
                         map(
                             "n",
                             "gd",
@@ -221,11 +266,13 @@ return {
                             { buffer = bufnr, noremap = true },
                             "[lsp] Next diagnostic"
                         )
-                        if client.server_capabilities.signatureHelpProvider then
-                            map("i", "<C-S>", function()
-                                vim.lsp.buf.signature_help()
-                            end, { buffer = bufnr, noremap = true }, "[lsp] Show signature")
-                        end
+                        map(
+                            "n",
+                            "gO",
+                            "<cmd>lua require('telescope.builtin').lsp_document_symbols()<cr>",
+                            { buffer = bufnr, noremap = true },
+                            "[lsp] Document symbols"
+                        )
                         if vim.lsp.buf.range_code_action then
                             map(
                                 "x",

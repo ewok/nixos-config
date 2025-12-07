@@ -15,29 +15,20 @@ M.packages = {
 }
 
 M.options = {
-    transparent = true,
-    float_border = true,
-    download_source = "https://github.com/",
-    snippets_directory = path_join(M.config_dir, "snippets"),
+    float_border = "rounded",
     auto_save = true,
-    auto_switch_input = false,
     auto_restore_cursor_position = true,
     auto_remove_new_lines_comment = true,
     auto_toggle_rnu = true,
     auto_hide_cursorline = true,
-    rainbow_parents = false,
     theme = M.is_nix and "{{ conf.theme.name_vim }}" or "catppuccin",
     light_theme = M.is_nix and "{{ conf.theme.light_name_vim }}" or "catppuccin",
     spelllang = { "nospell", "en_us", "ru_ru" },
     large_file_size = 1024 * 1024 * 20,
-    direnv = false,
-    nvim_tree = false,
-    -- possible to use list of filetypes
     treesitter_nvim_highlighting = false,
-    undotree = false,
-    pbclip = "{{ conf.orb }}" == "true" and true or false,
-    tmuxclip = "{{ conf.remote }}" == "true" and true or false,
-    remote = "{{ conf.remote }}" == "true" and true or false,
+    -- pbclip = "{{ conf.orb }}" == "true" and true or false,
+    -- tmuxclip = "{{ conf.remote }}" == "true" and true or false,
+    -- remote = "{{ conf.remote }}" == "true" and true or false,
     show_virtual_lines = true,
 }
 
@@ -192,6 +183,17 @@ M.ui_ft = {
     "toggleterm",
     "undotree",
     "mind",
+}
+
+M.exclude_autosave_filetypes = {
+    "gitcommit",
+    "TelescopePrompt",
+    "dashboard",
+    "lazygit",
+    "neo-tree",
+    "oil",
+    "prompt",
+    "toggleterm",
 }
 --
 M.openai_token = M.is_nix and "{{ conf.openai_token }}" or ""

@@ -3,10 +3,43 @@ local conf = require("conf")
 return {
     { "hiphish/rainbow-delimiters.nvim", event = { "BufReadPost", "BufNewFile" } },
     {
-        "nvim-treesitter/nvim-treesitter-textobjects",
+        "nvim-treesitter/nvim-treesitter",
+        build = ":TSUpdate",
+        dependencies = { "nvim-treesitter/nvim-treesitter-textobjects" },
+        event = { "BufReadPost", "BufNewFile" },
         config = function()
             local configs = require("nvim-treesitter.configs")
-            configs.setup({
+            local install = require("nvim-treesitter.install")
+            install.prefer_git = true
+            pcall(configs.setup, {
+                ensure_installed = { "markdown_inline", "markdown", "c", "lua", "vim", "vimdoc" },
+                ignore_install = {},
+                sync_install = false,
+                auto_install = true,
+                matchup = { enable = false },
+                highlight = {
+                    enable = true,
+                    disable = { "clojure" },
+                    additional_vim_regex_highlighting = conf.treesitter_nvim_highlighting,
+                },
+                indent = {
+                    enable = true,
+                    disable = { "yaml", "python", "html", "vue" },
+                },
+                incremental_selection = {
+                    enable = false,
+                    keymaps = {
+                        init_selection = "<cr>",
+                        node_incremental = "<cr>",
+                        node_decremental = "<bs>",
+                        scope_incremental = "<tab>",
+                    },
+                },
+                autotag = { enable = true },
+                context_commentstring = {
+                    enable = true,
+                    enable_autocmd = false,
+                },
                 textobjects = {
                     select = {
                         enable = true,
@@ -86,50 +119,13 @@ return {
                             ["[c"] = { query = "@class.outer", desc = "[TS] <Prev> class start" },
                             ["[i"] = { query = "@conditional.outer", desc = "[TS] <Prev> conditional start" },
                             ["[l"] = { query = "@loop.outer", desc = "[TS] <Prev> loop start" },
-                            ["[s"] = { query = "@scope", query_group = "locals", desc = "[TS] <Prev> scope"
+                            ["[s"] = {
+                                query = "@scope",
+                                query_group = "locals",
+                                desc = "[TS] <Prev> scope",
+                            },
                         },
                     },
-                },
-            })
-        end,
-    },
-    {
-        "nvim-treesitter/nvim-treesitter",
-        build = ":TSUpdate",
-        dependencies = { "nvim-treesitter/nvim-treesitter-textobjects" },
-        event = { "BufReadPost", "BufNewFile" },
-        config = function()
-            local configs = require("nvim-treesitter.configs")
-            local install = require("nvim-treesitter.install")
-            install.prefer_git = true
-            pcall(configs.setup, {
-                ensure_installed = { "markdown_inline", "markdown", "c", "lua", "vim", "vimdoc" },
-                ignore_install = {},
-                sync_install = false,
-                auto_install = true,
-                matchup = { enable = false },
-                highlight = {
-                    enable = true,
-                    disable = { "clojure" },
-                    additional_vim_regex_highlighting = conf.treesitter_nvim_highlighting,
-                },
-                indent = {
-                    enable = true,
-                    disable = { "yaml", "python", "html", "vue" },
-                },
-                incremental_selection = {
-                    enable = false,
-                    keymaps = {
-                        init_selection = "<cr>",
-                        node_incremental = "<cr>",
-                        node_decremental = "<bs>",
-                        scope_incremental = "<tab>",
-                    },
-                },
-                autotag = { enable = true },
-                context_commentstring = {
-                    enable = true,
-                    enable_autocmd = false,
                 },
             })
         end,

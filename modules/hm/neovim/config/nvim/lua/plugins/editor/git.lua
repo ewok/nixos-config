@@ -21,10 +21,7 @@ return {
                 desc = "Blame",
             },
         },
-        config = function()
-            local blame = require("blame")
-            blame.setup({})
-        end,
+        config = true,
     },
     {
         "NeogitOrg/neogit",

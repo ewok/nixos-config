@@ -1,4 +1,4 @@
-local lib = require("lib")
+local conf = require("conf")
 
 local function unique_by_label(items)
     local seen = {}
@@ -87,14 +87,14 @@ return {
         },
         appearance = { nerd_font_variant = "mono" },
         completion = {
-            menu = { border = "single", auto_show = true },
+            menu = { border = conf.options.float_border, auto_show = true },
             list = {
                 selection = { preselect = false, auto_insert = true },
             },
             documentation = {
                 auto_show = true,
                 auto_show_delay_ms = 100,
-                window = { border = "single" },
+                window = { border = conf.options.float_border },
             },
             ghost_text = { enabled = false },
         },
@@ -128,7 +128,7 @@ return {
                 lazydev = { name = "LazyDev", module = "lazydev.integrations.blink", score_offset = 100 },
             },
         },
-        signature = { window = { border = "single" }, enabled = true },
+        signature = { window = { border = conf.options.float_border }, enabled = true },
         fuzzy = { sorts = { "exact", "score", "sort_text" } },
         cmdline = {
             keymap = {

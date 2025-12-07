@@ -8,3 +8,8 @@ lib.reg_ft("go", function()
 end)
 
 lib.reg_lsp("gopls", {})
+
+lib.reg_ft_once("go", function()
+    local null_ls = require("null-ls")
+    null_ls.register({ null_ls.builtins.diagnostics.golangci_lint })
+end)

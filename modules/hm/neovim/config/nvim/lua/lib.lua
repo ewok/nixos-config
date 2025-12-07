@@ -52,7 +52,7 @@ M.get_all_win_buf_ft = function()
             table.insert(result, {
                 win_id = win_id,
                 buf_id = buf_id,
-                buf_ft = vim.api.nvim_buf_get_option(buf_id, "filetype"),
+                buf_ft = vim.api.nvim_get_option_value("filetype", { buf = buf_id }),
             })
         end
     end
@@ -60,7 +60,7 @@ M.get_all_win_buf_ft = function()
 end
 
 M.get_buf_ft = function(buf_id)
-    return vim.api.nvim_buf_get_option(buf_id, "filetype")
+    return vim.api.nvim_get_option_value("filetype", { buf = buf_id })
 end
 
 M.get_file_cwd = function()

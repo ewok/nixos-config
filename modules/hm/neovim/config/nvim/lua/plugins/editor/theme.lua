@@ -9,7 +9,8 @@ local function update_bg(forced)
             -- vim.cmd.colorscheme("github_light")
             vim.o.background = "light"
         end
-    else
+    end
+    if vim.fn.filereadable(conf.home_dir .. "/Documents/theme_dark") == 1 then
         if forced or vim.o.background ~= "dark" then
             vim.cmd.colorscheme(conf.options.theme)
             -- vim.cmd.colorscheme("github_dark")
@@ -21,9 +22,10 @@ local function update_bg(forced)
 end
 
 map("n", "<leader>th", function()
-    update_bg()
-    os.execute("toggle-theme " .. (vim.o.background == "light" and "dark" or "light"))
-    update_bg(true)
+    vim.o.background = vim.o.background == "light" and "dark" or "light"
+    -- update_bg()
+    -- os.execute("toggle-theme " .. (vim.o.background == "light" and "dark" or "light"))
+    -- update_bg(true)
 end, { noremap = true }, "Toggle theme Dark")
 
 return {

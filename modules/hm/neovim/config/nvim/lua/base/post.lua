@@ -30,13 +30,17 @@ if conf.options.auto_toggle_rnu then
     vim.api.nvim_create_autocmd({ "BufEnter", "FocusGained", "InsertLeave", "WinEnter", "CmdlineLeave" }, {
         pattern = { "*" },
         callback = function()
-            vim.wo.rnu = vim.o.number
+            if vim.o.number then
+                vim.wo.rnu = true
+            end
         end,
     })
     vim.api.nvim_create_autocmd({ "BufLeave", "FocusLost", "InsertEnter", "WinLeave", "CmdlineEnter" }, {
         pattern = { "*" },
         callback = function()
-            vim.wo.rnu = not vim.o.number
+            if vim.o.number then
+                vim.wo.rnu = false
+            end
         end,
     })
 end

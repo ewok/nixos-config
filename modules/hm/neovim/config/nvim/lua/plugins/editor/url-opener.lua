@@ -1,3 +1,6 @@
+local lib = require("lib")
+local reg_ft, map = lib.reg_ft, lib.map
+
 return {
     {
         "ruifm/gitlinker.nvim",
@@ -23,7 +26,7 @@ return {
                 plugin = true,
                 github = true,
                 brewfile = false,
-                package_json = false,
+                package_json = true,
                 search = true,
                 go = true,
                 gitlinker = {
@@ -31,7 +34,7 @@ return {
                     handle = function(mode, _, _)
                         local linker = require("gitlinker")
                         mode = mode == "n" and "n" or "v"
-                        linker.get_buf_range_url(mode, {}, { silent = true })
+                        linker.get_buf_range_url(mode, { silent = true })
                     end,
                 },
                 tf = {

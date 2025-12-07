@@ -1,6 +1,6 @@
 local lib = require("lib")
 local reg_ft = lib.reg_ft
-local map = lib["map!"]
+local map = lib.map
 local conf = require("conf")
 
 return {
