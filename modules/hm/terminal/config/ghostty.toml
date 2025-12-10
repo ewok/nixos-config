@@ -1,5 +1,5 @@
 font-family = "{{ conf.theme.monospace_font }}"
-# font-size = {{ conf.theme.monospace_font_size }}
+font-size = {{ conf.font_size }}
 theme = {{ conf.theme.nice_name }}
 # theme = dark:{{ conf.theme.nice_name }},light:{{ conf.theme.nice_light_name }}
 shell-integration-features = ssh-terminfo,ssh-env,sudo

@@ -10,8 +10,9 @@ in
       orb = mkOption { type = types.bool; default = false; };
       terminal = mkOption {
         type = types.str;
-        default = "wezterm";
+        default = "";
       };
+
       tmux = {
         enable = mkEnableOption "tmux";
         install = mkOption {
@@ -42,6 +43,11 @@ in
           alt_separator_left = "";
           alt_separator_right = "";
         };
+      };
+
+      fontSizeOverride = mkOption {
+        type = types.str;
+        default = "";
       };
 
       colors = mkOption {

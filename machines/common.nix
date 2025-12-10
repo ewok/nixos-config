@@ -132,11 +132,9 @@ let
     # name = "onedark";
     regular_font = "FiraCode Nerd Font";
     regular_font_size = "10";
-    # monospace_font = "JetBrain Mono";
     # monospace_font = "FiraCode Nerd Font Mono";
     monospace_font = "Maple Mono NF";
-    # monospace_font = "Maple Mono Normal NF";
-    monospace_font_size = "11";
+    monospace_font_size = "12";
   };
 in
 {

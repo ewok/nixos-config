@@ -7,6 +7,7 @@ let
     conf.colors = cfg.colors;
     conf.theme = cfg.theme;
     conf.terminal = cfg.terminal;
+    conf.font_size = if cfg.fontSizeOverride == "" then cfg.theme.monospace_font_size else cfg.fontSizeOverride;
   };
 in
 {
