@@ -87,17 +87,25 @@ return {
         },
         appearance = { nerd_font_variant = "mono" },
         completion = {
-            menu = { border = conf.options.float_border, auto_show = true },
+            menu = {
+                border = conf.options.float_border,
+                auto_show = true,
+                max_height = 20,
+            },
             list = {
                 selection = { preselect = false, auto_insert = true },
             },
             documentation = {
                 auto_show = true,
                 auto_show_delay_ms = 100,
-                window = { border = conf.options.float_border },
+                window = {
+                    border = conf.options.float_border,
+                    max_height = 20,
+                },
             },
             ghost_text = { enabled = false },
         },
+        signature = { window = { border = conf.options.float_border, max_width = 80 }, enabled = true },
         sources = {
             default = {
                 "calc",
@@ -107,7 +115,7 @@ return {
                 "path",
                 "snippets",
                 "buffer",
-                "codecompanion",
+                -- "codecompanion",
                 "obsidian",
                 "obsidian_new",
                 "obsidian_tags",
@@ -128,7 +136,6 @@ return {
                 lazydev = { name = "LazyDev", module = "lazydev.integrations.blink", score_offset = 100 },
             },
         },
-        signature = { window = { border = conf.options.float_border }, enabled = true },
         fuzzy = { sorts = { "exact", "score", "sort_text" } },
         cmdline = {
             keymap = {

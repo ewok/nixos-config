@@ -3,53 +3,150 @@ local conf = require("conf")
 
 return {
     {
-        "MeanderingProgrammer/render-markdown.nvim",
-        opts = {
-            heading = { width = "block" },
-            code = { width = "block" },
-            checkbox = {
-                unchecked = { icon = "" },
-                checked = { icon = "󰄳" },
-                custom = {
-                    ["/"] = { raw = "[/]", rendered = "󱎖", highlight = "RenderMarkdownHint", scope_highlight = nil },
-                    ["-"] = { raw = "[-]", rendered = " ", highlight = "RenderMarkdownSuccess", scope_highlight = nil },
-                    [">"] = { raw = "[>]", rendered = "", highlight = "RenderMarkdownInfo", scope_highlight = nil },
-                    ["<"] = { raw = "[<]", rendered = "", highlight = "RenderMarkdownInfo", scope_highlight = nil },
-                    ["?"] = { raw = "[?]", rendered = "", highlight = "RenderMarkdownWarn", scope_highlight = nil },
-                    ["!"] = { raw = "[!]", rendered = "", highlight = "RenderMarkdownWarn", scope_highlight = nil },
-                    ["*"] = {
-                        raw = "[*]",
-                        rendered = "",
-                        highlight = "RenderMarkdownSuccess",
-                        scope_highlight = nil,
-                    },
-                    l = { raw = "[l]", rendered = "", highlight = "RenderMarkdownInfo", scope_highlight = nil },
-                    b = { raw = "[b]", rendered = "", highlight = "RenderMarkdownInfo", scope_highlight = nil },
-                    i = { raw = "[i]", rendered = "󱩎", highlight = "RenderMarkdownHint", scope_highlight = nil },
-                    S = { raw = "[S]", rendered = "", highlight = "RenderMarkdownInfo", scope_highlight = nil },
-                    p = { raw = "[p]", rendered = "󰔓", highlight = "RenderMarkdownSuccess", scope_highlight = nil },
-                    c = { raw = "[c]", rendered = "󰔑", highlight = "RenderMarkdownError", scope_highlight = nil },
-                    f = { raw = "[f]", rendered = "", highlight = "RenderMarkdownError", scope_highlight = nil },
-                    k = { raw = "[k]", rendered = "", highlight = "RenderMarkdownInfo", scope_highlight = nil },
-                    w = { raw = "[w]", rendered = "", highlight = "RenderMarkdownInfo", scope_highlight = nil },
-                    u = { raw = "[u]", rendered = "󰔵", highlight = "RenderMarkdownSuccess", scope_highlight = nil },
-                    d = { raw = "[d]", rendered = "󰔳", highlight = "RenderMarkdownError", scope_highlight = nil },
-                    q = { raw = "[q]", rendered = "", highlight = "RenderMarkdownQuote", scope_highlight = nil },
-                },
-            },
-        },
-        ft = { "markdown" },
-    },
-    {
         "gpanders/vim-medieval",
         ft = { "markdown" },
         config = function()
-            vim.g.medieval_langs = { "python", "ruby", "sh", "console=bash", "bash", "perl", "fish", "nu", "bb" }
+            vim.g.medieval_langs = { "python", "ruby", "sh", "console=bash", "bash", "perl", "fish", "nu", "bb", "go" }
         end,
     },
     {
         "obsidian-nvim/obsidian.nvim",
         version = "*",
+        dependencies = {
+            {
+                "MeanderingProgrammer/render-markdown.nvim",
+                opts = {
+                    preset = "obsidian",
+                    heading = { width = "block" },
+                    code = { width = "block" },
+                    completions = {
+                        blink = {
+                            enabled = true,
+                        },
+                    },
+                    checkbox = {
+                        unchecked = { icon = "" },
+                        checked = { icon = "󰄳" },
+                        custom = {
+                            ["/"] = {
+                                raw = "[/]",
+                                rendered = "󱎖",
+                                highlight = "RenderMarkdownHint",
+                                scope_highlight = nil,
+                            },
+                            ["-"] = {
+                                raw = "[-]",
+                                rendered = " ",
+                                highlight = "RenderMarkdownSuccess",
+                                scope_highlight = nil,
+                            },
+                            [">"] = {
+                                raw = "[>]",
+                                rendered = "",
+                                highlight = "RenderMarkdownInfo",
+                                scope_highlight = nil,
+                            },
+                            ["<"] = {
+                                raw = "[<]",
+                                rendered = "",
+                                highlight = "RenderMarkdownInfo",
+                                scope_highlight = nil,
+                            },
+                            ["?"] = {
+                                raw = "[?]",
+                                rendered = "",
+                                highlight = "RenderMarkdownWarn",
+                                scope_highlight = nil,
+                            },
+                            ["!"] = {
+                                raw = "[!]",
+                                rendered = "",
+                                highlight = "RenderMarkdownWarn",
+                                scope_highlight = nil,
+                            },
+                            ["*"] = {
+                                raw = "[*]",
+                                rendered = "",
+                                highlight = "RenderMarkdownSuccess",
+                                scope_highlight = nil,
+                            },
+                            l = {
+                                raw = "[l]",
+                                rendered = "",
+                                highlight = "RenderMarkdownInfo",
+                                scope_highlight = nil,
+                            },
+                            b = {
+                                raw = "[b]",
+                                rendered = "",
+                                highlight = "RenderMarkdownInfo",
+                                scope_highlight = nil,
+                            },
+                            i = {
+                                raw = "[i]",
+                                rendered = "󱩎",
+                                highlight = "RenderMarkdownHint",
+                                scope_highlight = nil,
+                            },
+                            S = {
+                                raw = "[S]",
+                                rendered = "",
+                                highlight = "RenderMarkdownInfo",
+                                scope_highlight = nil,
+                            },
+                            p = {
+                                raw = "[p]",
+                                rendered = "󰔓",
+                                highlight = "RenderMarkdownSuccess",
+                                scope_highlight = nil,
+                            },
+                            c = {
+                                raw = "[c]",
+                                rendered = "󰔑",
+                                highlight = "RenderMarkdownError",
+                                scope_highlight = nil,
+                            },
+                            f = {
+                                raw = "[f]",
+                                rendered = "",
+                                highlight = "RenderMarkdownError",
+                                scope_highlight = nil,
+                            },
+                            k = {
+                                raw = "[k]",
+                                rendered = "",
+                                highlight = "RenderMarkdownInfo",
+                                scope_highlight = nil,
+                            },
+                            w = {
+                                raw = "[w]",
+                                rendered = "",
+                                highlight = "RenderMarkdownInfo",
+                                scope_highlight = nil,
+                            },
+                            u = {
+                                raw = "[u]",
+                                rendered = "󰔵",
+                                highlight = "RenderMarkdownSuccess",
+                                scope_highlight = nil,
+                            },
+                            d = {
+                                raw = "[d]",
+                                rendered = "󰔳",
+                                highlight = "RenderMarkdownError",
+                                scope_highlight = nil,
+                            },
+                            q = {
+                                raw = "[q]",
+                                rendered = "",
+                                highlight = "RenderMarkdownQuote",
+                                scope_highlight = nil,
+                            },
+                        },
+                    },
+                },
+            },
+        },
         init = function()
             local md = { noremap = true, silent = false }
             map("n", "<leader>wo", "<cmd>Obsidian quick_switch<cr>", md, "Open note")
@@ -60,6 +157,9 @@ return {
         ft = "markdown",
         event = { "BufReadPre " .. conf.notes_dir .. "/**.md", "BufNewFile " .. conf.notes_dir .. "/**.md" },
         opts = {
+            ui = {
+                enable = false,
+            },
             legacy_commands = false,
             workspaces = { { name = "notes", path = "~/Notes" } },
             daily_notes = {

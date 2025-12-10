@@ -74,6 +74,9 @@ return {
                 "Toggle githunk overlay"
             )
             require("mini.diff").setup({
+                view = {
+                    style = "number",
+                },
                 mappings = {
                     apply = "gh",
                     reset = "gH",

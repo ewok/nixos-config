@@ -8,7 +8,6 @@ return {
     cmd = "ASToggle",
     event = { "InsertLeave", "TextChanged" },
     config = function()
-        local utils = require("auto-save.utils.data")
         require("auto-save").setup({
             enabled = true,
             trigger_events = {
