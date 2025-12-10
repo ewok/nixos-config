@@ -45,14 +45,14 @@ return {
     {
         "olimorris/codecompanion.nvim",
         version = "v17.33.0",
-        event = "InsertEnter",
+        -- event = "InsertEnter",
         cmd = { "CodeCompanion", "CodeCompanionChat", "CodeCompanionActions", "CodeCompanionCmd" },
         init = function()
-            map({ "n", "v" }, "<Leader>cc", "<cmd>CodeCompanionChat Toggle<cr>", { noremap = true, silent = true })
-            map({ "n", "v" }, "<Leader>cA", "<cmd>CodeCompanionActions<cr>", { noremap = true, silent = true })
+            map({ "n", "v" }, "<Leader>cac", "<cmd>CodeCompanionChat Toggle<cr>", { noremap = true, silent = true })
+            map({ "n", "v" }, "<Leader>caa", "<cmd>CodeCompanionActions<cr>", { noremap = true, silent = true })
             map("v", "gA", "<cmd>CodeCompanionChat Add<cr>", { noremap = true, silent = true })
             map("n", "<c-g>a", ":CodeCompanion /add<cr>", { noremap = true, silent = false })
-            map("v", "<c-g>a", "':'<,'>CodeCompanion /add<cr>", { noremap = true, silent = false })
+            map("v", "<c-g>a", ":'<,'>CodeCompanion /add<cr>", { noremap = true, silent = false })
             vim.cmd("cab cc CodeCompanion")
             reg_ft("gitcommit", function(ev)
                 map(
@@ -132,23 +132,23 @@ return {
     },
     {
         "github/copilot.vim",
-        event = "InsertEnter",
+        event = "VeryLazy",
         cmd = "Copilot",
         keys = {
+            -- {
+            --     "<leader>cao",
+            --     function()
+            --         vim.cmd("Copilot enable")
+            --         vim.schedule(function()
+            --             vim.cmd("Copilot status")
+            --         end)
+            --         vim.notify("Copilot Enabled", vim.log.levels.INFO, { title = "Copilot" })
+            --     end,
+            --     mode = "n",
+            --     desc = "Start Copilot",
+            -- },
             {
-                "<leader>co",
-                function()
-                    vim.cmd("Copilot enable")
-                    vim.schedule(function()
-                        vim.cmd("Copilot status")
-                    end)
-                    vim.notify("Copilot Enabled", vim.log.levels.INFO, { title = "Copilot" })
-                end,
-                mode = "n",
-                desc = "Start Copilot",
-            },
-            {
-                "<leader>cO",
+                "<leader>cad",
                 function()
                     vim.cmd("Copilot disable")
                     vim.notify("Copilot Disabled", vim.log.levels.INFO, { title = "Copilot" })

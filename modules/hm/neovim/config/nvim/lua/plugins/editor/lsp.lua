@@ -240,7 +240,7 @@ return {
                         )
                         map(
                             "n",
-                            "<leader>ca",
+                            "<leader>cc",
                             "<cmd>lua vim.lsp.buf.code_action()<cr>",
                             { buffer = bufnr, noremap = true },
                             "[lsp] Execute code action"
@@ -276,7 +276,7 @@ return {
                         if vim.lsp.buf.range_code_action then
                             map(
                                 "x",
-                                "<leader>ca",
+                                "<leader>cc",
                                 "<cmd>lua vim.lsp.buf.range_code_action()<cr>",
                                 { buffer = bufnr, noremap = true },
                                 "[lsp] Execute code action"
@@ -284,7 +284,7 @@ return {
                         else
                             map(
                                 "x",
-                                "<leader>ca",
+                                "<leader>cc",
                                 "<cmd>lua vim.lsp.buf.code_action()<cr>",
                                 { buffer = bufnr, noremap = true },
                                 "[lsp] Execute code action"

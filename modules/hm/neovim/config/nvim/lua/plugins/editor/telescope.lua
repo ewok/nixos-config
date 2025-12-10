@@ -32,6 +32,7 @@ return {
     },
     {
         "nvim-telescope/telescope.nvim",
+        event = "VeryLazy",
         cmd = "Telescope",
         init = function()
             map(
@@ -141,9 +142,9 @@ return {
                             ["<esc>"] = act.close,
                             q = act.close,
                             l = act.select_default,
-                            s = act.select_horizontal,
-                            v = act.select_vertical,
-                            t = act.select_tab,
+                            ["<c-s>"] = act.select_horizontal,
+                            ["<c-v>"] = act.select_vertical,
+                            ["<c-t>"] = act.select_tab,
                             ["/"] = function()
                                 vim.cmd("startinsert")
                             end,

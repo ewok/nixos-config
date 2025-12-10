@@ -33,6 +33,7 @@ return {
         })
         wk.add({
             { "<leader>c", group = "Code" },
+            { "<leader>ca", group = "Ai" },
             { "<leader>cd", group = "Diff/Diagnostics" },
             { "<leader>f", group = "Find" },
             { "<leader>fs", group = "Settings" },

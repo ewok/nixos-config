@@ -1,5 +1,5 @@
 local lib = require("lib")
-local map, umap = lib.map, lib.umap
+local map, umap, has_value = lib.map, lib.umap, lib.has_value
 local reg_ft = lib.reg_ft
 local conf = require("conf")
 
@@ -17,7 +17,7 @@ return {
             local oil_git = require("oil-git-status")
 
             reg_ft("oil", function(ev)
-                vim.o.number = false
+                -- vim.o.number = false
 
                 map("n", "<C-t>", function()
                     vim.cmd("tab split")
@@ -31,15 +31,20 @@ return {
                     callback = function()
                         map("n", "h", act.parent.callback, { buffer = ev.buf }, "Go to Parent Directory")
                         map("n", "l", act.select.callback, { buffer = ev.buf }, "select entry")
+                        map("n", "<C-v>", act.select_vsplit.callback, { buffer = ev.buf }, "Open in Vertical Split")
                     end,
                 })
 
-                vim.api.nvim_create_autocmd("InsertEnter", {
+                vim.api.nvim_create_autocmd("ModeChanged", {
                     buffer = ev.buf,
                     callback = function()
-                        umap("n", "h", { buffer = ev.buf })
-                        umap("n", "l", { buffer = ev.buf })
-                        vim.notify("Disabled h/l in oil buffer to prevent accidental navigation")
+                        -- check if mode is visual or insert
+                        if has_value({ "v", "i" }, vim.fn.mode()) then
+                            umap("n", "h", { buffer = ev.buf })
+                            umap("n", "l", { buffer = ev.buf })
+                            umap("n", "<C-v>", { buffer = ev.buf })
+                            vim.notify("Disabled h/l in oil buffer to prevent accidental navigation")
+                        end
                     end,
                 })
             end)
@@ -78,13 +83,12 @@ return {
                     ["g?"] = "actions.show_help",
                     ["<CR>"] = "actions.select",
                     -- ["l"] = "actions.select",
-                    ["<C-v>"] = "actions.select_vsplit",
+                    -- ["<C-v>"] = "actions.select_vsplit",
                     ["<C-s>"] = "actions.select_split",
                     ["<C-p>"] = "actions.preview",
                     -- ["h"] = "actions.parent",
                     -- ["u"] = "actions.parent",
                     ["q"] = "actions.close",
-                    ["<Esc>"] = "actions.close",
                     [";"] = "actions.close",
                     ["R"] = "actions.refresh",
                     ["@"] = "actions.open_cwd",
