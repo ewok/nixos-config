@@ -6,7 +6,6 @@ let
   username = "ataranchiev";
   homeDirectory = "/var/home/${username}";
   terminal = "ghostty";
-  # terminal = "wezterm";
 in
 {
   config = {

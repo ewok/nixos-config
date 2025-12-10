@@ -12,7 +12,7 @@ in
     environment.packages = with pkgs; [
       diffutils
       findutils
-      utillinux
+      util-linux
       tzdata
       hostname
       man
@@ -38,7 +38,7 @@ in
               inherit colors theme openai_token;
               android = true;
             };
-            vifm.enable = true;
+            yazi.enable = true;
             shell = {
               enable = true;
               homeDirectory = homeDirectory;
