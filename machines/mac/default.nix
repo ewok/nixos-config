@@ -36,7 +36,7 @@ in
             nvim = {
               enable = true;
               inherit colors theme;
-              orb = true;
+              # orb = true;
               openai_token = openai_token;
             };
             vifm.enable = true;
@@ -62,7 +62,6 @@ in
             };
             kube.enable = false;
             tf.enable = false;
-            lisps.enable = false;
             nix.enable = true;
             wm.enable = true;
             wm.homePath = homeDirectory;

@@ -26,9 +26,9 @@ M.options = {
     spelllang = { "nospell", "en_us", "ru_ru" },
     large_file_size = 1024 * 1024 * 20,
     treesitter_nvim_highlighting = false,
-    -- pbclip = "{{ conf.orb }}" == "true" and true or false,
-    -- tmuxclip = "{{ conf.remote }}" == "true" and true or false,
-    -- remote = "{{ conf.remote }}" == "true" and true or false,
+    pbclip = "{{ conf.orb }}" == "true" and true or false,
+    tmuxclip = "{{ conf.remote }}" == "true" and true or false,
+    remote = "{{ conf.remote }}" == "true" and true or false,
     show_virtual_lines = true,
 }
 

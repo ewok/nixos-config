@@ -5,25 +5,25 @@ local conf = require("conf")
 vim.g.mapleader = " "
 vim.g.maplocalleader = ","
 
--- -- when conf.options.pbclip
--- if conf.options.pbclip then
---     vim.g.clipboard = {
---         name = "orb",
---         copy = { ["+"] = { "pbcopy" }, ["*"] = { "pbcopy" } },
---         paste = { ["+"] = { "pbpaste" }, ["*"] = { "pbpaste" } },
---         cache_enabled = 1,
---     }
--- end
---
--- -- when conf.options.tmuxclip
--- if conf.options.tmuxclip then
---     vim.g.clipboard = {
---         name = "tmux",
---         copy = { ["+"] = { "tmux", "load-buffer", "-" }, ["*"] = { "tmux", "load-buffer", "-" } },
---         paste = { ["+"] = { "tmux", "save-buffer", "-" }, ["*"] = { "tmux", "save-buffer", "-" } },
---         cache_enabled = 1,
---     }
--- end
+-- when conf.options.pbclip
+if conf.options.pbclip then
+    vim.g.clipboard = {
+        name = "orb",
+        copy = { ["+"] = { "pbcopy" }, ["*"] = { "pbcopy" } },
+        paste = { ["+"] = { "pbpaste" }, ["*"] = { "pbpaste" } },
+        cache_enabled = 1,
+    }
+end
+
+-- when conf.options.tmuxclip
+if conf.options.tmuxclip then
+    vim.g.clipboard = {
+        name = "tmux",
+        copy = { ["+"] = { "tmux", "load-buffer", "-" }, ["*"] = { "tmux", "load-buffer", "-" } },
+        paste = { ["+"] = { "tmux", "save-buffer", "-" }, ["*"] = { "tmux", "save-buffer", "-" } },
+        cache_enabled = 1,
+    }
+end
 
 local settings = {
     shell = "bash",
