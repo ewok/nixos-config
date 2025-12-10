@@ -10,11 +10,13 @@ in
   config = lib.mkIf cfg.enable {
     home.packages = with pkgs; [
       go
-      # delve
+      delve
     ];
     xdg.configFile."bash/rc.d/02_go.sh".text = ''
       export GOPATH="$HOME/.go"
       export GOBIN="$GOPATH/bin"
+      export GOVCS="*:git|hg"
+      export GOFLAGS="-buildvcs=false"
       case ":$PATH:" in
         *":$GOBIN:"*) :;;
         *) PATH="$GOBIN:$PATH";;

@@ -15,7 +15,24 @@ return {
                 icons_enabled = true,
                 component_separators = { left = conf.separator.alt_left, right = conf.separator.alt_right },
                 section_separators = { left = conf.separator.left, right = conf.separator.right },
-                disabled_filetypes = {},
+                disabled_filetypes = {
+                    statusline = {
+                        "dap-repl",
+                        "dapui_breakpoints",
+                        "dapui_console",
+                        "dapui_scopes",
+                        "dapui_watches",
+                        "dapui_stacks",
+                    },
+                    winbar = {
+                        "dap-repl",
+                        "dapui_breakpoints",
+                        "dapui_console",
+                        "dapui_scopes",
+                        "dapui_watches",
+                        "dapui_stacks",
+                    },
+                },
                 globalstatus = true,
             },
             sections = {

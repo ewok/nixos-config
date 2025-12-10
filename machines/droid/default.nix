@@ -68,7 +68,8 @@ in
             kube.enable = false;
             bw.enable = false;
             nix.enable = true;
-            lisps.enable = true;
+            languages.lisps.enable = true;
+            languages.go.enable = true;
             direnv.enable = true;
             terminal = {
               enable = true;
