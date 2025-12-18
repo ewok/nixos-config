@@ -82,7 +82,7 @@ return {
             map("n", "<leader>fsc", "<cmd>Telescope colorscheme<CR>", { silent = true }, "Colorschemes")
             map("n", "<leader>fj", "<cmd>Telescope jumplist<CR>", { silent = true }, "Find jumps")
             map("n", "<leader>fM", "<cmd>Telescope man_pages<CR>", { silent = true }, "Find man pages")
-            map("n", ";", "<cmd>Telescope buffers initial_mode=normal<CR>", { silent = true }, "Buffers")
+            map("n", "<leader>fb", "<cmd>Telescope buffers initial_mode=normal<CR>", { silent = true }, "Buffers")
         end,
         config = function()
             local ts = require("telescope")
