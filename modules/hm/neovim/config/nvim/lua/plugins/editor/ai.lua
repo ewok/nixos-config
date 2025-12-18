@@ -132,30 +132,30 @@ return {
     },
     {
         "github/copilot.vim",
-        event = "VeryLazy",
+        -- event = "VeryLazy",
         cmd = "Copilot",
         keys = {
-            -- {
-            --     "<leader>cao",
-            --     function()
-            --         vim.cmd("Copilot enable")
-            --         vim.schedule(function()
-            --             vim.cmd("Copilot status")
-            --         end)
-            --         vim.notify("Copilot Enabled", vim.log.levels.INFO, { title = "Copilot" })
-            --     end,
-            --     mode = "n",
-            --     desc = "Start Copilot",
-            -- },
             {
-                "<leader>cad",
+                "<leader>co",
                 function()
-                    vim.cmd("Copilot disable")
-                    vim.notify("Copilot Disabled", vim.log.levels.INFO, { title = "Copilot" })
+                    vim.cmd("Copilot enable")
+                    vim.schedule(function()
+                        vim.cmd("Copilot status")
+                    end)
+                    vim.notify("Copilot Enabled", vim.log.levels.INFO, { title = "Copilot" })
                 end,
                 mode = "n",
-                desc = "Stop Copilot",
+                desc = "Start Copilot",
             },
+            -- {
+            --     "<leader>cad",
+            --     function()
+            --         vim.cmd("Copilot disable")
+            --         vim.notify("Copilot Disabled", vim.log.levels.INFO, { title = "Copilot" })
+            --     end,
+            --     mode = "n",
+            --     desc = "Stop Copilot",
+            -- },
         },
         config = function()
             vim.g.copilot_loaded = true
