@@ -72,7 +72,7 @@ in
               enable = true;
               inherit colors theme;
               terminal = "ghostty";
-              fontSizeOverride = "15";
+              fontSizeOverride = "16";
               tmux = {
                 enable = true;
                 terminal = "xterm-256color";
