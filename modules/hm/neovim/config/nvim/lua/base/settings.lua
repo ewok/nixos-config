@@ -85,6 +85,7 @@ local settings = {
     foldenable = false,
     wrap = false,
     list = true,
+    listchars = "tab:▸ ,trail:·,extends:»,precedes:«,nbsp:␣",
     linebreak = true,
     numberwidth = 2,
     signcolumn = "yes:1",

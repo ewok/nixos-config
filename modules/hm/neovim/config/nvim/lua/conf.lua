@@ -20,7 +20,7 @@ M.options = {
     auto_restore_cursor_position = true,
     auto_remove_new_lines_comment = true,
     auto_toggle_rnu = true,
-    auto_hide_cursorline = true,
+    auto_hide_cursorline = false,
     theme = M.is_nix and "{{ conf.theme.name_vim }}" or "catppuccin",
     light_theme = M.is_nix and "{{ conf.theme.light_name_vim }}" or "catppuccin",
     spelllang = { "nospell", "en_us", "ru_ru" },
@@ -30,6 +30,7 @@ M.options = {
     tmuxclip = "{{ conf.remote }}" == "true" and true or false,
     remote = "{{ conf.remote }}" == "true" and true or false,
     show_virtual_lines = true,
+    auto_hide_hlsearch = true,
 }
 
 M.separator = M.is_nix

@@ -15,6 +15,10 @@ return {
                 gotoLocation = { n = "<enter>" },
                 pickHistoryEntry = { n = "<enter>" },
                 abort = { n = "<c-c>", i = "<c-c>" },
+                openLocation = { n = "<c-o>" },
+                syncNext = { n = "<c-n>" },
+                syncPrev = { n = "<c-p>" },
+                syncFile = { n = "<c-f>" },
             },
         })
     end,
