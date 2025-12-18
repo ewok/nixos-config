@@ -22,7 +22,6 @@ in
       packages = with pkgs; [
         kubectl
         kubectx
-        k9s
         kubernetes-helm
         klog
       ];
