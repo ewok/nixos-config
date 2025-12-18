@@ -179,6 +179,8 @@ in
           # typos
           # yamllint
           golangci-lint
+          go-tools
+          errcheck
 
           # FMT
           black

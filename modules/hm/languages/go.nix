@@ -17,6 +17,7 @@ in
       export GOBIN="$GOPATH/bin"
       export GOVCS="*:git|hg"
       export GOFLAGS="-buildvcs=false"
+      mkdir -p "$GOBIN"
       case ":$PATH:" in
         *":$GOBIN:"*) :;;
         *) PATH="$GOBIN:$PATH";;
