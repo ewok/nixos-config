@@ -133,6 +133,8 @@ in
           curl
           gzip
           par
+          elinks # for docs
+          # pandoc # for docs
 
           python3
 

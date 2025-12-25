@@ -73,11 +73,11 @@ return {
                 "Find string in current buffer"
             )
             map("n", "<leader>f:", "<cmd>Telescope command_history<cr>", { silent = true }, "Find all command history")
-            map("n", "<leader>fh", "<cmd>Telescope help_tags<CR>", { silent = true }, "Help tags")
+            map("n", "<leader>fsh", "<cmd>Telescope help_tags<CR>", { silent = true }, "Help tags")
             map("n", "<leader>fss", "<cmd>Telescope vim_options<CR>", { silent = true }, "Settings")
             map("n", "<leader>fsa", "<cmd>Telescope autocommands<CR>", { silent = true }, "Autocommands")
             map("n", "<leader>fsf", "<cmd>Telescope filetypes<CR>", { silent = true }, "Filetypes")
-            map("n", "<leader>fsh", "<cmd>Telescope highlights<CR>", { silent = true }, "Highlights")
+            map("n", "<leader>fsi", "<cmd>Telescope highlights<CR>", { silent = true }, "Highlights")
             map("n", "<leader>fsk", "<cmd>Telescope keymaps<CR>", { silent = true }, "Keymaps")
             map("n", "<leader>fsc", "<cmd>Telescope colorscheme<CR>", { silent = true }, "Colorschemes")
             map("n", "<leader>fj", "<cmd>Telescope jumplist<CR>", { silent = true }, "Find jumps")

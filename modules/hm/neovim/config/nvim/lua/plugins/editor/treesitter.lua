@@ -4,6 +4,7 @@ return {
     { "hiphish/rainbow-delimiters.nvim", event = { "BufReadPost", "BufNewFile" } },
     {
         "nvim-treesitter/nvim-treesitter",
+        cmd = "TSUpdate",
         build = ":TSUpdate",
         dependencies = { "nvim-treesitter/nvim-treesitter-textobjects" },
         event = { "BufReadPost", "BufNewFile" },
@@ -12,7 +13,7 @@ return {
             local install = require("nvim-treesitter.install")
             install.prefer_git = true
             pcall(configs.setup, {
-                ensure_installed = { "markdown_inline", "markdown", "c", "lua", "vim", "vimdoc" },
+                ensure_installed = { "markdown_inline", "markdown", "c", "lua", "vim", "vimdoc", "html" },
                 ignore_install = {},
                 sync_install = false,
                 auto_install = true,
