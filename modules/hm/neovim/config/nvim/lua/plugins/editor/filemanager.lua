@@ -319,6 +319,16 @@ return {
                             ["gs"] = "git_add_file",
                             ["gu"] = "git_unstage_file",
                             ["bd"] = "noop",
+                            ["a"] = "noop",
+                            ["o"] = "noop",
+                            ["A"] = "noop",
+                            ["m"] = "noop",
+                            ["b"] = "noop",
+                            ["r"] = "noop",
+                            ["c"] = "noop",
+                            ["p"] = "noop",
+                            ["x"] = "noop",
+                            ["y"] = "noop",
                             ["i"] = call_oil,
                             ["d"] = function(state)
                                 local node = state.tree:get_node()

@@ -38,7 +38,7 @@ in
               inherit colors theme openai_token;
               android = true;
             };
-            yazi.enable = true;
+            vifm.enable = true;
             shell = {
               enable = true;
               homeDirectory = homeDirectory;

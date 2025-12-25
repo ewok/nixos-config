@@ -24,7 +24,7 @@ reg_ft("yaml", function(ev)
 
     if wk_ok then
         wk.add({
-            ["<leader>ck"] = { name = "[ft] Kustomize", buffer = ev.buf },
+            { "<leader>ck", group = "[ft] Kustomize", buffer = ev.buf },
         })
     end
 end)

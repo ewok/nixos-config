@@ -248,7 +248,10 @@ return {
                         map(
                             "n",
                             "gl",
-                            "<cmd>lua vim.diagnostic.open_float()<cr>",
+                            -- "<cmd>lua vim.diagnostic.open_float()<cr>",
+                            function()
+                                vim.diagnostic.open_float({ border = conf.options.float_border })
+                            end,
                             { buffer = bufnr, noremap = true },
                             "[lsp] Show diagnostic"
                         )
