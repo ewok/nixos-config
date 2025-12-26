@@ -44,8 +44,7 @@ return {
     },
     {
         "olimorris/codecompanion.nvim",
-        version = "v17.33.0",
-        -- event = "InsertEnter",
+        -- version = "v17.33.0",
         cmd = { "CodeCompanion", "CodeCompanionChat", "CodeCompanionActions", "CodeCompanionCmd" },
         init = function()
             map({ "n", "v" }, "<Leader>cac", "<cmd>CodeCompanionChat Toggle<cr>", { noremap = true, silent = true })
@@ -58,23 +57,24 @@ return {
                 map(
                     "n",
                     "cc",
-                    ":CodeCompanion /commit<cr>",
+                    ":CodeCompanion /mycommit<cr>",
                     { noremap = true, silent = true, nowait = true, buffer = ev.buf },
                     "[gpt] Add commit"
                 )
             end)
         end,
+
         config = function()
             require("codecompanion").setup({
                 prompt_library = {
                     ["Add Prompt"] = {
-                        strategy = "inline",
+                        interaction = "inline",
                         description = "Prompt the LLM from Neovim",
                         opts = {
                             index = 50,
                             is_default = true,
                             is_slash_cmd = true,
-                            short_name = "add",
+                            alias = "add",
                             user_prompt = true,
                             placement = "add",
                             start_in_insert_mode = true,
@@ -92,13 +92,13 @@ return {
                         },
                     },
                     ["Generate a Commit Message"] = {
-                        strategy = "inline",
+                        interaction = "inline",
                         description = "Generate a commit message",
                         opts = {
                             index = 10,
                             is_default = true,
                             is_slash_cmd = true,
-                            short_name = "commit",
+                            alias = "mycommit",
                             auto_submit = true,
                             user_prompt = false,
                             placement = "before",
@@ -117,7 +117,7 @@ return {
                         },
                     },
                 },
-                strategies = {
+                interactions = {
                     chat = { adapter = { name = "openai", model = "gpt-4o" } },
                     inline = { adapter = { name = "openai", model = "gpt-4o-mini" } },
                 },
