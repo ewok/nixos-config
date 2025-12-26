@@ -182,6 +182,7 @@ in
           # yamllint
           golangci-lint
           go-tools
+          gotools
           errcheck
 
           # FMT
