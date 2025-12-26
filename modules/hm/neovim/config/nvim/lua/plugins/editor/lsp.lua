@@ -6,6 +6,35 @@ local conf = require("conf")
 
 return {
     {
+        "mfussenegger/nvim-lint",
+    },
+    {
+        "stevearc/conform.nvim",
+        opts = {},
+        keys = {
+            {
+                "<leader>cf",
+                function()
+                    require("conform").format({ async = true })
+                end,
+                mode = "",
+                desc = "Format buffer",
+            },
+        },
+        config = function()
+            require("conform").setup({
+                default_format_opts = {
+                    lsp_format = "fallback",
+                },
+                format_on_save = nil,
+                --     {
+                --     timeout_ms = 1000,
+                --     lsp_format = "fallback",
+                -- },
+            })
+        end,
+    },
+    {
         "stevearc/aerial.nvim",
         cmd = { "AerialToggle" },
         enabled = conf.packages.aerial,
@@ -83,57 +112,57 @@ return {
             })
         end,
     },
-    {
-        -- https://github.com/nvimtools/none-ls.nvim/blob/main/doc/BUILTINS.md
-        "nvimtools/none-ls.nvim",
-        config = function()
-            local nl = require("null-ls")
-            nl.setup()
-        end,
-        keys = {
-            {
-                "<leader>cf",
-                function()
-                    local gen = require("null-ls.generators")
-                    local meth = require("null-ls.methods")
-                    local bufnr = vim.api.nvim_get_current_buf()
-
-                    local function formatting_enabled(buf)
-                        local ft = vim.api.nvim_get_option_value("filetype", { buf = buf })
-                        local generators = gen.get_available(ft, meth.internal.FORMATTING)
-                        return #generators > 0
-                    end
-
-                    vim.lsp.buf.format({
-                        filter = function(client)
-                            local null_supported = formatting_enabled(bufnr)
-
-                            if client.name == "null-ls" then
-                                if null_supported then
-                                    vim.notify("Formatting with: " .. client.name, nil, { title = "FMT" })
-                                    return true
-                                else
-                                    return false
-                                end
-                            else
-                                if null_supported then
-                                    return false
-                                elseif client.supports_method("textDocument/formatting") then
-                                    vim.notify("Formatting with: " .. client.name, nil, { title = "FMT" })
-                                    return true
-                                else
-                                    return false
-                                end
-                            end
-                        end,
-                        bufnr = bufnr,
-                    })
-                end,
-                mode = { "n", "v" },
-                desc = "[null] Format file or range",
-            },
-        },
-    },
+    -- {
+    --     -- https://github.com/nvimtools/none-ls.nvim/blob/main/doc/BUILTINS.md
+    --     "nvimtools/none-ls.nvim",
+    --     config = function()
+    --         local nl = require("null-ls")
+    --         nl.setup()
+    --     end,
+    --     keys = {
+    --         {
+    --             "<leader>cf",
+    --             function()
+    --                 local gen = require("null-ls.generators")
+    --                 local meth = require("null-ls.methods")
+    --                 local bufnr = vim.api.nvim_get_current_buf()
+    --
+    --                 local function formatting_enabled(buf)
+    --                     local ft = vim.api.nvim_get_option_value("filetype", { buf = buf })
+    --                     local generators = gen.get_available(ft, meth.internal.FORMATTING)
+    --                     return #generators > 0
+    --                 end
+    --
+    --                 vim.lsp.buf.format({
+    --                     filter = function(client)
+    --                         local null_supported = formatting_enabled(bufnr)
+    --
+    --                         if client.name == "null-ls" then
+    --                             if null_supported then
+    --                                 vim.notify("Formatting with: " .. client.name, nil, { title = "FMT" })
+    --                                 return true
+    --                             else
+    --                                 return false
+    --                             end
+    --                         else
+    --                             if null_supported then
+    --                                 return false
+    --                             elseif client.supports_method("textDocument/formatting") then
+    --                                 vim.notify("Formatting with: " .. client.name, nil, { title = "FMT" })
+    --                                 return true
+    --                             else
+    --                                 return false
+    --                             end
+    --                         end
+    --                     end,
+    --                     bufnr = bufnr,
+    --                 })
+    --             end,
+    --             mode = { "n", "v" },
+    --             desc = "[null] Format file or range",
+    --         },
+    --     },
+    -- },
     {
         "neovim/nvim-lspconfig",
         event = { "BufReadPre", "BufNewFile" },

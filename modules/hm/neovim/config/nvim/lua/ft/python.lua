@@ -21,6 +21,5 @@ end)
 lib.reg_lsp("pyright", {})
 
 lib.reg_ft_once("python", function()
-    local null_ls = require("null-ls")
-    null_ls.register({ null_ls.builtins.formatting.black })
+    require("conform").formatters_by_ft.python = { "isort", "black" }
 end)

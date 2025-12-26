@@ -10,6 +10,5 @@ end)
 lib.reg_lsp("jsonls", {})
 
 lib.reg_ft_once("json", function()
-    local null_ls = require("null-ls")
-    null_ls.register({ null_ls.builtins.formatting.prettier })
+    require("conform").formatters_by_ft.json = { "prettier" }
 end)

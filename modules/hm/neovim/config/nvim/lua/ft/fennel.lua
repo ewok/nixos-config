@@ -24,6 +24,5 @@ end)
 reg_lsp("fennel_ls", { settings = { ["fennel-ls"] = { extra_globals = { "vim" } } } })
 
 reg_ft_once("fennel", function()
-    local null_ls = require("null-ls")
-    null_ls.register({ null_ls.builtins.formatting.fnlfmt })
+    require("conform").formatters_by_ft.fennel = { "fnlfmt" }
 end)

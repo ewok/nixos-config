@@ -33,6 +33,5 @@ lib.reg_lsp("clojure_lsp", {
 })
 
 lib.reg_ft_once("clojure", function()
-    local null_ls = require("null-ls")
-    null_ls.register({ null_ls.builtins.formatting.joker })
+    require("conform").formatters_by_ft.clojure = { "joker" }
 end)

@@ -7,6 +7,5 @@ local lib = require("lib")
 lib.reg_lsp("nil_ls", {})
 
 lib.reg_ft_once("nix", function()
-    local null_ls = require("null-ls")
-    null_ls.register({ null_ls.builtins.formatting.nixpkgs_fmt })
+    require("conform").formatters_by_ft.nix = { "nixpkgs_fmt" }
 end)

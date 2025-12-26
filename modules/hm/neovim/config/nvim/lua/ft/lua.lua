@@ -47,6 +47,5 @@ lib.reg_lsp("lua_ls", {
 })
 
 lib.reg_ft_once("lua", function()
-    local null_ls = require("null-ls")
-    null_ls.register({ null_ls.builtins.formatting.stylua })
+    require("conform").formatters_by_ft.lua = { "stylua" }
 end)

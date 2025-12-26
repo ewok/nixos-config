@@ -10,6 +10,8 @@ end)
 lib.reg_lsp("gopls", {})
 
 lib.reg_ft_once("go", function()
-    local null_ls = require("null-ls")
-    null_ls.register({ null_ls.builtins.diagnostics.golangci_lint })
+    require("conform").formatters_by_ft.go = { "goimports", "gofmt" }
+    require("lint").linters_by_ft = {
+        go = { "golangcilint" },
+    }
 end)

@@ -24,6 +24,5 @@ reg_ft("markdown", function()
 end)
 
 lib.reg_ft_once("markdown", function()
-    local null_ls = require("null-ls")
-    null_ls.register({ null_ls.builtins.formatting.prettier })
+    require("conform").formatters_by_ft.markdown = { "prettier" }
 end)
