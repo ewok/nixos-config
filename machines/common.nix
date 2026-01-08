@@ -155,6 +155,7 @@ in
       homeDirectory = mkOption { type = types.str; };
 
       openai_token = mkOption { type = types.str; };
+      context7_api_key = mkOption { type = types.str; };
       exchange_api_key = mkOption { type = types.str; };
 
       ssh_config = mkOption { type = types.str; };
