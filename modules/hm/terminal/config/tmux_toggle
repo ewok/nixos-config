@@ -1,45 +1,146 @@
 #!/usr/bin/env bash
 
+# Tmux Toggle Script
+# Toggles between popup terminal and regular pane splitting
+# Usage: tmux_toggle [working_directory] [force_mode] [named_session] [cmd]
+#   working_directory: Directory to use for new sessions/panes (default: current pane path)
+#   force_mode: 'f' = force popup, 't' = force traditional panes, empty for auto
+#   named_session: Additional name for popup session (only works in float mode)
+#   cmd: Command to run in new session (optional)
+
 set -uo pipefail
 
-CWD_I="${1:-$(tmux display-message -p -F "#{pane_current_path}")}"
-FORCE="${2:-}"
+# =============================================================================
+# Configuration and Arguments
+# =============================================================================
 
-TMUX_SESS=$(tmux display-message -p -F "#{session_name}")
+# Get working directory from argument or current pane
+readonly WORKING_DIR="${1:-$(tmux display-message -p -F "#{pane_current_path}")}"
+# Force mode: 'f' for popup, 't' for traditional panes, empty for auto
+readonly FORCE_MODE="${2:-}"
+# Named session: additional name for popup session (only used in float mode)
+readonly NAMED_SESSION="${3:-}"
+# Command to run in new session (optional)
+readonly CMD="${4:-}"
+# Current tmux session name
+readonly CURRENT_SESSION=$(tmux display-message -p -F "#{session_name}")
 
-if [[ "$FORCE" = "f" ]]; then
-	FLOAT_TERM="true"
-	tmux set -g "@${TMUX_SESS}_float" true
-elif [[ "$FORCE" = "t" ]]; then
-	FLOAT_TERM="false"
-	tmux set -g "@${TMUX_SESS}_float" false
-else
-	FLOAT_TERM=$(tmux display-message -p -F "#{@${TMUX_SESS}_float}")
-fi
+# =============================================================================
+# Functions
+# =============================================================================
 
-if [ "$FLOAT_TERM" != "false" ]; then
+# Generate session name for popup mode (directory slug + optional named session)
+get_popup_session_name() {
+    local working_dir="$1"
+    local named_session="$2"
 
-	slug=$(echo "$CWD_I" | tr '[:upper:]' '[:lower:]' | sed ' s/[^a-zA-Z0-9]/_/g')
+    # Always start with directory slug
+    local session_slug
+    session_slug=$(echo "$working_dir" | tr '[:upper:]' '[:lower:]' | sed 's/[^a-zA-Z0-9]/_/g')
 
-	if [[ "$TMUX_SESS" == popup* ]]; then
-		tmux detach-client
-	else
-		tmux popup -d "$CWD_I" -xC -yC -w90% -h90% -E \
-			"tmux attach -t popup_$slug || tmux new -s popup_$slug \; set-option detach-on-destroy on \; set status-right '' \; set status-left ''"
-	fi
+    if [ "$named_session" != "" ]; then
+        # Add named session to the slug
+        echo "popup_${session_slug}_${named_session}"
+    else
+        # Just use directory slug
+        echo "popup_${session_slug}"
+    fi
+}
 
-else
+# Determine if we should use floating terminal (popup) mode
+determine_float_mode() {
+    local float_mode
 
-	LIST_PANES="$(tmux list-panes -F '#F')"
-	PANE_COUNT="$(echo "$LIST_PANES" | wc -l | bc)"
-	PANE_ZOOMED="$(echo "$LIST_PANES" | grep Z)"
+    if [[ "$FORCE_MODE" = "f" ]]; then
+        # Force popup mode
+        float_mode="true"
+        tmux set -g "@${CURRENT_SESSION}_float" true
+    elif [[ "$FORCE_MODE" = "t" ]]; then
+        # Force traditional pane mode
+        float_mode="false"
+        tmux set -g "@${CURRENT_SESSION}_float" false
+    else
+        # Auto-detect from session variable
+        float_mode=$(tmux display-message -p -F "#{@${CURRENT_SESSION}_float}")
+    fi
 
-	if [ "$PANE_COUNT" = 1 ]; then
-		tmux split-window -c "$CWD_I" -v -l 20%
-	elif [ "$PANE_ZOOMED" != "" ]; then
-		tmux select-pane -t:.-
-	else
-		tmux resize-pane -Z -t1
-	fi
+    echo "$float_mode"
+}
 
-fi
+# Create or toggle popup terminal
+handle_popup_mode() {
+    local working_dir="$1"
+    local named_session="$2"
+    local cmd="$3"
+
+    # Generate session name (directory slug + optional named session)
+    local session_name
+    session_name=$(get_popup_session_name "$working_dir" "$named_session")
+
+    if [[ "$CURRENT_SESSION" == popup* ]]; then
+        # Already in a popup session - detach to return to main session
+        tmux detach-client
+    else
+        # Build the session command
+        local session_cmd
+        if [ "$cmd" != "" ]; then
+            # Create session with custom command
+            session_cmd="tmux attach -t ${session_name} || tmux new -s ${session_name} -c ${working_dir} '${cmd}' \; set-option detach-on-destroy on \; set status-right '' \; set status-left ''"
+        else
+            # Create session with default shell
+            session_cmd="tmux attach -t ${session_name} || tmux new -s ${session_name} -c ${working_dir} \; set-option detach-on-destroy on \; set status-right '' \; set status-left ''"
+        fi
+
+        # Create or attach to popup session
+        tmux popup -d "$working_dir" -xC -yC -w90% -h90% -E "$session_cmd"
+    fi
+}
+
+# Handle traditional pane splitting/zooming
+handle_pane_mode() {
+    local working_dir="$1"
+    local cmd="$2"
+
+    # Get current pane information
+    local pane_flags pane_count zoomed_pane
+    pane_flags="$(tmux list-panes -F '#F')"
+    pane_count="$(echo "$pane_flags" | wc -l | bc)"
+    zoomed_pane="$(echo "$pane_flags" | grep Z || true)"
+
+    if [ "$pane_count" = 1 ]; then
+        # Only one pane - split it vertically
+        if [ "$cmd" != "" ]; then
+            # Split with custom command
+            tmux split-window -c "$working_dir" -v -l 20% "$cmd"
+        else
+            # Simple pane split with default shell
+            tmux split-window -c "$working_dir" -v -l 20%
+        fi
+    elif [ "$zoomed_pane" != "" ]; then
+        # Pane is zoomed - switch to previous pane
+        tmux select-pane -t:.-
+    else
+        # Multiple panes, none zoomed - zoom the first pane
+        tmux resize-pane -Z -t1
+    fi
+}
+
+# =============================================================================
+# Main Logic
+# =============================================================================
+
+main() {
+    local float_mode
+    float_mode=$(determine_float_mode)
+
+    if [ "$float_mode" != "false" ]; then
+        # Use popup mode
+        handle_popup_mode "$WORKING_DIR" "$NAMED_SESSION" "$CMD"
+    else
+        # Use traditional pane mode
+        handle_pane_mode "$WORKING_DIR" "$CMD"
+    fi
+}
+
+# Run main function
+main "$@"
