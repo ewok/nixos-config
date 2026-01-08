@@ -33,13 +33,13 @@ return {
         })
         wk.add({
             { "<leader>c", group = "Code" },
-            { "<leader>a", group = "Ai" },
+            { "<leader>a", group = "Ai", mode = { "n", "v" } },
             { "<leader>cd", group = "Diff/Diagnostics" },
             { "<leader>f", group = "Find" },
             { "<leader>fs", group = "Settings" },
             { "<leader>l", group = "Lsp" },
             { "<leader>o", group = "Open" },
-            { "<leader>g", group = "Git..." },
+            { "<leader>g", group = "Git...", mode = { "n", "v" } },
             { "<leader>ot", group = "Terminal..." },
             { "<leader>gf", group = "File..." },
             { "<leader>p", group = "Packages" },

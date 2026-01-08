@@ -49,11 +49,11 @@ return {
             },
         },
         init = function()
-            map({ "n", "v" }, "<Leader>ac", "<cmd>CodeCompanionChat Toggle<cr>", { noremap = true, silent = true })
-            map({ "n", "v" }, "<Leader>aA", "<cmd>CodeCompanionActions<cr>", { noremap = true, silent = true })
+            map({ "n", "v" }, "<Leader>aa", "<cmd>CodeCompanionChat Toggle<cr>", { noremap = true, silent = true })
+            map({ "n", "v" }, "<Leader>ac", "<cmd>CodeCompanionActions<cr>", { noremap = true, silent = true })
             map("v", "gA", "<cmd>CodeCompanionChat Add<cr>", { noremap = true, silent = true })
-            map("n", "<c-g>a", ":CodeCompanion /myadd<cr>", { noremap = true, silent = false })
-            map("v", "<c-g>a", ":'<,'>CodeCompanion /myadd<cr>", { noremap = true, silent = false })
+            -- map("n", "<c-g>a", ":CodeCompanion /myadd<cr>", { noremap = true, silent = false })
+            -- map("v", "<c-g>a", ":'<,'>CodeCompanion /myadd<cr>", { noremap = true, silent = false })
             vim.cmd("cab cc CodeCompanion")
             reg_ft("gitcommit", function(ev)
                 map(
@@ -115,9 +115,26 @@ return {
                         },
                     },
                 },
+                display = {
+                    chat = {
+                        show_token_count = true,
+                    },
+                },
                 interactions = {
-                    chat = { adapter = { name = "openai", model = "gpt-4o" } },
-                    inline = { adapter = { name = "openai", model = "gpt-4o-mini" } },
+                    chat = {
+                        adapter = { name = "copilot", model = "claude-sonnet-4" },
+                        keymaps = {
+                            send = {
+                                modes = { n = "<C-s>", i = "<C-s>" },
+                                opts = {},
+                            },
+                            close = {
+                                modes = { n = "q", i = "<C-w>q" },
+                                opts = {},
+                            },
+                        },
+                    },
+                    inline = { adapter = { name = "copilot", model = "gpt-5.1-codex-mini" } },
                 },
                 extensions = {
                     mcphub = {
@@ -128,38 +145,108 @@ return {
             })
         end,
     },
+    -- {
+    --     "github/copilot.vim",
+    --     cmd = "Copilot",
+    --     keys = {
+    --         {
+    --             "<leader>co",
+    --             function()
+    --                 vim.cmd("Copilot enable")
+    --                 vim.schedule(function()
+    --                     vim.cmd("Copilot status")
+    --                 end)
+    --                 vim.notify("Copilot Enabled", vim.log.levels.INFO, { title = "Copilot" })
+    --             end,
+    --             mode = "n",
+    --             desc = "Start Copilot",
+    --         },
+    --         -- {
+    --         --     "<leader>cad",
+    --         --     function()
+    --         --         vim.cmd("Copilot disable")
+    --         --         vim.notify("Copilot Disabled", vim.log.levels.INFO, { title = "Copilot" })
+    --         --     end,
+    --         --     mode = "n",
+    --         --     desc = "Stop Copilot",
+    --         -- },
+    --     },
+    --     config = function()
+    --         vim.g.copilot_loaded = true
+    --     end,
+    --     init = function()
+    --         vim.g.copilot_no_maps = true
+    --     end,
+    -- },
     {
-        "github/copilot.vim",
-        -- event = "VeryLazy",
+        "zbirenbaum/copilot.lua",
+        -- dependencies = {
+        --     "copilotlsp-nvim/copilot-lsp",
+        -- },
         cmd = "Copilot",
-        keys = {
-            {
-                "<leader>co",
-                function()
-                    vim.cmd("Copilot enable")
-                    vim.schedule(function()
-                        vim.cmd("Copilot status")
-                    end)
-                    vim.notify("Copilot Enabled", vim.log.levels.INFO, { title = "Copilot" })
-                end,
-                mode = "n",
-                desc = "Start Copilot",
-            },
-            -- {
-            --     "<leader>cad",
-            --     function()
-            --         vim.cmd("Copilot disable")
-            --         vim.notify("Copilot Disabled", vim.log.levels.INFO, { title = "Copilot" })
-            --     end,
-            --     mode = "n",
-            --     desc = "Stop Copilot",
-            -- },
-        },
+        event = "InsertEnter",
         config = function()
+            require("copilot").setup({
+                suggestion = {
+                    enabled = true,
+                    auto_trigger = true,
+                    hide_during_completion = true,
+                    debounce = 75,
+                    trigger_on_accept = true,
+                    keymap = {
+                        accept = "<C-l>",
+                        accept_word = false,
+                        accept_line = false,
+                        next = "<C-j>",
+                        prev = "<C-k>",
+                        dismiss = "<C-h>",
+                    },
+                },
+                nes = {
+                    enabled = false,
+                    auto_trigger = true,
+                    keymap = {
+                        accept_and_goto = false,
+                        accept = false,
+                        dismiss = false,
+                    },
+                },
+                copilot_model = "gpt-5.1-codex-mini",
+            })
             vim.g.copilot_loaded = true
         end,
-        init = function()
-            vim.g.copilot_no_maps = true
-        end,
     },
+    -- {
+    --     "NickvanDyke/opencode.nvim",
+    --     init = function()
+    --         -- Recommended/example keymaps.
+    --         vim.keymap.set({ "n", "x" }, "<leader>as", function()
+    --             require("opencode").ask("@this: ", { submit = true })
+    --         end, { desc = "Ask opencode" })
+    --
+    --         vim.keymap.set({ "n", "x" }, "<leader>ac", function()
+    --             require("opencode").select()
+    --         end, { desc = "Execute opencode action…" })
+    --
+    --         vim.keymap.set({ "n", "t" }, "<leader>aa", function()
+    --             require("opencode").toggle()
+    --         end, { desc = "Toggle opencode" })
+    --
+    --         vim.keymap.set({ "n", "x" }, "<C-g>a", function()
+    --             return require("opencode").operator("@this ")
+    --         end, { expr = true, desc = "Add range to opencode" })
+    --
+    --     end,
+    --     config = function()
+    --         ---@type opencode.Opts
+    --         vim.g.opencode_opts = {
+    --             provider = {
+    --                 enabled = "tmux",
+    --             },
+    --         }
+    --
+    --         -- Required for `opts.events.reload`.
+    --         vim.o.autoread = true
+    --     end,
+    -- },
 }
