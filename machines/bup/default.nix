@@ -91,7 +91,7 @@ in
             homeDirectory = homeDirectory;
           };
           nix.enable = true;
-          lisps.enable = false;
+          languages.lisps.enable = true;
           terminal = {
             enable = true;
             inherit colors theme;

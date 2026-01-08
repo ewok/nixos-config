@@ -23,7 +23,7 @@ in
           enable = true;
           homeDirectory = homeDirectory;
           inherit openai_token;
-          shell = "nu";
+          shell = "fish";
         };
         starship.enable = true;
         starship.colors = colors;
@@ -65,6 +65,7 @@ in
         direnv.enable = true;
         scripts.enable = true;
         tf.enable = true;
+        ai.enable = true;
       };
 
     xdg.configFile."sway/config.d/99-myconf.conf".text = ''
