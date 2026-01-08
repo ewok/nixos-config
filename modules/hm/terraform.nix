@@ -27,7 +27,7 @@ in
     home.file.".terraform.d/plugin-cache/.gitignore".text = "";
     xdg.configFile."fish/conf.d/99_asdf.fish" = {
       text = ''
-        source "$HOME/.nix-profile/share/asdf-vm/asdf.fish"
+        source "$HOME/.nix-profile/share/fish/vendor_completions.d/asdf.fish"
       '';
     };
     xdg.configFile."nushell/autoload/asdf.nu" = {

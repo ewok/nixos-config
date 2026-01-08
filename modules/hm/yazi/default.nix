@@ -151,7 +151,7 @@ in
         "yazi/flavors/catppuccin-latte.yazi".source = "${yazi-rs-flavors}/catppuccin-latte.yazi";
 
         # Integrations
-        "fish/functions/yazi.fish".text = ''
+        "fish/functions/y.fish".text = ''
           function y
             set tmp (mktemp -t "yazi-cwd.XXXXXX")
             yazi $argv --cwd-file="$tmp"

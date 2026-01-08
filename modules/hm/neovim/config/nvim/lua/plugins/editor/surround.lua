@@ -1,1 +1,1 @@
-return { "kylechui/nvim-surround", version = "*", event = { "BufReadPre", "BufNewFile" }, config = true }
+return { "kylechui/nvim-surround", version = "*", event = { "BufReadPre", "BufNewFile", "InsertEnter" }, config = true }

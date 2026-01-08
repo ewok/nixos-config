@@ -184,6 +184,7 @@ in
           go-tools
           gotools
           errcheck
+          gofumpt
 
           # FMT
           black

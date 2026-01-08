@@ -15,6 +15,7 @@ if conf.options.auto_restore_cursor_position then
 end
 
 -- remove auto-comments
+
 if conf.options.auto_remove_new_lines_comment then
     vim.api.nvim_create_autocmd({ "BufEnter" }, {
         pattern = { "*" },
@@ -95,10 +96,20 @@ vim.api.nvim_create_autocmd({ "VimResized" }, { command = "wincmd =", pattern = 
 
 -- Show virtual lines
 if conf.options.show_virtual_lines then
+    local cursor_held_id = 0
     vim.api.nvim_create_autocmd("CursorHold", {
         pattern = "*",
         callback = function()
-            vim.diagnostic.config({ virtual_lines = { current_line = true } })
+            -- Increment the cursor_held_id to track potential movement
+            cursor_held_id = cursor_held_id + 1
+            local current_id = cursor_held_id
+
+            vim.defer_fn(function()
+                -- Only enable virtual lines if the cursor hasn't moved
+                if current_id == cursor_held_id then
+                    vim.diagnostic.config({ virtual_lines = { current_line = true } })
+                end
+            end, 1000)
         end,
         desc = "Enable virtual_lines with current_line",
     })
@@ -106,6 +117,7 @@ if conf.options.show_virtual_lines then
     vim.api.nvim_create_autocmd("CursorMoved", {
         pattern = "*",
         callback = function()
+            cursor_held_id = cursor_held_id + 1
             vim.diagnostic.config({ virtual_lines = false })
         end,
         desc = "Disable virtual_lines",

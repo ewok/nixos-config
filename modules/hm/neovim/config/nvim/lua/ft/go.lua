@@ -10,7 +10,7 @@ end)
 lib.reg_lsp("gopls", {})
 
 lib.reg_ft_once("go", function()
-    require("conform").formatters_by_ft.go = { "goimports", "gofmt" }
+    require("conform").formatters_by_ft.go = { "gofumpt", "goimports" }
     require("lint").linters_by_ft = {
         go = { "golangcilint" },
     }

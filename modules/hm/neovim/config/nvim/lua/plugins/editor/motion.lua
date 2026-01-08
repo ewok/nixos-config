@@ -4,7 +4,7 @@ local map = lib.map
 return {
     {
         "folke/flash.nvim",
-        event = { "BufReadPost", "BufNewFile", "BufNew" },
+        event = { "BufReadPost", "BufNew" },
         config = function()
             local flash = require("flash")
             map({ "n", "o", "x" }, "s", flash.jump, { silent = true }, "Flash")
@@ -18,5 +18,5 @@ return {
             })
         end,
     },
-    { "chaoren/vim-wordmotion", config = false, event = { "BufReadPre", "BufNewFile" } },
+    { "chaoren/vim-wordmotion", config = false, event = { "BufReadPre", "BufNewFile", "InsertEnter" } },
 }

@@ -38,8 +38,9 @@ map("n", "<c-space>", function()
 end, { silent = true }, "Toggle bottom or float terminal")
 
 map("n", "<leader>gg", function()
-    vim.cmd("silent !tmux popup -d " .. vim.uv.cwd() .. " -xC -yC -w90\\% -h90\\% -E lazygit")
-end, { silent = true }, "Open lazygit in bottom terminal")
+    vim.cmd("silent !~/.config/tmux/tmux_toggle '" .. vim.uv.cwd() .. "' f gg gg")
+    -- vim.cmd("silent !tmux popup -d " .. vim.uv.cwd() .. " -xC -yC -w90\\% -h90\\% -E lazygit")
+end, { silent = true }, "Open lazygit in float terminal")
 
 return {
     "christoomey/vim-tmux-navigator",

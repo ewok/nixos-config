@@ -15,7 +15,7 @@ return {
                 defer_save = { "InsertLeave", "TextChanged" },
                 cancel_deferred_save = { "InsertEnter" },
             },
-            write_all_buffers = false,
+            write_all_buffers = true,
             noautocmd = false,
             lockmarks = false,
             debounce_delay = 1000,

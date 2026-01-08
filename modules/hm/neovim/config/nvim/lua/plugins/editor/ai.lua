@@ -31,27 +31,29 @@ Given the git diff listed below, please generate a commit message for me:
 
 return {
     {
-        "ravitemer/mcphub.nvim",
-        cmd = { "MCPHub" },
-        init = function()
-            map("n", "<leader>cm", "<cmd>MCPHub<cr>", { noremap = true }, "MCPHub")
-        end,
-        config = function()
-            -- https://ravitemer.github.io/mcphub.nvim/configuration.html
-            require("mcphub").setup({ port = 37373, use_bundled_binary = true })
-        end,
-        build = "bundled_build.lua",
-    },
-    {
         "olimorris/codecompanion.nvim",
         -- version = "v17.33.0",
         cmd = { "CodeCompanion", "CodeCompanionChat", "CodeCompanionActions", "CodeCompanionCmd" },
+        dependencies = {
+            {
+                "ravitemer/mcphub.nvim",
+                cmd = { "MCPHub" },
+                init = function()
+                    map("n", "<leader>cm", "<cmd>MCPHub<cr>", { noremap = true }, "MCPHub")
+                end,
+                config = function()
+                    -- https://ravitemer.github.io/mcphub.nvim/configuration.html
+                    require("mcphub").setup({ port = 37373, use_bundled_binary = true })
+                end,
+                build = "bundled_build.lua",
+            },
+        },
         init = function()
-            map({ "n", "v" }, "<Leader>cac", "<cmd>CodeCompanionChat Toggle<cr>", { noremap = true, silent = true })
-            map({ "n", "v" }, "<Leader>caa", "<cmd>CodeCompanionActions<cr>", { noremap = true, silent = true })
+            map({ "n", "v" }, "<Leader>ac", "<cmd>CodeCompanionChat Toggle<cr>", { noremap = true, silent = true })
+            map({ "n", "v" }, "<Leader>aA", "<cmd>CodeCompanionActions<cr>", { noremap = true, silent = true })
             map("v", "gA", "<cmd>CodeCompanionChat Add<cr>", { noremap = true, silent = true })
-            map("n", "<c-g>a", ":CodeCompanion /add<cr>", { noremap = true, silent = false })
-            map("v", "<c-g>a", ":'<,'>CodeCompanion /add<cr>", { noremap = true, silent = false })
+            map("n", "<c-g>a", ":CodeCompanion /myadd<cr>", { noremap = true, silent = false })
+            map("v", "<c-g>a", ":'<,'>CodeCompanion /myadd<cr>", { noremap = true, silent = false })
             vim.cmd("cab cc CodeCompanion")
             reg_ft("gitcommit", function(ev)
                 map(
@@ -71,13 +73,11 @@ return {
                         interaction = "inline",
                         description = "Prompt the LLM from Neovim",
                         opts = {
-                            index = 50,
-                            is_default = true,
                             is_slash_cmd = true,
-                            alias = "add",
+                            alias = "myadd",
                             user_prompt = true,
                             placement = "add",
-                            start_in_insert_mode = true,
+                            -- modes = { "n", "v" },
                         },
                         prompts = {
                             {
@@ -95,8 +95,6 @@ return {
                         interaction = "inline",
                         description = "Generate a commit message",
                         opts = {
-                            index = 10,
-                            is_default = true,
                             is_slash_cmd = true,
                             alias = "mycommit",
                             auto_submit = true,

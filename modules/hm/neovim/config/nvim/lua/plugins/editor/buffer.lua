@@ -6,6 +6,7 @@ map("n", "<C-w>O", function()
 end, { noremap = true }, "Wipe all buffers but one")
 
 return {
+    -- { "serhez/bento.nvim", opts = {}, lazy = false, config = true },
     {
         "kevinhwang91/nvim-bqf",
         ft = "qf",
