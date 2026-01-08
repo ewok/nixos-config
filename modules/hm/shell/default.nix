@@ -46,13 +46,15 @@ in
         eza
         bat
         fd
-        global
+        # global
         viddy
         gnutar
         zip
         exiftool
         tcpdump
         netcat
+        ttyd
+
       ];
       file = {
         ".bash_profile".source = ./config/profile;
@@ -74,6 +76,7 @@ in
           if [ -z "$HOSTNAME" ]; then
             export HOSTNAME=$(uname -n)
           fi
+          export DO_NOT_TRACK=1
         '';
       };
     };
