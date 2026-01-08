@@ -53,13 +53,11 @@ in
             enable = true;
             inherit colors theme;
             orb = true;
-            openai_token = openai_token;
           };
           yazi.enable = true;
           shell = {
             enable = true;
             homeDirectory = homeDirectory;
-            openai_token = openai_token;
             shell = "nu";
           };
           starship.enable = true;

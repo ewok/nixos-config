@@ -7,7 +7,6 @@ let
     darwin = cfg.darwin;
     linux = !cfg.darwin;
     homeDirectory = cfg.homeDirectory;
-    openAiToken = cfg.openai_token;
     shell = cfg.shell;
   };
 
@@ -24,10 +23,6 @@ in
       type = types.bool;
       default = false;
       description = "Enable fish on darwin";
-    };
-    openai_token = mkOption {
-      type = types.str;
-      default = "";
     };
     homeDirectory = mkOption {
       type = types.str;

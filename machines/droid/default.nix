@@ -35,14 +35,13 @@ in
           {
             nvim = {
               enable = true;
-              inherit colors theme openai_token;
+              inherit colors theme;
               android = true;
             };
             vifm.enable = true;
             shell = {
               enable = true;
               homeDirectory = homeDirectory;
-              inherit openai_token;
               shell = "nu";
             };
             starship.enable = true;

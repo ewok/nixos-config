@@ -7,7 +7,6 @@ let
     darwin = cfg.darwin;
     linux = !cfg.darwin;
     homeDirectory = cfg.homeDirectory;
-    openAiToken = cfg.openai_token;
   };
 in
 {

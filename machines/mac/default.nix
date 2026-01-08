@@ -37,7 +37,6 @@ in
               enable = true;
               inherit colors theme;
               # orb = true;
-              openai_token = openai_token;
             };
             vifm.enable = true;
             starship.enable = true;

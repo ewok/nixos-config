@@ -11,14 +11,13 @@ in
       {
         nvim = {
           enable = true;
-          inherit colors theme openai_token;
+          inherit colors theme;
           remote = true;
         };
         vifm.enable = true;
         fish = {
           enable = true;
           homeDirectory = homeDirectory;
-          inherit openai_token;
         };
         starship.enable = true;
         starship.colors = colors;

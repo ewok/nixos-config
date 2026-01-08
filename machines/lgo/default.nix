@@ -1,6 +1,6 @@
 { config, pkgs, ... }:
 let
-  inherit (config) colors theme exchange_api_key openai_token fullName email workEmail authorizedKeys ssh_config;
+  inherit (config) colors theme exchange_api_key openai_token context7_api_key fullName email workEmail authorizedKeys ssh_config;
   inherit (pkgs) writeShellScriptBin;
 
   username = "ataranchiev";
@@ -16,13 +16,12 @@ in
       {
         nvim = {
           enable = true;
-          inherit colors theme openai_token;
+          inherit colors theme;
         };
         yazi.enable = true;
         shell = {
           enable = true;
           homeDirectory = homeDirectory;
-          inherit openai_token;
           shell = "fish";
         };
         starship.enable = true;
@@ -65,7 +64,10 @@ in
         direnv.enable = true;
         scripts.enable = true;
         tf.enable = true;
-        ai.enable = true;
+        ai = {
+          enable = true;
+          inherit openai_token context7_api_key;
+        };
       };
 
     xdg.configFile."sway/config.d/99-myconf.conf".text = ''

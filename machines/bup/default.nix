@@ -61,14 +61,12 @@ in
           nvim = {
             enable = true;
             inherit colors theme;
-            openai_token = openai_token;
             remote = true;
           };
           vifm.enable = true;
           shell = {
             enable = true;
             homeDirectory = homeDirectory;
-            inherit openai_token;
           };
           starship.enable = true;
           starship.colors = colors;

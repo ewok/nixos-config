@@ -66,7 +66,6 @@ let
   vars = {
     conf.colors = cfg.colors;
     conf.theme = cfg.theme;
-    conf.openai_token = cfg.openai_token;
     is_nix = "true";
     conf.orb = cfg.orb;
     conf.remote = cfg.remote;
@@ -75,9 +74,6 @@ in
 {
   options.opt.nvim = {
     enable = mkEnableOption "nvim";
-    openai_token = mkOption {
-      type = types.str;
-    };
 
     theme = mkOption {
       type = types.attrsOf types.str;

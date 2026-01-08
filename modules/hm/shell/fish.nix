@@ -28,10 +28,6 @@ in
             url = "https://raw.githubusercontent.com/jorgebucaran/fisher/HEAD/functions/fisher.fish";
             hash = "sha256-WWQNB72hgvKtD9/p3Ip5n7efRubl/EYDVP/i4h91log=";
           };
-
-          "fish/conf.d/01_openai.fish".text = ''
-            export OPENAI_API_KEY="${cfg.openai_token}"
-          '';
         };
       };
     };

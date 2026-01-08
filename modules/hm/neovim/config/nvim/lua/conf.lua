@@ -197,7 +197,6 @@ M.exclude_autosave_filetypes = {
     "toggleterm",
 }
 --
-M.openai_token = M.is_nix and "{{ conf.openai_token }}" or ""
 
 M.lazy_config = {
     defaults = { lazy = true },
