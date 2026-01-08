@@ -1,7 +1,7 @@
 { config, lib, pkgs, ... }:
 
 let
-  pkgver = "1.21.112.1";
+  pkgver = "1.21.131.1";
 
   minecraft-bedrock-server = with pkgs; stdenv.mkDerivation rec {
     name = "${pname}-${version}";
@@ -9,7 +9,7 @@ let
     version = pkgver;
     src = fetchurl {
       url = "http://ewok-vps.ewok.email:8089/bedrock-server-${pkgver}.zip";
-      sha256 = "sha256-YbiezFMNUlbrSsZnIMz9dl1f0dmGmmcm6W+YaF9nZ7o=";
+      sha256 = "sha256-PNmtfNjXMl7BdLAvEOV56Oh5auAO3iee7QipBwrPw+E=";
     };
     sourceRoot = ".";
     nativeBuildInputs = [
