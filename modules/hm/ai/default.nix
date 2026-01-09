@@ -26,10 +26,126 @@ let
       };
     };
 
-    permission = {
-      edit = "ask";
-      bash = "ask";
-      write = "ask";
+    agent = {
+      build = {
+        permission = {
+
+          read = {
+            "*" = "allow";
+            "*.env" = "deny";
+            "*.env.*" = "deny";
+            "secret*" = "deny";
+            "*.key" = "deny";
+            "*.pem" = "deny";
+            "*passwd*" = "deny";
+            "*shadow*" = "deny";
+            "*.env.example" = "allow";
+          };
+
+          # Tool permissions
+          edit = "allow";
+          glob = "allow";
+          grep = "allow";
+          list = "allow";
+          task = "allow";
+          skill = "allow";
+          lsp = "allow";
+          todoread = "allow";
+          todowrite = "allow";
+          webfetch = "allow";
+          websearch = "allow";
+          codesearch = "allow";
+          external_directory = "ask";
+          doom_loop = "ask";
+
+          bash = {
+
+            # Paranoid restrictions =)
+            # that don't actually prevent anything
+
+            "*" = "ask";
+
+            # File operations (read-only)
+            "cat *" = "allow"; # cat > file, all files can be overwritten with that
+            "ls *" = "allow";
+            "find *" = "allow";
+            "grep *" = "allow";
+            "wc *" = "allow";
+            "head *" = "allow";
+            "tail *" = "allow";
+            "file *" = "allow";
+
+            # "*>*" = "ask"; # Block output redirection
+            # "*>>*" = "ask"; # Block append redirection
+            # "*|*" = "ask"; # Block pipes
+            # "*;*" = "ask"; # Block command chaining
+            # "*&&*" = "ask"; # Block conditional execution
+            # "*||*" = "ask"; # Block alternative execution
+            # "*\$(*" = "ask"; # Block command substitution
+            # "*\`*\`*" = "ask"; # Block backtick substitution
+
+            # Text processing
+            "diff *" = "allow";
+            "sort *" = "allow";
+            "uniq *" = "allow";
+            "cut *" = "allow";
+            "awk *" = "allow";
+
+            # Environment awareness
+            "echo *" = "allow";
+            "pwd *" = "allow";
+            "which *" = "allow";
+            "env *" = "allow";
+            "uname *" = "allow";
+
+            # Git operations
+            "git status*" = "allow";
+            "git log*" = "allow";
+            "git show*" = "allow";
+            "git diff*" = "allow";
+            "git branch*" = "allow";
+
+            # Nix ecosystem essentials
+            "nix build*" = "allow"; # Safe builds
+            "nix eval*" = "allow"; # Safe evaluation
+            "nix flake check*" = "allow"; # Safe validation
+            "nix flake show*" = "allow"; # Safe display
+            "nix search*" = "allow"; # Safe search
+            "nix log*" = "allow"; # Safe log viewing
+            "nix why-depends*" = "allow"; # Safe dependency analysis
+            "nix path-info*" = "allow"; # Safe store info
+
+            # Language tools
+            "go *" = "allow";
+            "lua *" = "allow";
+
+            # Formatters (safe)
+            "prettier *" = "allow";
+            "rustfmt *" = "allow";
+            "gofmt *" = "allow";
+            "black *" = "allow";
+            "stylua *" = "allow";
+            "nixpkgs-fmt *" = "allow";
+
+            # Archive inspection (READ-ONLY)
+            "tar -t*" = "allow"; # List contents only
+            "unzip -l*" = "allow"; # List contents only
+            "zcat *" = "allow";
+            "bzcat *" = "allow";
+            "xzcat *" = "allow";
+
+            # Process inspection (PRIVACY CONSCIOUS)
+            "jobs *" = "allow"; # Current shell only
+            "ps aux*" = "allow"; # Basic process list
+
+            # Binary/hex tools
+            "base64 *" = "allow";
+            "xxd *" = "allow";
+            "od *" = "allow";
+            "hexdump *" = "allow";
+          };
+        };
+      };
     };
 
     keybinds = {
@@ -43,7 +159,7 @@ let
       input_line_home = "home"; # "ctrl+a";
       leader = "tab"; # "ctrl+x";
       messages_half_page_down = "ctrl+e"; # "ctrl+alt+d";
-      messages_half_page_up =  "ctrl+y"; #"ctrl+alt+u";
+      messages_half_page_up = "ctrl+y"; #"ctrl+alt+u";
       messages_last = "<leader>e"; #"ctrl+alt+g,end";
       messages_next = "none";
       messages_page_down = "ctrl+d,pagedown"; # "pagedown";
@@ -55,11 +171,12 @@ let
       model_cycle_recent_reverse = "none"; # "shift+f2";
       session_list = "<leader>o"; # "leader+l";
       session_new = "none"; # "<leader>n";
+      input_submit = "ctrl+s"; # "shift+return,ctrl+return,alt+return,ctrl+j,ctrl+alt+j";
+      input_newline = "return";
 
       # useful defaults:
       command_list = "ctrl+p";
       input_clear = "ctrl+c";
-      input_newline = "shift+return,ctrl+return,alt+return,ctrl+j";
       messages_first = "ctrl+g";
       messages_toggle_conceal = "<leader>h";
       model_list = "<leader>m";
@@ -98,7 +215,6 @@ let
       input_select_visual_line_home = "alt+shift+a";
       input_select_word_backward = "alt+shift+b,alt+shift+left";
       input_select_word_forward = "alt+shift+f,alt+shift+right";
-      input_submit = "return";
       input_undo = "ctrl+-,super+z";
       input_visual_line_end = "alt+e";
       input_visual_line_home = "alt+a";
