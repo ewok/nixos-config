@@ -5,5 +5,5 @@ theme = {{ conf.theme.nice_name }}
 shell-integration-features = ssh-terminfo,ssh-env,sudo
 window-decoration = none
 quit-after-last-window-closed = true
-keybind = global:ctrl+backquote=toggle_quick_terminal
 quick-terminal-size = 80%
+keybind = ctrl+enter=unbind
