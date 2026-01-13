@@ -49,7 +49,7 @@ in
         tcpdump
         netcat
         ttyd
-
+        lsof
       ];
       file = {
         ".bash_profile".source = ./config/profile;

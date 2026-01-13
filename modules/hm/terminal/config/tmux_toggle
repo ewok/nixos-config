@@ -8,7 +8,7 @@
 #   named_session: Additional name for popup session (only works in float mode)
 #   cmd: Command to run in new session (optional)
 
-set -uo pipefail
+set -uox pipefail
 
 # =============================================================================
 # Configuration and Arguments
@@ -20,8 +20,8 @@ readonly WORKING_DIR="${1:-$(tmux display-message -p -F "#{pane_current_path}")}
 readonly FORCE_MODE="${2:-}"
 # Named session: additional name for popup session (only used in float mode)
 readonly NAMED_SESSION="${3:-}"
-# Command to run in new session (optional)
-readonly CMD="${4:-}"
+# Command to run in new session (optional) the rest of the arguments
+readonly CMD="${@:4}"
 # Current tmux session name
 readonly CURRENT_SESSION=$(tmux display-message -p -F "#{session_name}")
 
