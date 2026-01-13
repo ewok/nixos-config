@@ -1,6 +1,6 @@
 { config, pkgs, ... }:
 let
-  inherit (config) colors theme username exchange_api_key openai_token fullName email workEmail authorizedKeys;
+  inherit (config) colors theme username exchange_api_key openai_token context7_api_key fullName email workEmail authorizedKeys;
   inherit (pkgs) writeShellScriptBin;
 
   homeDirectory = "/home/${username}";
@@ -13,13 +13,17 @@ in
   ];
 
   config = {
+
     nix.settings.trusted-users = [ "root" username ];
 
     services.tailscale.enable = true;
 
     # Enable nix-ld to allow standard programs to be executed
     programs.nix-ld.enable = true;
-    programs.nix-ld.libraries = [ ];
+    programs.nix-ld.libraries = with pkgs; [
+      stdenv.cc.cc.lib
+      zlib
+    ];
 
     i18n.supportedLocales = [
       "en_US.UTF-8/UTF-8"
@@ -58,7 +62,7 @@ in
           shell = {
             enable = true;
             homeDirectory = homeDirectory;
-            shell = "nu";
+            shell = "fish";
           };
           starship.enable = true;
           starship.colors = colors;
@@ -101,6 +105,10 @@ in
             deviceName = "ewok-arch";
             httpListenAddr = "0.0.0.0";
             httpListenPort = 8888;
+          };
+          ai = {
+            enable = true;
+            inherit openai_token context7_api_key;
           };
         };
 
