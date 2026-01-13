@@ -5,6 +5,21 @@ let
 
   cfg = config.opt.ai;
 
+  uvLibPath = lib.makeLibraryPath [
+    pkgs.stdenv.cc.cc.lib
+    pkgs.zlib
+  ];
+
+  uvWrapped = pkgs.symlinkJoin {
+    name = "uv-wrapped";
+    paths = [ pkgs.uv ];
+    buildInputs = [ pkgs.makeWrapper ];
+    postBuild = ''
+      wrapProgram $out/bin/uv --prefix LD_LIBRARY_PATH : "${uvLibPath}"
+      wrapProgram $out/bin/uvx --prefix LD_LIBRARY_PATH : "${uvLibPath}"
+    '';
+  };
+
   opencodeConfig = {
     "$schema" = "https://opencode.ai/config.json";
 
@@ -13,144 +28,79 @@ let
     theme = "catppuccin-macchiato";
 
     mcp = {
-      context7 = {
+      mcp_context7 = {
+        enabled = false;
         type = "remote";
         url = "https://mcp.context7.com/mcp";
         headers = {
           CONTEXT7_API_KEY = "{env:CONTEXT7_API_KEY}";
         };
       };
-      gh_grep = {
+      mcp_gh_grep = {
+        enabled = false;
         type = "remote";
         url = "https://mcp.grep.app";
       };
-    };
-
-    agent = {
-      build = {
-        permission = {
-
-          read = {
-            "*" = "allow";
-            "*.env" = "deny";
-            "*.env.*" = "deny";
-            "secret*" = "deny";
-            "*.key" = "deny";
-            "*.pem" = "deny";
-            "*passwd*" = "deny";
-            "*shadow*" = "deny";
-            "*.env.example" = "allow";
-          };
-
-          # Tool permissions
-          edit = "allow";
-          glob = "allow";
-          grep = "allow";
-          list = "allow";
-          task = "allow";
-          skill = "allow";
-          lsp = "allow";
-          todoread = "allow";
-          todowrite = "allow";
-          webfetch = "allow";
-          websearch = "allow";
-          codesearch = "allow";
-          external_directory = "ask";
-          doom_loop = "ask";
-
-          bash = {
-
-            # Paranoid restrictions =)
-            # that don't actually prevent anything
-
-            "*" = "ask";
-
-            # File operations (read-only)
-            "cat *" = "allow"; # cat > file, all files can be overwritten with that
-            "ls *" = "allow";
-            "find *" = "allow";
-            "grep *" = "allow";
-            "wc *" = "allow";
-            "head *" = "allow";
-            "tail *" = "allow";
-            "file *" = "allow";
-
-            # "*>*" = "ask"; # Block output redirection
-            # "*>>*" = "ask"; # Block append redirection
-            # "*|*" = "ask"; # Block pipes
-            # "*;*" = "ask"; # Block command chaining
-            # "*&&*" = "ask"; # Block conditional execution
-            # "*||*" = "ask"; # Block alternative execution
-            # "*\$(*" = "ask"; # Block command substitution
-            # "*\`*\`*" = "ask"; # Block backtick substitution
-
-            # Text processing
-            "diff *" = "allow";
-            "sort *" = "allow";
-            "uniq *" = "allow";
-            "cut *" = "allow";
-            "awk *" = "allow";
-
-            # Environment awareness
-            "echo *" = "allow";
-            "pwd *" = "allow";
-            "which *" = "allow";
-            "env *" = "allow";
-            "uname *" = "allow";
-
-            # Git operations
-            "git status*" = "allow";
-            "git log*" = "allow";
-            "git show*" = "allow";
-            "git diff*" = "allow";
-            "git branch*" = "allow";
-
-            # Nix ecosystem essentials
-            "nix build*" = "allow"; # Safe builds
-            "nix eval*" = "allow"; # Safe evaluation
-            "nix flake check*" = "allow"; # Safe validation
-            "nix flake show*" = "allow"; # Safe display
-            "nix search*" = "allow"; # Safe search
-            "nix log*" = "allow"; # Safe log viewing
-            "nix why-depends*" = "allow"; # Safe dependency analysis
-            "nix path-info*" = "allow"; # Safe store info
-
-            # Language tools
-            "go *" = "allow";
-            "lua *" = "allow";
-
-            # Formatters (safe)
-            "prettier *" = "allow";
-            "rustfmt *" = "allow";
-            "gofmt *" = "allow";
-            "black *" = "allow";
-            "stylua *" = "allow";
-            "nixpkgs-fmt *" = "allow";
-
-            # Archive inspection (READ-ONLY)
-            "tar -t*" = "allow"; # List contents only
-            "unzip -l*" = "allow"; # List contents only
-            "zcat *" = "allow";
-            "bzcat *" = "allow";
-            "xzcat *" = "allow";
-
-            # Process inspection (PRIVACY CONSCIOUS)
-            "jobs *" = "allow"; # Current shell only
-            "ps aux*" = "allow"; # Basic process list
-
-            # Binary/hex tools
-            "base64 *" = "allow";
-            "xxd *" = "allow";
-            "od *" = "allow";
-            "hexdump *" = "allow";
-          };
-        };
-      };
+      # aws_cloudtrail = {
+      #   enabled = false;
+      #   type = "local";
+      #   command = [ "uvx" "awslabs.cloudtrail-mcp-server@latest" ];
+      #   environment = {
+      #     AWS_PROFILE = "{file:./.profile}";
+      #     FASTMCP_LOG_LEVEL = "ERROR";
+      #   };
+      # };
+      # aws_cloudwatch = {
+      #   enabled = false;
+      #   type = "local";
+      #   command = [ "uvx" "awslabs.cloudwatch-mcp-server@latest" ];
+      #   environment = {
+      #     AWS_PROFILE = "{file:./.profile}";
+      #     FASTMCP_LOG_LEVEL = "ERROR";
+      #   };
+      # };
+      # aws_cost_explorer = {
+      #   enabled = false;
+      #   type = "local";
+      #   command = [ "uvx" "awslabs.cost-explorer-mcp-server@latest" ];
+      #   environment = {
+      #     AWS_PROFILE = "{file:./.profile}";
+      #     FASTMCP_LOG_LEVEL = "ERROR";
+      #   };
+      # };
+      # aws_documentation = {
+      #   enabled = false;
+      #   type = "local";
+      #   command = [ "uvx" "awslabs.aws-documentation-mcp-server@latest" ];
+      #   environment = {
+      #     AWS_DOCUMENTATION_PARTITION = "aws";
+      #     FASTMCP_LOG_LEVEL = "ERROR";
+      #     MCP_USER_AGENT = "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/131.0.0.0 Safari/537.36";
+      #   };
+      # };
+      # aws_terraform = {
+      #   enabled = false;
+      #   type = "local";
+      #   command = [ "uvx" "awslabs.terraform-mcp-server@latest" ];
+      #   environment = {
+      #     FASTMCP_LOG_LEVEL = "ERROR";
+      #   };
+      # };
+      # aws_iam = {
+      #   enabled = false;
+      #   type = "local";
+      #   command = [ "uvx" "awslabs.iam-mcp-server@latest" ];
+      #   environment = {
+      #     AWS_PROFILE = "{file:./.profile}";
+      #     AWS_REGION = "us-east-1";
+      #     FASTMCP_LOG_LEVEL = "ERROR";
+      #   };
+      # };
     };
 
     keybinds = {
       # changed:
-      agent_cycle = "<leader>n"; # "tab";
+      agent_cycle = "<leader>n,ctrl+n"; # "tab";
       agent_cycle_reverse = "none"; # "shift+tab";
       app_exit = "ctrl+q"; # "ctrl+d,ctrl+c,<leader>q";
       editor_open = "<leader>i"; # "<leader>e"
@@ -256,16 +206,19 @@ in
     context7_api_key = mkOption {
       type = types.str;
       description = "API key for Context7 services.";
+      default = "";
     };
     openai_token = mkOption {
       type = types.str;
       description = "API key for OpenAI services.";
+      default = "";
     };
   };
 
   config = mkIf cfg.enable {
     home.packages = with pkgs; [
       opencode
+      uvWrapped
     ];
 
     # Install OpenCode configuration
@@ -274,6 +227,7 @@ in
       export CONTEXT7_API_KEY="${cfg.context7_api_key}"
       export OPENAI_API_KEY="${cfg.openai_token}"
     '';
+    xdg.configFile."opencode/agent".source = ./agents;
   };
 }
 
