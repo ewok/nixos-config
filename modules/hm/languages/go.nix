@@ -11,6 +11,12 @@ in
     home.packages = with pkgs; [
       go
       delve
+      golangci-lint
+      gosec
+      go-tools
+      gotools
+      errcheck
+      gofumpt
     ];
     xdg.configFile."bash/rc.d/02_go.sh".text = ''
       export GOPATH="$HOME/.go"
@@ -23,6 +29,15 @@ in
         *) PATH="$GOBIN:$PATH";;
       esac
       export PATH
+    '';
+    home.file.".golangci.yaml".source = pkgs.writeText "golangci.yaml" ''
+      version: "2"
+      linters:
+        enable:
+          - errcheck
+          - staticcheck
+          - gosec
+          - unused
     '';
   };
 }
