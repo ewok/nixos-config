@@ -43,5 +43,17 @@ in
         # source "~/.nix-profile/share/asdf-vm/asdf.nu"
       '';
     };
+    xdg.configFile."bash/profile.d/99_asdf.sh" = {
+      text = ''
+        path_add_asdf() {
+          ASDF_DIR=$HOME/.asdf
+          ASDF_SHIMS="$ASDF_DIR/shims"
+          if [[ ":$PATH:" != *":$ASDF_SHIMS:"* ]]; then
+            export PATH="$ASDF_SHIMS:$PATH"
+          fi
+        }
+        path_add_asdf
+      '';
+    };
   };
 }
