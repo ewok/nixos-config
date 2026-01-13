@@ -15,3 +15,6 @@ devenv.yaml
 .clj-kondo
 .tool-versions
 __pycache__
+opencode.json
+.profile
+AGENTS.md
