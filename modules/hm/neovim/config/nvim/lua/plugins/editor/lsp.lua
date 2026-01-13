@@ -6,7 +6,23 @@ local conf = require("conf")
 
 return {
     {
+        "rachartier/tiny-inline-diagnostic.nvim",
+        event = "VeryLazy",
+        priority = 1000,
+        config = function()
+            require("tiny-inline-diagnostic").setup()
+            vim.diagnostic.config({ virtual_text = false }) -- Disable Neovim's default virtual text diagnostics
+        end,
+    },
+    {
         "mfussenegger/nvim-lint",
+        config = function()
+            vim.api.nvim_create_autocmd({ "BufWritePost", "BufReadPost" }, {
+                callback = function()
+                    require("lint").try_lint()
+                end,
+            })
+        end,
     },
     {
         "stevearc/conform.nvim",
@@ -94,24 +110,24 @@ return {
             })
         end,
     },
-    {
-        "SmiteshP/nvim-navic",
-        event = { "BufReadPre", "BufNewFile" },
-        config = function()
-            local navic = require("nvim-navic")
-            navic.setup({ highlight = true })
-            vim.api.nvim_create_autocmd("LspAttach", {
-                desc = "LSP navic",
-                callback = function(event)
-                    local client_id = vim.tbl_get(event, "data", "client_id")
-                    local client = client_id and vim.lsp.get_client_by_id(client_id)
-                    if client and client.server_capabilities.documentSymbolProvider then
-                        navic.attach(client, event.buf)
-                    end
-                end,
-            })
-        end,
-    },
+    -- {
+    --     "SmiteshP/nvim-navic",
+    --     event = { "BufReadPre", "BufNewFile" },
+    --     config = function()
+    --         local navic = require("nvim-navic")
+    --         navic.setup({ highlight = true })
+    --         vim.api.nvim_create_autocmd("LspAttach", {
+    --             desc = "LSP navic",
+    --             callback = function(event)
+    --                 local client_id = vim.tbl_get(event, "data", "client_id")
+    --                 local client = client_id and vim.lsp.get_client_by_id(client_id)
+    --                 if client and client.server_capabilities.documentSymbolProvider then
+    --                     navic.attach(client, event.buf)
+    --                 end
+    --             end,
+    --         })
+    --     end,
+    -- },
     -- {
     --     -- https://github.com/nvimtools/none-ls.nvim/blob/main/doc/BUILTINS.md
     --     "nvimtools/none-ls.nvim",
@@ -180,6 +196,15 @@ return {
         config = function()
             local blink = require("blink.cmp")
 
+            vim.api.nvim_create_autocmd({ "DiagnosticChanged" }, {
+                callback = function()
+                    -- Only fill the loclist for the current window/buffer
+                    if vim.bo.buftype == "" then -- Only normal files
+                        vim.diagnostic.setloclist({ open = false })
+                    end
+                end,
+            })
+
             vim.diagnostic.config({
                 signs = {
                     text = {
@@ -210,8 +235,7 @@ return {
                         map(
                             "n",
                             "<leader>cdw",
-                            -- "<cmd>lua vim.diagnostic.setqflist()<cr>",
-                            "<cmd>lua require('telescope.builtin').diagnostics()<cr>",
+                            "<cmd>lua vim.diagnostic.setqflist()<cr>",
                             { buffer = bufnr, noremap = true },
                             "[lsp] Code workspace diagnostics"
                         )

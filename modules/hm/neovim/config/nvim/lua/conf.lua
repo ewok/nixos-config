@@ -29,7 +29,7 @@ M.options = {
     pbclip = "{{ conf.orb }}" == "true" and true or false,
     tmuxclip = "{{ conf.remote }}" == "true" and true or false,
     remote = "{{ conf.remote }}" == "true" and true or false,
-    show_virtual_lines = true,
+    show_virtual_lines = false,
     auto_hide_hlsearch = true,
 }
 

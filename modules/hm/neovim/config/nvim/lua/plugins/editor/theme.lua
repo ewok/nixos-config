@@ -62,7 +62,7 @@ return {
                 dap_ui = true,
                 nvim_surround = true,
                 which_key = true,
-                navic = { enabled = true },
+                navic = { enabled = false },
             },
         })
         vim.cmd.colorscheme("catppuccin")

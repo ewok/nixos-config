@@ -176,11 +176,6 @@ in
           tfsec
           # typos
           # yamllint
-          golangci-lint
-          go-tools
-          gotools
-          errcheck
-          gofumpt
 
           # FMT
           black

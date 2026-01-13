@@ -38,7 +38,7 @@ return {
             map(
                 "n",
                 "<leader>tl",
-                "<cmd>lua require('quicker').toggle({loclist = true})<cr>",
+                    "<cmd>lua require('quicker').toggle({loclist = true})<cr>",
                 { noremap = true },
                 "Toggle loclist"
             )

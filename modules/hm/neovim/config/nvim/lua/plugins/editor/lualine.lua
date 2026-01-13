@@ -37,9 +37,25 @@ return {
             },
             sections = {
                 lualine_a = { "mode" },
-                lualine_b = { "branch", "diff", "diagnostics" },
+                lualine_b = {
+                    "branch",
+                    "diff",
+                    "diagnostics",
+                    {
+                        function()
+                            local linters = require("lint").get_running()
+                            if #linters == 0 then
+                                return "󰦕"
+                            end
+                            return "󱉶 " .. table.concat(linters, ", ")
+                        end,
+                    },
+                },
                 lualine_c = { { "filename", path = 1 } },
                 lualine_x = {
+                    {
+                        require("opencode").statusline,
+                    },
                     {
                         function()
                             local isSet, venv = pcall(require, "venv-selector")
@@ -82,12 +98,12 @@ return {
                             return get_buf_ft(0) == "oil"
                         end,
                     },
-                    {
-                        "%{%v:lua.require'nvim-navic'.get_location()%}",
-                        cond = function()
-                            return is_loaded("nvim-navic")
-                        end,
-                    },
+                    -- {
+                    --     "%{%v:lua.require'nvim-navic'.get_location()%}",
+                    --     cond = function()
+                    --         return is_loaded("nvim-navic")
+                    --     end,
+                    -- },
                 },
             },
             inactive_winbar = {
