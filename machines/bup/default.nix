@@ -20,7 +20,10 @@ in
 
     # Enable nix-ld to allow standard programs to be executed
     programs.nix-ld.enable = true;
-    programs.nix-ld.libraries = [ ];
+    programs.nix-ld.libraries = with pkgs; [
+      stdenv.cc.cc.lib
+      zlib
+    ];
 
     # Fix error not staring service
     systemd.services.NetworkManager-wait-online.enable = false;
