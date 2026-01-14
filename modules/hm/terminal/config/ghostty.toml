@@ -7,3 +7,7 @@ window-decoration = none
 quit-after-last-window-closed = true
 quick-terminal-size = 80%
 keybind = ctrl+enter=unbind
+copy-on-select = clipboard
+clipboard-read = allow
+clipboard-write = allow
+

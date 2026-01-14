@@ -80,12 +80,10 @@ in
         optionalPkgs = optionals cfg.tmux.install [ pkgs.tmux ];
         external = with pkgs; [
           sesh
-          # packs.sesh-v2
           zoxide
           fzf
           gnugrep
           procps
-          xsel
           bc
         ];
       in

@@ -119,6 +119,8 @@ in
         xdg.configFile."bash/profile.d/00_fix_orb_env.sh".text = ''
           export ORB=true
           export OPEN_CMD=open
+          # Hack
+          export WAYLAND_DISPLAY=wayland-1
         '';
 
         home.packages =
@@ -126,9 +128,38 @@ in
             docker = writeShellScriptBin "docker" ''
               mac docker $@
             '';
+            wl-copy-wrapper = pkgs.writeShellScriptBin "wl-copy" ''
+                #!/usr/bin/env bash
+                case "$1" in
+                  "-t")
+                    if [[ "$2" == "image/png" ]]; then
+                      pbcopy
+                    else
+                      pbcopy
+                    fi
+                    ;;
+                  *)
+                    pbcopy
+                    ;;
+              esac
+            '';
+            wl-paste-wrapper = pkgs.writeShellScriptBin "wl-paste" ''
+              #!/usr/bin/env bash
+                  case "$1" in
+                    "-t")
+                      if [[ "$2" == "image/png" ]]; then
+                        pbpaste
+                      else
+                        pbpaste
+                      fi
+                      ;;
+                    *)
+                      pbpaste
+                      ;;
+                  esac
+            '';
           in
-          [ docker ];
-
+          [ docker wl-copy-wrapper wl-paste-wrapper ];
       };
     };
   };
