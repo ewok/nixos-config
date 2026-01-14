@@ -185,8 +185,20 @@ return {
         -- dependencies = {
         --     "copilotlsp-nvim/copilot-lsp",
         -- },
+        keys = {
+            {
+                "<leader>co",
+                function()
+                    vim.schedule(function()
+                        vim.cmd("Copilot status")
+                    end)
+                    vim.notify("Copilot Enabled", vim.log.levels.INFO, { title = "Copilot" })
+                end,
+                mode = "n",
+                desc = "Start Copilot",
+            },
+        },
         cmd = "Copilot",
-        event = "InsertEnter",
         config = function()
             require("copilot").setup({
                 suggestion = {

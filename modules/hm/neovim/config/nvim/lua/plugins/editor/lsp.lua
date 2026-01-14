@@ -7,11 +7,11 @@ local conf = require("conf")
 return {
     {
         "rachartier/tiny-inline-diagnostic.nvim",
-        event = "VeryLazy",
+        event = { "BufReadPost", "BufNewFile" },
         priority = 1000,
         config = function()
             require("tiny-inline-diagnostic").setup()
-            vim.diagnostic.config({ virtual_text = false }) -- Disable Neovim's default virtual text diagnostics
+            vim.diagnostic.config({ virtual_text = false })
         end,
     },
     {
@@ -183,11 +183,11 @@ return {
         "neovim/nvim-lspconfig",
         event = { "BufReadPre", "BufNewFile" },
         init = function()
-            map("n", "<leader>li", "<cmd>LspInfo<CR>", { noremap = true }, "Info")
-            map("n", "<leader>ls", "<cmd>LspStart<CR>", { noremap = true }, "Start")
-            map("n", "<leader>lS", "<cmd>LspStop<CR>", { noremap = true }, "Stop")
-            map("n", "<leader>lr", "<cmd>LspRestart<CR>", { noremap = true }, "Restart")
-            map("n", "<leader>ll", "<cmd>LspLog<CR>", { noremap = true }, "Log")
+            map("n", "<leader><leader>li", "<cmd>LspInfo<CR>", { noremap = true }, "Info")
+            map("n", "<leader><leader>ls", "<cmd>LspStart<CR>", { noremap = true }, "Start")
+            map("n", "<leader><leader>lS", "<cmd>LspStop<CR>", { noremap = true }, "Stop")
+            map("n", "<leader><leader>lr", "<cmd>LspRestart<CR>", { noremap = true }, "Restart")
+            map("n", "<leader><leader>ll", "<cmd>LspLog<CR>", { noremap = true }, "Log")
             for _, x in ipairs({ "gra", "grn", "gri", "grr", "grt" }) do
                 pcall(umap, "n", x, {})
             end

@@ -27,8 +27,11 @@ reg_ft("yaml", function(ev)
             { "<leader>ck", group = "[ft] Kustomize", buffer = ev.buf },
         })
     end
+
+    vim.treesitter.start()
 end)
 
 reg_ft_once("yaml", function()
     require("conform").formatters_by_ft.yaml = { "prettier" }
+    require("nvim-treesitter").install({ "yaml" })
 end)

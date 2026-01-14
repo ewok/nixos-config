@@ -21,7 +21,7 @@ return {
         "brenoprata10/nvim-highlight-colors",
         cmd = { "HighlightColors" },
         keys = {
-            { "<leader>tc", "<cmd>HighlightColors On<CR>", silent = true, desc = "Code Colorizer" },
+            { "<leader>C", "<cmd>HighlightColors On<CR>", silent = true, desc = "Code Colorizer" },
         },
         config = function()
             require("nvim-highlight-colors").setup({

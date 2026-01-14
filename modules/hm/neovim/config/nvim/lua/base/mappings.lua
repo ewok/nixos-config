@@ -40,18 +40,18 @@ map("n", "<Space><CR>", 'za{"{{{', md, "Toggle Fold")
 map("x", "<Space><CR>", 'zf"}}}', md, "Toggle Fold")
 
 -- Yank
-map("n", "<leader>yy", "<cmd>.w! ~/.vbuf<CR>", md, "Yank to ~/.vbuf")
+map("n", "<leader>yy", "<cmd>.w! ~/.vbuf<CR>", md, "... to ~/.vbuf")
 map("n", "<leader>yp", "<cmd>r ~/.vbuf<CR>", md, "Paste from ~/.vbuf")
-map("x", "<leader>yy", ":'<,'>w! ~/.vbuf<CR>", md, "Yank to ~/.vbuf")
-map("n", "<leader>yfl", ':let @+=expand("%") . \':\' . line(".")<CR>', md, "Yank file name and line")
-map("n", "<leader>yfn", ':let @+=expand("%")<CR>', md, "Yank file name")
-map("n", "<leader>yfp", ':let @+=expand("%:p")<CR>', md, "Yank file path")
+map("x", "<leader>yy", ":'<,'>w! ~/.vbuf<CR>", md, "... to ~/.vbuf")
+map("n", "<leader>yfl", ':let @+=expand("%") . \':\' . line(".")<CR>', md, "... name and line")
+map("n", "<leader>yfn", ':let @+=expand("%")<CR>', md, "... name")
+map("n", "<leader>yfp", ':let @+=expand("%:p")<CR>', md, "... path")
 
 -- Profiling
-map("n", "<leader>PS", "<cmd>profile start /tmp/profile_vim.log|profile func *|profile file *<CR>", md, "Start")
+map("n", "<leader><leader>Ps", "<cmd>profile start /tmp/profile_vim.log|profile func *|profile file *<CR>", md, "Start")
 map(
     "n",
-    "<leader>PT",
+    "<leader><leader>Pe",
     "<cmd>profile stop|e /tmp/profile_vim.log|nmap <buffer> q :!rm /tmp/profile_vim.log<CR>",
     md,
     "Stop"
@@ -123,7 +123,7 @@ map("n", "n", "nzzzv", md, "Next search match")
 map("n", "N", "Nzzzv", md, "Previous search match")
 
 -- Lazy mapping
-map("n", "<leader>pu", "<cmd>Lazy sync<CR>", md, "Sync Packages")
-map("n", "<leader>pl", "<cmd>Lazy home<CR>", md, "List Packages")
+-- map("n", "<leader><leader>pu", "<cmd>Lazy sync<CR>", md, "Sync Packages")
+map("n", "<leader><leader>p", "<cmd>Lazy home<CR>", md, "List Packages")
 
 map("i", "<M-BS>", "<C-W>", md, "Split hack")

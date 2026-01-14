@@ -8,9 +8,9 @@ return {
         "stevearc/oil.nvim",
         cmd = { "Oil" },
         dependencies = { "refractalize/oil-git-status.nvim" },
-        init = function()
-            map("n", "<space><space>", "<CMD>Oil<CR>", { noremap = true }, "Open Files")
-        end,
+        -- init = function()
+        --     map("n", "<space><space>", "<CMD>Oil<CR>", { noremap = true }, "Open Files")
+        -- end,
         config = function()
             local oil = require("oil")
             local act = require("oil.actions")

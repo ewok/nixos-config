@@ -9,7 +9,7 @@ return {
         end,
         keys = {
             {
-                "<leader>ts",
+                "<leader>S",
                 function()
                     local sw = require("spellwarn")
                     if vim.wo.spell then

@@ -17,6 +17,8 @@ lib.reg_ft("lua", function(ev)
             { "<leader>cr", buffer = ev.buf, group = "Reset[conjure]" },
         })
     end
+
+    vim.treesitter.start()
 end)
 
 lib.reg_lsp("lua_ls", {
@@ -48,4 +50,5 @@ lib.reg_lsp("lua_ls", {
 
 lib.reg_ft_once("lua", function()
     require("conform").formatters_by_ft.lua = { "stylua" }
+    require("nvim-treesitter").install({ "lua" })
 end)

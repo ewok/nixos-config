@@ -21,7 +21,7 @@ local function update_bg(forced)
     return false
 end
 
-map("n", "<leader>th", function()
+map("n", "<leader><leader>d", function()
     vim.o.background = vim.o.background == "light" and "dark" or "light"
     -- update_bg()
     -- os.execute("toggle-theme " .. (vim.o.background == "light" and "dark" or "light"))

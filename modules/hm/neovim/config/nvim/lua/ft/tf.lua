@@ -13,4 +13,9 @@ lib.reg_ft_once("terraform", function()
         terraform = { "tfsec", "tflint" },
     }
     require("conform").formatters_by_ft.terraform = { "terraform_fmt" }
+    require("nvim-treesitter").install({ "terraform" })
+end)
+
+lib.reg_ft("terraform", function()
+    vim.treesitter.start()
 end)

@@ -19,6 +19,6 @@ return {
         })
     end,
     init = function()
-        map("n", "<leader>oN", "<cmd>Fidget history<cr>", { silent = true }, "Open notification history")
+        map("n", "<leader>N", "<cmd>Fidget history<cr>", { silent = true }, "Open notification history")
     end,
 }

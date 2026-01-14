@@ -49,12 +49,20 @@ return {
                             end
                             return "󱉶 " .. table.concat(linters, ", ")
                         end,
+                        cond = function()
+                            return is_loaded("lint")
+                        end,
                     },
                 },
                 lualine_c = { { "filename", path = 1 } },
                 lualine_x = {
                     {
-                        require("opencode").statusline,
+                        function()
+                            return require("opencode").statusline
+                        end,
+                        cond = function()
+                            return is_loaded("opencode")
+                        end,
                     },
                     {
                         function()

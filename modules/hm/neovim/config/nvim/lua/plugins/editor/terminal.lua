@@ -19,12 +19,12 @@ map("n", "<C-W>V", function()
     end
 end, { noremap = true, silent = true }, "VSplit window")
 
-map("n", "<leader>ott", function()
+map("n", "<leader><leader>tt", function()
     vim.g.tth = false
     vim.cmd("silent !~/.config/tmux/tmux_toggle '" .. get_file_cwd() .. "' t")
 end, { silent = true }, "Open bottom terminal")
 
-map("n", "<leader>otf", function()
+map("n", "<leader><leader>tf", function()
     vim.g.tth = true
     vim.cmd("silent !~/.config/tmux/tmux_toggle '" .. get_file_cwd() .. "' f")
 end, { silent = true }, "Open floating terminal")

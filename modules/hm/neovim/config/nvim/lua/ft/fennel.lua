@@ -19,10 +19,13 @@ reg_ft("fennel", function(ev)
             { "<leader>ct", { buffer = ev.buf, group = "Test[conjure]" } },
         })
     end
+
+    vim.treesitter.start()
 end)
 
 reg_lsp("fennel_ls", { settings = { ["fennel-ls"] = { extra_globals = { "vim" } } } })
 
 reg_ft_once("fennel", function()
     require("conform").formatters_by_ft.fennel = { "fnlfmt" }
+    require("nvim-treesitter").install({ "fennel" })
 end)

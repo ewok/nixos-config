@@ -20,6 +20,8 @@ lib.reg_ft("clojure", function(ev)
             { "<leader>cv", { buffer = ev.buf, group = "View[conjure]" } },
         })
     end
+
+    vim.treesitter.start()
 end)
 
 lib.reg_lsp("clojure_lsp", {
@@ -34,4 +36,5 @@ lib.reg_lsp("clojure_lsp", {
 
 lib.reg_ft_once("clojure", function()
     require("conform").formatters_by_ft.clojure = { "joker" }
+    require("nvim-treesitter").install({ "clojure" })
 end)

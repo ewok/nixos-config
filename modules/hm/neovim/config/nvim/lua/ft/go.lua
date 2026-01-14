@@ -5,6 +5,8 @@ lib.reg_ft("go", function()
     vim.opt_local.shiftwidth = 4
     vim.opt_local.tabstop = 4
     vim.opt_local.softtabstop = 4
+
+    vim.treesitter.start()
 end)
 
 lib.reg_lsp("gopls", {})
@@ -14,4 +16,5 @@ lib.reg_ft_once("go", function()
     require("lint").linters_by_ft = {
         go = { "golangcilint" },
     }
+    require("nvim-treesitter").install({ "go" })
 end)
