@@ -58,7 +58,7 @@ return {
                 lualine_x = {
                     {
                         function()
-                            return require("opencode").statusline
+                            return require("opencode").statusline()
                         end,
                         cond = function()
                             return is_loaded("opencode")

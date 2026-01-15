@@ -1,11 +1,11 @@
--- local lib = require("lib")
--- local reg_ft, map = lib.reg_ft, lib.map
---
--- for _, x in ipairs({ "neotest-summary", "neotest-output-panel" }) do
---     reg_ft(x, function()
---         map("n", "q", "<cmd>bdelete<cr>", { silent = true, buffer = true }, "Close")
---     end)
--- end
+local lib = require("lib")
+local reg_ft, map = lib.reg_ft, lib.map
+
+for _, x in ipairs({ "neotest-summary", "neotest-output-panel" }) do
+    reg_ft(x, function()
+        map("n", "q", "<cmd>close<cr>", { silent = true, buffer = true }, "Close")
+    end)
+end
 
 return {
     "nvim-neotest/neotest",

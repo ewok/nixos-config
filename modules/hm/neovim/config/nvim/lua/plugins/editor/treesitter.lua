@@ -28,27 +28,27 @@ return {
 
                 vim.keymap.set({ "x", "o" }, "am", function()
                     require("nvim-treesitter-textobjects.select").select_textobject("@function.outer", "textobjects")
-                end)
+                end, { desc = "[ts] Select around function" })
                 vim.keymap.set({ "x", "o" }, "im", function()
                     require("nvim-treesitter-textobjects.select").select_textobject("@function.inner", "textobjects")
-                end)
+                end, { desc = "[ts] Select inner function" })
                 vim.keymap.set({ "x", "o" }, "ac", function()
                     require("nvim-treesitter-textobjects.select").select_textobject("@class.outer", "textobjects")
-                end)
+                end, { desc = "[ts] Select around class" })
                 vim.keymap.set({ "x", "o" }, "ic", function()
                     require("nvim-treesitter-textobjects.select").select_textobject("@class.inner", "textobjects")
-                end)
+                end, { desc = "[ts] Select inner class" })
                 -- You can also use captures from other query groups like `locals.scm`
                 vim.keymap.set({ "x", "o" }, "as", function()
                     require("nvim-treesitter-textobjects.select").select_textobject("@local.scope", "locals")
-                end)
+                end, { desc = "[ts] Select around local scope" })
 
                 vim.keymap.set("n", "gm>", function()
                     require("nvim-treesitter-textobjects.swap").swap_next("@parameter.inner")
-                end)
+                end, { desc = "[ts] Swap next parameter" })
                 vim.keymap.set("n", "gm<", function()
                     require("nvim-treesitter-textobjects.swap").swap_previous("@parameter.outer")
-                end)
+                end, { desc = "[ts] Swap previous parameter" })
             end,
         },
         lazy = false,
