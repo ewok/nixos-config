@@ -196,14 +196,14 @@ return {
         config = function()
             local blink = require("blink.cmp")
 
-            vim.api.nvim_create_autocmd({ "DiagnosticChanged" }, {
-                callback = function()
-                    -- Only fill the loclist for the current window/buffer
-                    if vim.bo.buftype == "" then -- Only normal files
-                        vim.diagnostic.setloclist({ open = false })
-                    end
-                end,
-            })
+            -- vim.api.nvim_create_autocmd({ "DiagnosticChanged" }, {
+            --     callback = function()
+            --         -- Only fill the loclist for the current window/buffer
+            --         if vim.bo.buftype == "" then -- Only normal files
+            --             vim.diagnostic.setloclist({ open = false })
+            --         end
+            --     end,
+            -- })
 
             vim.diagnostic.config({
                 signs = {

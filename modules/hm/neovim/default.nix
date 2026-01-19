@@ -203,6 +203,9 @@ in
           kustomize
           kubeconform
           kubent
+
+          # images
+          imagemagick
         ];
       in
       [

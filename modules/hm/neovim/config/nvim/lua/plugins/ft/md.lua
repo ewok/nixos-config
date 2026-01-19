@@ -3,6 +3,15 @@ local conf = require("conf")
 
 return {
     {
+        "iamcco/markdown-preview.nvim",
+        cmd = { "MarkdownPreviewToggle", "MarkdownPreview", "MarkdownPreviewStop" },
+        ft = { "markdown" },
+        build = "cd app && npm install",
+        init = function()
+            vim.g.mkdp_filetypes = { "markdown" }
+        end,
+    },
+    {
         "gpanders/vim-medieval",
         ft = { "markdown" },
         config = function()
@@ -157,6 +166,10 @@ return {
         ft = "markdown",
         event = { "BufReadPre " .. conf.notes_dir .. "/**.md", "BufNewFile " .. conf.notes_dir .. "/**.md" },
         opts = {
+            disable_frontmatter = true,
+            frontamatter = {
+                enabled = false,
+            },
             ui = {
                 enable = false,
             },
@@ -169,7 +182,6 @@ return {
                 template = "hidden/templates/__daily",
             },
             wiki_link_func = "use_alias_only",
-            frontamatter = { enabled = false },
             note_id_func = function(text)
                 return text
             end,

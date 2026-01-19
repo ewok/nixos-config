@@ -1,4 +1,5 @@
 local lib = require("lib")
+local is_loaded = lib.is_loaded
 local reg_ft, map = lib.reg_ft, lib.map
 
 for _, x in ipairs({ "neotest-summary", "neotest-output-panel" }) do
@@ -14,7 +15,9 @@ return {
             "<leader>tt",
             function()
                 require("neotest").run.run()
-                require("coverage").load(true)
+                if is_loaded("coverage") then
+                    require("coverage").load(true)
+                end
             end,
             desc = "Run Nearest Test",
         },
@@ -22,7 +25,9 @@ return {
             "<leader>tf",
             function()
                 require("neotest").run.run(vim.fn.expand("%"))
-                require("coverage").load(true)
+                if is_loaded("coverage") then
+                    require("coverage").load(true)
+                end
             end,
             desc = "Run Current Test File",
         },

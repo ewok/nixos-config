@@ -21,6 +21,9 @@ reg_ft("markdown", function()
     map("n", "<leader>wt", "<Cmd>Obsidian template<CR>", md, "Template")
     map("n", "g<space>", "<Cmd>Obsidian toggle_checkbox<CR>", md, "Links")
     map("n", "<CR>", "<Cmd>Obsidian follow_link<CR>", md, "Open Link")
+
+    map("n", "<leader>cp", "<Cmd>MarkdownPreviewToggle<CR>", md, "Toggle Preview")
+    map("n", "<leader>cS", "<Cmd>MarkdownPreviewStop<CR>", md, "Stop Preview")
 end)
 
 lib.reg_ft_once("markdown", function()

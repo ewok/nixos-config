@@ -23,20 +23,37 @@ return {
         },
         config = true,
     },
+    { "akinsho/git-conflict.nvim", event = { "BufReadPre", "BufNewFile" }, version = "*", config = true },
     {
-        "NeogitOrg/neogit",
-        cmd = { "Neogit", "DiffviewOpenFileHistory" },
+        -- "NeogitOrg/neogit",
+        "sotte/neogit",
+        branch = "support-vscode-diff",
+        cmd = { "Neogit", "CodeDiff" },
         keys = {
             { "<leader>gs", "<cmd>Neogit<cr>", mode = { "n" }, desc = "Git Status" },
-            { "<leader>gfd", "<cmd>DiffviewFileHistory %<cr>", mode = { "n" }, desc = "Diff history" },
-            { "<leader>gd", ":DiffviewOpen ", mode = { "n" }, desc = "Open Diff" },
             { "<leader>gfl", "<cmd>NeogitLog<cr>", mode = { "n" }, desc = "Line history" },
-            { "<leader>gfl", ":NeogitLog<cr>", mode = { "v" }, desc = "Line history" },
+            -- { "<leader>gfd", "<cmd>CodeDiff %<cr>", mode = { "n" }, desc = "Diff history" },
+            { "<leader>gd", "<cmd>CodeDiff<cr>", mode = { "n" }, desc = "Open Diff" },
         },
-        dependencies = { "sindrets/diffview.nvim" },
+        dependencies = {
+            {
+                "esmuellert/codediff.nvim",
+                dependencies = { "MunifTanjim/nui.nvim" },
+                config = function()
+                    require("codediff").setup({
+                        keymaps = {
+                            explorer = {
+                                toggle_stage = "s", -- Stage/unstage selected file
+                            },
+                        },
+                    })
+                end,
+            },
+        },
         config = function()
             local ng = require("neogit")
             ng.setup({
+                diff_viewer = "codediff",
                 use_per_project_settings = true,
                 remember_settings = true,
                 mappings = {
@@ -53,12 +70,12 @@ return {
                 console_timeout = 500,
                 disable_insert_on_commit = true,
             })
-            reg_ft("DiffviewFiles", function(ev)
-                map("n", "q", "<cmd>tabclose<cr>", { buffer = ev.buf }, "Close")
-            end)
-            reg_ft("DiffviewFileHistory", function(ev)
-                map("n", "q", "<cmd>tabclose<cr>", { buffer = ev.buf }, "Close")
-            end)
+            -- reg_ft("DiffviewFiles", function(ev)
+            --     map("n", "q", "<cmd>tabclose<cr>", { buffer = ev.buf }, "Close")
+            -- end)
+            -- reg_ft("DiffviewFileHistory", function(ev)
+            --     map("n", "q", "<cmd>tabclose<cr>", { buffer = ev.buf }, "Close")
+            -- end)
         end,
     },
     {

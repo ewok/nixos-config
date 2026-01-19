@@ -147,48 +147,14 @@ return {
     --         })
     --     end,
     -- },
-    -- {
-    --     "github/copilot.vim",
-    --     cmd = "Copilot",
-    --     keys = {
-    --         {
-    --             "<leader>co",
-    --             function()
-    --                 vim.cmd("Copilot enable")
-    --                 vim.schedule(function()
-    --                     vim.cmd("Copilot status")
-    --                 end)
-    --                 vim.notify("Copilot Enabled", vim.log.levels.INFO, { title = "Copilot" })
-    --             end,
-    --             mode = "n",
-    --             desc = "Start Copilot",
-    --         },
-    --         -- {
-    --         --     "<leader>cad",
-    --         --     function()
-    --         --         vim.cmd("Copilot disable")
-    --         --         vim.notify("Copilot Disabled", vim.log.levels.INFO, { title = "Copilot" })
-    --         --     end,
-    --         --     mode = "n",
-    --         --     desc = "Stop Copilot",
-    --         -- },
-    --     },
-    --     config = function()
-    --         vim.g.copilot_loaded = true
-    --     end,
-    --     init = function()
-    --         vim.g.copilot_no_maps = true
-    --     end,
-    -- },
     {
-        "zbirenbaum/copilot.lua",
-        -- dependencies = {
-        --     "copilotlsp-nvim/copilot-lsp",
-        -- },
+        "github/copilot.vim",
+        cmd = "Copilot",
         keys = {
             {
                 "<leader>co",
                 function()
+                    vim.cmd("Copilot enable")
                     vim.schedule(function()
                         vim.cmd("Copilot status")
                     end)
@@ -197,39 +163,73 @@ return {
                 mode = "n",
                 desc = "Start Copilot",
             },
+            -- {
+            --     "<leader>cad",
+            --     function()
+            --         vim.cmd("Copilot disable")
+            --         vim.notify("Copilot Disabled", vim.log.levels.INFO, { title = "Copilot" })
+            --     end,
+            --     mode = "n",
+            --     desc = "Stop Copilot",
+            -- },
         },
-        cmd = "Copilot",
         config = function()
-            require("copilot").setup({
-                suggestion = {
-                    enabled = true,
-                    auto_trigger = true,
-                    hide_during_completion = true,
-                    debounce = 75,
-                    trigger_on_accept = true,
-                    keymap = {
-                        accept = "<C-l>",
-                        accept_word = false,
-                        accept_line = false,
-                        next = "<C-j>",
-                        prev = "<C-k>",
-                        dismiss = "<C-h>",
-                    },
-                },
-                nes = {
-                    enabled = false,
-                    auto_trigger = true,
-                    keymap = {
-                        accept_and_goto = false,
-                        accept = false,
-                        dismiss = false,
-                    },
-                },
-                copilot_model = "gpt-5.1-codex-mini",
-            })
             vim.g.copilot_loaded = true
         end,
+        init = function()
+            vim.g.copilot_no_maps = true
+        end,
     },
+    -- {
+    --     "zbirenbaum/copilot.lua",
+    --     -- dependencies = {
+    --     --     "copilotlsp-nvim/copilot-lsp",
+    --     -- },
+    --     keys = {
+    --         {
+    --             "<leader>co",
+    --             function()
+    --                 vim.schedule(function()
+    --                     vim.cmd("Copilot status")
+    --                 end)
+    --                 vim.notify("Copilot Enabled", vim.log.levels.INFO, { title = "Copilot" })
+    --             end,
+    --             mode = "n",
+    --             desc = "Start Copilot",
+    --         },
+    --     },
+    --     cmd = "Copilot",
+    --     config = function()
+    --         require("copilot").setup({
+    --             suggestion = {
+    --                 enabled = true,
+    --                 auto_trigger = true,
+    --                 hide_during_completion = true,
+    --                 debounce = 75,
+    --                 trigger_on_accept = true,
+    --                 keymap = {
+    --                     accept = "<C-l>",
+    --                     accept_word = false,
+    --                     accept_line = false,
+    --                     next = "<C-j>",
+    --                     prev = "<C-k>",
+    --                     dismiss = "<C-h>",
+    --                 },
+    --             },
+    --             nes = {
+    --                 enabled = false,
+    --                 auto_trigger = true,
+    --                 keymap = {
+    --                     accept_and_goto = false,
+    --                     accept = false,
+    --                     dismiss = false,
+    --                 },
+    --             },
+    --             copilot_model = "gpt-5.1-codex-mini",
+    --         })
+    --         vim.g.copilot_loaded = true
+    --     end,
+    -- },
     {
         "NickvanDyke/opencode.nvim",
         init = function()

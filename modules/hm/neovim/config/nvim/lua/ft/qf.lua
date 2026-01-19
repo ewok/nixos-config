@@ -3,7 +3,11 @@ local lib = require("lib")
 local reg_ft, map = lib.reg_ft, lib.map
 
 reg_ft("qf", function()
-    map("n", "q", "<cmd>bdelete<cr>", { silent = true, buffer = true }, "Close")
+    map("n", "q", "<cmd>close<cr>", { silent = true, buffer = true }, "Close")
+    map("n", "r", function()
+        vim.diagnostic.setqflist()
+        vim.notify("Refreshed")
+    end, { buffer = true }, "Refresh")
     -- map("n", "rr", ":cdo s/\\<<c-r>=expand(\"<cword>\")<cr>\\>//gc<LEFT><LEFT><LEFT>", { buffer = ev.buf }, "cdo <cword>")
     -- map("n", "rR", ":cdo %s/\\<<c-r>=expand(\"<cword>\")<cr>\\>//gc<LEFT><LEFT><LEFT>", { buffer = ev.buf }, "cdo %<cword>")
     -- map("v", "rr", "y:cdo s/<c-r>0//gc<LEFT><LEFT><LEFT>", { buffer = ev.buf }, "cdo <visual>")

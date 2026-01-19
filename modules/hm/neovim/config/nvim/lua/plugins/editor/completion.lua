@@ -37,8 +37,8 @@ return {
                 "hide",
                 function()
                     if vim.g.copilot_loaded then
-                        -- vim.fn["copilot#Suggest"]()
-                        require("copilot.suggestion").update_preview()
+                        vim.fn["copilot#Suggest"]()
+                        -- require("copilot.suggestion").update_preview()
                     end
                 end,
             },
@@ -46,8 +46,8 @@ return {
                 "cancel",
                 function()
                     if vim.g.copilot_loaded then
-                        -- vim.fn["copilot#Dismiss"]()
-                        require("copilot.suggestion").dismiss()
+                        vim.fn["copilot#Dismiss"]()
+                        -- require("copilot.suggestion").dismiss()
                     end
                 end,
             },
@@ -56,12 +56,12 @@ return {
                 "select_and_accept",
                 function()
                     if vim.g.copilot_loaded then
-                        -- vim.api.nvim_feedkeys(
-                        --     vim.fn["copilot#Accept"](vim.api.nvim_replace_termcodes("<C-l>", true, true, true)),
-                        --     "n",
-                        --     true
-                        -- )
-                        require("copilot.suggestion").accept_line()
+                        vim.api.nvim_feedkeys(
+                            vim.fn["copilot#Accept"](vim.api.nvim_replace_termcodes("<C-l>", true, true, true)),
+                            "n",
+                            true
+                        )
+                        -- require("copilot.suggestion").accept_line()
                     end
                 end,
             },
@@ -71,8 +71,8 @@ return {
                 "select_prev",
                 function()
                     if vim.g.copilot_loaded then
-                        -- vim.fn["copilot#Previous"]()
-                        require("copilot.suggestion").prev()
+                        vim.fn["copilot#Previous"]()
+                        -- require("copilot.suggestion").prev()
                     end
                 end,
             },
@@ -80,8 +80,8 @@ return {
                 "select_next",
                 function()
                     if vim.g.copilot_loaded then
-                        -- vim.fn["copilot#Next"]()
-                        require("copilot.suggestion").next()
+                        vim.fn["copilot#Next"]()
+                        -- require("copilot.suggestion").next()
                     end
                 end,
             },
