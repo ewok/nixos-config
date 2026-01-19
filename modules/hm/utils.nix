@@ -16,6 +16,7 @@ in
       tldr
       whois
       flock
+      rsync
     ] ++ optionals (system != "aarch64-darwin") [
       pkgs.atop
       pkgs.jpeginfo
