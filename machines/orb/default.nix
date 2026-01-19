@@ -58,7 +58,7 @@ in
             inherit colors theme;
             orb = true;
           };
-          yazi.enable = true;
+          vifm.enable = true;
           shell = {
             enable = true;
             homeDirectory = homeDirectory;

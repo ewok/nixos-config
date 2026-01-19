@@ -18,7 +18,7 @@ in
           enable = true;
           inherit colors theme;
         };
-        yazi.enable = true;
+        vifm.enable = true;
         shell = {
           enable = true;
           homeDirectory = homeDirectory;

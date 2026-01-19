@@ -25,6 +25,11 @@ command! vgrep vim "+grep %a"
 command! reload :write | restart
 
 command! z :execute 'cd' system('zoxide query %a')
+command! zi :execute 'cd' system('zoxide query -l|fzf')
+
+command! fd :execute 'cd' system('fd -H -L --type d|fzf')
+
+command! ff bash -c 'f=$(fd -H -L --type f | fzf); [ -n "$f" ] && nvim "$f"||true'
 
 command! vim nvim %a
 command! nvim nvim %a

@@ -30,7 +30,5 @@ endif
 " nnoremap <s-down> <nop>
 " nnoremap <s-right> <nop>
 
-nnoremap da :%d
-
 " set confirm=permdelete
 "

@@ -76,8 +76,8 @@ in
 
         "vifm/scripts".source = ./config/vifm/scripts;
 
-        "fish/functions/vifm.fish".text = ''
-          function vifm
+        "fish/functions/f.fish".text = ''
+          function f
               set -l dst (command vifm --choose-dir - $argv)
               if test -z "$dst"
                   echo 'Directory picking cancelled/failed'
@@ -88,7 +88,7 @@ in
           end
         '';
         "nushell/autoload/vifm.nu".text = ''
-          def --env vifm [...all] {
+          def --env f [...all] {
               let dst = (run-external "vifm" "--choose-dir" "-" ...$all)
               if ($dst == "") {
                   echo "Directory picking cancelled/failed"
