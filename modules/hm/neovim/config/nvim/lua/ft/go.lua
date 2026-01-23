@@ -6,7 +6,7 @@ lib.reg_ft("go", function()
     vim.opt_local.tabstop = 4
     vim.opt_local.softtabstop = 4
 
-    vim.treesitter.start()
+    pcall(vim.treesitter.start)
 end)
 
 lib.reg_lsp("gopls", {})

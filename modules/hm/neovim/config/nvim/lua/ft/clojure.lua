@@ -21,7 +21,7 @@ lib.reg_ft("clojure", function(ev)
         })
     end
 
-    vim.treesitter.start()
+    pcall(vim.treesitter.start)
 end)
 
 lib.reg_lsp("clojure_lsp", {

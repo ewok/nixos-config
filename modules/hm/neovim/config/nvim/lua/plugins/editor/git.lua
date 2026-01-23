@@ -31,7 +31,7 @@ return {
         cmd = { "Neogit", "CodeDiff" },
         keys = {
             { "<leader>gs", "<cmd>Neogit<cr>", mode = { "n" }, desc = "Git Status" },
-            { "<leader>gfl", "<cmd>NeogitLog<cr>", mode = { "n" }, desc = "Line history" },
+            { "<leader>gfl", "<cmd>NeogitLog<cr>", mode = { "n" }, desc = "Log" },
             -- { "<leader>gfd", "<cmd>CodeDiff %<cr>", mode = { "n" }, desc = "Diff history" },
             { "<leader>gd", "<cmd>CodeDiff<cr>", mode = { "n" }, desc = "Open Diff" },
         },

@@ -28,7 +28,7 @@ reg_ft("yaml", function(ev)
         })
     end
 
-    vim.treesitter.start()
+    pcall(vim.treesitter.start)
 end)
 
 reg_ft_once("yaml", function()

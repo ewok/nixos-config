@@ -17,7 +17,7 @@ lib.reg_ft("python", function(ev)
     end
     lib.map("n", "<leader>cv", "<cmd>VenvSelect<cr>", { noremap = true, buffer = true }, "Select VirtualEnv")
 
-    vim.treesitter.start()
+    pcall(vim.treesitter.start)
 end)
 
 lib.reg_lsp("pyright", {})

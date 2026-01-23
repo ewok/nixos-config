@@ -17,5 +17,5 @@ lib.reg_ft_once("terraform", function()
 end)
 
 lib.reg_ft("terraform", function()
-    vim.treesitter.start()
+    pcall(vim.treesitter.start)
 end)

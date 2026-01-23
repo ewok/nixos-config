@@ -20,7 +20,7 @@ reg_ft("fennel", function(ev)
         })
     end
 
-    vim.treesitter.start()
+    pcall(vim.treesitter.start)
 end)
 
 reg_lsp("fennel_ls", { settings = { ["fennel-ls"] = { extra_globals = { "vim" } } } })

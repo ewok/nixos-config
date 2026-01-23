@@ -6,7 +6,7 @@ lib.reg_ft("json", function()
     vim.opt_local.tabstop = 2
     vim.opt_local.softtabstop = 2
 
-    vim.treesitter.start()
+    pcall(vim.treesitter.start)
 end)
 
 lib.reg_lsp("jsonls", {})

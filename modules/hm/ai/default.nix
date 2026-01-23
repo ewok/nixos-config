@@ -193,6 +193,124 @@ let
       username_toggle = "none";
     };
 
+    agent = {
+      build = {
+        permission = {
+
+          read = {
+            "*" = "allow";
+            "*.env" = "deny";
+            "*.env.*" = "deny";
+            "secret*" = "deny";
+            "*.key" = "deny";
+            "*.pem" = "deny";
+            "*passwd*" = "deny";
+            "*shadow*" = "deny";
+            "*.env.example" = "allow";
+          };
+
+          # Tool permissions
+          edit = "allow";
+          glob = "allow";
+          grep = "allow";
+          list = "allow";
+          task = "allow";
+          skill = "allow";
+          lsp = "allow";
+          todoread = "allow";
+          todowrite = "allow";
+          webfetch = "allow";
+          websearch = "allow";
+          codesearch = "allow";
+          external_directory = "ask";
+          doom_loop = "ask";
+
+          bash = {
+
+            "*" = "ask";
+
+            # File operations (read-only)
+            "cat *" = "allow"; # cat > file, all files can be overwritten with that
+            "ls *" = "allow";
+            "find *" = "allow";
+            "grep *" = "allow";
+            "wc *" = "allow";
+            "head *" = "allow";
+            "tail *" = "allow";
+            "file *" = "allow";
+
+            "*>*" = "ask"; # Block output redirection
+            "*>>*" = "ask"; # Block append redirection
+            "*|*" = "ask"; # Block pipes
+            "*;*" = "ask"; # Block command chaining
+            "*&&*" = "ask"; # Block conditional execution
+            "*||*" = "ask"; # Block alternative execution
+            "*\$(*" = "ask"; # Block command substitution
+            "*\`*\`*" = "ask"; # Block backtick substitution
+
+            # Text processing
+            "diff *" = "allow";
+            "sort *" = "allow";
+            "uniq *" = "allow";
+            "cut *" = "allow";
+            "awk *" = "allow";
+
+            # Environment awareness
+            "echo *" = "allow";
+            "pwd *" = "allow";
+            "which *" = "allow";
+            "env *" = "allow";
+            "uname *" = "allow";
+
+            # Git operations
+            "git status*" = "allow";
+            "git log*" = "allow";
+            "git show*" = "allow";
+            "git diff*" = "allow";
+            "git branch*" = "allow";
+
+            # Nix ecosystem essentials
+            "nix build*" = "allow"; # Safe builds
+            "nix eval*" = "allow"; # Safe evaluation
+            "nix flake check*" = "allow"; # Safe validation
+            "nix flake show*" = "allow"; # Safe display
+            "nix search*" = "allow"; # Safe search
+            "nix log*" = "allow"; # Safe log viewing
+            "nix why-depends*" = "allow"; # Safe dependency analysis
+            "nix path-info*" = "allow"; # Safe store info
+
+            # Language tools
+            "go *" = "allow";
+            "lua *" = "allow";
+
+            # Formatters (safe)
+            "prettier *" = "allow";
+            "rustfmt *" = "allow";
+            "gofmt *" = "allow";
+            "black *" = "allow";
+            "stylua *" = "allow";
+            "nixpkgs-fmt *" = "allow";
+
+            # Archive inspection (READ-ONLY)
+            "tar -t*" = "allow"; # List contents only
+            "unzip -l*" = "allow"; # List contents only
+            "zcat *" = "allow";
+            "bzcat *" = "allow";
+            "xzcat *" = "allow";
+
+            # Process inspection (PRIVACY CONSCIOUS)
+            "jobs *" = "allow"; # Current shell only
+            "ps aux*" = "allow"; # Basic process list
+
+            # Binary/hex tools
+            "base64 *" = "allow";
+            "xxd *" = "allow";
+            "od *" = "allow";
+            "hexdump *" = "allow";
+          };
+        };
+      };
+    };
   };
 
   opencodeConfigFile = writeTextFile {
@@ -219,6 +337,7 @@ in
     home.packages = with pkgs; [
       opencode
       uvWrapped
+      please-cli
     ];
 
     # Install OpenCode configuration

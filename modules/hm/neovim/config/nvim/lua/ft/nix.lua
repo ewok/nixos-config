@@ -2,7 +2,7 @@ local lib = require("lib")
 
 lib.reg_ft("nix", function(ev)
   -- lib.map("n", "<leader>fm", "<Cmd>lua require('telescope').extensions.manix.manix()<CR>", { silent = true, buffer = ev.buf }, "Nix manual[manix]")
-    vim.treesitter.start()
+    pcall(vim.treesitter.start)
 end)
 
 lib.reg_lsp("nil_ls", {})

@@ -18,7 +18,7 @@ lib.reg_ft("lua", function(ev)
         })
     end
 
-    vim.treesitter.start()
+    pcall(vim.treesitter.start)
 end)
 
 lib.reg_lsp("lua_ls", {

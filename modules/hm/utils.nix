@@ -9,7 +9,7 @@ in
       dfc
       fswatch
       htop
-      please-cli
+      btop
       procps
       rclone
       speedtest-cli

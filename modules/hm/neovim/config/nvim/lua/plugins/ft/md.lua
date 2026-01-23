@@ -166,8 +166,7 @@ return {
         ft = "markdown",
         event = { "BufReadPre " .. conf.notes_dir .. "/**.md", "BufNewFile " .. conf.notes_dir .. "/**.md" },
         opts = {
-            disable_frontmatter = true,
-            frontamatter = {
+            frontmatter = {
                 enabled = false,
             },
             ui = {
