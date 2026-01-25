@@ -23,22 +23,40 @@ let
     # base0F = "eebebe"; #eebebe flamingo
 
     # Catpuccin Macchiato
-    base00 = "24273a"; #24273a base
-    base01 = "1e2030"; #1e2030 mantle
-    base02 = "363a4f"; #363a4f surface0
-    base03 = "494d64"; #494d64 surface1
-    base04 = "5b6078"; #5b6078 surface2
-    base05 = "cad3f5"; #cad3f5 text
-    base06 = "f4dbd6"; #f4dbd6 rosewater
-    base07 = "b7bdf8"; #b7bdf8 lavender
-    base08 = "ed8796"; #ed8796 red
-    base09 = "f5a97f"; #f5a97f peach
-    base0A = "eed49f"; #eed49f yellow
-    base0B = "a6da95"; #a6da95 green
-    base0C = "8bd5ca"; #8bd5ca teal
-    base0D = "8aadf4"; #8aadf4 blue
-    base0E = "c6a0f6"; #c6a0f6 mauve
-    base0F = "f0c6c6"; #f0c6c6 flamingo
+    # base00 = "24273a"; #24273a base
+    # base01 = "1e2030"; #1e2030 mantle
+    # base02 = "363a4f"; #363a4f surface0
+    # base03 = "494d64"; #494d64 surface1
+    # base04 = "5b6078"; #5b6078 surface2
+    # base05 = "cad3f5"; #cad3f5 text
+    # base06 = "f4dbd6"; #f4dbd6 rosewater
+    # base07 = "b7bdf8"; #b7bdf8 lavender
+    # base08 = "ed8796"; #ed8796 red
+    # base09 = "f5a97f"; #f5a97f peach
+    # base0A = "eed49f"; #eed49f yellow
+    # base0B = "a6da95"; #a6da95 green
+    # base0C = "8bd5ca"; #8bd5ca teal
+    # base0D = "8aadf4"; #8aadf4 blue
+    # base0E = "c6a0f6"; #c6a0f6 mauve
+    # base0F = "f0c6c6"; #f0c6c6 flamingo
+
+    # Tokyo Night Storm
+    base00 = "24283b"; #24283b base
+    base01 = "1f2335"; #1f2335 mantle
+    base02 = "292e42"; #292e42 surface0
+    base03 = "414868"; #414868 surface1
+    base04 = "565f89"; #565f89 surface2
+    base05 = "a9b1d6"; #a9b1d6 text
+    base06 = "c0caf5"; #c0caf5 bright text
+    base07 = "cbccd1"; #cbccd1 lightest
+    base08 = "f7768e"; #f7768e red
+    base09 = "ff9e64"; #ff9e64 orange
+    base0A = "e0af68"; #e0af68 yellow
+    base0B = "9ece6a"; #9ece6a green
+    base0C = "7dcfff"; #7dcfff cyan
+    base0D = "7aa2f7"; #7aa2f7 blue
+    base0E = "bb9af7"; #bb9af7 magenta
+    base0F = "9d7cd8"; #9d7cd8 purple
 
     # Catpuccin Mocha
     # base00 = "1e1e2e"; #1e1e2e ; base
@@ -121,12 +139,12 @@ let
     # light_name = "Github";
     # name_vim = "github_dark_default";
     # light_name_vim = "github_light";
-    name = "catppuccin-macchiato";
-    light_name = "catppuccin-latte";
-    name_vim = "catppuccin-macchiato";
-    light_name_vim = "catppuccin-latte";
-    nice_name = "Catppuccin Macchiato";
-    nice_light_name = "Catppuccin Latte";
+    name = "tokyonight-storm";
+    light_name = "tokyonight-day";
+    name_vim = "tokyonight-storm";
+    light_name_vim = "tokyonight-day";
+    nice_name = "TokyoNight Storm";
+    nice_light_name = "TokyoNight Day";
     # name = "nightfox";
     # light_name = "dayfox";
     # name = "onedark";

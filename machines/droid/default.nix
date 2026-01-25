@@ -23,7 +23,8 @@ in
       which
     ];
 
-    terminal.font = "${pkgs.nerd-fonts.fira-code}/share/fonts/truetype/NerdFonts/FiraCode/FiraCodeNerdFontMono-Regular.ttf";
+    terminal.font = "${pkgs.maple-mono.NF-unhinted}/share/fonts/truetype/MapleMono-NF-Regular.ttf";
+    # terminal.font = "${pkgs.nerd-fonts.fira-code}/share/fonts/truetype/NerdFonts/FiraCode/FiraCodeNerdFontMono-Regular.ttf";
 
     home-manager = {
       useGlobalPkgs = true;
@@ -42,7 +43,7 @@ in
             shell = {
               enable = true;
               homeDirectory = homeDirectory;
-              shell = "nu";
+              shell = "fish";
             };
             starship.enable = true;
             starship.colors = colors;
@@ -67,9 +68,10 @@ in
             kube.enable = false;
             bw.enable = false;
             nix.enable = true;
-            languages.lisps.enable = true;
+            languages.lisps.enable = false;
             languages.go.enable = true;
             direnv.enable = true;
+            ai.enable = true;
             terminal = {
               enable = true;
               inherit colors theme;

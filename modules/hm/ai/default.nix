@@ -1,7 +1,7 @@
 { config, lib, pkgs, ... }:
 let
   inherit (lib) mkEnableOption mkIf mkOption types;
-  inherit (pkgs) stdenv writeTextFile;
+  inherit (pkgs) symlinkJoin writeTextFile;
 
   cfg = config.opt.ai;
 
@@ -25,7 +25,7 @@ let
 
     autoupdate = false;
     share = "manual";
-    theme = "catppuccin-macchiato";
+    theme = "tokyonight";
 
     mcp = {
       mcp_context7 = {
@@ -100,14 +100,14 @@ let
 
     keybinds = {
       # changed:
-      agent_cycle = "<leader>n,ctrl+n"; # "tab";
-      agent_cycle_reverse = "none"; # "shift+tab";
+      agent_cycle = "tab"; # "tab";
+      agent_cycle_reverse = "shift+tab"; # "shift+tab";
       app_exit = "ctrl+q"; # "ctrl+d,ctrl+c,<leader>q";
       editor_open = "<leader>i"; # "<leader>e"
       input_delete_to_line_start = "none"; # "ctrl+u";
       input_line_end = "end"; # "ctrl+e";
       input_line_home = "home"; # "ctrl+a";
-      leader = "tab"; # "ctrl+x";
+      # leader = "shift+tab"; # "ctrl+x";
       messages_half_page_down = "ctrl+e"; # "ctrl+alt+d";
       messages_half_page_up = "ctrl+y"; #"ctrl+alt+u";
       messages_last = "<leader>e"; #"ctrl+alt+g,end";
@@ -317,6 +317,16 @@ let
     name = "opencode-config.json";
     text = builtins.toJSON opencodeConfig;
   };
+
+  my-opencode = symlinkJoin {
+    name = "my-opencode";
+    paths = [
+      pkgs.opencode
+    ];
+    postBuild = ''
+      ln -s $out/bin/opencode $out/bin/oc
+    '';
+  };
 in
 {
   options.opt.ai = {
@@ -335,7 +345,8 @@ in
 
   config = mkIf cfg.enable {
     home.packages = with pkgs; [
-      opencode
+      # opencode
+      my-opencode
       uvWrapped
       please-cli
     ];
@@ -349,4 +360,3 @@ in
     xdg.configFile."opencode/agent".source = ./agents;
   };
 }
-

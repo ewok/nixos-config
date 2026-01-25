@@ -17,6 +17,7 @@ in
       whois
       flock
       rsync
+      maple-mono.NF-unhinted
     ] ++ optionals (system != "aarch64-darwin") [
       pkgs.atop
       pkgs.jpeginfo
