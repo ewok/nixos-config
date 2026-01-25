@@ -1,5 +1,6 @@
 local lib = require("lib")
 local reg_ft, reg_ft_once, map = lib.reg_ft, lib.reg_ft_once, lib.map
+local conf = require("conf")
 
 reg_ft("yaml", function(ev)
     local wk_ok, wk = pcall(require, "which-key")
@@ -32,6 +33,12 @@ reg_ft("yaml", function(ev)
 end)
 
 reg_ft_once("yaml", function()
-    require("conform").formatters_by_ft.yaml = { "prettier" }
     require("nvim-treesitter").install({ "yaml" })
+    if conf.packages.conform then
+        require("conform").formatters_by_ft.yaml = { "prettier" }
+    end
+    if conf.packages.null then
+        local null_ls = require("null-ls")
+        null_ls.register({ null_ls.builtins.formatting.prettier })
+    end
 end)

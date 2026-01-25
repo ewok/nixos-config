@@ -1,6 +1,7 @@
 local lib = require("lib")
 local reg_ft, reg_ft_once, map = lib.reg_ft, lib.reg_ft_once, lib.map
 local md = { noremap = true, silent = true, buffer = true }
+local conf = require("conf")
 
 reg_ft("markdown", function()
     vim.opt_local.expandtab = true
@@ -27,5 +28,11 @@ reg_ft("markdown", function()
 end)
 
 lib.reg_ft_once("markdown", function()
-    require("conform").formatters_by_ft.markdown = { "prettier" }
+    if conf.packages.conform then
+        require("conform").formatters_by_ft.markdown = { "prettier" }
+    end
+    if conf.packages.null then
+        local null_ls = require("null-ls")
+        null_ls.register({ null_ls.builtins.formatting.prettier })
+    end
 end)

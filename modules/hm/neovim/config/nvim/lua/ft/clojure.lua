@@ -1,4 +1,5 @@
 local lib = require("lib")
+local conf = require("conf")
 
 lib.reg_ft("clojure", function(ev)
     local wk_ok, wk = pcall(require, "which-key")
@@ -35,6 +36,12 @@ lib.reg_lsp("clojure_lsp", {
 })
 
 lib.reg_ft_once("clojure", function()
-    require("conform").formatters_by_ft.clojure = { "joker" }
     require("nvim-treesitter").install({ "clojure" })
+    if conf.packages.conform then
+        require("conform").formatters_by_ft.clojure = { "joker" }
+    end
+    if conf.packages.null then
+        local null_ls = require("null-ls")
+        null_ls.register({ null_ls.builtins.formatting.joker })
+    end
 end)

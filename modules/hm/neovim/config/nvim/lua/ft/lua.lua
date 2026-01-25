@@ -1,4 +1,5 @@
 local lib = require("lib")
+local conf = require("conf")
 
 lib.reg_ft("lua", function(ev)
     local wk_ok, wk = pcall(require, "which-key")
@@ -49,6 +50,12 @@ lib.reg_lsp("lua_ls", {
 })
 
 lib.reg_ft_once("lua", function()
-    require("conform").formatters_by_ft.lua = { "stylua" }
     require("nvim-treesitter").install({ "lua" })
+    if conf.packages.conform then
+        require("conform").formatters_by_ft.lua = { "stylua" }
+    end
+    if conf.packages.null then
+        local null_ls = require("null-ls")
+        null_ls.register({ null_ls.builtins.formatting.stylua })
+    end
 end)

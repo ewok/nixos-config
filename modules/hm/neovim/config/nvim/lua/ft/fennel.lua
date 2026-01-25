@@ -1,5 +1,6 @@
 local lib = require("lib")
 local reg_ft, reg_lsp, reg_ft_once = lib.reg_ft, lib.reg_lsp, lib.reg_ft_once
+local conf = require("conf")
 
 reg_ft("fennel", function(ev)
     local wk_ok, wk = pcall(require, "which-key")
@@ -26,6 +27,12 @@ end)
 reg_lsp("fennel_ls", { settings = { ["fennel-ls"] = { extra_globals = { "vim" } } } })
 
 reg_ft_once("fennel", function()
-    require("conform").formatters_by_ft.fennel = { "fnlfmt" }
     require("nvim-treesitter").install({ "fennel" })
+    if conf.packages.conform then
+        require("conform").formatters_by_ft.fennel = { "fnlfmt" }
+    end
+    if conf.packages.null then
+        local null_ls = require("null-ls")
+        null_ls.register({ null_ls.builtins.formatting.fnlfmt })
+    end
 end)
