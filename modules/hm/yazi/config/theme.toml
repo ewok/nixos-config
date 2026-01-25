@@ -1,3 +1,5 @@
 [flavor]
-dark = "catppuccin-macchiato"
-light = "catppuccin-latte"
+# Using default Yazi theme - Tokyo Night colors applied via use_ya
+# Custom Tokyo Night integration pending
+# dark = "tokyonight-storm"
+# light = "tokyonight-day"

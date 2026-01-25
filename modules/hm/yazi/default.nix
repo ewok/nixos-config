@@ -146,9 +146,10 @@ in
         "yazi/plugins/chmod.yazi".source = "${yazi-rs-plugins}/chmod.yazi";
         "yazi/plugins/mount.yazi".source = "${yazi-rs-plugins}/mount.yazi";
 
-        # Flavors
-        "yazi/flavors/catppuccin-macchiato.yazi".source = "${yazi-rs-flavors}/catppuccin-macchiato.yazi";
-        "yazi/flavors/catppuccin-latte.yazi".source = "${yazi-rs-flavors}/catppuccin-latte.yazi";
+        # Flavors - Tokyo Night (using default theme for now)
+        # TODO: Create custom Tokyo Night flavor for Yazi
+        # "yazi/flavors/catppuccin-macchiato.yazi".source = "${yazi-rs-flavors}/catppuccin-macchiato.yazi";
+        # "yazi/flavors/catppuccin-latte.yazi".source = "${yazi-rs-flavors}/catppuccin-latte.yazi";
 
         # Integrations
         "fish/functions/y.fish".text = ''
