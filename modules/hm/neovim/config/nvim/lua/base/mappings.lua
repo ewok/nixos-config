@@ -60,7 +60,7 @@ map(
 -- Replace search
 vim.cmd([[
 nmap <expr>  MR  ':%s/\(' . @/ . '\)/\1/g<LEFT><LEFT>'
-vmap <expr>  MR  ':s/\(' . @/ . '\)/\1/g<LEFT><LEFT>'")
+vmap <expr>  MR  ':s/\(' . @/ . '\)/\1/g<LEFT><LEFT>'
 ]])
 
 -- Replace without yanking
@@ -100,7 +100,7 @@ map("v", "H", start_line, md, "Move to start of line")
 map("x", "L", "$", md, "Move to end of line")
 
 -- Terminal
-vim.api.nvim_set_keymap("t", "<Esc>", "<C-\\><C-n>", { noremap = true })
+-- vim.api.nvim_set_keymap("t", "<Esc>", "<C-\\><C-n>", { noremap = true })
 
 -- Don't move cursor when searching via * and #
 map(

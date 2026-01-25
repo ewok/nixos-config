@@ -4,7 +4,7 @@ let
   inherit (pkgs) symlinkJoin writeShellScriptBin;
 
   cfg = config.opt.nvim;
-  dag = config.lib.dag;
+  # dag = config.lib.dag;
 
   # jrnl = pkgs.writeShellScriptBin "jrnl" ''
   #   NOTE="$HOME/Notes/diary/$(date +%Y-%m-%d).md"

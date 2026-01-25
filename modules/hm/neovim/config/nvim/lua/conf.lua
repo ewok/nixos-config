@@ -12,6 +12,12 @@ M.notes_dir = path_join(M.home_dir, "Notes")
 
 M.packages = {
     aerial = true,
+    minifiles = false,
+    zen = false,
+    nvim_lint = false,
+    conform = false,
+    navic = false,
+    null = true,
 }
 
 M.options = {
@@ -21,8 +27,8 @@ M.options = {
     auto_remove_new_lines_comment = true,
     auto_toggle_rnu = true,
     auto_hide_cursorline = false,
-    theme = M.is_nix and "{{ conf.theme.name_vim }}" or "catppuccin",
-    light_theme = M.is_nix and "{{ conf.theme.light_name_vim }}" or "catppuccin",
+    theme = M.is_nix and "{{ conf.theme.name_vim }}" or "tokyonight",
+    light_theme = M.is_nix and "{{ conf.theme.light_name_vim }}" or "tokyonight",
     spelllang = { "nospell", "en_us", "ru_ru" },
     large_file_size = 1024 * 1024 * 20,
     treesitter_nvim_highlighting = false,
