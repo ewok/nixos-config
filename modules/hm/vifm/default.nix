@@ -66,7 +66,7 @@ in
       configFile = {
         "vifm/vifmrc".text = ''
           ${readFile ./config/vifm/vifmrc}
-          ${readFile ./config/vifm/colors/base16.vifm}
+          ${readFile ./config/vifm/colors/tokyo_base16.vifm}
           ${readFile ./config/vifm/plugins/devicons.vifm}
           ${readFile ./config/vifm/vifm_commands}
           ${readFile ./config/vifm/vifm_keys}

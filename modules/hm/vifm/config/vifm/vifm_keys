@@ -1,11 +1,7 @@
 " vim: filetype=vim :
 " ------------------------------------------------------------------------------
 "
-nnoremap <wait> <space><esc> <nop>
-nnoremap <wait> <space><space> <c-w>w
-nnoremap <wait> <space>h <c-w>w
-nnoremap <wait> <space>l <c-w>w
-qnoremap <wait> <space><space> <c-w>w
+nnoremap <wait> <tab><esc> <nop>
 
 " Start shell in current directory
 nnoremap s :!tmux-sp-s<cr>
@@ -20,17 +16,17 @@ nnoremap w :view<cr>
 vnoremap w :view<cr>gv
 
 " View marks, bookmarks, regs, tasks
-nnoremap <space>j :jobs<cr>
-nnoremap <space>m :marks<cr>
-nnoremap <space>b :bmarks<cr>
-nnoremap <space>tt :trashes<cr>
-nnoremap <space>tr :restore<cr>
-nnoremap <space>w :set wrap!<cr>
+nnoremap <tab>j :jobs<cr>
+nnoremap <tab>m :marks<cr>
+nnoremap <tab>b :bmarks<cr>
+nnoremap <tab>t :trashes<cr>
+nnoremap <tab>R :restore<cr>
+nnoremap <tab>w :set wrap!<cr>
 " Autojump
-nnoremap <space>z :zi<cr>:redraw<cr>
-nnoremap <space>fo :fd<cr>:redraw<cr>
-nnoremap <space>fc :compare<cr>
-nnoremap <space>ff :ff<cr>
+nnoremap zz :zi<cr>:redraw<cr>
+nnoremap <tab>fo :fd<cr>:redraw<cr>
+nnoremap <tab>fc :compare<cr>
+nnoremap <tab>ff :ff<cr>
 
 " Registers
 nnoremap " :reg<cr>
@@ -74,7 +70,7 @@ nnoremap <c-l> :!if [ -n "$TMUX" ]; tmux select-pane -R;end<cr>
 
 " nnoremap io :code .<cr>
 " nnoremap io :vim<cr>
-nnoremap io :vim +'let g:auto_load_session = v:true'<cr>
+nnoremap i :vim +'let g:auto_load_session = v:true'<cr>
 nnoremap ii :vim %f<cr>
 nnoremap it :!if [ -n "$TMUX" ]; tmux new-window vim %f;end<CR>
 nnoremap is :!if [ -n "$TMUX" ]; tmux split-window -v -p 80 vim %f;end<CR>
@@ -86,19 +82,20 @@ nnoremap <c-w>t :tabnew<CR>
 nnoremap gt :tabnext<CR>
 nnoremap gr :tabprevious<CR>
 nnoremap t :tabnew<CR>
-nnoremap <tab> :tabnext<cr>
+nnoremap <wait> <tab><tab> :tabnext<cr>
+nnoremap <s-tab>  :tabprevious<cr>
 
 " GoTo
-nnoremap <space>gb :cd ~/bin<cr>
-nnoremap <space>gD :cd ~/Documents<cr>
-nnoremap <space>gd :cd ~/Downloads<cr>
-nnoremap <space>gh :cd ~<cr>
-nnoremap <space>gM :cd ~/media<cr>
-nnoremap <space>gm :cd ~/mnt<cr>
-nnoremap <space>gp :cd ~/projects<cr>
-nnoremap <space>gt :cd ~/tmp<cr>
-nnoremap <space>gw :cd ~/work<cr>
-nnoremap <space>g. :cd ~/dotfiles<cr>
+nnoremap <tab>gb :cd ~/bin<cr>
+nnoremap <tab>gD :cd ~/Documents<cr>
+nnoremap <tab>gd :cd ~/Downloads<cr>
+nnoremap <tab>gh :cd ~<cr>
+nnoremap <tab>gM :cd ~/media<cr>
+nnoremap <tab>gm :cd ~/mnt<cr>
+nnoremap <tab>gp :cd ~/projects<cr>
+nnoremap <tab>gt :cd ~/tmp<cr>
+nnoremap <tab>gw :cd ~/work<cr>
+nnoremap <tab>g. :cd ~/dotfiles<cr>
 
 " Filter
 nnoremap f =
