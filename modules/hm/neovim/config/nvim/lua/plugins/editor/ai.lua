@@ -231,36 +231,106 @@ return {
     --     end,
     -- },
     {
-        "NickvanDyke/opencode.nvim",
-        init = function()
-            vim.keymap.set({ "n", "x" }, "<leader>aa", function()
-                require("opencode").ask("@this: ", { submit = true })
-            end, { desc = "Ask opencode" })
-
-            vim.keymap.set({ "n", "x" }, "<leader>ac", function()
-                require("opencode").select()
-            end, { desc = "Execute opencode action…" })
-
-            vim.keymap.set({ "n", "x" }, "<C-g>a", function()
-                return require("opencode").operator("@this ")
-            end, { expr = true, desc = "Add range to opencode" })
-        end,
-        config = function()
-            ---@type opencode.Opts
-            vim.g.opencode_opts = {
+        "folke/sidekick.nvim",
+        opts = {
+            nes = { enabled = false },
+            cli = {
+                mux = {
+                    enabled = true,
+                    backend = "tmux",
+                },
                 prompts = {
-                    commit = {
-                        prompt = commit_prompt,
-                        submit = true,
+                    commit = commit_prompt,
+                },
+                win = {
+                    keys = {
+                        buffers = { "<c-b>", "buffers", mode = "nt", desc = "open buffer picker" },
+                        files = { "<c-f>", "files", mode = "nt", desc = "open file picker" },
+                        prompt = { "<nop>", "prompt", mode = "t", desc = "insert prompt or context" },
+                        stopinsert = { "<c-c>", "stopinsert", mode = "t", desc = "enter normal mode" },
+                        hide_n = { "q", "hide", mode = "n", desc = "hide the terminal window" },
+                        hide_t = { "<c-q>", "hide", mode = "t", desc = "hide the terminal window" },
+                        hide_tab = { "<tab>", "hide", mode = "t", desc = "hide the terminal window" },
+                        nav_left = { "<c-h>", "nav_left", expr = true, desc = "navigate to the left window" },
+                        nav_down = { "<c-j>", "nav_down", expr = true, desc = "navigate to the below window" },
+                        nav_up = { "<c-k>", "nav_up", expr = true, desc = "navigate to the above window" },
+                        nav_right = { "<c-l>", "nav_right", expr = true, desc = "navigate to the right window" },
                     },
                 },
-                provider = {
-                    enabled = "tmux",
-                },
-            }
-
-            -- Required for `opts.events.reload`.
-            vim.o.autoread = true
-        end,
+            },
+        },
+        keys = {
+            {
+                "<tab>",
+                function()
+                    -- if #require("sidekick.status").cli() > 0 then
+                        require("sidekick.cli").toggle({ filter = { installed = true } })
+                    -- end
+                    -- return "<S-Tab>" -- fallback to normal tab
+                end,
+                expr = true,
+                desc = "Goto/Apply Next Edit Suggestion",
+            },
+            {
+                "<leader>aa",
+                function()
+                    require("sidekick.cli").toggle({ filter = { installed = true } })
+                end,
+                desc = "Sidekick Toggle CLI",
+            },
+            {
+                "<leader>as",
+                function()
+                    -- require("sidekick.cli").select()
+                    require("sidekick.cli").select({ filter = { installed = true } })
+                end,
+                desc = "Select CLI",
+            },
+            {
+                "<leader>ad",
+                function()
+                    require("sidekick.cli").close()
+                end,
+                desc = "Detach a CLI Session",
+            },
+            {
+                "<leader>at",
+                function()
+                    require("sidekick.cli").send({ msg = "{this}", filter = { installed = true } })
+                end,
+                mode = { "x", "n" },
+                desc = "Send This",
+            },
+            {
+                "<leader>af",
+                function()
+                    require("sidekick.cli").send({ msg = "{file}", filter = { installed = true } })
+                end,
+                desc = "Send File",
+            },
+            {
+                "<leader>av",
+                function()
+                    require("sidekick.cli").send({ msg = "{selection}", filter = { installed = true } })
+                end,
+                mode = { "x" },
+                desc = "Send Visual Selection",
+            },
+            {
+                "<leader>ap",
+                function()
+                    require("sidekick.cli").prompt({ filter = { installed = true } })
+                end,
+                mode = { "n", "x" },
+                desc = "Sidekick Select Prompt",
+            },
+            {
+                "<leader>ao",
+                function()
+                    require("sidekick.cli").toggle({ name = "opencode", focus = true })
+                end,
+                desc = "Sidekick Toggle Opencode",
+            },
+        },
     },
 }

@@ -16,6 +16,7 @@ return {
     },
     {
         "mfussenegger/nvim-lint",
+        enabled = conf.packages.nvim_lint,
         config = function()
             vim.api.nvim_create_autocmd({ "BufWritePost", "BufReadPost" }, {
                 callback = function()
@@ -26,6 +27,7 @@ return {
     },
     {
         "stevearc/conform.nvim",
+        enabled = conf.packages.conform,
         opts = {},
         keys = {
             {
@@ -110,75 +112,77 @@ return {
             })
         end,
     },
-    -- {
-    --     "SmiteshP/nvim-navic",
-    --     event = { "BufReadPre", "BufNewFile" },
-    --     config = function()
-    --         local navic = require("nvim-navic")
-    --         navic.setup({ highlight = true })
-    --         vim.api.nvim_create_autocmd("LspAttach", {
-    --             desc = "LSP navic",
-    --             callback = function(event)
-    --                 local client_id = vim.tbl_get(event, "data", "client_id")
-    --                 local client = client_id and vim.lsp.get_client_by_id(client_id)
-    --                 if client and client.server_capabilities.documentSymbolProvider then
-    --                     navic.attach(client, event.buf)
-    --                 end
-    --             end,
-    --         })
-    --     end,
-    -- },
-    -- {
-    --     -- https://github.com/nvimtools/none-ls.nvim/blob/main/doc/BUILTINS.md
-    --     "nvimtools/none-ls.nvim",
-    --     config = function()
-    --         local nl = require("null-ls")
-    --         nl.setup()
-    --     end,
-    --     keys = {
-    --         {
-    --             "<leader>cf",
-    --             function()
-    --                 local gen = require("null-ls.generators")
-    --                 local meth = require("null-ls.methods")
-    --                 local bufnr = vim.api.nvim_get_current_buf()
-    --
-    --                 local function formatting_enabled(buf)
-    --                     local ft = vim.api.nvim_get_option_value("filetype", { buf = buf })
-    --                     local generators = gen.get_available(ft, meth.internal.FORMATTING)
-    --                     return #generators > 0
-    --                 end
-    --
-    --                 vim.lsp.buf.format({
-    --                     filter = function(client)
-    --                         local null_supported = formatting_enabled(bufnr)
-    --
-    --                         if client.name == "null-ls" then
-    --                             if null_supported then
-    --                                 vim.notify("Formatting with: " .. client.name, nil, { title = "FMT" })
-    --                                 return true
-    --                             else
-    --                                 return false
-    --                             end
-    --                         else
-    --                             if null_supported then
-    --                                 return false
-    --                             elseif client.supports_method("textDocument/formatting") then
-    --                                 vim.notify("Formatting with: " .. client.name, nil, { title = "FMT" })
-    --                                 return true
-    --                             else
-    --                                 return false
-    --                             end
-    --                         end
-    --                     end,
-    --                     bufnr = bufnr,
-    --                 })
-    --             end,
-    --             mode = { "n", "v" },
-    --             desc = "[null] Format file or range",
-    --         },
-    --     },
-    -- },
+    {
+        "SmiteshP/nvim-navic",
+        enabled = conf.packages.navic,
+        event = { "BufReadPre", "BufNewFile" },
+        config = function()
+            local navic = require("nvim-navic")
+            navic.setup({ highlight = true })
+            vim.api.nvim_create_autocmd("LspAttach", {
+                desc = "LSP navic",
+                callback = function(event)
+                    local client_id = vim.tbl_get(event, "data", "client_id")
+                    local client = client_id and vim.lsp.get_client_by_id(client_id)
+                    if client and client.server_capabilities.documentSymbolProvider then
+                        navic.attach(client, event.buf)
+                    end
+                end,
+            })
+        end,
+    },
+    {
+        -- https://github.com/nvimtools/none-ls.nvim/blob/main/doc/BUILTINS.md
+        "nvimtools/none-ls.nvim",
+        enabled = conf.packages.null,
+        config = function()
+            local nl = require("null-ls")
+            nl.setup()
+        end,
+        keys = {
+            {
+                "<leader>cf",
+                function()
+                    local gen = require("null-ls.generators")
+                    local meth = require("null-ls.methods")
+                    local bufnr = vim.api.nvim_get_current_buf()
+
+                    local function formatting_enabled(buf)
+                        local ft = vim.api.nvim_get_option_value("filetype", { buf = buf })
+                        local generators = gen.get_available(ft, meth.internal.FORMATTING)
+                        return #generators > 0
+                    end
+
+                    vim.lsp.buf.format({
+                        filter = function(client)
+                            local null_supported = formatting_enabled(bufnr)
+
+                            if client.name == "null-ls" then
+                                if null_supported then
+                                    vim.notify("Formatting with: " .. client.name, nil, { title = "FMT" })
+                                    return true
+                                else
+                                    return false
+                                end
+                            else
+                                if null_supported then
+                                    return false
+                                elseif client.supports_method("textDocument/formatting") then
+                                    vim.notify("Formatting with: " .. client.name, nil, { title = "FMT" })
+                                    return true
+                                else
+                                    return false
+                                end
+                            end
+                        end,
+                        bufnr = bufnr,
+                    })
+                end,
+                mode = { "n", "v" },
+                desc = "[null] Format file or range",
+            },
+        },
+    },
     {
         "neovim/nvim-lspconfig",
         event = { "BufReadPre", "BufNewFile" },

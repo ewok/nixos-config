@@ -70,12 +70,6 @@ return {
                 console_timeout = 500,
                 disable_insert_on_commit = true,
             })
-            -- reg_ft("DiffviewFiles", function(ev)
-            --     map("n", "q", "<cmd>tabclose<cr>", { buffer = ev.buf }, "Close")
-            -- end)
-            -- reg_ft("DiffviewFileHistory", function(ev)
-            --     map("n", "q", "<cmd>tabclose<cr>", { buffer = ev.buf }, "Close")
-            -- end)
         end,
     },
     {

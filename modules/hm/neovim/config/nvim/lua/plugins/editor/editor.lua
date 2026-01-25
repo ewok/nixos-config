@@ -31,4 +31,9 @@ return {
             })
         end,
     },
+    -- {
+    --     "lewis6991/satellite.nvim",
+    --     config = true,
+    --     event = { "BufReadPre", "BufNewFile" },
+    -- },
 }

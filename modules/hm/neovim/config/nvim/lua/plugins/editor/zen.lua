@@ -1,9 +1,11 @@
 local lib = require("lib")
 local map = lib.map
+local conf = require("conf")
 
 return {
     "folke/zen-mode.nvim",
     cmd = { "ZenMode" },
+    enabled = conf.packages.zen,
     opts = {
         window = {
             backdrop = 0.95,

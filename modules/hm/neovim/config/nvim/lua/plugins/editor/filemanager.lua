@@ -106,7 +106,7 @@ return {
         "nvim-mini/mini.files",
         version = "*",
         dependencies = { "nvim-mini/mini.icons" },
-        enabled = false,
+        enabled = conf.packages.minifiles,
         config = function()
             local mini_files = require("mini.files")
             mini_files.setup({

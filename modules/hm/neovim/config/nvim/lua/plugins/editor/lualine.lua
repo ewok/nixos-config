@@ -31,6 +31,9 @@ return {
                         "dapui_scopes",
                         "dapui_watches",
                         "dapui_stacks",
+                        "toggleterm",
+                        "terminal",
+                        "sidekick_terminal",
                     },
                 },
                 globalstatus = true,
@@ -56,6 +59,21 @@ return {
                 },
                 lualine_c = { { "filename", path = 1 } },
                 lualine_x = {
+                    {
+                        function()
+                            local status = require("sidekick.status").cli()
+                            return " " .. (#status > 1 and #status or "")
+                        end,
+                        cond = function()
+                            if is_loaded("sidekick") then
+                                return #require("sidekick.status").cli() > 0
+                            end
+                            return false
+                        end,
+                        color = function()
+                            return "Special"
+                        end,
+                    },
                     {
                         function()
                             return require("opencode").statusline()
@@ -106,12 +124,12 @@ return {
                             return get_buf_ft(0) == "oil"
                         end,
                     },
-                    -- {
-                    --     "%{%v:lua.require'nvim-navic'.get_location()%}",
-                    --     cond = function()
-                    --         return is_loaded("nvim-navic")
-                    --     end,
-                    -- },
+                    {
+                        "%{%v:lua.require'nvim-navic'.get_location()%}",
+                        cond = function()
+                            return is_loaded("nvim-navic")
+                        end,
+                    },
                 },
             },
             inactive_winbar = {

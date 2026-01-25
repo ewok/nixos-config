@@ -6,7 +6,6 @@ map("n", "<C-w>O", function()
 end, { noremap = true }, "Wipe all buffers but one")
 
 return {
-    -- { "serhez/bento.nvim", opts = {}, lazy = false, config = true },
     {
         "kevinhwang91/nvim-bqf",
         ft = "qf",
@@ -38,7 +37,7 @@ return {
             map(
                 "n",
                 "<leader>l",
-                    "<cmd>lua require('quicker').toggle({loclist = true})<cr>",
+                "<cmd>lua require('quicker').toggle({loclist = true})<cr>",
                 { noremap = true },
                 "Toggle loclist"
             )

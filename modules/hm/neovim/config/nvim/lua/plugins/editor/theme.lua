@@ -29,43 +29,82 @@ map("n", "<leader><leader>d", function()
 end, { noremap = true }, "Toggle theme Dark")
 
 return {
-    "catppuccin/nvim",
-    name = "catppuccin",
+    "folke/tokyonight.nvim",
+    name = "tokyonight",
     priority = 1000,
     lazy = false,
     config = function()
-        local catppuccin = require("catppuccin")
-        catppuccin.setup({
-            no_italic = true,
-            flavour = "auto",
-            background = {
-                light = "latte",
-                dark = "macchiato",
+        local tokyonight = require("tokyonight")
+        tokyonight.setup({
+            style = "storm",
+            light_style = "day",
+            transparent = false,
+            terminal_colors = true,
+            styles = {
+                comments = { italic = true },
+                keywords = { italic = true },
+                functions = {},
+                variables = {},
+                sidebars = "dark",
+                floats = "dark",
             },
-            integrations = {
-                aerial = true,
-                blink_cmp = {
-                    style = "bordered",
-                },
-                diffview = true,
-                fidget = true,
-                flash = true,
-                grug_far = true,
-                mini = {
-                    enabled = true,
-                    indentscope_color = "text",
-                },
-                neotree = true,
-                neogit = true,
-                copilot_vim = true,
-                dap = true,
-                dap_ui = true,
-                nvim_surround = true,
-                which_key = true,
-                navic = { enabled = false },
-            },
+            day_brightness = 0.3,
+            dim_inactive = false,
+            lualine_bold = false,
+            -- integrations = {
+            --     aerial = true,
+            --     blink_cmp = {
+            --         style = "bordered",
+            --     },
+            --     diffview = true,
+            --     fidget = true,
+            --     flash = true,
+            --     grug_far = true,
+            --     mini = {
+            --         enabled = true,
+            --         indentscope_color = "text",
+            --     },
+            --     neotree = true,
+            --     neogit = true,
+            --     copilot_vim = true,
+            --     dap = true,
+            --     dap_ui = true,
+            --     nvim_surround = true,
+            --     which_key = true,
+            --     navic = { enabled = false },
+            -- },
+            -- on_highlights = function(hl, c)
+            --     local prompt = "#2d3149"
+            --     hl.TelescopeNormal = {
+            --         bg = c.bg_dark,
+            --         fg = c.fg_dark,
+            --     }
+            --     hl.TelescopeBorder = {
+            --         bg = c.bg_dark,
+            --         fg = c.bg_dark,
+            --     }
+            --     hl.TelescopePromptNormal = {
+            --         bg = prompt,
+            --     }
+            --     hl.TelescopePromptBorder = {
+            --         bg = prompt,
+            --         fg = prompt,
+            --     }
+            --     hl.TelescopePromptTitle = {
+            --         bg = prompt,
+            --         fg = prompt,
+            --     }
+            --     hl.TelescopePreviewTitle = {
+            --         bg = c.bg_dark,
+            --         fg = c.bg_dark,
+            --     }
+            --     hl.TelescopeResultsTitle = {
+            --         bg = c.bg_dark,
+            --         fg = c.bg_dark,
+            --     }
+            -- end,
         })
-        vim.cmd.colorscheme("catppuccin")
+        vim.cmd.colorscheme("tokyonight")
         update_bg(true)
         vim.api.nvim_create_augroup("toggle-theme", { clear = true })
         vim.api.nvim_create_autocmd("FocusGained", {

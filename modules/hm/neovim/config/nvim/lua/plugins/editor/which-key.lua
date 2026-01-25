@@ -30,6 +30,10 @@ return {
             win = {
                 border = conf.options.float_border,
             },
+            triggers = {
+                { "<auto>", mode = "nixsotc" },
+                { "m", mode = { "n" } },
+            },
         })
         wk.add({
             { "<leader>c", group = "Code..." },
@@ -51,7 +55,6 @@ return {
             { "<leader>w", name = "Wiki...", mode = { "v" } },
             { "<leader><leader>", group = "next..." },
             { "<leader><leader>l", group = "Lsp..." },
-            -- { "<leader><leader>p", group = "Packages" },
             { "<leader><leader>P", group = "Profiling..." },
             { "<leader><leader>t", group = "Terminal..." },
         })
