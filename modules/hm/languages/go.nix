@@ -18,6 +18,7 @@ in
       errcheck
       gofumpt
       exercism
+      gopls
     ];
     xdg.configFile."bash/rc.d/02_go.sh".text = ''
       export GOPATH="$HOME/.go"
