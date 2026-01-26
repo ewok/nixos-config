@@ -129,83 +129,33 @@ in
           curl
           gzip
           par
-          elinks # for docs
-          # pandoc # for docs
-
           python3
 
-          # Langs
+          tree-sitter
           gcc # required for treesitter
-          # clang
-          # go
-          # gnumake
-          # cargo
-          # nodejs
-          jdt-language-server
           gnumake
 
-          tree-sitter
 
-          # LSP:
-          clojure-lsp
-          gopls
-          # ltex-ls
           lua-language-server
           nil
-          # nixd
-          # nodePackages.bash-language-server
-          pyright
           fennel-ls
-          terraform-ls
           vscode-langservers-extracted
           yaml-language-server
           dockerfile-language-server
-          # zk
-          zls
 
-          # Linter
-          # ansible-lint
-          clj-kondo
-          # codespell
-          # hadolint   # too massive on macos
-          # markdownlint-cli
-          # pylint
-          # revive
-          # staticcheck
-          tflint
-          tfsec
-          # typos
-          # yamllint
-
-          # FMT
-          black
           fnlfmt
-          # gofmt
-          # joker
           jq
           nixpkgs-fmt
-          # nodePackages.sql-formatter
           nodePackages.prettier
-          # python311Packages.autopep8
           shfmt
-          # statix
           stylua
-          # yamllint
-          # yq
-          zprint
-          joker
           shellharden
           shfmt
 
-          # Manual
-          # manix
-          # Kustomize stuff
           kustomize
           kubeconform
           kubent
 
-          # images
-          imagemagick
         ];
       in
       [

@@ -18,6 +18,10 @@ in
     home.packages = with pkgs; [
       asdf-vm
       tfautomv
+
+      terraform-ls
+      tflint
+      tfsec
     ];
 
     home.file.".terraformrc".text = ''
