@@ -11,7 +11,9 @@
   # };
 
   inputs = {
-    nixpkgs-unstable.url = "github:NixOS/nixpkgs/nixos-unstable";
+    nixpkgs-unstable = {
+      url = "github:NixOS/nixpkgs/nixos-unstable";
+    };
 
     # Darwin
     darwin = {
@@ -98,6 +100,28 @@
           ];
         };
 
+      homeConfigurations.orb =
+        let
+          pkgs = import inputs.nixpkgs-unstable (nixpkgsDefaults // {
+            system = "aarch64-linux";
+          });
+          inherit modulesHm;
+        in
+        home-manager.lib.homeManagerConfiguration {
+          inherit pkgs;
+          modules = [
+            ./machines/common.nix
+            ./machines/orb
+            {
+              imports = modulesHm;
+              _module.args.utils = import utils/lib.nix { inherit pkgs; };
+            }
+            {
+              nixpkgs.overlays = overlays;
+            }
+          ];
+        };
+
       nixosConfigurations.bup =
         let
           system = "x86_64-linux";
@@ -119,25 +143,25 @@
         };
 
 
-      nixosConfigurations.orb =
-        let
-          system = "aarch64-linux";
-          pkgs = import inputs.nixpkgs-unstable (nixpkgsDefaults // {
-            system = "aarch64-linux";
-          });
-        in
-        nixpkgs-unstable.lib.nixosSystem {
-          inherit system;
-          inherit pkgs;
-          modules = [
-            ./machines/common.nix
-            ./machines/orb
-            home-manager.nixosModules.default
-            {
-              nixpkgs.overlays = overlays;
-            }
-          ] ++ modules;
-        };
+      # nixosConfigurations.orb =
+      #   let
+      #     system = "aarch64-linux";
+      #     pkgs = import inputs.nixpkgs-unstable (nixpkgsDefaults // {
+      #       system = "aarch64-linux";
+      #     });
+      #   in
+      #   nixpkgs-unstable.lib.nixosSystem {
+      #     inherit system;
+      #     inherit pkgs;
+      #     modules = [
+      #       ./machines/common.nix
+      #       ./machines/orb
+      #       home-manager.nixosModules.default
+      #       {
+      #         nixpkgs.overlays = overlays;
+      #       }
+      #     ] ++ modules;
+      #   };
 
       darwinConfigurations.mac =
         let
@@ -229,7 +253,7 @@
                 # SteamDeck
                 # CNT
                 # RPI
-                  if [ "$2" == "lgo" ] || [ "$2" == "rpi" ]; then
+                  if [ "$2" == "lgo" ] || [ "$2" == "rpi" ] || [ "$2" == "orb" ]; then
                     if curl --silent $SUBS_CHECK > /dev/null; then
                         CMD="nix run home-manager -- -b backup $SUBS_CMD $CMD"
                     else
@@ -237,7 +261,7 @@
                     fi
                 # nixos
                 # orb
-                  elif [ "$2" == "bup" ] || [ "$2" == "orb" ]; then
+                  elif [ "$2" == "bup" ] ; then
                     if curl --silent $SUBS_CHECK > /dev/null; then
                       CMD="sudo nixos-rebuild $SUBS_CMD $CMD --impure"
                     else
