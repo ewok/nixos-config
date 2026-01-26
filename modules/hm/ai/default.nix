@@ -100,7 +100,7 @@ let
 
     keybinds = {
       # changed:
-      agent_cycle = "tab"; # "tab";
+      agent_cycle = "ctrl+n"; # "tab";
       agent_cycle_reverse = "shift+tab"; # "shift+tab";
       app_exit = "ctrl+q"; # "ctrl+d,ctrl+c,<leader>q";
       editor_open = "<leader>i"; # "<leader>e"
@@ -119,7 +119,7 @@ let
       messages_undo = "none"; # "<leader>u";
       model_cycle_recent = "none"; # "f2";
       model_cycle_recent_reverse = "none"; # "shift+f2";
-      session_list = "<leader>o"; # "leader+l";
+      session_list = "ctrl+o"; # "leader+l";
       session_new = "none"; # "<leader>n";
       input_submit = "ctrl+s"; # "shift+return,ctrl+return,alt+return,ctrl+j,ctrl+alt+j";
       input_newline = "return";
@@ -331,6 +331,11 @@ in
 {
   options.opt.ai = {
     enable = mkEnableOption "AI terminal tools";
+    install_opencode = mkOption {
+      type = types.bool;
+      description = "Install OpenCode AI terminal tool.";
+      default = true;
+    };
     context7_api_key = mkOption {
       type = types.str;
       description = "API key for Context7 services.";
@@ -345,11 +350,9 @@ in
 
   config = mkIf cfg.enable {
     home.packages = with pkgs; [
-      # opencode
-      my-opencode
       uvWrapped
       please-cli
-    ];
+    ] ++ lib.optional cfg.install_opencode my-opencode;
 
     # Install OpenCode configuration
     xdg.configFile."opencode/opencode.json".source = opencodeConfigFile;
