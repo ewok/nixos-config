@@ -66,6 +66,7 @@ in
         tf.enable = true;
         ai = {
           enable = true;
+          install_opencode = false;
           inherit openai_token context7_api_key;
         };
       };
@@ -82,6 +83,13 @@ in
       }
     '';
 
+    xdg = {
+      configFile = {
+        "bash/rc.d/99_brew_activate.sh".text = ''
+          eval "$(/home/linuxbrew/.linuxbrew/bin/brew shellenv bash)"
+        '';
+      };
+    };
     # file /etc/udev/rules.d/99-otd.rules
     home.packages =
       let
