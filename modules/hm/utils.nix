@@ -13,16 +13,16 @@ in
       procps
       rclone
       speedtest-cli
-      tldr
+      # tldr
       whois
       flock
       rsync
       maple-mono.NF-unhinted
     ] ++ optionals (system != "aarch64-darwin") [
-      pkgs.atop
+      # pkgs.atop
       pkgs.jpeginfo
-      pkgs.yt-dlp
-      pkgs.aria2
+      # pkgs.yt-dlp
+      # pkgs.aria2
       pkgs.sqlite
       pkgs.iproute2
       pkgs.net-tools

@@ -25,8 +25,8 @@ in
 
           "fish/fish_plugins".source = ./config/fish_plugins;
           "fish/functions/fisher.fish".source = pkgs.fetchurl {
-            url = "https://raw.githubusercontent.com/jorgebucaran/fisher/refs/heads/main/functions/fisher.fish";
-            hash = "sha256-R5CzKT3YLg1xdpLqNJRXp+rHUcBD+FcBpf/orlTipt0=";
+            url = "https://raw.githubusercontent.com/jorgebucaran/fisher/a04308be92daa6cfecdbb0ca58b1e8508664cff2/functions/fisher.fish";
+            hash = "sha256-D7bIGuMAPpW1Zxdm+mwlw1lwZuKZZbd3L2wbAHOHNW0=";
           };
         };
       };

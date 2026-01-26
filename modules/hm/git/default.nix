@@ -58,7 +58,7 @@ in
           git-trim
           # gitAndTools.git-machete
           # gitAndTools.git-octopus
-          git-reparent
+          # git-reparent
           git-lfs
           gh
         ];
