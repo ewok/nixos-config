@@ -25,9 +25,9 @@ return {
     },
     { "akinsho/git-conflict.nvim", event = { "BufReadPre", "BufNewFile" }, version = "*", config = true },
     {
-        -- "NeogitOrg/neogit",
-        "sotte/neogit",
-        branch = "support-vscode-diff",
+        "NeogitOrg/neogit",
+        -- "sotte/neogit",
+        -- branch = "support-vscode-diff",
         cmd = { "Neogit", "CodeDiff" },
         keys = {
             { "<leader>gs", "<cmd>Neogit<cr>", mode = { "n" }, desc = "Git Status" },

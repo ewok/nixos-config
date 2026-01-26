@@ -7,7 +7,7 @@ return {
     -- "TheNoeTrevino/haunt.nvim",
     -- dir = "~/projects/vim/haunt.nvim",
     -- event = { "BufReadPre" },
-    enabled = false,
+    enabled = conf.packages.haunt,
     lazy = false,
     config = function()
         require("haunt").setup({

@@ -18,6 +18,7 @@ M.packages = {
     conform = false,
     navic = false,
     null = true,
+    haunt = true,
 }
 
 M.options = {
