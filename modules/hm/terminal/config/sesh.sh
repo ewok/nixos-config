@@ -7,7 +7,7 @@ else
     FILTER="grep -v ^popup"
 fi
 
-SESS=$(bash -c 'sesh list -tz' | $FILTER | grep -v "^opencode " | fzf-tmux -p 55%,60% \
+SESS=$(bash -c 'sesh list -tz' | $FILTER | grep -vE "^(opencode|claude) " | fzf-tmux -p 55%,60% \
     --border-label ' sesh ' --prompt '⚡  ' \
     --header '  ^a all ^t tmux ^g configs ^x zoxide ^d tmux kill ^e zoxide erase ^f find' \
     --bind 'tab:down,btab:up' \

@@ -25,7 +25,7 @@ let
 
     autoupdate = false;
     share = "manual";
-    theme = "tokyonight";
+    theme = cfg.opencode_theme;
 
     mcp = {
       mcp_context7 = {
@@ -313,9 +313,119 @@ let
     };
   };
 
+  claudeCodeConfig = {
+    permissions = {
+      allow = [
+        "Read"
+        "Edit"
+        "Bash(cat *)"
+        "Bash(ls *)"
+        "Bash(find *)"
+        "Bash(grep *)"
+        "Bash(wc *)"
+        "Bash(head *)"
+        "Bash(tail *)"
+        "Bash(file *)"
+        "Bash(diff *)"
+        "Bash(sort *)"
+        "Bash(uniq *)"
+        "Bash(cut *)"
+        "Bash(awk *)"
+        "Bash(echo *)"
+        "Bash(pwd *)"
+        "Bash(which *)"
+        "Bash(env *)"
+        "Bash(uname *)"
+        "Bash(git status*)"
+        "Bash(git log*)"
+        "Bash(git show*)"
+        "Bash(git diff*)"
+        "Bash(git branch*)"
+        "Bash(nix build*)"
+        "Bash(nix eval*)"
+        "Bash(nix flake check*)"
+        "Bash(nix flake show*)"
+        "Bash(nix search*)"
+        "Bash(nix log*)"
+        "Bash(nix why-depends*)"
+        "Bash(nix path-info*)"
+        "Bash(go *)"
+        "Bash(lua *)"
+        "Bash(prettier *)"
+        "Bash(rustfmt *)"
+        "Bash(gofmt *)"
+        "Bash(black *)"
+        "Bash(stylua *)"
+        "Bash(nixpkgs-fmt *)"
+        "Bash(tar -t*)"
+        "Bash(unzip -l*)"
+        "Bash(zcat *)"
+        "Bash(bzcat *)"
+        "Bash(xzcat *)"
+        "Bash(jobs *)"
+        "Bash(ps aux*)"
+        "Bash(base64 *)"
+        "Bash(xxd *)"
+        "Bash(od *)"
+        "Bash(hexdump *)"
+      ];
+      ask = [
+        "Bash"
+      ];
+      deny = [
+        "Read(./.env)"
+        "Read(./.env.*)"
+        "Read(./secret*)"
+        "Read(*.key)"
+        "Read(*.pem)"
+        "Read(*passwd*)"
+        "Read(*shadow*)"
+      ];
+    };
+  };
+
+  claudeKeybindingsConfig = {
+    "$schema" = "https://platform.claude.com/docs/schemas/claude-code/keybindings.json";
+    "$docs" = "https://code.claude.com/docs/en/keybindings";
+    bindings = [
+      {
+        context = "Global";
+        bindings = {
+          "ctrl+q" = "app:exit";
+          "ctrl+o" = "app:toggleTranscript";
+        };
+      }
+      {
+        context = "Chat";
+        bindings = {
+          "ctrl+s" = "chat:submit";
+          "escape" = "chat:cancel";
+          "ctrl+p" = "chat:modelPicker";
+          "ctrl+t" = "chat:thinkingToggle";
+          "ctrl+g" = "chat:externalEditor";
+          "up" = "history:previous";
+          "down" = "history:next";
+          "ctrl+n" = "chat:cycleMode";
+          "ctrl+x" = "chat:stash";
+          "enter" = null;
+        };
+      }
+    ];
+  };
+
   opencodeConfigFile = writeTextFile {
     name = "opencode-config.json";
     text = builtins.toJSON opencodeConfig;
+  };
+
+  claudeCodeConfigFile = writeTextFile {
+    name = "claude-code-settings.json";
+    text = builtins.toJSON claudeCodeConfig;
+  };
+
+  claudeKeybindingsConfigFile = writeTextFile {
+    name = "claude-code-keybindings.json";
+    text = builtins.toJSON claudeKeybindingsConfig;
   };
 
   my-opencode = symlinkJoin {
@@ -336,6 +446,16 @@ in
       description = "Install OpenCode AI terminal tool.";
       default = true;
     };
+    opencode_theme = mkOption {
+      type = types.str;
+      description = "Opencode theme";
+      default = "opencode";
+    };
+    install_claude = mkOption {
+      type = types.bool;
+      description = "Install Claude AI terminal tool.";
+      default = false;
+    };
     context7_api_key = mkOption {
       type = types.str;
       description = "API key for Context7 services.";
@@ -352,7 +472,8 @@ in
     home.packages = with pkgs; [
       uvWrapped
       please-cli
-    ] ++ lib.optional cfg.install_opencode my-opencode;
+    ] ++ lib.optional cfg.install_opencode my-opencode
+    ++ lib.optional cfg.install_claude pkgs.claude-code;
 
     # Install OpenCode configuration
     xdg.configFile."opencode/opencode.json".source = opencodeConfigFile;
@@ -361,5 +482,8 @@ in
       export OPENAI_API_KEY="${cfg.openai_token}"
     '';
     xdg.configFile."opencode/agent".source = ./agents;
+
+    home.file.".claude/settings.json".source = claudeCodeConfigFile;
+    home.file.".claude/keybindings.json".source = claudeKeybindingsConfigFile;
   };
 }
