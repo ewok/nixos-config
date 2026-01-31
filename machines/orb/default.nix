@@ -5,7 +5,6 @@ let
 
   username = "a_taranchiev";
   homeDirectory = "/home/${username}";
-  terminal = "ghostty";
 in
 {
   imports = [
@@ -14,7 +13,6 @@ in
   config = {
 
     nix.settings.trusted-users = [ "root" username ];
-
 
     opt =
       {
@@ -38,8 +36,8 @@ in
         starship.colors = colors;
         git = {
           enable = true;
-          homePath = "${homeDirectory}/";
-          workPath = "${homeDirectory}/work/";
+          homePath = "/Users/a.taranchiev/";
+          workPath = "/Users/a.taranchiev/work/";
           homeEmail = email;
           inherit fullName workEmail;
         };

@@ -14,11 +14,18 @@ in
 
     opt =
       {
+        ai = {
+          enable = true;
+          install_opencode = false;
+          opencode_theme = theme.opencode;
+          inherit openai_token context7_api_key;
+        };
         nvim = {
           enable = true;
           inherit colors theme;
         };
         vifm.enable = true;
+        vifm.theme = theme.vifm;
         shell = {
           enable = true;
           homeDirectory = homeDirectory;
@@ -42,8 +49,8 @@ in
         };
         nix.enable = true;
         languages.go.enable = true;
-        languages.lisps.enable = true;
-        languages.zig.enable = true;
+        languages.lisps.enable = false;
+        languages.zig.enable = false;
         terminal = {
           enable = true;
           inherit colors theme terminal;
@@ -63,12 +70,7 @@ in
         };
         direnv.enable = true;
         scripts.enable = true;
-        tf.enable = true;
-        ai = {
-          enable = true;
-          install_opencode = false;
-          inherit openai_token context7_api_key;
-        };
+        tf.enable = false;
       };
 
     xdg.configFile."sway/config.d/99-myconf.conf".text = ''
