@@ -127,3 +127,9 @@ map("n", "N", "Nzzzv", md, "Previous search match")
 map("n", "<leader><leader>p", "<cmd>Lazy home<CR>", md, "List Packages")
 
 map("i", "<M-BS>", "<C-W>", md, "Split hack")
+
+-- Tab is used
+map("n", "<C-O>o", "<C-O>", md, "Back")
+map("n", "<C-O>i", "<C-I>", md, "Forward")
+map("n", "<C-O><C-O>", "<C-O>", md, "Back")
+map("n", "<C-O><C-I>", "<C-I>", md, "Forward")

@@ -1,7 +1,7 @@
 font-family = "{{ conf.theme.monospace_font }}"
 font-size = {{ conf.font_size }}
-theme = {{ conf.theme.nice_name }}
-# theme = dark:{{ conf.theme.nice_name }},light:{{ conf.theme.nice_light_name }}
+theme = {{ conf.theme.ghostty }}
+# theme = dark:{{ conf.theme.ghostty }},light:{{ conf.theme.ghostty_light }}
 shell-integration-features = ssh-terminfo,ssh-env,sudo
 window-decoration = none
 quit-after-last-window-closed = true

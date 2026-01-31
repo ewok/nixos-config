@@ -25,6 +25,8 @@ reg_ft("markdown", function()
 
     map("n", "<leader>cp", "<Cmd>MarkdownPreviewToggle<CR>", md, "Toggle Preview")
     map("n", "<leader>cS", "<Cmd>MarkdownPreviewStop<CR>", md, "Stop Preview")
+
+    pcall(vim.treesitter.start)
 end)
 
 lib.reg_ft_once("markdown", function()

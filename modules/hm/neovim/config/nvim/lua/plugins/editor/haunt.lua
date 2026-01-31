@@ -3,10 +3,7 @@ local conf = require("conf")
 local haunt_root = path_join(conf.notes_dir, "projects/haunt")
 
 return {
-    "ewok/haunt.nvim",
-    -- "TheNoeTrevino/haunt.nvim",
-    -- dir = "~/projects/vim/haunt.nvim",
-    -- event = { "BufReadPre" },
+    "TheNoeTrevino/haunt.nvim",
     enabled = conf.packages.haunt,
     lazy = false,
     config = function()
@@ -18,21 +15,12 @@ return {
             line_hl = nil,
             virt_text_pos = "eol",
             data_dir = haunt_root,
+            per_branch_bookmarks = true,
+            picker = "telescope",
             picker_keys = {
-                delete = { key = "d", mode = { "n" } },
-                edit_annotation = { key = "a", mode = { "n" } },
+                delete = { key = "<c-d>", mode = { "i" } },
+                edit_annotation = { key = "<c-a>", mode = { "i" } },
             },
-        })
-        vim.api.nvim_create_autocmd("User", {
-            pattern = { "NeogitBranchCheckout" },
-            callback = function()
-                require("haunt.api").sync_branch()
-            end,
-        })
-        vim.api.nvim_create_autocmd({ "DirChanged", "FocusGained" }, {
-            callback = function()
-                require("haunt.api").sync_branch()
-            end,
         })
     end,
     keys = {

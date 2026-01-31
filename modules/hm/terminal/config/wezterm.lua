@@ -24,15 +24,15 @@ end
 
 function Scheme_for_appearance(appearance)
     if file_exists(wezterm.home_dir .. "/Documents/theme_dark") then
-        return "{{theme.name}}"
+        return "{{theme.wezterm}}"
     end
     if file_exists(wezterm.home_dir .. "/Documents/theme_light") then
-        return "{{theme.light_name}}"
+        return "{{theme.wezterm_light}}"
     end
     if appearance():find("Light") then
-        return "{{theme.light_name}}"
+        return "{{theme.wezterm_light}}"
     end
-    return "{{theme.name}}"
+    return "{{theme.wezterm}}"
 end
 
 local config = wezterm.config_builder()

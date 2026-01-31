@@ -266,9 +266,9 @@ return {
                     -- if #require("sidekick.status").cli() > 0 then
                         require("sidekick.cli").toggle({ filter = { installed = true } })
                     -- end
-                    -- return "<S-Tab>" -- fallback to normal tab
+                    -- return "<Tab>" -- fallback to normal tab
                 end,
-                expr = true,
+                -- expr = true,
                 desc = "Goto/Apply Next Edit Suggestion",
             },
             {

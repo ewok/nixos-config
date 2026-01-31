@@ -14,11 +14,11 @@ M.packages = {
     aerial = true,
     minifiles = false,
     zen = false,
-    nvim_lint = false,
-    conform = false,
     navic = false,
-    null = true,
     haunt = true,
+    nvim_lint = true,
+    conform = true,
+    null = false,
 }
 
 M.options = {
@@ -29,7 +29,8 @@ M.options = {
     auto_toggle_rnu = true,
     auto_hide_cursorline = false,
     theme = M.is_nix and "{{ conf.theme.name_vim }}" or "tokyonight",
-    light_theme = M.is_nix and "{{ conf.theme.light_name_vim }}" or "tokyonight",
+    flavor = M.is_nix and "{{ conf.theme.flavor }}" or "dark",
+    light_flavor  = M.is_nix and "{{ conf.theme.light_flavor }}" or "light",
     spelllang = { "nospell", "en_us", "ru_ru" },
     large_file_size = 1024 * 1024 * 20,
     treesitter_nvim_highlighting = false,

@@ -1,8 +1,17 @@
 { config, lib, pkgs, ... }:
 let
-  inherit (lib) mkEnableOption mkIf readFile;
+  inherit (lib) mkEnableOption mkIf readFile mkOption types;
 
   cfg = config.opt.vifm;
+
+  # Theme mapping function
+  getThemeFile = theme:
+    if theme == "onedark" then ./config/vifm/colors/onedark_base16.vifm
+    else if theme == "catppuccin-macchiato" then ./config/vifm/colors/catppuccin_macchiato.vifm
+    else if theme == "catppuccin-mocha" then ./config/vifm/colors/catppuccin_mocha.vifm
+    else if theme == "tokyonight" then ./config/vifm/colors/tokyo_base16.vifm
+    else ./config/vifm/colors/onedark_base16.vifm; # fallback to default
+
   open = pkgs.writeShellScriptBin "open" ''
     #!/usr/bin/env bash
     if [[ "$WSLENV" != "" ]]; then
@@ -36,6 +45,11 @@ in
 {
   options.opt.vifm = {
     enable = mkEnableOption "vifm";
+    theme = mkOption {
+      type = types.str;
+      description = "ViFM theme. Available: onedark, catppuccin-macchiato, catppuccin-mocha, tokyonight";
+      default = "onedark";
+    };
   };
 
   config = mkIf cfg.enable {
@@ -66,7 +80,7 @@ in
       configFile = {
         "vifm/vifmrc".text = ''
           ${readFile ./config/vifm/vifmrc}
-          ${readFile ./config/vifm/colors/tokyo_base16.vifm}
+          ${readFile (getThemeFile cfg.theme)}
           ${readFile ./config/vifm/plugins/devicons.vifm}
           ${readFile ./config/vifm/vifm_commands}
           ${readFile ./config/vifm/vifm_keys}

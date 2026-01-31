@@ -123,6 +123,9 @@ in
         androidPkgs = optionals cfg.android [ ];
         orbPkgs = optionals cfg.orb [ ];
         external = with pkgs; [
+          luarocks
+          nodejs
+
           lazygit
           ripgrep
           fd
@@ -134,7 +137,6 @@ in
           tree-sitter
           gcc # required for treesitter
           gnumake
-
 
           lua-language-server
           nil

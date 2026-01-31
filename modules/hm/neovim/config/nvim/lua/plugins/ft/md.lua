@@ -15,7 +15,18 @@ return {
         "gpanders/vim-medieval",
         ft = { "markdown" },
         config = function()
-            vim.g.medieval_langs = { "python", "ruby", "sh", "console=bash", "bash", "perl", "fish", "nu", "bb", "go" }
+            vim.g.medieval_langs = {
+                "python",
+                "ruby",
+                "sh",
+                "console=bash",
+                "bash",
+                "perl",
+                "fish",
+                "nu",
+                "bb",
+                "go",
+            }
         end,
     },
     {
@@ -26,12 +37,16 @@ return {
                 "MeanderingProgrammer/render-markdown.nvim",
                 opts = {
                     preset = "obsidian",
-                    heading = { width = "block" },
-                    code = { width = "block" },
+                    latex = { enabled = false },
+                    code = {
+                        enabled = true,
+                        conceal_delimiters = false,
+                        border = "thin",
+                        render_modes = true,
+                    },
                     completions = {
-                        blink = {
-                            enabled = true,
-                        },
+                        lsp = { enabled = true },
+                        blink = { enabled = true },
                     },
                     checkbox = {
                         unchecked = { icon = "" },
@@ -164,7 +179,10 @@ return {
         end,
         cmd = { "Obsidian" },
         ft = "markdown",
-        event = { "BufReadPre " .. conf.notes_dir .. "/**.md", "BufNewFile " .. conf.notes_dir .. "/**.md" },
+        event = {
+            "BufReadPre " .. conf.notes_dir .. "/**.md",
+            "BufNewFile " .. conf.notes_dir .. "/**.md",
+        },
         opts = {
             frontmatter = {
                 enabled = false,
@@ -173,7 +191,12 @@ return {
                 enable = false,
             },
             legacy_commands = false,
-            workspaces = { { name = "notes", path = "~/Notes" } },
+            workspaces = {
+                {
+                    name = "notes",
+                    path = "~/Notes",
+                },
+            },
             daily_notes = {
                 folder = "daily",
                 date_format = "%Y-%m-%d",
@@ -184,7 +207,11 @@ return {
             note_id_func = function(text)
                 return text
             end,
-            completion = { nvim_cmp = true, blink = true, min_chars = 1 },
+            completion = {
+                nvim_cmp = true,
+                blink = true,
+                min_chars = 1,
+            },
             templates = { folder = "hidden/templates" },
             checkbox = {
                 order = {

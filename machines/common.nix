@@ -135,19 +135,36 @@ let
     separator_right = "";
     alt_separator_left = "";
     alt_separator_right = "";
+
+    wezterm = "tokyonight-storm";
+    wezterm_light = "tokyonight-day";
+    name_vim = "tokyonight";
+    vifm = "tokyonight";
+    opencode = "tokyonight";
+    flavor = "moon";
+    light_flavor = "day";
+    ghostty = "TokyoNight Moon";
+    ghostty_light = "TokyoNight Day";
+
+    # name = "onedark";
+    # light_name = "onelight";
+    # name_vim = "onedark";
+    # light_name_vim = "onelight";
+    # nice_name = "Atom One Dark";
+    # nice_light_name = "Atom One Light";
+
+    # name = "catppuccin-macchiato";
+    # light_name = "catppuccin-latte";
+    # name_vim = "catppuccin";
+    # light_name_vim = "catppuccin-latte";
+    # ghostty = "Catppuccin Macchiato";
+    # ghostty_light = "Catppuccin Latte";
+
     # name = "Github Dark";
     # light_name = "Github";
     # name_vim = "github_dark_default";
     # light_name_vim = "github_light";
-    name = "tokyonight-storm";
-    light_name = "tokyonight-day";
-    name_vim = "tokyonight-storm";
-    light_name_vim = "tokyonight-day";
-    nice_name = "TokyoNight Storm";
-    nice_light_name = "TokyoNight Day";
-    # name = "nightfox";
-    # light_name = "dayfox";
-    # name = "onedark";
+
     regular_font = "FiraCode Nerd Font";
     regular_font_size = "10";
     # monospace_font = "FiraCode Nerd Font Mono";

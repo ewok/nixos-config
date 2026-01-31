@@ -5,7 +5,7 @@ local conf = require("conf")
 
 return {
     { "nvim-telescope/telescope-fzf-native.nvim", build = "make" },
-    -- { "nvim-telescope/telescope-ui-select.nvim" }, -- using dressing for now
+    { "nvim-telescope/telescope-ui-select.nvim" }, -- using dressing for now
     {
         "folke/todo-comments.nvim",
         keys = {
@@ -184,15 +184,15 @@ return {
                         fuzzy = true,
                         override_generic_sorter = true,
                         override_file_sorter = true,
-                        case_mode = "smart_case",
+                        case_mode = "ignore_case",
                     },
-                    -- ["ui-select"] = {
-                    --     require("telescope.themes").get_dropdown({}),
-                    -- },
+                    ["ui-select"] = {
+                        require("telescope.themes").get_dropdown({}),
+                    },
                 },
             })
             ts.load_extension("fzf")
-            -- ts.load_extension("ui-select")
+            ts.load_extension("ui-select")
         end,
     },
 }

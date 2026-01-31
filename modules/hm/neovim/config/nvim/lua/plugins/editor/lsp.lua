@@ -18,9 +18,21 @@ return {
         "mfussenegger/nvim-lint",
         enabled = conf.packages.nvim_lint,
         config = function()
+            -- vim.api.nvim_create_autocmd({ "BufWritePost", "BufReadPost" }, {
+            --     callback = function()
+            --         require("lint").try_lint()
+            --     end,
+            -- })
+            local timer = vim.uv.new_timer()
             vim.api.nvim_create_autocmd({ "BufWritePost", "BufReadPost" }, {
+                group = vim.api.nvim_create_augroup("Linting", { clear = true }),
                 callback = function()
-                    require("lint").try_lint()
+                    if not timer then return end
+                    timer:stop()
+                    timer:start(1000, 0, function()
+                        timer:stop()
+                        vim.schedule(require("lint").try_lint)
+                    end)
                 end,
             })
         end,
@@ -95,7 +107,7 @@ return {
             local bulb = require("nvim-lightbulb")
             bulb.setup({
                 ignore = {},
-                sign = { enabled = true, priority = 15 },
+                sign = { enabled = true, priority = 1 },
                 float = { enabled = false, text = "💡", win_opts = {} },
                 virtual_text = { enabled = false, text = "💡", hl_mode = "replace" },
                 status_text = { enabled = false, text = "💡", text_unavailable = "" },

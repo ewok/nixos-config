@@ -24,6 +24,9 @@
   autoStash = true
   updateRefs = true
 
+[merge]
+  conflictStyle = "diff3"
+
 [includeIf "gitdir:{{conf.accounts.home.path}}"]
   path = "~/.config/git/home.cfg"
 

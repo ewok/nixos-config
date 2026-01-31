@@ -1,5 +1,8 @@
 local conf = require("conf")
 
+-- Setup improved input UI
+require("base.input").setup()
+
 -- Dealing with large files
 -- Protect large files from sourcing and other overhead.
 vim.api.nvim_create_augroup("LargeFile", {})

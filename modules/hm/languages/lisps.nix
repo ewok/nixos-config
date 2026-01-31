@@ -16,7 +16,6 @@ in
       leiningen
 
       jdk
-      nodejs
       rqlite
       zprint
     ];

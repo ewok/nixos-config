@@ -23,32 +23,37 @@ return {
         },
         config = true,
     },
-    { "akinsho/git-conflict.nvim", event = { "BufReadPre", "BufNewFile" }, version = "*", config = true },
+    -- { "akinsho/git-conflict.nvim", event = { "BufReadPre", "BufNewFile" }, version = "*", config = true },
+    {
+        "spacedentist/resolve.nvim",
+        event = { "BufReadPre", "BufNewFile" },
+        cmd = { "CodeDiff" },
+        opts = {},
+    },
+    {
+        "esmuellert/codediff.nvim",
+        keys = {
+            { "<leader>gfl", "<cmd>CodeDiff history %<cr>", mode = { "n" }, desc = "Log" },
+            { "<leader>gl", "<cmd>CodeDiff history<cr>", mode = { "n" }, desc = "Log" },
+            { "<leader>gd", "<cmd>CodeDiff<cr>", mode = { "n" }, desc = "Open Diff" },
+        },
+        config = function()
+            require("codediff").setup({
+                keymaps = {
+                    explorer = {
+                        toggle_stage = "s", -- Stage/unstage selected file
+                    },
+                },
+            })
+        end,
+    },
     {
         "NeogitOrg/neogit",
         -- "sotte/neogit",
         -- branch = "support-vscode-diff",
-        cmd = { "Neogit", "CodeDiff" },
+        cmd = { "Neogit" },
         keys = {
             { "<leader>gs", "<cmd>Neogit<cr>", mode = { "n" }, desc = "Git Status" },
-            { "<leader>gfl", "<cmd>NeogitLog<cr>", mode = { "n" }, desc = "Log" },
-            -- { "<leader>gfd", "<cmd>CodeDiff %<cr>", mode = { "n" }, desc = "Diff history" },
-            { "<leader>gd", "<cmd>CodeDiff<cr>", mode = { "n" }, desc = "Open Diff" },
-        },
-        dependencies = {
-            {
-                "esmuellert/codediff.nvim",
-                dependencies = { "MunifTanjim/nui.nvim" },
-                config = function()
-                    require("codediff").setup({
-                        keymaps = {
-                            explorer = {
-                                toggle_stage = "s", -- Stage/unstage selected file
-                            },
-                        },
-                    })
-                end,
-            },
         },
         config = function()
             local ng = require("neogit")
