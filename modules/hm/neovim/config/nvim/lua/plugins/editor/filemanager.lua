@@ -11,6 +11,7 @@ return {
         -- init = function()
         --     map("n", "<space><space>", "<CMD>Oil<CR>", { noremap = true }, "Open Files")
         -- end,
+        enabled = conf.packages.oil,
         config = function()
             local oil = require("oil")
             local act = require("oil.actions")
@@ -193,6 +194,9 @@ return {
                 vim.cmd("Neotree close")
             end
             local call_oil = function(state)
+                if not conf.packages.oil then
+                    return
+                end
                 local node = state.tree:get_node()
                 if node then
                     if node.type == "file" then
@@ -209,7 +213,7 @@ return {
             require("neo-tree").setup({
                 close_if_last_window = true,
                 popup_border_style = conf.options.float_border,
-                enable_git_status = true,
+                enable_git_status = false,
                 enable_diagnostics = true,
                 open_files_do_not_replace_types = { "terminal", "trouble", "qf" },
                 sort_case_insensitive = false,
@@ -290,7 +294,7 @@ return {
                         enabled = true,
                         leave_dirs_open = false,
                     },
-                    group_empty_dirs = true,
+                    group_empty_dirs = false,
                     hijack_netrw_behavior = "open_default",
                     use_libuv_file_watcher = false,
                     window = {

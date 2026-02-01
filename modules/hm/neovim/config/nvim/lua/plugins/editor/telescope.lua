@@ -1,20 +1,37 @@
 local lib = require("lib")
 local map = lib.map
-local get_existing_up_dir = lib.get_existing_up_dir
 local conf = require("conf")
 
 return {
-    { "nvim-telescope/telescope-fzf-native.nvim", build = "make" },
-    { "nvim-telescope/telescope-ui-select.nvim" }, -- using dressing for now
+    {
+        "allaman/emoji.nvim",
+        keys = {
+            {
+                "<leader>fe",
+                ":Telescope emoji theme=cursor<CR>",
+                mode = "n",
+                desc = "Emoji",
+            },
+        },
+    },
+    {
+        "2kabhishek/seeker.nvim",
+        dependencies = { "nvim-telescope/telescope.nvim" },
+        cmd = { "Seeker" },
+        keys = {
+            { "<leader>fo", ":Seeker files<CR>", desc = "Seek Files" },
+            { "<leader>ff", ":Seeker grep<CR>", desc = "Seek Grep" },
+        },
+        opts = {
+            picker_provider = "telescope",
+        },
+    },
     {
         "folke/todo-comments.nvim",
         keys = {
             {
                 "<leader>fd",
-                function()
-                    local ts = require("telescope")
-                    ts.extensions["todo-comments"].todo()
-                end,
+                "<cmd>Telescope todo-comments theme=dropdown<cr>",
                 desc = "Find todo tag in the current workspace",
                 mode = "n",
             },
@@ -30,6 +47,8 @@ return {
             },
         },
     },
+    { "nvim-telescope/telescope-fzf-native.nvim", build = "make" },
+    { "nvim-telescope/telescope-ui-select.nvim" }, -- using dressing for now
     {
         "nvim-telescope/telescope.nvim",
         event = "VeryLazy",
@@ -37,14 +56,14 @@ return {
         init = function()
             map(
                 "n",
-                "<leader>fo",
-                ":lua require'telescope.builtin'.find_files({find_command = {'rg','--ignore','--hidden','--files','--iglob','!.git','--ignore-vcs','--ignore-file','~/.config/git/gitexcludes'}})<CR>",
+                "<leader>fO",
+                "<CMD>Telescope find_files<CR>",
                 { silent = true },
                 "Find files in the current workspace"
             )
             map(
                 "n",
-                "<leader>ff",
+                "<leader>fF",
                 "<CMD>Telescope live_grep<CR>",
                 { silent = true },
                 "Find string in the current workspace"
@@ -64,15 +83,27 @@ return {
                 "Find string in the current workspace"
             )
             map("n", "<leader>f.", "<CMD>Telescope resume<CR>", { silent = true }, "Find last lookup")
-            map("n", "<leader>fm", "<CMD>Telescope marks<CR>", { silent = true }, "Find marks in the current workspace")
+            map(
+                "n",
+                "<leader>fm",
+                "<CMD>Telescope marks theme=dropdown<CR>",
+                { silent = true },
+                "Find marks in the current workspace"
+            )
             map(
                 "n",
                 "<leader>f/",
-                "<CMD>Telescope current_buffer_fuzzy_find<CR>",
+                "<CMD>Telescope current_buffer_fuzzy_find theme=ivy previewer=false<CR>",
                 { silent = true },
                 "Find string in current buffer"
             )
-            map("n", "<leader>f:", "<cmd>Telescope command_history<cr>", { silent = true }, "Find all command history")
+            map(
+                "c",
+                "<c-r>",
+                '<cmd>Telescope command_history theme=ivy sorting_strategy=descending layout_config={"prompt_position":"bottom"}<cr>',
+                { silent = true },
+                "Find all command history"
+            )
             map("n", "<leader>fsh", "<cmd>Telescope help_tags<CR>", { silent = true }, "Help tags")
             map("n", "<leader>fss", "<cmd>Telescope vim_options<CR>", { silent = true }, "Settings")
             map("n", "<leader>fsa", "<cmd>Telescope autocommands<CR>", { silent = true }, "Autocommands")
@@ -80,8 +111,7 @@ return {
             map("n", "<leader>fsi", "<cmd>Telescope highlights<CR>", { silent = true }, "Highlights")
             map("n", "<leader>fsk", "<cmd>Telescope keymaps<CR>", { silent = true }, "Keymaps")
             map("n", "<leader>fsc", "<cmd>Telescope colorscheme<CR>", { silent = true }, "Colorschemes")
-            map("n", "<leader>fj", "<cmd>Telescope jumplist<CR>", { silent = true }, "Find jumps")
-            map("n", "<leader>fM", "<cmd>Telescope man_pages<CR>", { silent = true }, "Find man pages")
+            map("n", "<leader>fj", "<cmd>Telescope jumplist theme=dropdown<CR>", { silent = true }, "Find jumps")
             map("n", "<leader>fb", "<cmd>Telescope buffers initial_mode=normal<CR>", { silent = true }, "Buffers")
         end,
         config = function()
@@ -154,6 +184,19 @@ return {
                     },
                 },
                 pickers = {
+                    find_files = {
+                        find_command = {
+                            "rg",
+                            "--ignore",
+                            "--hidden",
+                            "--files",
+                            "--iglob",
+                            "!.git",
+                            "--ignore-vcs",
+                            "--ignore-file",
+                            "~/.config/git/gitexcludes",
+                        },
+                    },
                     buffers = {
                         show_all_buffers = true,
                         sort_mru = true,
@@ -170,7 +213,9 @@ return {
                             n = {
                                 [";"] = function(bufnr)
                                     act.close(bufnr)
-                                    vim.cmd("Oil")
+                                    if conf.packages.oil then
+                                        vim.cmd("Oil")
+                                    end
                                     -- local mf = require("mini.files")
                                     -- mf.open(get_existing_up_dir(vim.api.nvim_buf_get_name(0)), false)
                                 end,

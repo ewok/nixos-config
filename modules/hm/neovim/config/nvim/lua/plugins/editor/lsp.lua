@@ -268,7 +268,7 @@ return {
                         map(
                             "n",
                             "gd",
-                            "<cmd>lua require('telescope.builtin').lsp_definitions()<cr>",
+                            "<cmd>lua require('telescope.builtin').lsp_definitions(require('telescope.themes').get_dropdown({}))<cr>",
                             { buffer = bufnr, noremap = true },
                             "[lsp] Go to definition"
                         )
@@ -282,21 +282,21 @@ return {
                         map(
                             "n",
                             "gi",
-                            "<cmd>lua require('telescope.builtin').lsp_implementations()<cr>",
+                            "<cmd>lua require('telescope.builtin').lsp_implementations(require('telescope.themes').get_dropdown({}))<cr>",
                             { buffer = bufnr, noremap = true },
                             "[lsp] Go to implementation"
                         )
                         map(
                             "n",
                             "go",
-                            "<cmd>lua require('telescope.builtin').lsp_type_definitions()<cr>",
+                            "<cmd>lua require('telescope.builtin').lsp_type_definitions(require('telescope.themes').get_dropdown({}))<cr>",
                             { buffer = bufnr, noremap = true },
                             "[lsp] Go to type definition"
                         )
                         map(
                             "n",
                             "gr",
-                            "<cmd>lua require('telescope.builtin').lsp_references()<cr>",
+                            "<cmd>lua require('telescope.builtin').lsp_references(require('telescope.themes').get_dropdown({}))<cr>",
                             { buffer = bufnr, noremap = true },
                             "[lsp] Go to reference"
                         )
@@ -341,7 +341,7 @@ return {
                         map(
                             "n",
                             "gO",
-                            "<cmd>lua require('telescope.builtin').lsp_document_symbols()<cr>",
+                            "<cmd>lua require('telescope.builtin').lsp_document_symbols().get_dropdown({})<cr>",
                             { buffer = bufnr, noremap = true },
                             "[lsp] Document symbols"
                         )

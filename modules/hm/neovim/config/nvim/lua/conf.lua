@@ -19,6 +19,7 @@ M.packages = {
     nvim_lint = true,
     conform = true,
     null = false,
+    oil = false,
 }
 
 M.options = {

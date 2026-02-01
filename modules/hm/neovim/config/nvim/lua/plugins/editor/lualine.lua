@@ -113,6 +113,9 @@ return {
                     },
                     {
                         function()
+                            if not conf.packages.oil then
+                                return
+                            end
                             local ok, oil = pcall(require, "oil")
                             if ok then
                                 return " oil://" .. vim.fn.fnamemodify(oil.get_current_dir(), ":~")
@@ -143,6 +146,9 @@ return {
                     },
                     {
                         function()
+                            if not conf.packages.oil then
+                                return
+                            end
                             local ok, oil = pcall(require, "oil")
                             if ok then
                                 return " oil://" .. vim.fn.fnamemodify(oil.get_current_dir(), ":~")
