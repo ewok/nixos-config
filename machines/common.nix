@@ -131,45 +131,31 @@ let
     # base0F = "333333"; # #333333
   };
   theme = {
-    separator_left = "";
-    separator_right = "";
-    alt_separator_left = "";
-    alt_separator_right = "";
-
-    wezterm = "tokyonight-storm";
-    wezterm_light = "tokyonight-day";
-    name_vim = "tokyonight";
+    common = {
+      separator_left = "";
+      separator_right = "";
+      alt_separator_left = "";
+      alt_separator_right = "";
+      regular_font = "FiraCode Nerd Font";
+      regular_font_size = "10";
+      monospace_font = "Maple Mono NF";
+      monospace_font_size = "12";
+    };
+    nvim = {
+      name = "tokyonight";
+      flavor = "moon";
+      light_flavor = "day";
+    };
+    wezterm = {
+      dark = "tokyonight-storm";
+      light = "tokyonight-day";
+    };
+    ghostty = {
+      dark = "TokyoNight Moon";
+      light = "TokyoNight Day";
+    };
     vifm = "tokyonight";
     opencode = "tokyonight";
-    flavor = "moon";
-    light_flavor = "day";
-    ghostty = "TokyoNight Moon";
-    ghostty_light = "TokyoNight Day";
-
-    # name = "onedark";
-    # light_name = "onelight";
-    # name_vim = "onedark";
-    # light_name_vim = "onelight";
-    # nice_name = "Atom One Dark";
-    # nice_light_name = "Atom One Light";
-
-    # name = "catppuccin-macchiato";
-    # light_name = "catppuccin-latte";
-    # name_vim = "catppuccin";
-    # light_name_vim = "catppuccin-latte";
-    # ghostty = "Catppuccin Macchiato";
-    # ghostty_light = "Catppuccin Latte";
-
-    # name = "Github Dark";
-    # light_name = "Github";
-    # name_vim = "github_dark_default";
-    # light_name_vim = "github_light";
-
-    regular_font = "FiraCode Nerd Font";
-    regular_font_size = "10";
-    # monospace_font = "FiraCode Nerd Font Mono";
-    monospace_font = "Maple Mono NF";
-    monospace_font_size = "12";
   };
 in
 {
@@ -215,23 +201,33 @@ in
         base0F = mkOption { type = types.str; };
       };
 
-      theme = mkOption {
-        type = types.attrsOf types.str;
+      theme = {
+        common = {
+          separator_left = mkOption { type = types.str; };
+          separator_right = mkOption { type = types.str; };
+          alt_separator_left = mkOption { type = types.str; };
+          alt_separator_right = mkOption { type = types.str; };
+          regular_font = mkOption { type = types.str; };
+          regular_font_size = mkOption { type = types.str; };
+          monospace_font = mkOption { type = types.str; };
+          monospace_font_size = mkOption { type = types.str; };
+        };
+        nvim = {
+          name = mkOption { type = types.str; };
+          flavor = mkOption { type = types.str; };
+          light_flavor = mkOption { type = types.str; };
+        };
+        wezterm = {
+          dark = mkOption { type = types.str; };
+          light = mkOption { type = types.str; };
+        };
+        ghostty = {
+          dark = mkOption { type = types.str; };
+          light = mkOption { type = types.str; };
+        };
+        vifm = mkOption { type = types.str; };
+        opencode = mkOption { type = types.str; };
       };
-      # theme = {
-      #   name = mkOption { type = types.str; };
-      #   light_name = mkOption { type = types.str; };
-      #   name_vim = mkOption { type = types.str; };
-      #   light_name_vim = mkOption { type = types.str; };
-      #   separator_left = mkOption { type = types.str; };
-      #   separator_right = mkOption { type = types.str; };
-      #   alt_separator_left = mkOption { type = types.str; };
-      #   alt_separator_right = mkOption { type = types.str; };
-      #   regular_font = mkOption { type = types.str; };
-      #   regular_font_size = mkOption { type = types.str; };
-      #   monospace_font = mkOption { type = types.str; };
-      #   monospace_font_size = mkOption { type = types.str; };
-      # };
     };
 
   config = {

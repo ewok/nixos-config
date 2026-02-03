@@ -65,7 +65,8 @@ let
 
   vars = {
     conf.colors = cfg.colors;
-    conf.theme = cfg.theme;
+    conf.theme.common = cfg.theme.common;
+    conf.theme.nvim = cfg.theme.nvim;
     is_nix = "true";
     conf.orb = cfg.orb;
     conf.remote = cfg.remote;
@@ -75,14 +76,23 @@ in
   options.opt.nvim = {
     enable = mkEnableOption "nvim";
 
-    theme = mkOption {
-      type = types.attrsOf types.str;
-      default = {
-        name = "onedark";
-        separator_left = "";
-        separator_right = "";
-        alt_separator_left = "";
-        alt_separator_right = "";
+    theme = {
+      common = mkOption {
+        type = types.attrsOf types.str;
+        default = {
+          separator_left = "";
+          separator_right = "";
+          alt_separator_left = "";
+          alt_separator_right = "";
+        };
+      };
+      nvim = mkOption {
+        type = types.attrsOf types.str;
+        default = {
+          name = "tokyonight";
+          flavor = "moon";
+          light_flavor = "day";
+        };
       };
     };
 

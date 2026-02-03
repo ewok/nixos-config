@@ -27,9 +27,9 @@ cursor:
   text: "0x{{ conf.colors.base00 }}"
 font:
   normal:
-    family: "{{ conf.theme.monospace_font }}"
+    family: "{{ conf.theme.common.monospace_font }}"
     style: "Regular"
-  size: {{ conf.theme.monospace_font_size }}.5
+  size: {{ conf.theme.common.monospace_font_size }}.5
 key_bindings:
   - chars: "\x1b[13;5u"
     key: "Return"

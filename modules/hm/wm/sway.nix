@@ -5,7 +5,7 @@ let
   cfg = config.opt.wm;
   vars = {
     conf.colors = cfg.colors;
-    conf.theme = cfg.theme;
+    conf.theme.common = cfg.theme.common;
     conf.terminal = cfg.terminal;
     conf.folders.bin = "/home/deck/bin";
     conf.wallpaper = cfg.wallpaper;

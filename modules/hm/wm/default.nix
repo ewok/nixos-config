@@ -18,14 +18,15 @@ in
       default = "wezterm";
     };
 
-    theme = mkOption {
-      type = types.attrsOf types.str;
-      default = {
-        name = "onedark";
-        separator_left = "";
-        separator_right = "";
-        alt_separator_left = "";
-        alt_separator_right = "";
+    theme = {
+      common = mkOption {
+        type = types.attrsOf types.str;
+        default = {
+          separator_left = "";
+          separator_right = "";
+          alt_separator_left = "";
+          alt_separator_right = "";
+        };
       };
     };
     wallpaper = mkOption {

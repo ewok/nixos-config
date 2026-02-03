@@ -35,7 +35,10 @@ in
           opt = {
             nvim = {
               enable = true;
-              inherit colors theme;
+              inherit colors;
+              theme = {
+                inherit (theme) common nvim;
+              };
               # orb = true;
             };
             vifm.enable = true;
@@ -69,7 +72,10 @@ in
             scripts.enable = false;
             terminal = {
               enable = true;
-              inherit colors theme;
+              inherit colors;
+              theme = {
+                inherit (theme) common wezterm ghostty;
+              };
               terminal = "ghostty";
               fontSizeOverride = "16";
               tmux = {

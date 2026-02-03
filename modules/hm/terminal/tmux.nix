@@ -39,7 +39,7 @@ let
 
   vars = {
     conf.colors = cfg.colors;
-    conf.theme = cfg.theme;
+    conf.theme.common = cfg.theme.common;
     conf.terminal = cfg.tmux.terminal;
     conf.orb = cfg.orb;
   };

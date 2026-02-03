@@ -5,8 +5,9 @@ let
   cfg = config.opt.terminal;
   vars = {
     linux = cfg.linux;
-    theme = cfg.theme;
-    monospace_font_size = lib.strings.toInt(cfg.theme.monospace_font_size) + 1;
+    theme.common = cfg.theme.common;
+    theme.wezterm = cfg.theme.wezterm;
+    monospace_font_size = lib.strings.toInt(cfg.theme.common.monospace_font_size) + 1;
   };
   toggle_theme = pkgs.writeShellScriptBin "toggle-theme" ''
     if [ "$1" == "auto" ];then

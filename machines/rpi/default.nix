@@ -11,7 +11,10 @@ in
       {
         nvim = {
           enable = true;
-          inherit colors theme;
+          inherit colors;
+          theme = {
+            inherit (theme) common nvim;
+          };
           remote = true;
         };
         vifm.enable = true;
@@ -43,7 +46,10 @@ in
         lisps.enable = false;
         terminal = {
           enable = true;
-          inherit colors theme;
+          inherit colors;
+          theme = {
+            inherit (theme) common wezterm ghostty;
+          };
           tmux = {
             enable = true;
           };

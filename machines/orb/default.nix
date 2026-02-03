@@ -23,7 +23,10 @@ in
         };
         nvim = {
           enable = true;
-          inherit colors theme;
+          inherit colors;
+          theme = {
+            inherit (theme) common nvim;
+          };
           orb = true;
         };
         vifm.enable = true;
@@ -54,7 +57,10 @@ in
         languages.go.enable = true;
         terminal = {
           enable = true;
-          inherit colors theme;
+          inherit colors;
+          theme = {
+            inherit (theme) common wezterm ghostty;
+          };
           tmux = {
             enable = true;
           };

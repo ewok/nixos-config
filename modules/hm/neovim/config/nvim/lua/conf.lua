@@ -29,9 +29,9 @@ M.options = {
     auto_remove_new_lines_comment = true,
     auto_toggle_rnu = true,
     auto_hide_cursorline = false,
-    theme = M.is_nix and "{{ conf.theme.name_vim }}" or "tokyonight",
-    flavor = M.is_nix and "{{ conf.theme.flavor }}" or "dark",
-    light_flavor  = M.is_nix and "{{ conf.theme.light_flavor }}" or "light",
+    theme = M.is_nix and "{{ conf.theme.nvim.name }}" or "tokyonight",
+    flavor = M.is_nix and "{{ conf.theme.nvim.flavor }}" or "dark",
+    light_flavor  = M.is_nix and "{{ conf.theme.nvim.light_flavor }}" or "light",
     spelllang = { "nospell", "en_us", "ru_ru" },
     large_file_size = 1024 * 1024 * 20,
     treesitter_nvim_highlighting = false,
@@ -44,10 +44,10 @@ M.options = {
 
 M.separator = M.is_nix
         and {
-            left = "{{ conf.theme.separator_left }}",
-            right = "{{ conf.theme.separator_right }}",
-            alt_left = "{{ conf.theme.alt_separator_left }}",
-            alt_right = "{{ conf.theme.alt_separator_right }}",
+            left = "{{ conf.theme.common.separator_left }}",
+            right = "{{ conf.theme.common.separator_right }}",
+            alt_left = "{{ conf.theme.common.alt_separator_left }}",
+            alt_right = "{{ conf.theme.common.alt_separator_right }}",
         }
     or {
         right = "",

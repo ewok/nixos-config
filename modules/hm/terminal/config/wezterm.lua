@@ -24,15 +24,15 @@ end
 
 function Scheme_for_appearance(appearance)
     if file_exists(wezterm.home_dir .. "/Documents/theme_dark") then
-        return "{{theme.wezterm}}"
+        return "{{theme.wezterm.dark}}"
     end
     if file_exists(wezterm.home_dir .. "/Documents/theme_light") then
-        return "{{theme.wezterm_light}}"
+        return "{{theme.wezterm.light}}"
     end
     if appearance():find("Light") then
-        return "{{theme.wezterm_light}}"
+        return "{{theme.wezterm.light}}"
     end
-    return "{{theme.wezterm}}"
+    return "{{theme.wezterm.dark}}"
 end
 
 local config = wezterm.config_builder()
@@ -60,7 +60,7 @@ config.window_decorations = "RESIZE"
 
 -- {{#linux}}
 -- SteamOs
-config.font = wezterm.font("{{ theme.monospace_font }}", {
+config.font = wezterm.font("{{ theme.common.monospace_font }}", {
     weight = "Regular",
     stretch = "Condensed",
 })

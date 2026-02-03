@@ -33,15 +33,33 @@ in
         };
       };
 
-      theme = mkOption {
-        type = types.attrsOf types.str;
-        default = {
-          name = "onedark";
-          light_name = "onedark";
-          separator_left = "";
-          separator_right = "";
-          alt_separator_left = "";
-          alt_separator_right = "";
+      theme = {
+        common = mkOption {
+          type = types.attrsOf types.str;
+          default = {
+            separator_left = "";
+            separator_right = "";
+            alt_separator_left = "";
+            alt_separator_right = "";
+            regular_font = "FiraCode Nerd Font";
+            regular_font_size = "10";
+            monospace_font = "Maple Mono NF";
+            monospace_font_size = "12";
+          };
+        };
+        wezterm = mkOption {
+          type = types.attrsOf types.str;
+          default = {
+            dark = "tokyonight-storm";
+            light = "tokyonight-day";
+          };
+        };
+        ghostty = mkOption {
+          type = types.attrsOf types.str;
+          default = {
+            dark = "TokyoNight Moon";
+            light = "TokyoNight Day";
+          };
         };
       };
 

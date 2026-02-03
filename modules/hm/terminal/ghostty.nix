@@ -5,9 +5,10 @@ let
   cfg = config.opt.terminal;
   vars = {
     conf.colors = cfg.colors;
-    conf.theme = cfg.theme;
+    conf.theme.common = cfg.theme.common;
+    conf.theme.ghostty = cfg.theme.ghostty;
     conf.terminal = cfg.terminal;
-    conf.font_size = if cfg.fontSizeOverride == "" then cfg.theme.monospace_font_size else cfg.fontSizeOverride;
+    conf.font_size = if cfg.fontSizeOverride == "" then cfg.theme.common.monospace_font_size else cfg.fontSizeOverride;
   };
 in
 {
