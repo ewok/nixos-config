@@ -27,7 +27,9 @@ return {
             vim.api.nvim_create_autocmd({ "BufWritePost", "BufReadPost" }, {
                 group = vim.api.nvim_create_augroup("Linting", { clear = true }),
                 callback = function()
-                    if not timer then return end
+                    if not timer then
+                        return
+                    end
                     timer:stop()
                     timer:start(1000, 0, function()
                         timer:stop()
@@ -179,7 +181,7 @@ return {
                             else
                                 if null_supported then
                                     return false
-                                elseif client.supports_method("textDocument/formatting") then
+                                elseif client.supports_method("textDocument/formatting", bufnr) then
                                     vim.notify("Formatting with: " .. client.name, nil, { title = "FMT" })
                                     return true
                                 else

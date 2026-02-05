@@ -1,5 +1,5 @@
 local lib = require("lib")
-local reg_ft, map = lib.reg_ft, lib.map
+local map = lib.map
 
 return {
     {
@@ -23,15 +23,10 @@ return {
         },
         config = true,
     },
-    -- { "akinsho/git-conflict.nvim", event = { "BufReadPre", "BufNewFile" }, version = "*", config = true },
-    {
-        "spacedentist/resolve.nvim",
-        event = { "BufReadPre", "BufNewFile" },
-        cmd = { "CodeDiff" },
-        opts = {},
-    },
+    { "akinsho/git-conflict.nvim", event = { "BufReadPre", "BufNewFile" }, version = "*", config = true },
     {
         "esmuellert/codediff.nvim",
+        cmd = { "CodeDiff" },
         keys = {
             { "<leader>gfl", "<cmd>CodeDiff history %<cr>", mode = { "n" }, desc = "Log" },
             { "<leader>gl", "<cmd>CodeDiff history<cr>", mode = { "n" }, desc = "Log" },
@@ -40,8 +35,40 @@ return {
         config = function()
             require("codediff").setup({
                 keymaps = {
+                    view = {
+                        quit = "q",
+                        -- toggle_explorer = ";",
+                        next_hunk = "<c-f>",
+                        prev_hunk = "<c-b>",
+                        next_file = "<c-n>",
+                        prev_file = "<c-p>",
+                        diff_get = "do",
+                        diff_put = "dp",
+                        open_in_prev_tab = "gf",
+                        toggle_stage = "s",
+                    },
                     explorer = {
-                        toggle_stage = "s", -- Stage/unstage selected file
+                        select = "<CR>",
+                        hover = "K",
+                        refresh = "R",
+                        toggle_view_mode = "i",
+                        stage_all = "S",
+                        unstage_all = "U",
+                        restore = "X",
+                    },
+                    history = {
+                        select = "<CR>",
+                        toggle_view_mode = "i",
+                    },
+                    conflict = {
+                        accept_incoming = "ct",
+                        accept_current = "co",
+                        accept_both = "cb",
+                        discard = "cx",
+                        next_conflict = "]x",
+                        prev_conflict = "[x",
+                        diffget_incoming = "2do",
+                        diffget_current = "3do",
                     },
                 },
             })
@@ -51,7 +78,7 @@ return {
         "NeogitOrg/neogit",
         -- "sotte/neogit",
         -- branch = "support-vscode-diff",
-        cmd = { "Neogit" },
+        cmd = { "Neogit", "NeogitCommit" },
         keys = {
             { "<leader>gs", "<cmd>Neogit<cr>", mode = { "n" }, desc = "Git Status" },
         },

@@ -15,18 +15,6 @@ return {
         },
     },
     {
-        "2kabhishek/seeker.nvim",
-        dependencies = { "nvim-telescope/telescope.nvim" },
-        cmd = { "Seeker" },
-        keys = {
-            { "<leader>fo", ":Seeker files<CR>", desc = "Seek Files" },
-            { "<leader>ff", ":Seeker grep<CR>", desc = "Seek Grep" },
-        },
-        opts = {
-            picker_provider = "telescope",
-        },
-    },
-    {
         "folke/todo-comments.nvim",
         keys = {
             {
@@ -56,14 +44,14 @@ return {
         init = function()
             map(
                 "n",
-                "<leader>fO",
+                "<leader>fo",
                 "<CMD>Telescope find_files<CR>",
                 { silent = true },
                 "Find files in the current workspace"
             )
             map(
                 "n",
-                "<leader>fF",
+                "<leader>ff",
                 "<CMD>Telescope live_grep<CR>",
                 { silent = true },
                 "Find string in the current workspace"
@@ -92,7 +80,7 @@ return {
             )
             map(
                 "n",
-                "<leader>f/",
+                "<leader>/",
                 "<CMD>Telescope current_buffer_fuzzy_find theme=ivy previewer=false<CR>",
                 { silent = true },
                 "Find string in current buffer"
@@ -113,10 +101,34 @@ return {
             map("n", "<leader>fsc", "<cmd>Telescope colorscheme<CR>", { silent = true }, "Colorschemes")
             map("n", "<leader>fj", "<cmd>Telescope jumplist theme=dropdown<CR>", { silent = true }, "Find jumps")
             map("n", "<leader>fb", "<cmd>Telescope buffers initial_mode=normal<CR>", { silent = true }, "Buffers")
+            if conf.packages.neotree == false then
+                map("n", ";", "<cmd>Telescope buffers<CR>", { silent = true }, "Buffers")
+            end
         end,
         config = function()
             local ts = require("telescope")
             local act = require("telescope.actions")
+
+            local telescope_narrow_matches = function(bufnr)
+                local builtin = require("telescope.builtin")
+                local actions_state = require("telescope.actions.state")
+                local map_entries = require("telescope.actions.utils").map_entries
+                local matches = {}
+
+                if actions_state.get_current_picker(bufnr).prompt_title ~= "Live Grep" then
+                    map_entries(bufnr, function(entry)
+                        table.insert(matches, entry[0] or entry[1])
+                    end)
+                    builtin.live_grep({ search_dirs = matches })
+                else
+                    map_entries(bufnr, function(entry)
+                        table.insert(matches, entry.filename)
+                    end)
+                    matches = vim.fn.uniq(vim.fn.sort(matches)) -- Remove duplicates
+                    builtin.find_files({ search_dirs = matches })
+                end
+            end
+
             ts.setup({
                 defaults = {
                     vimgrep_arguments = {
@@ -167,6 +179,7 @@ return {
                             ["<c-q>"] = act.smart_send_to_qflist + act.open_qflist,
                             ["<c-i>"] = act.toggle_selection + act.move_selection_previous,
                             ["<esc>"] = act.close,
+                            ["<C-f>"] = telescope_narrow_matches,
                         },
                         n = {
                             ["<esc>"] = act.close,
@@ -198,14 +211,56 @@ return {
                         },
                     },
                     buffers = {
+                        sort_buffers = function(bufnr_a, bufnr_b)
+                            local name_a = vim.api.nvim_buf_get_name(bufnr_a)
+                            local name_b = vim.api.nvim_buf_get_name(bufnr_b)
+
+                            -- Empty buffers go last
+                            if name_a == "" then
+                                return false
+                            end
+                            if name_b == "" then
+                                return true
+                            end
+
+                            local cwd = vim.loop.cwd() or ""
+
+                            -- Make paths relative to CWD if possible
+                            local rel_a = name_a:gsub("^" .. vim.pesc(cwd) .. "/", "")
+                            local rel_b = name_b:gsub("^" .. vim.pesc(cwd) .. "/", "")
+
+                            -- Count depth (number of directory separators)
+
+                            local depth_a = select(2, rel_a:gsub("/", ""))
+                            local depth_b = select(2, rel_b:gsub("/", ""))
+
+                            -- Prioritize files in current directory (depth 0)
+                            if depth_a ~= depth_b then
+                                return depth_a < depth_b
+                            end
+
+                            -- Sort alphabetically
+                            return rel_a < rel_b
+                        end,
+                        sort_mru = false,
+
                         show_all_buffers = true,
-                        sort_mru = true,
                         select_current = true,
-                        theme = "dropdown",
+                        theme = "ivy",
+                        initial_mode = "normal",
                         previewer = false,
-                        layout_config = { width = 0.6 },
-                        -- truncate
-                        path_display = { "filename_first" },
+                        -- layout_config = {
+                        --     -- width = 80,
+                        --     height = 0.9,
+                        --     width = function(_, max_columns)
+                        --         local percentage = 0.5
+                        --         local min = 80
+                        --         return math.max(math.floor(percentage * max_columns), min)
+                        --     end,
+                        -- },
+                        path_display = { "truncate" },
+                        -- path_display = { "smart" },
+                        -- path_display = { "filename_first" },
                         mappings = {
                             i = {
                                 ["<c-d>"] = act.delete_buffer,
@@ -215,6 +270,11 @@ return {
                                     act.close(bufnr)
                                     if conf.packages.oil then
                                         vim.cmd("Oil")
+                                        return
+                                    end
+                                    if conf.packages.fyler then
+                                        vim.cmd("Fyler")
+                                        return
                                     end
                                     -- local mf = require("mini.files")
                                     -- mf.open(get_existing_up_dir(vim.api.nvim_buf_get_name(0)), false)

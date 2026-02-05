@@ -12,14 +12,18 @@ M.notes_dir = path_join(M.home_dir, "Notes")
 
 M.packages = {
     aerial = true,
-    minifiles = false,
     zen = false,
     navic = false,
     haunt = true,
+
     nvim_lint = true,
     conform = true,
     null = false,
-    oil = false,
+
+    oil = true,
+    fyler = false,
+    neotree = false,
+    minifiles = false,
 }
 
 M.options = {
@@ -31,7 +35,7 @@ M.options = {
     auto_hide_cursorline = false,
     theme = M.is_nix and "{{ conf.theme.nvim.name }}" or "tokyonight",
     flavor = M.is_nix and "{{ conf.theme.nvim.flavor }}" or "dark",
-    light_flavor  = M.is_nix and "{{ conf.theme.nvim.light_flavor }}" or "light",
+    light_flavor = M.is_nix and "{{ conf.theme.nvim.light_flavor }}" or "light",
     spelllang = { "nospell", "en_us", "ru_ru" },
     large_file_size = 1024 * 1024 * 20,
     treesitter_nvim_highlighting = false,
@@ -110,6 +114,20 @@ M.icons.tag_level = {
     Note = "✐",
     Todo = "✓",
     Perf = "↻",
+}
+
+-- Git
+M.icons.git = {
+    Untracked = "○", -- filled circle
+    Added = "+", -- simple plus
+    Modified = "~", -- tilde
+    Deleted = "-", -- minus
+    Renamed = "→", -- arrow
+    Copied = "⋯", -- ellipsis
+    Conflict = "✖", -- x mark
+    Ignored = " ", -- empty circle
+    TypeChanged = "",
+    Unmerged = "●",
 }
 
 -- Kind
@@ -204,6 +222,7 @@ M.exclude_autosave_filetypes = {
     "oil",
     "prompt",
     "toggleterm",
+    "fyler",
 }
 --
 

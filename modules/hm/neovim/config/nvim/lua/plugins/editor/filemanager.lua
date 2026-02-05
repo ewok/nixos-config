@@ -1,5 +1,5 @@
 local lib = require("lib")
-local map = lib.map
+local map, umap, has_value = lib.map, lib.umap, lib.has_value
 local reg_ft = lib.reg_ft
 local conf = require("conf")
 
@@ -7,10 +7,10 @@ return {
     {
         "stevearc/oil.nvim",
         cmd = { "Oil" },
-        dependencies = { "refractalize/oil-git-status.nvim" },
-        -- init = function()
-        --     map("n", "<space><space>", "<CMD>Oil<CR>", { noremap = true }, "Open Files")
-        -- end,
+        dependencies = {
+            "refractalize/oil-git-status.nvim",
+            { "JezerM/oil-lsp-diagnostics.nvim", opts = {} },
+        },
         enabled = conf.packages.oil,
         config = function()
             local oil = require("oil")
@@ -20,34 +20,40 @@ return {
             reg_ft("oil", function(ev)
                 -- vim.o.number = false
 
-                -- map("n", "<C-t>", function()
-                --     vim.cmd("tab split")
-                --     oil.select()
-                -- end, { buffer = ev.buf }, "Open in Tab")
+                map("n", "<C-t>", function()
+                    vim.cmd("tab split")
+                    oil.select()
+                end, { buffer = ev.buf }, "Open in Tab")
 
                 map("n", "w", "<cmd>w<cr>", { buffer = ev.buf })
 
-                -- vim.api.nvim_create_autocmd("BufEnter", {
-                --     buffer = ev.buf,
-                --     callback = function()
-                --         map("n", "h", act.parent.callback, { buffer = ev.buf }, "Go to Parent Directory")
-                --         map("n", "l", act.select.callback, { buffer = ev.buf }, "select entry")
-                --         map("n", "<C-v>", act.select_vsplit.callback, { buffer = ev.buf }, "Open in Vertical Split")
-                --     end,
-                -- })
+                vim.api.nvim_create_autocmd("BufEnter", {
+                    buffer = ev.buf,
+                    callback = function()
+                        if vim.b.oil_map_stopped then
+                            map("n", "h", act.parent.callback, { buffer = ev.buf }, "Go to Parent Directory")
+                            map("n", "l", act.select.callback, { buffer = ev.buf }, "select entry")
+                            map("n", "<C-v>", act.select_vsplit.callback, { buffer = ev.buf }, "Open in Vertical Split")
+                            vim.notify("Enabled h/l in oil buffer")
+                            vim.b.oil_map_stopped = false
+                        end
+                    end,
+                })
 
-                -- vim.api.nvim_create_autocmd("ModeChanged", {
-                --     buffer = ev.buf,
-                --     callback = function()
-                --         -- check if mode is visual or insert
-                --         if has_value({ "v", "i" }, vim.fn.mode()) then
-                --             umap("n", "h", { buffer = ev.buf })
-                --             umap("n", "l", { buffer = ev.buf })
-                --             umap("n", "<C-v>", { buffer = ev.buf })
-                --             vim.notify("Disabled h/l in oil buffer to prevent accidental navigation")
-                --         end
-                --     end,
-                -- })
+                vim.api.nvim_create_autocmd("ModeChanged", {
+                    buffer = ev.buf,
+                    callback = function()
+                        if not vim.b.oil_map_stopped then
+                            if has_value({ "v", "i", "o" }, vim.fn.mode()) then
+                                umap("n", "h", { buffer = ev.buf })
+                                umap("n", "l", { buffer = ev.buf })
+                                umap("n", "<C-v>", { buffer = ev.buf })
+                                vim.notify("Disabled h/l in oil buffer to prevent accidental navigation")
+                                vim.b.oil_map_stopped = true
+                            end
+                        end
+                    end,
+                })
             end)
 
             oil.setup({
@@ -82,15 +88,15 @@ return {
                 view_options = { show_hidden = true },
                 keymaps = {
                     ["g?"] = "actions.show_help",
-                    -- ["<CR>"] = "actions.select",
-                    -- ["l"] = "actions.select",
-                    -- ["<C-v>"] = "actions.select_vsplit",
-                    -- ["<C-s>"] = "actions.select_split",
-                    -- ["<C-p>"] = "actions.preview",
-                    -- ["h"] = "actions.parent",
+                    ["<CR>"] = "actions.select",
+                    ["l"] = "actions.select",
+                    ["<C-v>"] = "actions.select_vsplit",
+                    ["<C-s>"] = "actions.select_split",
+                    ["<C-p>"] = "actions.preview",
+                    ["h"] = "actions.parent",
                     -- ["u"] = "actions.parent",
                     ["q"] = "actions.close",
-                    -- [";"] = "actions.close",
+                    [";"] = "actions.close",
                     ["R"] = "actions.refresh",
                     ["@"] = "actions.open_cwd",
                     ["."] = "actions.cd",
@@ -100,7 +106,25 @@ return {
                     ["gR"] = "actions.toggle_trash",
                 },
             })
-            oil_git.setup({})
+            local icons = {
+                ["!"] = conf.icons.git.Conflict,
+                ["?"] = conf.icons.git.Untracked,
+                ["A"] = conf.icons.git.Added,
+                ["C"] = conf.icons.git.Copied,
+                ["D"] = conf.icons.git.Deleted,
+                ["M"] = conf.icons.git.Modified,
+                ["R"] = conf.icons.git.Renamed,
+                ["T"] = conf.icons.git.TypeChanged,
+                ["U"] = conf.icons.git.Unmerged,
+                [" "] = conf.icons.git.Ignored,
+            }
+            oil_git.setup({
+                show_ignored = true,
+                symbols = {
+                    index = icons,
+                    working_tree = icons,
+                },
+            })
         end,
     },
     {
@@ -174,6 +198,7 @@ return {
     },
     {
         "nvim-neo-tree/neo-tree.nvim",
+        enabled = conf.packages.neotree,
         branch = "v3.x",
         cmd = "Neotree",
         init = function()
