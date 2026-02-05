@@ -202,6 +202,16 @@ check_config_file() {
 	fi
 }
 
+expand_path() {
+	local path="$1"
+
+	# Expand ~ and environment variables like $HOME, ${HOME}
+	# Uses eval with echo to handle ~, ~/path, $HOME, ${HOME}, etc.
+	local expanded=$(eval echo "$path")
+
+	echo "$expanded"
+}
+
 validate_config() {
 	log "INFO" "Validating configuration..."
 
@@ -220,6 +230,9 @@ validate_config() {
 		branch_name=$(echo "$branch_name" | xargs)
 		remote_name=$(echo "$remote_name" | xargs)
 		remote_url=$(echo "$remote_url" | xargs)
+
+		# Expand ~ and $HOME in path
+		repo_path=$(expand_path "$repo_path")
 
 		# Validate required fields
 		if [[ -z "$repo_path" ]] || [[ -z "$branch_name" ]] || [[ -z "$remote_name" ]] || [[ -z "$remote_url" ]]; then
@@ -486,6 +499,9 @@ process_repositories() {
 		branch_name=$(echo "$branch_name" | xargs)
 		remote_name=$(echo "$remote_name" | xargs)
 		remote_url=$(echo "$remote_url" | xargs)
+
+		# Expand ~ and $HOME in path
+		repo_path=$(expand_path "$repo_path")
 
 		# Validate required fields
 		if [[ -z "$repo_path" ]] || [[ -z "$branch_name" ]] || [[ -z "$remote_name" ]] || [[ -z "$remote_url" ]]; then
