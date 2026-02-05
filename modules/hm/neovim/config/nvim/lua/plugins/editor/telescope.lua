@@ -100,9 +100,39 @@ return {
             map("n", "<leader>fsk", "<cmd>Telescope keymaps<CR>", { silent = true }, "Keymaps")
             map("n", "<leader>fsc", "<cmd>Telescope colorscheme<CR>", { silent = true }, "Colorschemes")
             map("n", "<leader>fj", "<cmd>Telescope jumplist theme=dropdown<CR>", { silent = true }, "Find jumps")
-            map("n", "<leader>fb", "<cmd>Telescope buffers initial_mode=normal<CR>", { silent = true }, "Buffers")
+            map("n", "<leader>fb", "<cmd>Telescope buffers theme=dropdown<CR>", { silent = true }, "Buffers")
             if conf.packages.neotree == false then
-                map("n", ";", "<cmd>Telescope buffers<CR>", { silent = true }, "Buffers")
+                map("n", ";", function()
+                    require("lib.telescope_buffers_tree").open({
+                        theme = "dropdown",
+                        theme_opts = {
+                            layout_config = {
+                                -- width = 80,
+                                height = function(_, _, max_lines)
+                                    local percentage = 0.4
+                                    local min = 40
+                                    return math.max(math.floor(percentage * max_lines), min)
+                                end,
+                                width = function(_, max_columns)
+                                    local percentage = 0.2
+                                    local min = 60
+                                    return math.max(math.floor(percentage * max_columns), min)
+                                end,
+                            },
+                        },
+                        action_key = ";",
+                        action = function()
+                            if conf.packages.oil then
+                                vim.cmd("Oil")
+                                return
+                            end
+                            if conf.packages.fyler then
+                                vim.cmd("Fyler")
+                                return
+                            end
+                        end,
+                    })
+                end, { silent = true }, "Buffers")
             end
         end,
         config = function()
@@ -246,7 +276,7 @@ return {
 
                         show_all_buffers = true,
                         select_current = true,
-                        theme = "ivy",
+                        theme = "dropdown",
                         initial_mode = "normal",
                         previewer = false,
                         -- layout_config = {
@@ -258,9 +288,13 @@ return {
                         --         return math.max(math.floor(percentage * max_columns), min)
                         --     end,
                         -- },
-                        path_display = { "truncate" },
+                        -- path_display = { "truncate" },
                         -- path_display = { "smart" },
                         -- path_display = { "filename_first" },
+                        path_display = function(_, path)
+                            local tail = require("telescope.utils").path_tail(path)
+                            return string.format("%s (%s)", tail, path)
+                        end,
                         mappings = {
                             i = {
                                 ["<c-d>"] = act.delete_buffer,
