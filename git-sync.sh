@@ -73,6 +73,12 @@ log() {
 		WARNING)
 			echo -e "${YELLOW}[WARNING]${NC} $message" >&2
 			;;
+		DEBUG)
+			# Only show INFO messages if verbose mode is enabled
+			if [[ "$VERBOSE" == "true" ]]; then
+				echo -e "${BLUE}[DEBUG]${NC} $message"
+			fi
+			;;
 		INFO)
 			echo -e "${BLUE}[INFO]${NC} $message"
 			;;
@@ -88,7 +94,7 @@ log() {
 	# Rotate log if too large
 	if [[ -f "$LOG_FILE" ]] && [[ $(stat -f%z "$LOG_FILE" 2>/dev/null || stat -c%s "$LOG_FILE" 2>/dev/null) -gt $MAX_LOG_SIZE ]]; then
 		mv "$LOG_FILE" "${LOG_FILE}.old"
-		log "INFO" "Log file rotated"
+		log "DEBUG" "Log file rotated"
 	fi
 }
 
@@ -106,6 +112,7 @@ If current branch doesn't match config, a warning is shown and the repository is
 
 OPTIONS:
     --dry-run           Preview changes without applying them
+    --verbose           Show detailed output
     --quiet             Minimal output (errors only)
     --repo <name>       Sync only specific repository (by directory name)
     --no-push           Only pull changes, don't push
@@ -145,6 +152,10 @@ parse_arguments() {
 		--dry-run)
 			DRY_RUN=true
 			log "INFO" "Dry-run mode enabled"
+			shift
+			;;
+		--verbose)
+			VERBOSE=true
 			shift
 			;;
 		--quiet)
@@ -213,7 +224,7 @@ expand_path() {
 }
 
 validate_config() {
-	log "INFO" "Validating configuration..."
+	log "DEBUG" "Validating configuration..."
 
 	local validation_errors=0
 	local repo_count=0
@@ -269,7 +280,7 @@ validate_config() {
 			continue
 		fi
 
-		log "INFO" "  ✓ $(basename "$repo_path"): branch='$branch_name', remote='$remote_name'"
+		log "DEBUG" "  ✓ $(basename "$repo_path"): branch='$branch_name', remote='$remote_name'"
 
 	done <"$CONFIG_FILE"
 
@@ -278,7 +289,7 @@ validate_config() {
 		return 1
 	fi
 
-	log "INFO" "Configuration validation complete: $repo_count repositories, $validation_errors errors"
+	log "DEBUG" "Configuration validation complete: $repo_count repositories, $validation_errors errors"
 
 	if [[ $validation_errors -gt 0 ]]; then
 		log "ERROR" "Configuration has errors. Please fix them before running sync."
@@ -302,9 +313,9 @@ auto_commit_changes() {
 			log "INFO" "  [DRY-RUN] Would auto-commit uncommitted changes"
 			git status --short
 		else
-			log "INFO" "  Auto-committing uncommitted changes"
+			log "DEBUG" "  Auto-committing uncommitted changes"
 			git add -A
-			git commit -m "$commit_msg"
+			git commit -m "$commit_msg" 2>/dev/null
 			log "SUCCESS" "  Created auto-commit: $commit_msg"
 		fi
 		return 0
@@ -349,20 +360,20 @@ sync_repository() {
 		current_branch=${current_branch#refs/heads/}
 	else
 		log "WARNING" "Repository is in detached HEAD state, skipping sync"
-		log "INFO" "  Checkout branch '$branch_name' first, then run sync again"
+		log "DEBUG" "  Checkout branch '$branch_name' first, then run sync again"
 		return 1
 	fi
 
-	log "INFO" "Current branch: $current_branch"
+	log "DEBUG" "Current branch: $current_branch"
 
 	# Compare current branch with configured branch
 	if [[ "$current_branch" != "$branch_name" ]]; then
 		log "WARNING" "Current branch '$current_branch' doesn't match configured branch '$branch_name', skipping sync"
-		log "INFO" "  To sync this repository, checkout branch '$branch_name' first"
+		log "DEBUG" "  To sync this repository, checkout branch '$branch_name' first"
 		return 1
 	fi
 
-	log "SUCCESS" "Branch matches configuration, proceeding with sync"
+	log "DEBUG" "Branch matches configuration, proceeding with sync"
 
 	# Verify remote exists
 	if ! git remote | grep -q "^${remote_name}$"; then
@@ -387,11 +398,11 @@ sync_repository() {
 
 	# Fetch from remote
 	if [[ "$NO_PULL" == "false" ]]; then
-		log "INFO" "  Fetching from remote..."
+		log "DEBUG" "  Fetching from remote..."
 		if [[ "$DRY_RUN" == "true" ]]; then
 			log "INFO" "  [DRY-RUN] Would fetch from $remote_name"
 		else
-			if ! git fetch "$remote_name"; then
+			if ! git fetch "$remote_name" 2>/dev/null; then
 				log "ERROR" "Failed to fetch from remote"
 				return 1
 			fi
@@ -406,7 +417,7 @@ sync_repository() {
 
 	# Pull changes (rebase) if remote branch exists
 	if [[ "$NO_PULL" == "false" ]] && [[ "$remote_branch_exists" == "true" ]]; then
-		log "INFO" "  Pulling changes with rebase..."
+		log "DEBUG" "  Pulling changes with rebase..."
 
 		if [[ "$DRY_RUN" == "true" ]]; then
 			log "INFO" "  [DRY-RUN] Would pull changes from ${remote_name}/${branch_name}"
@@ -422,10 +433,10 @@ sync_repository() {
 				CONFLICT_REPOS=$((CONFLICT_REPOS + 1))
 				return 1
 			fi
-			log "SUCCESS" "  Successfully pulled changes"
+			log "SUCCESS" "Successfully pulled changes"
 		fi
 	elif [[ "$NO_PULL" == "false" ]]; then
-		log "INFO" "  Remote branch does not exist yet (will be created on push)"
+		log "DEBUG" "  Remote branch does not exist yet (will be created on push)"
 	fi
 
 	# Push changes
@@ -439,7 +450,7 @@ sync_repository() {
 		fi
 
 		if [[ "$unpushed" -gt 0 ]] || [[ "$DRY_RUN" == "true" ]]; then
-			log "INFO" "  Pushing changes to remote..."
+			log "DEBUG" "  Pushing changes to remote..."
 
 			if [[ "$DRY_RUN" == "true" ]]; then
 				log "INFO" "  [DRY-RUN] Would push $unpushed commits to ${remote_name}/${branch_name}"
@@ -453,21 +464,21 @@ sync_repository() {
 			else
 				# Use -u flag for new branches or if upstream not set
 				if [[ "$remote_branch_exists" == "false" ]]; then
-					if ! git push -u "$remote_name" "$branch_name"; then
+					if ! git push -u "$remote_name" "$branch_name" 2>/dev/null; then
 						log "ERROR" "Failed to push to remote"
 						return 1
 					fi
-					log "SUCCESS" "  Successfully pushed $unpushed commits (new branch, upstream set)"
+					log "SUCCESS" "Successfully pushed $unpushed commits (new branch, upstream set)"
 				else
 					if ! git push "$remote_name" "$branch_name" 2>/dev/null; then
 						log "ERROR" "Failed to push to remote"
 						return 1
 					fi
-					log "SUCCESS" "  Successfully pushed $unpushed commits"
+					log "SUCCESS" "Successfully pushed $unpushed commits"
 				fi
 			fi
 		else
-			log "INFO" "  No commits to push"
+			log "DEBUG" "  No commits to push"
 		fi
 	fi
 
@@ -477,8 +488,8 @@ sync_repository() {
 
 process_repositories() {
 	log "INFO" "Starting git sync process..."
-	log "INFO" "Configuration file: $CONFIG_FILE"
-	log "INFO" "Log file: $LOG_FILE"
+	log "DEBUG" "Configuration file: $CONFIG_FILE"
+	log "DEBUG" "Log file: $LOG_FILE"
 
 	if [[ "$DRY_RUN" == "true" ]]; then
 		echo ""
@@ -539,7 +550,7 @@ print_summary() {
 	if [[ $FAILED_REPOS -gt 0 ]]; then
 		log "ERROR" "Failed: $FAILED_REPOS"
 	else
-		log "INFO" "Failed: $FAILED_REPOS"
+		log "DEBUG" "Failed: $FAILED_REPOS"
 	fi
 
 	if [[ $CONFLICT_REPOS -gt 0 ]]; then
@@ -572,14 +583,14 @@ main() {
 	fi
 
 	local start_time=$(date '+%Y-%m-%d %H:%M:%S')
-	log "INFO" "=========================================="
-	log "INFO" "Git Sync Started: $start_time"
-	log "INFO" "=========================================="
+	log "DEBUG" "=========================================="
+	log "DEBUG" "Git Sync Started: $start_time"
+	log "DEBUG" "=========================================="
 
 	process_repositories
 
 	local end_time=$(date '+%Y-%m-%d %H:%M:%S')
-	log "INFO" "Git Sync Ended: $end_time"
+	log "DEBUG" "Git Sync Ended: $end_time"
 
 	print_summary
 
