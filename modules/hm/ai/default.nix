@@ -484,6 +484,6 @@ in
     xdg.configFile."opencode/agent".source = ./agents;
 
     home.file.".claude/settings.json".source = claudeCodeConfigFile;
-    home.file.".claude/keybindings.json".source = claudeKeybindingsConfigFile;
+    # home.file.".claude/keybindings.json".source = claudeKeybindingsConfigFile;
   };
 }
