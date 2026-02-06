@@ -455,6 +455,12 @@ function M.open(opts)
                         return
                     end
 
+                    -- Don't delete the buffer that was open before Telescope
+                    if sel.bufnr == current_bufnr then
+                        vim.notify("Cannot delete current buffer", vim.log.levels.WARN)
+                        return
+                    end
+
                     actions.delete_buffer(prompt_bufnr)
 
                     local new_sel = action_state.get_selected_entry()
