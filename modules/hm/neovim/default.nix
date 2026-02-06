@@ -183,7 +183,6 @@ in
         "nvim/lua/base".source = ./config/nvim/lua/base;
         "nvim/lua/ft".source = ./config/nvim/lua/ft;
         "nvim/lua/plugins".source = ./config/nvim/lua/plugins;
-        "nvim/lua/lib".source = ./config/nvim/lua/lib;
 
         "bash/profile.d/20_nvim_vars.sh".text = ''
           export EDITOR="vim"

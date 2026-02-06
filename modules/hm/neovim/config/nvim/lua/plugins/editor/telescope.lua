@@ -37,6 +37,7 @@ return {
     },
     { "nvim-telescope/telescope-fzf-native.nvim", build = "make" },
     { "nvim-telescope/telescope-ui-select.nvim" }, -- using dressing for now
+    { "ewok/telescope-buffers-tree" },
     {
         "nvim-telescope/telescope.nvim",
         event = "VeryLazy",
@@ -100,50 +101,9 @@ return {
             map("n", "<leader>fsk", "<cmd>Telescope keymaps<CR>", { silent = true }, "Keymaps")
             map("n", "<leader>fsc", "<cmd>Telescope colorscheme<CR>", { silent = true }, "Colorschemes")
             map("n", "<leader>fj", "<cmd>Telescope jumplist theme=dropdown<CR>", { silent = true }, "Find jumps")
-            map("n", "<leader>fb", "<cmd>Telescope buffers theme=dropdown<CR>", { silent = true }, "Buffers")
+            map("n", "<leader>fb", "<cmd>Telescope buffers_tree<CR>", { silent = true }, "Buffers")
             if conf.packages.neotree == false then
-                map("n", ";", function()
-                    require("lib.telescope_buffers_tree").open({
-                        theme = "dropdown",
-                        theme_opts = {
-                            layout_config = {
-                                -- width = 80,
-                                height = function(_, _, max_lines)
-                                    local percentage = 0.4
-                                    local min = 40
-                                    return math.max(math.floor(percentage * max_lines), min)
-                                end,
-                                width = function(_, max_columns)
-                                    local percentage = 0.3
-                                    local min = 60
-                                    return math.max(math.floor(percentage * max_columns), min)
-                                end,
-                            },
-                        },
-                        on_folder_select = function(path)
-                            if conf.packages.oil then
-                                require("oil").open(path)
-                                return
-                            end
-                            if conf.packages.fyler then
-                                vim.cmd("Fyler " .. path)
-                                return
-                            end
-                        end,
-                        actions = {
-                            [";"] = function()
-                                if conf.packages.oil then
-                                    vim.cmd("Oil")
-                                    return
-                                end
-                                if conf.packages.fyler then
-                                    vim.cmd("Fyler")
-                                    return
-                                end
-                            end,
-                        },
-                    })
-                end, { silent = true }, "Buffers")
+                map("n", ";", "<cmd>Telescope buffers_tree<CR>", { silent = true }, "Buffers")
             end
         end,
         config = function()
@@ -289,19 +249,6 @@ return {
                         select_current = true,
                         theme = "dropdown",
                         initial_mode = "normal",
-                        previewer = false,
-                        -- layout_config = {
-                        --     -- width = 80,
-                        --     height = 0.9,
-                        --     width = function(_, max_columns)
-                        --         local percentage = 0.5
-                        --         local min = 80
-                        --         return math.max(math.floor(percentage * max_columns), min)
-                        --     end,
-                        -- },
-                        -- path_display = { "truncate" },
-                        -- path_display = { "smart" },
-                        -- path_display = { "filename_first" },
                         path_display = function(_, path)
                             local tail = require("telescope.utils").path_tail(path)
                             return string.format("%s (%s)", tail, path)
@@ -339,10 +286,58 @@ return {
                     ["ui-select"] = {
                         require("telescope.themes").get_dropdown({}),
                     },
+                    buffers_tree = {
+                        theme = "dropdown",
+                        theme_opts = {
+                            layout_config = {
+                                height = function(_, _, max_lines)
+                                    local percentage = 0.4
+                                    local min = 40
+                                    return math.max(math.floor(percentage * max_lines), min)
+                                end,
+                                width = function(_, max_columns)
+                                    local percentage = 0.3
+                                    local min = 60
+                                    return math.max(math.floor(percentage * max_columns), min)
+                                end,
+                            },
+                        },
+                        diagnostics = {
+                            signs = {
+                                error = { conf.icons.diagnostic.Error, "DiagnosticError" },
+                                warn = { conf.icons.diagnostic.Warn, "DiagnosticWarn" },
+                                info = { conf.icons.diagnostic.Info, "DiagnosticInfo" },
+                                hint = { conf.icons.diagnostic.Hint, "DiagnosticHint" },
+                            },
+                        },
+                        actions = {
+                            [";"] = function()
+                                if conf.packages.oil then
+                                    vim.cmd("Oil")
+                                    return
+                                end
+                                if conf.packages.fyler then
+                                    vim.cmd("Fyler")
+                                    return
+                                end
+                            end,
+                        },
+                        on_folder_select = function(path)
+                            if conf.packages.oil then
+                                require("oil").open(path)
+                                return
+                            end
+                            if conf.packages.fyler then
+                                vim.cmd("Fyler " .. path)
+                                return
+                            end
+                        end,
+                    },
                 },
             })
             ts.load_extension("fzf")
             ts.load_extension("ui-select")
+            ts.load_extension("buffers_tree")
         end,
     },
 }
