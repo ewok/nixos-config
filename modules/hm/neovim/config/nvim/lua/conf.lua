@@ -114,6 +114,7 @@ M.icons.tag_level = {
     Note = "✐",
     Todo = "✓",
     Perf = "↻",
+    Pref = "↻",
 }
 
 -- Git

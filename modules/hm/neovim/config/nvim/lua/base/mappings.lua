@@ -12,10 +12,12 @@ map("v", "<leader>6e", "c<c-r>=system('base64', @\")<cr><esc>", md, "Encode Base
 local function open_mind()
     local command = "git remote get-url origin 2>/dev/null | sed 's/^.*://;s/.git$//'"
     local handle = io.popen(command)
-    local git = handle:read("*a"):gsub("^%s*(.-)%s*$", "%1")
-    handle:close()
-    local project_name = git == "" and vim.fn.getcwd():match("([^/]+)$") or git:gsub("/", "_")
-    vim.cmd("e " .. conf.notes_dir .. "/projects/mind/" .. project_name .. ".md")
+    if handle then
+        local git = handle:read("*a"):gsub("^%s*(.-)%s*$", "%1")
+        handle:close()
+        local project_name = git == "" and vim.fn.getcwd():match("([^/]+)$") or git:gsub("/", "_")
+        vim.cmd("e " .. conf.notes_dir .. "/projects/mind/" .. project_name .. ".md")
+    end
 end
 
 map("n", "<leader>wn", open_mind, { noremap = true, silent = true }, "Open Project note")

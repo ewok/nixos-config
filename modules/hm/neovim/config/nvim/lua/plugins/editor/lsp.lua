@@ -18,11 +18,6 @@ return {
         "mfussenegger/nvim-lint",
         enabled = conf.packages.nvim_lint,
         config = function()
-            -- vim.api.nvim_create_autocmd({ "BufWritePost", "BufReadPost" }, {
-            --     callback = function()
-            --         require("lint").try_lint()
-            --     end,
-            -- })
             local timer = vim.uv.new_timer()
             vim.api.nvim_create_autocmd({ "BufWritePost", "BufReadPost" }, {
                 group = vim.api.nvim_create_augroup("Linting", { clear = true }),
@@ -59,10 +54,6 @@ return {
                     lsp_format = "fallback",
                 },
                 format_on_save = nil,
-                --     {
-                --     timeout_ms = 1000,
-                --     lsp_format = "fallback",
-                -- },
             })
         end,
     },
@@ -81,7 +72,6 @@ return {
                 show_guides = true,
                 backends = { "lsp", "treesitter", "markdown", "man" },
                 update_events = "TextChanged,InsertLeave",
-                -- on_attach = on_attach,
                 lsp = { diagnostics_trigger_update = false, update_when_errors = true, update_delay = 300 },
                 guides = {
                     mid_item = "├─",
@@ -114,10 +104,6 @@ return {
                 virtual_text = { enabled = false, text = "💡", hl_mode = "replace" },
                 status_text = { enabled = false, text = "💡", text_unavailable = "" },
             })
-            -- vim.fn.sign_define(
-            --     "LightBulbSign",
-            --     { text = "💡", texthl = "DiagnosticSignWarn", linehl = "", numhl = "" }
-            -- )
             vim.api.nvim_create_autocmd({ "CursorHold", "CursorHoldI" }, {
                 pattern = "*",
                 callback = function()
@@ -213,15 +199,6 @@ return {
         cmd = { "LspInfo", "LspStart", "LspStop", "LspRestart", "LspLog" },
         config = function()
             local blink = require("blink.cmp")
-
-            -- vim.api.nvim_create_autocmd({ "DiagnosticChanged" }, {
-            --     callback = function()
-            --         -- Only fill the loclist for the current window/buffer
-            --         if vim.bo.buftype == "" then -- Only normal files
-            --             vim.diagnostic.setloclist({ open = false })
-            --         end
-            --     end,
-            -- })
 
             vim.diagnostic.config({
                 signs = {

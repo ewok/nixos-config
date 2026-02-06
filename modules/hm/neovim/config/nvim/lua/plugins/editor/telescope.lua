@@ -46,7 +46,7 @@ return {
             map(
                 "n",
                 "<leader>fo",
-                "<CMD>Telescope find_files<CR>",
+                "<CMD>Telescope find_files theme=ivy<CR>",
                 { silent = true },
                 "Find files in the current workspace"
             )
@@ -126,7 +126,7 @@ return {
                         table.insert(matches, entry.filename)
                     end)
                     matches = vim.fn.uniq(vim.fn.sort(matches)) -- Remove duplicates
-                    builtin.find_files({ search_dirs = matches })
+                    builtin.find_files(require('telescope.themes').get_ivy({ search_dirs = matches }))
                 end
             end
 
@@ -207,7 +207,6 @@ return {
                     keymaps = { theme = "ivy" },
                     colorscheme = { theme = "ivy" },
                     find_files = {
-                        theme = "ivy",
                         find_command = {
                             "rg",
                             "--ignore",

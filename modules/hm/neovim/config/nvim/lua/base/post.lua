@@ -91,9 +91,6 @@ vim.api.nvim_create_autocmd({ "BufEnter", "CursorHold", "CursorHoldI", "FocusGai
 -- Autosize windows
 vim.api.nvim_create_autocmd({ "VimResized" }, { command = "wincmd =", pattern = { "*" } })
 
--- load local vimrc
--- vim.api.nvim_exec([[\n  try\n    source ~/.vimrc.local\n  catch\n  endtry]], false)
-
 -- Show virtual lines
 if conf.options.show_virtual_lines then
     local cursor_held_id = 0

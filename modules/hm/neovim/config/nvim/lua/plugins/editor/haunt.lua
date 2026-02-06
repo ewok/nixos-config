@@ -76,7 +76,7 @@ return {
         {
             "ml",
             function()
-                require("haunt.picker").show()
+                require("haunt.picker").show(require('telescope.themes').get_ivy({}))
             end,
             desc = "Show Picker",
         },
