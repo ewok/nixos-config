@@ -120,6 +120,16 @@ return {
                                 end,
                             },
                         },
+                        on_folder_select = function(path)
+                            if conf.packages.oil then
+                                require("oil").open(path)
+                                return
+                            end
+                            if conf.packages.fyler then
+                                vim.cmd("Fyler " .. path)
+                                return
+                            end
+                        end,
                         actions = {
                             [";"] = function()
                                 if conf.packages.oil then

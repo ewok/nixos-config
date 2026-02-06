@@ -307,11 +307,13 @@ end
 --   - action_close: boolean, close picker after action (default: true)
 --   - actions: table {key = function}, custom key-action mappings
 --   - mappings: table {mode = {lhs = rhs}}, custom telescope mappings
+--   - on_folder_select: function(path), callback when selecting a directory node
 function M.open(opts)
     local base_opts = opts or {}
     local user_mappings = base_opts.mappings or {}
     local action_close = vim.F.if_nil(base_opts.action_close, true)
     local switch_on_insert = vim.F.if_nil(base_opts.switch_on_insert, true)
+    local on_folder_select = base_opts.on_folder_select
 
     -- Setup theme
     local theme_name = base_opts.theme or "dropdown"
@@ -438,6 +440,9 @@ function M.open(opts)
                     if sel and sel.kind == "file" and sel.bufnr then
                         actions.close(prompt_bufnr)
                         vim.api.nvim_set_current_buf(sel.bufnr)
+                    elseif sel and sel.kind == "dir" and type(on_folder_select) == "function" then
+                        actions.close(prompt_bufnr)
+                        on_folder_select(sel.path)
                     end
                 end
 
