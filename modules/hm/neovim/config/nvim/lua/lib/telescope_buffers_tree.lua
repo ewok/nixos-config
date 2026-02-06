@@ -1,5 +1,10 @@
+--- Telescope buffer picker with tree view.
+-- Displays open buffers in a hierarchical tree structure grouped by directory.
+-- Automatically switches to flat list when filtering (insert mode).
+-- @module lib.telescope_buffers_tree
 local M = {}
 
+-- Telescope imports
 local pickers = require("telescope.pickers")
 local finders = require("telescope.finders")
 local conf = require("telescope.config").values
@@ -8,6 +13,11 @@ local actions = require("telescope.actions")
 local action_state = require("telescope.actions.state")
 local themes = require("telescope.themes")
 
+-------------------------------------------------------------------------------
+-- Helper functions
+-------------------------------------------------------------------------------
+
+--- Split a path string into segments by "/".
 local function split_path(p)
     local t = {}
     for s in p:gmatch("[^/]+") do
@@ -16,34 +26,64 @@ local function split_path(p)
     return t
 end
 
+--- Create ordinal string for telescope filtering.
+local function make_ordinal(path, name, bufnr)
+    return (path or name or "") .. " " .. tostring(bufnr or "")
+end
+
+--- Parse a path into segments, handling special prefixes (/, ~).
 local function segments_for_path(p)
     if not p or p == "" then
         return {}
     end
-    if p:sub(1, 1) == "/" then
-        local seg = split_path(p:sub(2))
-        table.insert(seg, 1, "/")
-        return seg
-    end
-    if p:sub(1, 2) == "~/" then
-        local seg = split_path(p:sub(3))
-        table.insert(seg, 1, "~")
-        return seg
-    end
     if p == "~" then
         return { "~" }
     end
-    return split_path(p)
-end
 
-local function path_for_buf(name)
-    if not name or name == "" then
-        return "[No Name]"
+    local prefix, rest
+    if p:sub(1, 1) == "/" then
+        prefix, rest = "/", p:sub(2)
+    elseif p:sub(1, 2) == "~/" then
+        prefix, rest = "~", p:sub(3)
     end
-    -- relative to cwd if possible; use ~ for home
-    return vim.fn.fnamemodify(name, ":~:.")
+
+    local seg = split_path(rest or p)
+    if prefix then
+        table.insert(seg, 1, prefix)
+    end
+    return seg
 end
 
+--- Join path segments back into a path string.
+local function join(segs, n)
+    n = n or #segs
+    if n <= 0 then
+        return ""
+    end
+
+    local first = segs[1]
+    if n == 1 then
+        return first
+    end
+
+    if first == "/" then
+        return "/" .. table.concat(segs, "/", 2, n)
+    elseif first == "~" then
+        return "~/" .. table.concat(segs, "/", 2, n)
+    end
+    return table.concat(segs, "/", 1, n)
+end
+
+--- Get display path for a buffer (relative to cwd, using ~ for home).
+local function path_for_buf(name)
+    return (name and name ~= "") and vim.fn.fnamemodify(name, ":~:.") or "[No Name]"
+end
+
+-------------------------------------------------------------------------------
+-- Buffer collection
+-------------------------------------------------------------------------------
+
+--- Collect all listed buffers with path information.
 local function collect_buffers()
     local bufs = vim.fn.getbufinfo({ buflisted = 1 })
     local items = {}
@@ -60,6 +100,7 @@ local function collect_buffers()
         }
     end
 
+    -- Sort by path depth, then alphabetically
     table.sort(items, function(a, b)
         if a.path == "[No Name]" and b.path ~= "[No Name]" then
             return false
@@ -79,91 +120,51 @@ local function collect_buffers()
     return items
 end
 
-local function join(segs, n)
-    n = n or #segs
-    if n <= 0 then
-        return ""
-    end
-    if n == 1 then
-        return segs[1]
-    end
-    if segs[1] == "/" then
-        return "/" .. table.concat(segs, "/", 2, n)
-    end
-    if segs[1] == "~" then
-        return "~/" .. table.concat(segs, "/", 2, n)
-    end
-    return table.concat(segs, "/", 1, n)
-end
+-------------------------------------------------------------------------------
+-- Tree building
+-------------------------------------------------------------------------------
 
-local function sort_children(children)
-    table.sort(children, function(a, b)
-        local function kind_rank(x)
-            if x.kind == "dir" then
-                -- Default: dirs first, then files.
-                return 0
-            end
-
-            return 1
-        end
-
-        local ra = kind_rank(a)
-        local rb = kind_rank(b)
-        if ra ~= rb then
-            return ra < rb
-        end
-
-        return (a.name or "") < (b.name or "")
-    end)
-end
-
-local function sort_root_children(children)
+--- Sort children nodes (directories first, then files, alphabetically).
+-- @param children table List of child nodes
+-- @param is_root boolean If true, "/" and "~" directories are sorted last
+local function sort_children(children, is_root)
     table.sort(children, function(a, b)
         local function rank(x)
-            if x.kind == "dir" and (x.name == "/" or x.name == "~") then
-                return 2
-            end
             if x.kind == "dir" then
+                if is_root and (x.name == "/" or x.name == "~") then
+                    return 2
+                end
                 return 0
             end
             return 1
         end
 
-        local ra = rank(a)
-        local rb = rank(b)
+        local ra, rb = rank(a), rank(b)
         if ra ~= rb then
             return ra < rb
         end
-
         return (a.name or "") < (b.name or "")
     end)
 end
 
-local function compress_empty_dirs(n)
-    if not n or n.kind ~= "dir" then
-        return n
+--- Compress single-child directory chains into combined names.
+-- Example: a/b/c with single children becomes "a/b/c" as one node.
+local function compress_empty_dirs(node)
+    if node.kind ~= "dir" or node.name == "/" or node.name == "~" then
+        return node
     end
 
-    if n.name == "/" or n.name == "~" then
-        return n
+    while node.children and #node.children == 1 and node.children[1].kind == "dir" do
+        local child = node.children[1]
+        node.name = node.name .. "/" .. child.name
+        node.path = child.path
+        node.children = child.children
     end
 
-    while true do
-        if not n.children or #n.children ~= 1 then
-            break
-        end
-        local only = n.children[1]
-        if only.kind ~= "dir" then
-            break
-        end
-        n.name = n.name .. "/" .. only.name
-        n.path = only.path
-        n.children = only.children
-    end
-
-    return n
+    return node
 end
 
+--- Build tree entries from buffer items for tree-style display.
 local function make_tree_entries(items)
     local root = { kind = "root", name = "", children = {} }
     local dir_by_path = { [""] = root }
@@ -179,75 +180,76 @@ local function make_tree_entries(items)
         return n
     end
 
+    -- Build tree structure
     for _, it in ipairs(items) do
-        local p = it.path
         local seg = it.seg
-
         local parent = root
+
         for i = 1, #seg - 1 do
             local dir_path = join(seg, i)
             parent = ensure_dir(dir_path, seg[i], parent)
         end
 
-        local file_name = seg[#seg] or p
-        local node = {
+        local file_name = seg[#seg] or it.path
+        local file_node = {
             kind = "file",
             name = file_name,
-            path = p,
+            path = it.path,
             bufnr = it.bufnr,
         }
-        parent.children[#parent.children + 1] = node
+        parent.children[#parent.children + 1] = file_node
     end
 
+    -- Flatten tree with indentation
     local function walk(n, prefix, is_root)
-        if n.children then
-            if is_root then
-                sort_root_children(n.children)
-            else
-                sort_children(n.children)
+        if not n.children then
+            return
+        end
+
+        sort_children(n.children, is_root)
+
+        for idx, ch in ipairs(n.children) do
+            if ch.kind == "dir" then
+                ch = compress_empty_dirs(ch)
             end
-            for idx, ch in ipairs(n.children) do
-                if ch.kind == "dir" then
-                    ch = compress_empty_dirs(ch)
+
+            local last = idx == #n.children
+            local connector = is_root and "" or (last and "└── " or "├── ")
+            local next_prefix = is_root and "" or (prefix .. (last and "    " or "│   "))
+            local tree = prefix .. connector
+
+            -- Format label with trailing slash for directories
+            local label = ch.name
+            if ch.kind == "dir" then
+                if label == "/" then
+                    label = "/"
+                elseif label == "~" then
+                    label = "~/"
+                else
+                    label = label .. "/"
                 end
-                local last = idx == #n.children
-                local connector = is_root and "" or (last and "└── " or "├── ")
-                local next_prefix = is_root and "" or (prefix .. (last and "    " or "│   "))
+            end
 
-                local tree = prefix .. connector
+            nodes[#nodes + 1] = {
+                kind = ch.kind,
+                bufnr = ch.bufnr,
+                path = ch.path,
+                ordinal = make_ordinal(ch.path, ch.name, ch.bufnr),
+                tree = tree,
+                text = label,
+            }
 
-                local label = ch.name
-                if ch.kind == "dir" then
-                    if label == "/" then
-                        label = "/"
-                    elseif label == "~" then
-                        label = "~/"
-                    else
-                        label = label .. "/"
-                    end
-                end
-
-                nodes[#nodes + 1] = {
-                    kind = ch.kind,
-                    bufnr = ch.bufnr,
-                    path = ch.path,
-                    ordinal = (ch.path or ch.name or "") .. " " .. tostring(ch.bufnr or ""),
-                    tree = tree,
-                    text = label,
-                }
-
-                if ch.kind == "dir" then
-                    walk(ch, next_prefix, false)
-                end
+            if ch.kind == "dir" then
+                walk(ch, next_prefix, false)
             end
         end
     end
 
     walk(root, "", true)
-
     return nodes
 end
 
+--- Build flat entries from buffer items for filtered display.
 local function make_flat_entries(items)
     local nodes = {}
     for _, it in ipairs(items) do
@@ -256,7 +258,7 @@ local function make_flat_entries(items)
             name = it.name,
             path = it.path,
             bufnr = it.bufnr,
-            ordinal = it.path .. " " .. tostring(it.bufnr),
+            ordinal = make_ordinal(it.path, nil, it.bufnr),
             tree = "",
             text = it.path,
         }
@@ -264,17 +266,57 @@ local function make_flat_entries(items)
     return nodes
 end
 
+-------------------------------------------------------------------------------
+-- Entry display
+-------------------------------------------------------------------------------
+
+--- Create entry maker function for telescope finder.
+local function make_entry_maker(style, displayer)
+    return function(e)
+        return {
+            value = e,
+            kind = e.kind,
+            ordinal = e.ordinal or make_ordinal(e.path, e.name, e.bufnr),
+            tree = e.tree,
+            text = e.text,
+            path = e.path,
+            bufnr = e.bufnr,
+            display = function(entry)
+                if style == "flat" then
+                    return entry.path or entry.text or ""
+                end
+                local hl = entry.kind == "dir" and "Directory" or nil
+                return displayer({
+                    { entry.tree or "", "TelescopeResultsComment" },
+                    { entry.text or "", hl },
+                })
+            end,
+        }
+    end
+end
+
+-------------------------------------------------------------------------------
+-- Public API
+-------------------------------------------------------------------------------
+
+--- Open the buffer picker with tree view.
+-- @param opts table Configuration options:
+--   - theme: string or function ("dropdown", "ivy", "cursor", or custom)
+--   - theme_opts: table passed to theme function
+--   - switch_on_insert: boolean, auto-switch to flat on insert (default: true)
+--   - action_close: boolean, close picker after action (default: true)
+--   - actions: table {key = function}, custom key-action mappings
+--   - mappings: table {mode = {lhs = rhs}}, custom telescope mappings
 function M.open(opts)
     local base_opts = opts or {}
     local user_mappings = base_opts.mappings or {}
-    local action_key = base_opts.action_key or base_opts.file_manager_key
-    local action = base_opts.action or base_opts.file_manager
     local action_close = vim.F.if_nil(base_opts.action_close, true)
     local switch_on_insert = vim.F.if_nil(base_opts.switch_on_insert, true)
 
+    -- Setup theme
     local theme_name = base_opts.theme or "dropdown"
     local theme_opts = base_opts.theme_opts or {}
-    local theme_get = nil
+    local theme_get
     if type(theme_name) == "function" then
         theme_get = theme_name
     elseif type(theme_name) == "string" then
@@ -282,17 +324,10 @@ function M.open(opts)
     end
     theme_get = theme_get or themes.get_dropdown
 
-    -- Backwards compatible / additional actions.
-    local actions_map = {}
-    if type(base_opts.actions) == "table" then
-        for k, v in pairs(base_opts.actions) do
-            actions_map[k] = v
-        end
-    end
-    if type(action_key) == "string" and action_key ~= "" and type(action) == "function" then
-        actions_map[action_key] = action
-    end
+    -- Build actions map
+    local actions_map = base_opts.actions or {}
 
+    -- Merge options with theme
     local call_opts = vim.tbl_deep_extend("force", {}, base_opts)
     call_opts.theme = nil
     call_opts.theme_opts = nil
@@ -301,12 +336,14 @@ function M.open(opts)
         initial_mode = "normal",
     }, theme_opts, call_opts))
 
+    -- Collect and process buffers
     local items = collect_buffers()
     local tree_entries = make_tree_entries(items)
     local flat_entries = make_flat_entries(items)
 
+    -- Find current buffer's index for default selection
     local current_bufnr = vim.api.nvim_get_current_buf()
-    local default_idx = nil
+    local default_idx
     for i, e in ipairs(tree_entries) do
         if e.kind == "file" and e.bufnr == current_bufnr then
             default_idx = i
@@ -314,6 +351,7 @@ function M.open(opts)
         end
     end
 
+    -- Setup displayer
     local displayer = entry_display.create({
         separator = "",
         items = {
@@ -322,34 +360,16 @@ function M.open(opts)
         },
     })
 
+    -- Finder factory
     local function make_finder(style)
         local results = style == "flat" and flat_entries or tree_entries
         return finders.new_table({
             results = results,
-            entry_maker = function(e)
-                return {
-                    value = e,
-                    kind = e.kind,
-                    ordinal = e.ordinal or ((e.path or e.name or "") .. " " .. tostring(e.bufnr or "")),
-                    tree = e.tree,
-                    text = e.text,
-                    path = e.path,
-                    bufnr = e.bufnr,
-                    display = function(entry)
-                        if style == "flat" then
-                            return entry.path or entry.text or ""
-                        end
-                        local hl = entry.kind == "dir" and "Directory" or nil
-                        return displayer({
-                            { entry.tree or "", "TelescopeResultsComment" },
-                            { entry.text or "", hl },
-                        })
-                    end,
-                }
-            end,
+            entry_maker = make_entry_maker(style, displayer),
         })
     end
 
+    -- Create and open picker
     pickers
         .new(opts, {
             prompt_title = "Buffers",
@@ -360,6 +380,7 @@ function M.open(opts)
                 local picker = action_state.get_current_picker(prompt_bufnr)
                 local style = "tree"
 
+                -- Switch between tree and flat view
                 local function switch_to(new_style)
                     if new_style == style then
                         return
@@ -383,6 +404,7 @@ function M.open(opts)
                     end)
                 end
 
+                -- Auto-switch on insert mode
                 if switch_on_insert then
                     vim.api.nvim_create_autocmd("InsertEnter", {
                         buffer = prompt_bufnr,
@@ -398,6 +420,7 @@ function M.open(opts)
                     })
                 end
 
+                -- Apply user-defined mappings
                 local function apply_user_mappings(mode)
                     local m = user_mappings[mode] or {}
                     for lhs, rhs in pairs(m) do
@@ -409,6 +432,7 @@ function M.open(opts)
                     end
                 end
 
+                -- Select buffer action
                 local function select()
                     local sel = action_state.get_selected_entry()
                     if sel and sel.kind == "file" and sel.bufnr then
@@ -419,19 +443,47 @@ function M.open(opts)
 
                 actions.select_default:replace(select)
 
-                map("n", "dd", function()
+                -- Delete buffer and clean up empty directories
+                local function delete_buffer_and_cleanup()
                     local sel = action_state.get_selected_entry()
-                    if sel and sel.kind == "file" and sel.bufnr then
-                        actions.delete_buffer(prompt_bufnr)
+                    if not (sel and sel.kind == "file" and sel.bufnr) then
+                        return
                     end
-                end)
-                map("i", "<c-d>", function()
-                    local sel = action_state.get_selected_entry()
-                    if sel and sel.kind == "file" and sel.bufnr then
-                        actions.delete_buffer(prompt_bufnr)
-                    end
-                end)
 
+                    actions.delete_buffer(prompt_bufnr)
+
+                    local new_sel = action_state.get_selected_entry()
+                    local stay_on_bufnr = new_sel and new_sel.kind == "file" and new_sel.bufnr
+
+                    -- Rebuild tree to remove empty directories
+                    items = collect_buffers()
+                    tree_entries = make_tree_entries(items)
+                    flat_entries = make_flat_entries(items)
+
+                    if #items == 0 then
+                        actions.close(prompt_bufnr)
+                        return
+                    end
+
+                    picker:refresh(make_finder(style), { reset_prompt = false })
+
+                    if stay_on_bufnr then
+                        vim.schedule(function()
+                            local results = style == "flat" and flat_entries or tree_entries
+                            for i, e in ipairs(results) do
+                                if e.kind == "file" and e.bufnr == stay_on_bufnr then
+                                    pcall(picker.set_selection, picker, i)
+                                    return
+                                end
+                            end
+                        end)
+                    end
+                end
+
+                map("n", "dd", delete_buffer_and_cleanup)
+                map("i", "<c-d>", delete_buffer_and_cleanup)
+
+                -- Register custom actions
                 for lhs, rhs in pairs(actions_map) do
                     if type(lhs) == "string" and lhs ~= "" and type(rhs) == "function" then
                         map("n", lhs, function()

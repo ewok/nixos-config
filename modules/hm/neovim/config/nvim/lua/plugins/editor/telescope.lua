@@ -114,23 +114,24 @@ return {
                                     return math.max(math.floor(percentage * max_lines), min)
                                 end,
                                 width = function(_, max_columns)
-                                    local percentage = 0.2
+                                    local percentage = 0.3
                                     local min = 60
                                     return math.max(math.floor(percentage * max_columns), min)
                                 end,
                             },
                         },
-                        action_key = ";",
-                        action = function()
-                            if conf.packages.oil then
-                                vim.cmd("Oil")
-                                return
-                            end
-                            if conf.packages.fyler then
-                                vim.cmd("Fyler")
-                                return
-                            end
-                        end,
+                        actions = {
+                            [";"] = function()
+                                if conf.packages.oil then
+                                    vim.cmd("Oil")
+                                    return
+                                end
+                                if conf.packages.fyler then
+                                    vim.cmd("Fyler")
+                                    return
+                                end
+                            end,
+                        },
                     })
                 end, { silent = true }, "Buffers")
             end
