@@ -81,7 +81,7 @@ return {
             )
             map(
                 "n",
-                "<leader>/",
+                "<leader>f/",
                 "<CMD>Telescope current_buffer_fuzzy_find theme=ivy previewer=false<CR>",
                 { silent = true },
                 "Find string in current buffer"
@@ -198,7 +198,16 @@ return {
                     },
                 },
                 pickers = {
+                    live_grep = { theme = "ivy" },
+                    help_tags = { theme = "ivy" },
+                    vim_options = { theme = "ivy" },
+                    autocommands = { theme = "ivy" },
+                    filetypes = { theme = "ivy" },
+                    highlights = { theme = "ivy" },
+                    keymaps = { theme = "ivy" },
+                    colorscheme = { theme = "ivy" },
                     find_files = {
+                        theme = "ivy",
                         find_command = {
                             "rg",
                             "--ignore",
@@ -209,70 +218,6 @@ return {
                             "--ignore-vcs",
                             "--ignore-file",
                             "~/.config/git/gitexcludes",
-                        },
-                    },
-                    buffers = {
-                        sort_buffers = function(bufnr_a, bufnr_b)
-                            local name_a = vim.api.nvim_buf_get_name(bufnr_a)
-                            local name_b = vim.api.nvim_buf_get_name(bufnr_b)
-
-                            -- Empty buffers go last
-                            if name_a == "" then
-                                return false
-                            end
-                            if name_b == "" then
-                                return true
-                            end
-
-                            local cwd = vim.loop.cwd() or ""
-
-                            -- Make paths relative to CWD if possible
-                            local rel_a = name_a:gsub("^" .. vim.pesc(cwd) .. "/", "")
-                            local rel_b = name_b:gsub("^" .. vim.pesc(cwd) .. "/", "")
-
-                            -- Count depth (number of directory separators)
-
-                            local depth_a = select(2, rel_a:gsub("/", ""))
-                            local depth_b = select(2, rel_b:gsub("/", ""))
-
-                            -- Prioritize files in current directory (depth 0)
-                            if depth_a ~= depth_b then
-                                return depth_a < depth_b
-                            end
-
-                            -- Sort alphabetically
-                            return rel_a < rel_b
-                        end,
-                        sort_mru = false,
-
-                        show_all_buffers = true,
-                        select_current = true,
-                        theme = "dropdown",
-                        initial_mode = "normal",
-                        path_display = function(_, path)
-                            local tail = require("telescope.utils").path_tail(path)
-                            return string.format("%s (%s)", tail, path)
-                        end,
-                        mappings = {
-                            i = {
-                                ["<c-d>"] = act.delete_buffer,
-                            },
-                            n = {
-                                [";"] = function(bufnr)
-                                    act.close(bufnr)
-                                    if conf.packages.oil then
-                                        vim.cmd("Oil")
-                                        return
-                                    end
-                                    if conf.packages.fyler then
-                                        vim.cmd("Fyler")
-                                        return
-                                    end
-                                    -- local mf = require("mini.files")
-                                    -- mf.open(get_existing_up_dir(vim.api.nvim_buf_get_name(0)), false)
-                                end,
-                                dd = act.delete_buffer,
-                            },
                         },
                     },
                 },
