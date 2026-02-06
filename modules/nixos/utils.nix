@@ -6,7 +6,7 @@ in
 {
   config = {
     virtualisation.podman = {
-      enable = true;
+      enable = false;
       dockerCompat = true;
     };
     environment.systemPackages = [ pkgs.distrobox ];
