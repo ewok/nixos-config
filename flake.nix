@@ -1,14 +1,15 @@
 {
   description = "ewoks envs";
 
-  # nixConfig = {
-  #   extra-substituters = [
-  #     "https://yazi.cachix.org"
-  #   ];
-  #   extra-trusted-public-keys = [
-  #     "yazi.cachix.org-1:Dcdz63NZKfvUCbDGngQDAZq6kOroIrFoyO064uvLh8k="
-  #   ];
-  # };
+  nixConfig = {
+    experimental-features = [ "nix-command" "flakes" ];
+    #   extra-substituters = [
+    #     "https://yazi.cachix.org"
+    #   ];
+    #   extra-trusted-public-keys = [
+    #     "yazi.cachix.org-1:Dcdz63NZKfvUCbDGngQDAZq6kOroIrFoyO064uvLh8k="
+    #   ];
+  };
 
   inputs = {
     nixpkgs-unstable = {
@@ -122,6 +123,28 @@
           ];
         };
 
+      homeConfigurations.termux =
+        let
+          pkgs = import inputs.nixpkgs-unstable (nixpkgsDefaults // {
+            system = "aarch64-linux";
+          });
+          inherit modulesHm;
+        in
+        home-manager.lib.homeManagerConfiguration {
+          inherit pkgs;
+          modules = [
+            ./machines/common.nix
+            ./machines/termux
+            {
+              imports = modulesHm;
+              _module.args.utils = import utils/lib.nix { inherit pkgs; };
+            }
+            {
+              nixpkgs.overlays = overlays;
+            }
+          ];
+        };
+
       nixosConfigurations.bup =
         let
           system = "x86_64-linux";
@@ -200,6 +223,7 @@
           ];
         };
 
+
     } // flake-utils.lib.eachDefaultSystem (system: {
       devShells.default =
         let
@@ -215,6 +239,7 @@
 
                 SUBS_CHECK="--connect-timeout 5 http://ewok-lgo.ewok.email:5000"
                 SUBS_CMD="--option substituters http://ewok-lgo.ewok.email:5000 --option trusted-public-keys ewok-lgo.ewok.email:rezvQJxpUcXH3TEgkoM9dJTdceSmf0c+LBoJ3r+9hf4="
+                EXP_OPTS="--extra-experimental-features nix-command --extra-experimental-features flakes"
 
                 if [ "$#" -eq 0 ]; then
                   echo "Provide a command as a first argument please."
@@ -253,11 +278,11 @@
                 # SteamDeck
                 # CNT
                 # RPI
-                  if [ "$2" == "lgo" ] || [ "$2" == "rpi" ] || [ "$2" == "orb" ]; then
+                  if [ "$2" == "lgo" ] || [ "$2" == "rpi" ] || [ "$2" == "orb" ] || [ "$2" == "termux" ]; then
                     if curl --silent $SUBS_CHECK > /dev/null; then
-                        CMD="nix run home-manager -- -b backup $SUBS_CMD $CMD"
+                        CMD="nix $EXP_OPTS run home-manager -- -b backup $SUBS_CMD $CMD"
                     else
-                        CMD="nix run home-manager -- -b backup $CMD"
+                        CMD="nix $EXP_OPTS run home-manager -- -b backup $CMD"
                     fi
                 # nixos
                 # orb
@@ -278,7 +303,7 @@
                       CMD="sudo nix run nix-darwin -- $CMD"
                     fi
                   else
-                    echo "'$2' wrong, possible options: lgo, rpi, bup, orb, droid, mac"
+                    echo "'$2' wrong, possible options: lgo, rpi, bup, orb, droid, mac, termux"
                     exit 1
                   fi
                   CMD="$CMD --flake .#$2"
