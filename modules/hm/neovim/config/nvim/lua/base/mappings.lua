@@ -22,6 +22,12 @@ end
 
 map("n", "<leader>wn", open_mind, { noremap = true, silent = true }, "Open Project note")
 
+-- Sync notes
+map("n", "<leader>ws", function()
+    vim.system({ "systemctl", "--user", "start", "notes-sync.service" }):wait()
+    vim.notify("Notes are synced")
+end, { noremap = true, silent = true }, "Sync notes")
+
 -- Windows manipulation
 map("n", "<C-W>t", "<cmd>tab split<CR>", md, "Open in tab")
 map("n", "<C-W><C-T>", "<cmd>tab split<CR>", md, "Open in tab")
