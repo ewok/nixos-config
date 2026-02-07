@@ -3,6 +3,55 @@ local reg_ft, reg_ft_once, map = lib.reg_ft, lib.reg_ft_once, lib.map
 local md = { noremap = true, silent = true, buffer = true }
 local conf = require("conf")
 
+if not _G.markdown_heading_foldexpr then
+    _G.markdown_heading_foldexpr = function(lnum)
+        local line = vim.api.nvim_buf_get_lines(0, lnum - 1, lnum, false)[1] or ""
+        local hashes = line:match("^#+")
+        if hashes then
+            return ">" .. #hashes
+        end
+        return "="
+    end
+end
+
+if not _G.markdown_foldtext then
+    _G.markdown_foldtext = function()
+        local fs = vim.v.foldstart
+        local fe = vim.v.foldend
+
+        -- First line of the fold (your heading)
+        local line = vim.api.nvim_buf_get_lines(0, fs - 1, fs, false)[1] or ""
+        local hashes, title = line:match("^(#+)%s*(.*)")
+        local level = #hashes
+        local text = title ~= "" and title or line
+        local lines = fe - fs + 1
+
+        -- Choose icon by heading level (Nerd Font)
+        local icon = "" -- top-level
+        if hashes then
+            if level == 1 then
+                icon = "󰲡 "
+            elseif level == 2 then
+                icon = " 󰲣 "
+            elseif level == 3 then
+                icon = "  󰲥 "
+            elseif level == 4 then
+                icon = "   󰲧 "
+            elseif level == 5 then
+                icon = "    󰲩 "
+            else
+                icon = "     󰲫 "
+            end
+        end
+
+        return {
+            {
+                string.format("%s%s  (%d lines)", icon, text, lines),
+                "RenderMarkdownH" .. level,
+            },
+        }
+    end
+end
 reg_ft("markdown", function()
     vim.opt_local.expandtab = true
     vim.opt_local.shiftwidth = 4
@@ -10,8 +59,9 @@ reg_ft("markdown", function()
     vim.opt_local.softtabstop = 4
     vim.wo.foldlevel = 2
     vim.wo.conceallevel = 2
-    vim.opt_local.foldmethod = "marker"
-    vim.opt_local.foldmarker = "{{{,}}}"
+    vim.opt_local.foldmethod = "expr"
+    vim.opt_local.foldexpr = "v:lua.markdown_heading_foldexpr(v:lnum)"
+    vim.opt_local.foldtext = "v:lua.markdown_foldtext()"
 
     map("n", "<leader>ce", "<cmd>EvalBlock<CR>", md, "Run Block")
     map("v", "<CR>", "'<,'>Obsidian link_new<CR>", md, "Create Link")

@@ -39,13 +39,13 @@ map("n", "<C-W>q", "<cmd>close<CR>", md, "Close window")
 map("n", "<C-W><C-Q>", "<cmd>close<CR>", md, "Close window")
 
 -- Folding
-map("n", "]z", "zjmzzMzvzz15<c-e>`z", md, "Next Fold")
-map("n", "[z", "zkmzzMzvzz15<c-e>`z", md, "Previous Fold")
-map("n", "zO", "zczO", md, "Open all folds under cursor")
-map("n", "zC", "zcV:foldc!<CR>", md, "Close all folds under cursor")
-map("n", "z<Space>", "mzzMzvzz15<c-e>`z", md, "Show only current Fold")
-map("n", "<Space><CR>", 'za{"{{{', md, "Toggle Fold")
-map("x", "<Space><CR>", 'zf"}}}', md, "Toggle Fold")
+-- map("n", "zj", "zjmzzMzvzz15<c-e>`z", md, "[folds] Next Fold")
+-- map("n", "zk", "zkmzzMzvzz15<c-e>`z", md, "[folds] Previous Fold")
+map("n", "zO", "zczO", md, "[folds] Open all folds under cursor")
+map("n", "zC", "zcV:foldc!<CR>", md, "[folds] Close all folds under cursor")
+map("n", "zo", "mzzMzvzz15<c-e>`z", md, "[folds] Show only current Fold")
+map("n", "z<Space>", 'za{"{{{', md, "[folds] Toggle Fold")
+map("x", "z<Space>", 'zf"}}}', md, "[folds] Toggle Fold")
 
 -- Yank
 map("n", "<leader>yy", "<cmd>.w! ~/.vbuf<CR>", md, "... to ~/.vbuf")
