@@ -30,6 +30,7 @@ reg_ft("markdown", function()
 end)
 
 lib.reg_ft_once("markdown", function()
+    require("nvim-treesitter").install({ "markdown" })
     if conf.packages.conform then
         require("conform").formatters_by_ft.markdown = { "prettier" }
     end
