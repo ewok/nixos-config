@@ -1,0 +1,71 @@
+#!/usr/bin/env bash
+
+# Patch for Orb
+if [[ "$ORB" == "true" ]];then
+    MAC_PREFIX="/opt/orbstack-guest/bin/mac"
+    PLATFORM="Darwin"
+else
+    MAC_PREFIX=""
+    PLATFORM=$(uname -s)
+fi
+
+usbmon() {
+    i=1
+    output=""
+    for usb in $(\lsblk -do name,tran 2>/dev/null | awk '$2=="usb" {print $1}'); do
+        [[ $i -le 1 ]] && output="  $usb"
+        [[ $i -gt 1 ]] && output="$output $usb"
+        let "i+=1"
+    done
+    echo "$output"
+}
+
+DATE=$(date +"📆 %d/%m")
+UTC=$(date -u +"🌐 %R")
+MSK=$(TZ='Europe/Moscow' date +"🇷🇺 %R")
+KG=$(TZ='Asia/Bishkek' date +"🇰🇬 %R")
+PHT=$(TZ='Asia/Manila' date +"🇵🇭 %R")
+
+mac_vpn_status() {
+    UTUN=$($MAC_PREFIX ifconfig | grep -E 'utun[0-9]+:' | grep -v utun0 | cut -f1 -d':')
+    IPSEC=$($MAC_PREFIX ifconfig | grep -E 'ipsec[0-9]+:' | cut -f1 -d':')
+
+    if [[ $UTUN != "" ]]; then
+        for utun in $UTUN; do
+            IP=$($MAC_PREFIX ifconfig $utun 2>/dev/null | grep -w inet | cut -d' ' -f2)
+            if [[ "$IP" != "" ]]; then
+                echo -en ""
+                return
+            fi
+        done
+    fi
+
+    if [[ $IPSEC != "" ]]; then
+        for ipsec in $IPSEC; do
+            IP=$($MAC_PREFIX ifconfig $utun 2>/dev/null | grep -w inet | cut -d' ' -f2)
+            if [[ "$IP" != "" ]]; then
+                echo -en ""
+                return
+            fi
+        done
+    fi
+
+    echo -en ""
+}
+
+main() {
+    if [[ "$PLATFORM" == "Darwin" ]]; then
+        echo -e "#[fg=#{{ conf.colors.base09 }}]$DATE $UTC $MSK $KG $PHT  #[default]$(mac_vpn_status)"
+    elif [ -n $TERMUX_VERSION ]; then
+        echo -e "#[fg=#{{ conf.colors.base09 }}]$DATE $UTC $MSK $KG $PHT "
+    else
+        USB=$(usbmon)
+        if [ -n "$USB" ]; then
+            echo -e "#[fg=#{{ conf.colors.base0C }}]$USB #[fg=#{{ conf.colors.base09 }}]$DATE $UTC $MSK $KG $PHT "
+        else
+            echo -e "#[fg=#{{ conf.colors.base09 }}]$DATE $UTC $MSK $KG $PHT "
+        fi
+    fi
+}
+
+main

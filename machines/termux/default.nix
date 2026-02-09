@@ -50,12 +50,16 @@ in
         languages.go.enable = true;
         terminal = {
           enable = true;
+          homeDirectory = homeDirectory;
           inherit colors;
           theme = {
             inherit (theme) common wezterm ghostty;
           };
+          zellij.enable = true;
           tmux = {
-            enable = true;
+            enable = false;
+            terminal = "xterm-256color";
+            install = false;
           };
         };
         direnv.enable = true;
@@ -67,6 +71,8 @@ in
     home.stateVersion = "25.11";
 
     nix.package = pkgs.nix;
+
+    # home.file.".termux/font.ttf".source = "${pkgs.maple-mono.NF-unhinted}/share/fonts/truetype/MapleMono-NF-Regular.ttf";
 
     xdg.configFile."bash/profile.d/00_fix_path_env.sh".text = ''
       . ~/.nix-profile/etc/profile.d//nix.sh

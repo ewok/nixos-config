@@ -1,0 +1,60 @@
+#!/usr/bin/env bash
+# Zellij Toggle Script - Auto-tiling Layout Mode
+# Usage: zellij_toggle [working_directory]
+#   working_directory: Directory to use for new panes (default: current directory)
+
+set -uo pipefail
+
+# =============================================================================
+# Configuration and Arguments
+# =============================================================================
+
+WORKING_DIR="${1:-$(pwd)}"
+CMD="${@:3}"
+
+# =============================================================================
+# Functions
+# =============================================================================
+
+# Get pane count in current focused tab using kdl2json + jq
+get_pane_count() {
+    # Get layout as JSON and count panes in focused tab
+    local count=$(zellij action dump-layout 2>/dev/null |
+        kdl2json 2>/dev/null |
+        jq '[.[] | .children[] | select(.name == "tab" and .props.focus == true) | .children[]? | select(.name == "pane")] | length' 2>/dev/null)
+
+    # If count is empty or 0, assume 1 pane (empty tab with default pane)
+    if [ "$count" = "" ] || [ "$count" -eq 0 ]; then
+        echo "1"
+    else
+        echo "$count"
+    fi
+}
+
+# =============================================================================
+# Main Logic
+# =============================================================================
+
+PANE_COUNT=$(get_pane_count)
+
+# More than 2 pane - toggle fullscreen, 1 for topbar pane
+if [ "$PANE_COUNT" -gt 2 ]; then
+    zellij action toggle-fullscreen
+
+else
+    if [ "$CMD" != "" ]; then
+        # Create pane with custom command
+        zellij run \
+            -c \
+            --cwd "$WORKING_DIR" \
+            -- "$CMD"
+    else
+        # Create pane with default shell (bash)
+        zellij run \
+            -c \
+            --cwd "$WORKING_DIR" \
+            -- bash
+    fi
+    sleep 0.1
+    zellij action next-swap-layout 2>/dev/null || true
+fi

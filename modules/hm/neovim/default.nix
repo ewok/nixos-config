@@ -45,7 +45,8 @@ let
   my-nvim = symlinkJoin {
     name = "my-neovim";
     paths = [
-      nvim
+      # nvim
+      pkgs.neovim
     ];
     postBuild = ''
       ln -s $out/bin/nvim $out/bin/vim

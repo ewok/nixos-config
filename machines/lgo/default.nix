@@ -57,13 +57,18 @@ in
         languages.rust.enable = true;
         terminal = {
           enable = true;
+          homeDirectory = homeDirectory;
           inherit colors terminal;
           theme = {
             inherit (theme) common wezterm ghostty;
           };
           linux = true;
-          tmux = {
+          zellij = {
             enable = true;
+          };
+          tmux = {
+            enable = false;
+            install = false;
           };
         };
         wm = {

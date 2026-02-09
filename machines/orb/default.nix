@@ -1,6 +1,6 @@
 { config, pkgs, ... }:
 let
-  inherit (config) colors theme exchange_api_key openai_token context7_api_key fullName email workEmail authorizedKeys ssh_config;
+  inherit (config) colors theme openai_token context7_api_key fullName email workEmail authorizedKeys;
   inherit (pkgs) writeShellScriptBin;
 
   username = "a_taranchiev";
@@ -57,13 +57,17 @@ in
         languages.go.enable = true;
         terminal = {
           enable = true;
+          homeDirectory = homeDirectory;
           inherit colors;
           theme = {
             inherit (theme) common wezterm ghostty;
           };
-          tmux = {
+          zellij = {
             enable = true;
           };
+          # tmux = {
+          #   enable = true;
+          # };
         };
         direnv.enable = true;
         aws.enable = true;

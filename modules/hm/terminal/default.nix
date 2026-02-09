@@ -6,6 +6,9 @@ in
   options.opt = {
     terminal = {
       enable = mkEnableOption "terminal";
+      homeDirectory = mkOption {
+        type = types.str;
+      };
       linux = mkOption { type = types.bool; default = false; };
       orb = mkOption { type = types.bool; default = false; };
       terminal = mkOption {
@@ -29,7 +32,11 @@ in
         enable = mkEnableOption "zellij";
         install = mkOption {
           type = types.bool;
-          default = false;
+          default = true;
+        };
+        terminal = mkOption {
+          type = types.str;
+          default = "xterm-256color";
         };
       };
 
@@ -92,5 +99,5 @@ in
 
     };
   };
-  imports = [ ./alacritty.nix ./wezterm.nix ./tmux.nix ./zellij.nix ./foot.nix ./ghostty.nix ];
+  imports = [ ./alacritty.nix ./wezterm.nix ./tmux.nix ./zellij.nix ./foot.nix ./ghostty.nix ./kdl2json.nix ];
 }

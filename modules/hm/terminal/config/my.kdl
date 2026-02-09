@@ -1,0 +1,81 @@
+layout {
+    swap_tiled_layout name="my" {
+        tab max_panes=1 {
+            pane
+        }
+        tab max_panes=2 {
+            pane split_direction="horizontal" {
+                pane size="80%"
+                pane size="20%"
+            }
+        }
+        tab max_panes=20 {
+            pane split_direction="horizontal" {
+                pane size="80%" split_direction="vertical" {
+                    pane size="80%"
+                    pane size="20%" {
+                        children
+                    }
+                }
+                pane size="20%"
+            }
+        }
+    }
+    default_tab_template {
+        pane size=1 borderless=true {
+            plugin location="file:{{ conf.homeDir }}/.config/zellij/plugins/zjstatus.wasm" {
+                format_left "{mode} #[fg=#{{ conf.colors.base09 }},bold]{session} {{conf.theme.common.alt_separator_left}} {tabs}"
+                format_center "{pipe_zjstatus_hints}"
+                format_right "{command_cpu}{command_ram} {command_blocks} {command_network} {command_battery}#[fg=#{{ conf.colors.base08 }}] {command_hostname}"
+                format_space ""
+                pipe_zjstatus_hints_format "{output}"
+                border_enabled "false"
+                border_char "─"
+                border_format "#[fg=#6C7086]{char}"
+                border_position "top"
+                hide_frame_except_for_scroll "true"
+                mode_normal "#[fg=#{{ conf.colors.base00 }},bg=#{{ conf.colors.base08 }}] NORMAL#[bg=#{{ conf.colors.base00 }},fg=#{{ conf.colors.base08 }}]{{ conf.theme.common.separator_left }}"
+                mode_locked "#[fg=#{{ conf.colors.base00 }},bg=#{{ conf.colors.base0D }}] LOCKED#[bg=#{{ conf.colors.base00 }},fg=#{{ conf.colors.base0D }}]{{ conf.theme.common.separator_left }}"
+                mode_resize "#[fg=#{{ conf.colors.base00 }},bg=#{{ conf.colors.base0A }}] RESIZE#[bg=#{{ conf.colors.base00 }},fg=#{{ conf.colors.base0A }}]{{ conf.theme.common.separator_left }}"
+                mode_scroll "#[fg=#{{ conf.colors.base00 }},bg=#{{ conf.colors.base0E }}] SCROLL#[bg=#{{ conf.colors.base00 }},fg=#{{ conf.colors.base0E }}]{{ conf.theme.common.separator_left }}"
+                mode_enter_search "#[fg=#{{ conf.colors.base00 }},bg=#{{ conf.colors.base09 }}] SEARCH#[bg=#{{ conf.colors.base00 }},fg=#{{ conf.colors.base09 }}]{{ conf.theme.common.separator_left }}"
+                mode_search "#[fg=#{{ conf.colors.base00 }},bg=#{{ conf.colors.base09 }}] SEARCH#[bg=#{{ conf.colors.base00 }},fg=#{{ conf.colors.base09 }}]{{ conf.theme.common.separator_left }}"
+                mode_rename_tab "#[fg=#{{ conf.colors.base00 }},bg=#{{ conf.colors.base0C }}] RENAME#[bg=#{{ conf.colors.base00 }},fg=#{{ conf.colors.base0C }}]{{ conf.theme.common.separator_left }}"
+                mode_rename_pane "#[fg=#{{ conf.colors.base00 }},bg=#{{ conf.colors.base0B }}] RENAME#[bg=#{{ conf.colors.base00 }},fg=#{{ conf.colors.base0B }}]{{ conf.theme.common.separator_left }}"
+                mode_session "#[fg=#{{ conf.colors.base00 }},bg=#{{ conf.colors.base0D }}] SESSION#[bg=#{{ conf.colors.base00 }},fg=#{{ conf.colors.base0D }}]{{ conf.theme.common.separator_left }}"
+                mode_move "#[fg=#{{ conf.colors.base00 }},bg=#{{ conf.colors.base0A }}] MOVE#[bg=#{{ conf.colors.base00 }},fg=#{{ conf.colors.base0A }}]{{ conf.theme.common.separator_left }}"
+                mode_prompt "#[fg=#{{ conf.colors.base00 }},bg=#{{ conf.colors.base0E }}] PROMPT#[bg=#{{ conf.colors.base00 }},fg=#{{ conf.colors.base0E }}]{{ conf.theme.common.separator_left }}"
+                tab_normal "#[fg=#{{ conf.colors.base04 }}] {name} "
+                tab_active "#[fg=#{{ conf.colors.base0B }},bold] {name} "
+                tab_normal_sync "#[fg=#{{ conf.colors.base04 }}] {name}[Sync] "
+                tab_active_sync "#[fg=#{{ conf.colors.base0B }},bold] {name}[Sync] "
+                command_cpu_command "{{ conf.homeDir }}/.config/zellij/scripts/zellij_cpu"
+                command_cpu_format "{stdout}"
+                command_cpu_interval "5"
+                command_cpu_rendermode "dynamic"
+                command_ram_command "{{ conf.homeDir }}/.config/zellij/scripts/zellij_ram"
+                command_ram_format "{stdout}"
+                command_ram_interval "10"
+                command_ram_rendermode "dynamic"
+                command_network_command "{{ conf.homeDir }}/.config/zellij/scripts/zellij_network"
+                command_network_format "{stdout}"
+                command_network_interval "30"
+                command_network_rendermode "dynamic"
+                command_battery_command "{{ conf.homeDir }}/.config/zellij/scripts/zellij_battery"
+                command_battery_format "{stdout}"
+                command_battery_interval "60"
+                command_battery_rendermode "dynamic"
+                command_blocks_command "{{ conf.homeDir }}/.config/zellij/scripts/zellij_blocks"
+                command_blocks_format "{stdout}"
+                command_blocks_interval "30"
+                command_blocks_rendermode "dynamic"
+                command_hostname_command "hostname"
+                command_hostname_format "{stdout} "
+                command_hostname_interval "0"
+                command_hostname_rendermode "static"
+            }
+        }
+        children
+    }
+}
+

@@ -13,4 +13,7 @@ in
     };
     vendorHash = "sha256-XRbqxL2ANWi2aZbB30tNBxJoBIoDoMxKXMpOx++JJ6M=";
   });
+
+  # Zellij session manager with zoxide integration
+  zesh = inputs.zesh.packages.${final.system}.default;
 }

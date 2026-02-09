@@ -190,6 +190,7 @@ M.icons.source = {
 }
 
 M.in_tmux = os.getenv("TMUX") ~= nil
+M.in_zellij = os.getenv("ZELLIJ") ~= nil
 
 M.lisp_langs = { "clojure", "common-lisp", "emacs-lisp", "lisp", "scheme", "timl", "edn", "fennel" }
 

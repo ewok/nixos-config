@@ -1,0 +1,139 @@
+#!/usr/bin/env bash
+
+export LC_ALL=en_US.UTF-8
+
+# Patch for Orb
+if [[ "$ORB" == "true" ]];then
+    MAC_PREFIX="/opt/orbstack-guest/bin/mac"
+    PLATFORM="Darwin"
+else
+    MAC_PREFIX=""
+    PLATFORM=$(uname -s)
+fi
+
+linux_acpi() {
+    arg=$1
+    BAT=$(ls -d /sys/class/power_supply/BAT* | head -1)
+    if [ ! -x "$(which acpi 2>/dev/null)" ]; then
+        case "$arg" in
+        status) cat "$BAT"/status ;;
+        percent) cat "$BAT"/capacity ;;
+        esac
+    else
+        case "$arg" in
+        status) acpi | cut -d: -f2- | cut -d, -f1 | tr -d ' ' ;;
+        percent) acpi | cut -d: -f2- | cut -d, -f2 | tr -d '% ' ;;
+        esac
+    fi
+}
+
+battery_remaining() {
+    case $PLATFORM in
+    Linux)
+        if [ -z $TERMUX_VERSION ]; then
+            rem=""
+        else
+            rem=""
+        fi
+        ;;
+
+    Darwin) echo $($MAC_PREFIX pmset -g batt | grep -Eo '[0-9]?[0-9]?:[0-5][0-9]' ) ;;
+
+    CYGWIN* | MINGW32* | MSYS* | MINGW*) ;; # TODO - windows compatability
+    esac
+}
+
+battery_percent() {
+    case $PLATFORM in
+    Linux)
+        percent=$(linux_acpi percent)
+        [ -n "$percent" ] && echo " $percent"
+        ;;
+
+    Darwin) echo $($MAC_PREFIX pmset -g batt | grep -Eo '[0-9]?[0-9]?[0-9]%' | sed 's/%//g') ;;
+
+    CYGWIN* | MINGW32* | MSYS* | MINGW*) ;; # TODO - windows compatability
+    esac
+}
+
+battery_status() {
+    case $PLATFORM in
+    Linux)
+        if [ -z $TERMUX_VERSION ]; then
+            status=$(linux_acpi status)
+        else
+            status="tbd"
+        fi
+        ;;
+    Darwin) status=$($MAC_PREFIX pmset -g batt | sed -n 2p | cut -d ';' -f 2 | tr -d " ") ;;
+    CYGWIN* | MINGW32* | MSYS* | MINGW*) ;;
+    esac
+
+    case $status in
+    discharging | Discharging) echo '' ;;
+    high) echo '' ;;
+    charging) echo '' ;;
+    *) echo '' ;;
+    esac
+}
+
+battery_label() {
+    local perc=$1
+    if [ "$perc" -gt 90 ]; then
+        echo " "
+    elif [ "$perc" -gt 75 ]; then
+        echo " "
+    elif [ "$perc" -gt 50 ]; then
+        echo " "
+    elif [ "$perc" -gt 25 ]; then
+        echo " "
+    elif [ "$perc" -gt 10 ]; then
+        echo " "
+    else
+        echo "󱉝 "
+    fi
+}
+
+battery_color() {
+    local stat=$1
+    local perc=$2
+    if [ "$stat" == '' ]; then
+        # Discharging - color by charge level
+        if [ "$perc" -gt 90 ]; then
+            echo "#[fg=#{{ conf.colors.base0B }}]"
+        elif [ "$perc" -gt 75 ]; then
+            echo "#[fg=#{{ conf.colors.base0B }}]"
+        elif [ "$perc" -gt 50 ]; then
+            echo "#[fg=#{{ conf.colors.base0A }}]"
+        elif [ "$perc" -gt 25 ]; then
+            echo "#[fg=#{{ conf.colors.base09 }}]"
+        elif [ "$perc" -gt 10 ]; then
+            echo "#[fg=#{{ conf.colors.base08 }}]"
+        else
+            echo "#[fg=#{{ conf.colors.base08 }}]"
+        fi
+    else
+        # Charging - cyan
+        echo "#[fg=#{{ conf.colors.base0C }}]"
+    fi
+}
+
+main() {
+    bat_stat=$(battery_status)
+    bat_perc_raw="$(battery_percent)"
+    # Extract just the number from battery_percent (might have leading space)
+    bat_perc=$(echo "$bat_perc_raw" | tr -d ' ')
+    bat_label="$(battery_label "$bat_perc")"
+    bat_color="$(battery_color "$bat_stat" "$bat_perc")"
+    bat_rem="$(battery_remaining)"
+
+    if [ -z "$bat_stat" ]; then
+        echo "${bat_color}${bat_label} ${bat_perc}% ${bat_rem}"
+    elif [ -z "$bat_perc" ]; then
+        echo "${bat_color}${bat_stat} ${bat_label}"
+    else
+        echo "${bat_color}${bat_stat} ${bat_label} ${bat_perc}% ${bat_rem}"
+    fi
+}
+
+main
