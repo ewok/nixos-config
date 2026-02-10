@@ -38,15 +38,9 @@
     # neovim-nightly-overlay.url = "github:nix-community/neovim-nightly-overlay";
 
     # yazi.url = "github:sxyazi/yazi";
-
-    # Zellij session manager
-    zesh = {
-      url = "github:roberte777/zesh";
-      inputs.nixpkgs.follows = "nixpkgs-unstable";
-    };
   };
 
-  outputs = { self, nixpkgs-unstable, home-manager, nix-on-droid, darwin, flake-utils, zesh, ... }@inputs:
+  outputs = { self, nixpkgs-unstable, home-manager, nix-on-droid, darwin, flake-utils, ... }@inputs:
 
     let
       nixpkgsDefaults = {

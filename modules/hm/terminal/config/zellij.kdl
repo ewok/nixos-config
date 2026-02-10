@@ -10,30 +10,39 @@ keybinds clear-defaults=true {
     }
 
     // Normal mode
-    shared_among "normal" "locked" "resize" "move" "scroll" "search" {
+    shared_among "locked" "resize" "move" "scroll" "search" {
+
       // Movement
-        // bind "Ctrl h" { MessagePlugin { name "nvim_nav_left"; payload "8"; }; }
         bind "Ctrl j" { MessagePlugin { name "nvim_nav_down"; payload "10"; }; }
         bind "Ctrl k" { MessagePlugin { name "nvim_nav_up"; payload "11"; }; }
         bind "Ctrl h" { MessagePlugin { name "nvim_nav_left_tab"; payload "8"; }; }
         bind "Ctrl l" { MessagePlugin { name "nvim_nav_right_tab"; payload "12"; }; }
-
-        // TODO:
-        // bind "Alt p" { TogglePaneInGroup; }
-        // bind "Alt Shift p" { ToggleGroupMarking; }
     }
+
     normal {
+
+        bind "Ctrl j" {  MoveFocus  "Down"; }
+        bind "Ctrl k" {  MoveFocus  "Up"; }
+        bind "Ctrl h" {  MoveFocus  "Left"; }
+        bind "Ctrl l" {  MoveFocus  "Right"; }
 
         bind "t" { TogglePaneInGroup; }
         bind "T" { ToggleGroupMarking; }
 
         // From tmux
         bind "Space" { NextSwapLayout; SwitchToMode "locked";}
+
         bind "f" { ToggleFloatingPanes; SwitchToMode "locked";}
         bind "F" { TogglePaneEmbedOrFloating; SwitchToMode "locked"; }
         bind "p" { TogglePanePinned; SwitchToMode "locked"; }
         bind "c" { NewTab; SwitchToMode "locked"; }
-        bind "d" { Detach; }
+        bind "d" {
+            Run "sh" "-c" "rm -f {{ conf.homeDir}}/.local/state/zj.lock" {
+                floating true;
+                close_on_exit true;
+            };
+            Detach;
+        }
 
         // panes
         bind "s" { NewPane "down"; SwitchToMode "locked"; }
@@ -55,6 +64,7 @@ keybinds clear-defaults=true {
 
         // scroll
         bind "Ctrl u" { PageScrollUp; SwitchToMode "scroll"; }
+        bind "u" { PageScrollUp; SwitchToMode "scroll"; }
         bind "Ctrl y" { ScrollUp; SwitchToMode "scroll"; }
         bind "/" { SwitchToMode "entersearch"; SearchInput 0; }
 
@@ -67,16 +77,7 @@ keybinds clear-defaults=true {
         }
 
         bind "o" {
-            // Note: you must use the absolute path to the plugin file
-            LaunchOrFocusPlugin "file:{{ conf.homeDir }}/.config/zellij/plugins/zsm.wasm" {
-                floating true
-                move_to_focused_tab true
-                default_layout "my"
-            }
-            SwitchToMode "locked"
-        }
-        bind "O" {
-            Run "bash" "{{ conf.homeDir }}/.config/zellij/scripts/zesh" {
+            Run "bash_pass_keys" "{{ conf.homeDir }}/.config/zellij/scripts/zesh" {
                 floating true
                 close_on_exit true
                 x "10%"
@@ -87,41 +88,8 @@ keybinds clear-defaults=true {
             SwitchToMode "locked"
         }
 
-        // bind "p" {
-        //     LaunchOrFocusPlugin "plugin-manager" {
-        //         floating true
-        //         move_to_focused_tab true
-        //     }
-        //     SwitchToMode "locked"
-        // }
         bind "a" { Write 111;} // find key for F12
     }
-
-
-    // // Tab mode
-    // shared_except "locked" "tab" "entersearch" "renametab" "renamepane" {
-    //     bind "t" { SwitchToMode "tab"; }
-    // }
-    // tab {
-    //     bind "1" { GoToTab 1; SwitchToMode "locked"; }
-    //     bind "2" { GoToTab 2; SwitchToMode "locked"; }
-    //     bind "3" { GoToTab 3; SwitchToMode "locked"; }
-    //     bind "4" { GoToTab 4; SwitchToMode "locked"; }
-    //     bind "5" { GoToTab 5; SwitchToMode "locked"; }
-    //     bind "6" { GoToTab 6; SwitchToMode "locked"; }
-    //     bind "7" { GoToTab 7; SwitchToMode "locked"; }
-    //     bind "8" { GoToTab 8; SwitchToMode "locked"; }
-    //     bind "9" { GoToTab 9; SwitchToMode "locked"; }
-    //
-    //     bind "h" { GoToPreviousTab; }
-    //     bind "l" { GoToNextTab; }
-    //     bind "n" { NewTab; SwitchToMode "locked"; }
-    //     bind "r" { SwitchToMode "renametab"; TabNameInput 0; }
-    //     bind "t" { SwitchToMode "normal"; }
-    //     bind "x" { CloseTab; SwitchToMode "locked"; }
-    //
-    //     bind "s" { ToggleActiveSyncTab; SwitchToMode "locked"; }
-    // }
 
     // Resize mode DONE
     shared_except "locked" "resize" "tab" "entersearch" "renametab" "renamepane" {
@@ -136,7 +104,7 @@ keybinds clear-defaults=true {
         bind "j" { Resize "Increase down"; }
         bind "k" { Resize "Increase up"; }
         bind "l" { Resize "Increase right"; }
-        bind "r" { SwitchToMode "locked"; }
+        bind "q" { SwitchToMode "locked"; }
     }
     // Move mode DONE
     shared_except "locked" "entersearch" "renametab" "renamepane" "move" {
@@ -147,7 +115,7 @@ keybinds clear-defaults=true {
         bind "j" { MovePane "down"; }
         bind "k" { MovePane "up"; }
         bind "l" { MovePane "right"; }
-        bind "m" { SwitchToMode "locked"; }
+        bind "q" { SwitchToMode "locked"; }
     }
 
     // Scroll mode DONE
@@ -166,8 +134,10 @@ keybinds clear-defaults=true {
         bind "w" { SearchToggleOption "Wrap"; }
     }
     shared_among "scroll" "search" {
-        // bind "d" { HalfPageScrollDown; }
-        // bind "u" { HalfPageScrollUp; }
+        bind "q" { SwitchToMode "locked"; }
+
+        bind "d" { HalfPageScrollDown; }
+        bind "u" { HalfPageScrollUp; }
 
         bind "h" { PageScrollUp; }
         bind "j" { ScrollDown; }
@@ -219,16 +189,9 @@ plugins {
   }
   configuration location="zellij:configuration"
   sequence location="zellij:sequence"
-  nvim-nav location="file:{{ conf.homeDir }}/.config/zellij/plugins/zellij-nvim-nav-plugin.wasm"
-  // tab-bar location="zellij:tab-bar"
-  // status-bar location="zellij:status-bar"
-  // strider location="zellij:strider"
-  // compact-bar location="zellij:compact-bar"
-  // filepicker location="zellij:strider" {
-  //   cwd "/"
-  // }
-  // plugin-manager location="zellij:plugin-manager"
-  // about location="zellij:about"
+  nvim-nav location="file:{{ conf.homeDir }}/.config/zellij/plugins/zellij-nvim-nav-plugin.wasm" {
+        match_commands "vim,nvim,fzf,bash_pass_keys,vifm"
+  }
 }
 
 load_plugins {

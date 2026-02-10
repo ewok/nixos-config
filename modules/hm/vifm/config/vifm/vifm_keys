@@ -4,8 +4,8 @@
 nnoremap <wait> <tab><esc> <nop>
 
 " Start shell in current directory
-nnoremap s :!tmux-sp-s<cr>
-nnoremap v :!tmux-sp-v<cr>
+nnoremap s :!tmux-sp-s %d<cr>
+nnoremap v :!tmux-sp-v %d<cr>
 "nnoremap t :!tmux-sp-t<cr>
 
 " Display sorting dialog
@@ -62,11 +62,11 @@ nnoremap J av<c-g><c-g><c-m>j
 nnoremap K av<c-g><c-g><c-m>k
 
 " Tmux plugin navigator
-nnoremap <BS>  :!if [ -n "$TMUX" ]; then tmux select-pane -L; fi<cr>
-nnoremap <c-h> :!if [ -n "$TMUX" ]; then tmux select-pane -L; fi<cr>
-nnoremap <c-j> :!if [ -n "$TMUX" ]; then tmux select-pane -D; fi<cr>
-nnoremap <c-k> :!if [ -n "$TMUX" ]; then tmux select-pane -U; fi<cr>
-nnoremap <c-l> :!if [ -n "$TMUX" ]; then tmux select-pane -R; fi<cr>
+nnoremap <BS>  :!if [ -n "$TMUX" ]; then tmux select-pane -L; elif [ -n "$ZELLIJ" ]; then zellij action move-focus-or-tab left ;fi<cr>
+nnoremap <c-h> :!if [ -n "$TMUX" ]; then tmux select-pane -L; elif [ -n "$ZELLIJ" ]; then zellij action move-focus-or-tab left ;fi<cr>
+nnoremap <c-j> :!if [ -n "$TMUX" ]; then tmux select-pane -D; elif [ -n "$ZELLIJ" ]; then zellij action move-focus down ;fi<cr>
+nnoremap <c-k> :!if [ -n "$TMUX" ]; then tmux select-pane -U; elif [ -n "$ZELLIJ" ]; then zellij action move-focus up ;fi<cr>
+nnoremap <c-l> :!if [ -n "$TMUX" ]; then tmux select-pane -R; elif [ -n "$ZELLIJ" ]; then zellij action move-focus-or-tab right ;fi<cr>
 
 " nnoremap io :code .<cr>
 " nnoremap io :vim<cr>

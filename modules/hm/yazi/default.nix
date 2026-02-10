@@ -44,28 +44,32 @@ let
   };
 
   tmux-sp-s = pkgs.writeShellScriptBin "tmux-sp-s" ''
-    if [ -n "$TMUX" ]
-    then
+    if [ "$TMUX" != "" ]; then
         tmux split-window -l 20%
+    elif [ "$ZELLIJ" != "" ]; then
+        zellij action new-pane -d "down"
+        zellij action next-swap-layout
     else
-        $SHELL
+        "$SHELL"
     fi
   '';
 
   tmux-sp-v = pkgs.writeShellScriptBin "tmux-sp-v" ''
-    if [ -n "$TMUX" ]
-    then
-        I=$(T=$(tty)
-        tmux lsp -F'#{pane_tty} #{pane_index}' |grep ^$T | cut -f2 -d' ')
+    if [ "$TMUX" != "" ]; then
+        I=$(
+            T=$(tty)
+            tmux lsp -F'#{pane_tty} #{pane_index}' | grep ^"$T" | cut -f2 -d' '
+        )
         ALL=$(tmux lsp | wc -l)
 
-        if [ $((ALL-I)) -le 1 ]
-        then
-            I=$(($I-1))
+        if [ $((ALL - I)) -le 1 ]; then
+            I=$(($I - 1))
         fi
-        tmux split-window -l 40% -h -t $((I+1))
+        tmux split-window -l 40% -h -t $((I + 1))
+    elif [ "$ZELLIJ" != "" ]; then
+        zellij action new-pane -d "right"
     else
-        $SHELL
+        "$SHELL"
     fi
   '';
 in

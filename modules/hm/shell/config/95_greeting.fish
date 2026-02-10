@@ -55,35 +55,36 @@ function _try_attach_tmux
 end
 
 function _try_attach_zellij
-  # Try to get list of sessions, fail gracefully if zellij not working
-  set -l sessions_output (zellij list-sessions 2>/dev/null)
-  if test "$status" -ne 0
-    # Zellij not working properly, skip to normal prompt
-    return 1
-  end
-
-  # Parse sessions (exclude EXITED and current, strip ANSI codes)
-  set -l SESSIONS (echo $sessions_output | grep -v "EXITED" | grep -v "current" | sed 's/\x1b\[[0-9;]*m//g' | awk '{print $1}')
-
-  set -l FOUND_SESSION ""
-
-  # Find first session without connected clients
-  for sess in $SESSIONS
-    set -l client_count (zellij --session "$sess" action list-clients 2>/dev/null | wc -l)
-    # Only proceed if command succeeded and no clients (header only = 1 line)
-    if test "$status" -eq 0 -a "$client_count" -le 1
-      set FOUND_SESSION "$sess"
-      break
-    end
-  end
-
-  if test -n "$FOUND_SESSION"
-    # Try to attach to session without clients
-    zellij attach "$FOUND_SESSION" 2>/dev/null
-    return "$status"
-  else
-    # No available sessions, create new one
-    zellij 2>/dev/null
-    return "$status"
-  end
+  zj
+  # # Try to get list of sessions, fail gracefully if zellij not working
+  # set -l sessions_output (zellij list-sessions 2>/dev/null)
+  # if test "$status" -ne 0
+  #   # Zellij not working properly, skip to normal prompt
+  #   return 1
+  # end
+  #
+  # # Parse sessions (exclude EXITED and current, strip ANSI codes)
+  # set -l SESSIONS (echo $sessions_output | grep -v "EXITED" | grep -v "current" | sed 's/\x1b\[[0-9;]*m//g' | awk '{print $1}')
+  #
+  # set -l FOUND_SESSION ""
+  #
+  # # Find first session without connected clients
+  # for sess in $SESSIONS
+  #   set -l client_count (zellij --session "$sess" action list-clients 2>/dev/null | wc -l)
+  #   # Only proceed if command succeeded and no clients (header only = 1 line)
+  #   if test "$status" -eq 0 -a "$client_count" -le 1
+  #     set FOUND_SESSION "$sess"
+  #     break
+  #   end
+  # end
+  #
+  # if test -n "$FOUND_SESSION"
+  #   # Try to attach to session without clients
+  #   zellij attach "$FOUND_SESSION" 2>/dev/null
+  #   return "$status"
+  # else
+  #   # No available sessions, create new one
+  #   zellij 2>/dev/null
+  #   return "$status"
+  # end
 end

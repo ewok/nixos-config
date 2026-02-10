@@ -1,8 +1,9 @@
 #!/usr/bin/env bash
 
-if [ -n "$TMUX" ]
-then
+if [ "$TMUX" != "" ]; then
     tmux new-window
+elif [ "$ZELLIJ" != "" ]; then
+    zellij action new-tab
 else
-    $SHELL
+    "$SHELL"
 fi
