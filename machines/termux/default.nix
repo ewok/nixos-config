@@ -64,6 +64,7 @@ in
         };
         direnv.enable = true;
         scripts.enable = true;
+        parm.enable = true;
       };
 
     home.username = username;
