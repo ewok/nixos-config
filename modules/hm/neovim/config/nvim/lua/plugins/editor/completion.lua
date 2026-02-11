@@ -27,7 +27,6 @@ return {
         "rafamadriz/friendly-snippets",
         "PaterJason/cmp-conjure",
         "hrsh7th/cmp-calc",
-        { "https://gitlab.com/msvechla/cmp-jira.git", opts = {}, config = true },
         { "saghen/blink.compat", version = "2.*", opts = {} },
     },
     opts = {
@@ -124,7 +123,6 @@ return {
                 "obsidian",
                 "obsidian_new",
                 "obsidian_tags",
-                "cmp_jira",
             },
             providers = {
                 conjure = { name = "conjure", module = "blink.compat.source", score_offset = -3, opts = {} },
@@ -140,16 +138,6 @@ return {
                 obsidian_new = { name = "obsidian_new", module = "blink.compat.source" },
                 obsidian_tags = { name = "obsidian_tags", module = "blink.compat.source" },
                 lazydev = { name = "LazyDev", module = "lazydev.integrations.blink", score_offset = 100 },
-                cmp_jira = {
-                    name = "cmp_jira",
-                    module = "blink.compat.source",
-                    opts = {
-                        file_types = { "gitcommit" },
-                        jira = {
-                            jql = "assignee=%s+and+resolution=unresolved",
-                        },
-                    },
-                },
             },
         },
         fuzzy = { sorts = { "exact", "score", "sort_text" } },
