@@ -1,80 +1,9 @@
 add_newline = false
-scan_timeout = 10
+scan_timeout = 30
 
 format = """
-$singularity\
-$kubernetes\
 $directory\
-$vcsh\
-$git_branch\
-$git_commit\
-$git_state\
-$git_metrics\
-$git_status\
-$docker_context\
-$package\
-$cobol\
-$daml\
-$dart\
-$deno\
-$dotnet\
-$elixir\
-$elm\
-$erlang\
-$fennel\
-$fortran\
-$gleam\
-$golang\
-$guix_shell\
-$haskell\
-$haxe\
-$helm\
-$java\
-$julia\
-$kotlin\
-$gradle\
-$lua\
-$nim\
-$nodejs\
-$ocaml\
-$opa\
-$perl\
-$php\
-$pulumi\
-$purescript\
-$python\
-$quarto\
-$raku\
-$rlang\
-$red\
-$ruby\
-$rust\
-$scala\
-$solidity\
-$swift\
-$terraform\
-$typst\
-$vlang\
-$vagrant\
-$zig\
-$buf\
-$conda\
-$meson\
-$spack\
-$aws\
-$gcloud\
-$openstack\
-$nats\
-$direnv\
-$env_var\
-$crystal\
-$custom\
-$line_break\
-$jobs\
-$battery\
-$status\
-$netns\
-$cmd_duration\
+$kubernetes\
 $character"""
 palette = 'my'
 
@@ -101,18 +30,14 @@ error_symbol = "[λ](bold red)"
 success_symbol = "[λ](bold green)"
 vicmd_symbol = "[λ](bold blue)"
 
-[directory]
-truncation_length = 3
-truncation_symbol = "…/"
-
-[git_status]
-modified = "*"
-renamed = "R"
-
 [status]
 disabled = false
 format = "[[$symbol$status]]($style)"
 style = "bg:blue"
+
+[directory]
+truncation_length = 3
+truncation_symbol = "…/"
 
 [kubernetes]
 symbol = "⛵ "
@@ -122,12 +47,3 @@ contexts = [
     { context_pattern =  ".*-prod(?P<cluster>[\\w-]+)-cluster", style = "red bold", context_alias = "prod$cluster" },
     { context_pattern =  ".*-(?P<cluster>[\\w-]+)-cluster", style = "green bold", context_alias = "$cluster" },
 ]
-
-[direnv]
-disabled = false
-symbol = "(d)"
-format = '[$symbol]($style) '
-style = "red"
-
-[git_metrics]
-disabled = false

@@ -127,7 +127,8 @@ in
         source = utils.templateFile "zellij_blocks" ./config/zellij_blocks vars;
         executable = true;
       };
-      xdg.configFile."zellij/scripts/zesh" = {
+      # xdg.configFile."zellij/scripts/zesh" = {
+      home.file."bin/zesh" = {
         source = utils.templateFile "zesh" ./config/zesh.sh vars;
         executable = true;
       };
@@ -135,18 +136,14 @@ in
         source = utils.templateFile "zellij_toggle" ./config/zellij_toggle vars;
         executable = true;
       };
-      # https://github.com/sharph/zellij-nvim-nav-plugin/releases/download/v1.0.0/zellij-nvim-nav-plugin.wasm
-      # get from github
       xdg.configFile."zellij/plugins/zellij-nvim-nav-plugin.wasm".source = pkgs.fetchurl {
         url = "https://github.com/sharph/zellij-nvim-nav-plugin/releases/download/v1.0.0/zellij-nvim-nav-plugin.wasm";
         sha256 = "sha256-W2HJuGr0t6B08NMfz5O+bm5lmNekelyV3j9kvv2swQM=";
       };
-      # https://github.com/dj95/zjstatus/releases/download/v0.22.0/zjstatus.wasm
       xdg.configFile."zellij/plugins/zjstatus.wasm".source = pkgs.fetchurl {
         url = "https://github.com/dj95/zjstatus/releases/download/v0.22.0/zjstatus.wasm";
         sha256 = "sha256-TeQm0gscv4YScuknrutbSdksF/Diu50XP4W/fwFU3VM=";
       };
-      # https://github.com/mostafaqanbaryan/zellij-switch/releases/download/0.2.1/zellij-switch.wasm
       xdg.configFile."zellij/plugins/zellij-switch.wasm".source = pkgs.fetchurl {
         url = "https://github.com/mostafaqanbaryan/zellij-switch/releases/download/0.2.1/zellij-switch.wasm";
         sha256 = "sha256-7yV+Qf/rczN+0d6tMJlC0UZj0S2PWBcPDNq1BFsKIq4=";

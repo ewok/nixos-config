@@ -9,15 +9,20 @@ layout {
                 pane size="20%"
             }
         }
-        tab max_panes=20 {
+        tab max_panes=5 {
             pane split_direction="horizontal" {
-                pane size="80%" split_direction="vertical" {
-                    pane size="80%"
-                    pane size="20%" {
-                        children
-                    }
+                pane size="80%"
+                pane size="20%" stacked=true{
+                    children
                 }
-                pane size="20%"
+            }
+        }
+        tab max_panes=7 {
+            pane split_direction="horizontal" {
+                pane size="70%"
+                pane size="30%" stacked=true{
+                    children
+                }
             }
         }
     }

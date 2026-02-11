@@ -47,7 +47,7 @@ get_percent() {
 }
 
 main() {
-    ram_label=""
+    ram_label=""
     ram_percent=$(get_percent)
     if [ -n "$ram_percent" ]; then
         # Store raw percent for comparison
@@ -56,9 +56,9 @@ main() {
 
         # Color based on usage
         if [ $ram_raw -gt 80 ]; then
-            echo "#[fg=#{{ conf.colors.base08 }}]$ram_label ${ram_percent}"
+            echo "#[fg=#{{ conf.colors.base08 }}]${ram_label}${ram_percent}"
         else
-            echo "#[fg=#{{ conf.colors.base0C }}]$ram_label ${ram_percent}"
+            echo "#[fg=#{{ conf.colors.base0C }}]${ram_label}${ram_percent}"
         fi
     fi
 }

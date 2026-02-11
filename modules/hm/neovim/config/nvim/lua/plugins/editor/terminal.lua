@@ -46,7 +46,7 @@ end
 
 if conf.in_zellij then
     -- Horizontal split (bottom pane with auto-layout)
-    map("n", "<C-W>S", function()
+    map("n", "<leader><c-space>", function()
         vim.cmd("silent !zellij run -c --cwd " .. vim.fn.shellescape(get_file_cwd()) .. " -- bash")
         vim.cmd("silent !zellij action next-swap-layout 2>/dev/null || true")
     end, { noremap = true, silent = true }, "Split window horizontally")

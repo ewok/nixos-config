@@ -26,8 +26,8 @@ keybinds clear-defaults=true {
         bind "Ctrl h" {  MoveFocus  "Left"; }
         bind "Ctrl l" {  MoveFocus  "Right"; }
 
-        bind "t" { TogglePaneInGroup; }
-        bind "T" { ToggleGroupMarking; }
+        bind "t" { TogglePaneInGroup; SwitchToMode "locked"; }
+        bind "T" { ToggleGroupMarking; SwitchToMode "locked"; }
 
         // From tmux
         bind "Space" { NextSwapLayout; SwitchToMode "locked";}
@@ -77,13 +77,20 @@ keybinds clear-defaults=true {
         }
 
         bind "o" {
-            Run "bash_pass_keys" "{{ conf.homeDir }}/.config/zellij/scripts/zesh" {
+            Run "bash_pass_keys" "{{ conf.homeDir }}/bin/zesh" {
                 floating true
                 close_on_exit true
                 x "10%"
                 y "10%"
                 width "80%"
                 height "80%"
+            }
+            SwitchToMode "locked"
+        }
+        bind "Enter" {
+            Run "{{ conf.homeDir }}/bin/zesh" "~/" {
+                floating true
+                close_on_exit true
             }
             SwitchToMode "locked"
         }
@@ -205,6 +212,7 @@ auto_layout true
 mouse_mode true
 scroll_buffer_size 100000
 copy_on_select true
+stacked_resize false
 
 show_startup_tips false
 session_serialization false

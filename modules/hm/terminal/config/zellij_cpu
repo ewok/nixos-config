@@ -35,7 +35,7 @@ get_percent() {
 }
 
 main() {
-    cpu_label=""
+    cpu_label=""
     cpu_percent=$(get_percent)
     if [ -n "$cpu_percent" ]; then
         # Store raw percent for comparison
@@ -44,9 +44,9 @@ main() {
 
         # Color based on usage
         if [ $cpu_raw -gt 90 ]; then
-            echo "#[fg=#{{ conf.colors.base08 }}]$cpu_label ${cpu_percent}"
+            echo "#[fg=#{{ conf.colors.base08 }}]${cpu_label}${cpu_percent}"
         else
-            echo "#[fg=#{{ conf.colors.base0C }}]$cpu_label ${cpu_percent}"
+            echo "#[fg=#{{ conf.colors.base0C }}]${cpu_label}${cpu_percent}"
         fi
     fi
 }

@@ -1,5 +1,7 @@
 #!/usr/bin/env bash_pass_keys
 
+LAYOUT=my
+
 zellij_switch() {
 	zellij pipe --plugin "file:{{ conf.homeDir }}/.config/zellij/plugins/zellij-switch.wasm" "$@"
 }
@@ -48,16 +50,20 @@ derive_session_name() {
 	echo "${parent_name}__${base_name}"
 }
 
-SESS=$(list_combined | grep -vE "^(opencode|claude)" | fzf \
-	--border-label ' zellij session manager ' --prompt '⚡  ' \
-	--header '  ^a all ^t zellij ^x zoxide ^d delete session ^e zoxide erase ^f find' \
-	--bind 'tab:down,btab:up' \
-	--bind 'ctrl-a:change-prompt(⚡  )+reload(list_combined)' \
-	--bind "ctrl-t:change-prompt(🪟  )+reload(list_zellij_sessions)" \
-	--bind "ctrl-x:change-prompt(📁  )+reload(list_zoxide_dirs)" \
-	--bind 'ctrl-f:change-prompt(🔎  )+reload(fd -L -H -d 5 -t d -E .Trash -E .git -E .cache . ~)' \
-	--bind "ctrl-d:execute(zellij kill-session '{}')+change-prompt(⚡  )+reload(list_zellij_sessions)" \
-	--bind "ctrl-e:execute(zoxide remove '{}')+change-prompt(⚡  )+reload(list_zoxide_dirs)")
+if [ "$1" != "" ]; then
+	SESS="$1"
+else
+	SESS=$(list_combined | grep -vE "^(opencode|claude)" | fzf \
+		--border-label ' zellij session manager ' --prompt '⚡  ' \
+		--header '  ^a all ^t zellij ^x zoxide ^d delete session ^e zoxide erase ^f find' \
+		--bind 'tab:down,btab:up' \
+		--bind 'ctrl-a:change-prompt(⚡  )+reload(list_combined)' \
+		--bind "ctrl-t:change-prompt(🪟  )+reload(list_zellij_sessions)" \
+		--bind "ctrl-x:change-prompt(📁  )+reload(list_zoxide_dirs)" \
+		--bind 'ctrl-f:change-prompt(🔎  )+reload(fd -L -H -d 5 -t d -E .Trash -E .git -E .cache . ~)' \
+		--bind "ctrl-d:execute(zellij kill-session '{}')+change-prompt(⚡  )+reload(list_zellij_sessions)" \
+		--bind "ctrl-e:execute(zoxide remove '{}')+change-prompt(⚡  )+reload(list_zoxide_dirs)")
+fi
 
 if [[ -n $SESS ]]; then
 	SESS="${SESS/#\~/$HOME}"
@@ -71,19 +77,21 @@ if [[ -n $SESS ]]; then
 
 	if [[ -n "$ZELLIJ" ]]; then
 		if is_existing_session "$SESS"; then
-			zellij_switch -- "--session $(printf %q "$SESS") --layout my"
+			zellij_switch -- "--session $(printf %q "$SESS") --layout $LAYOUT"
 		elif is_directory "$SESS"; then
 			session_name=$(derive_session_name "$SESS")
-			zellij_switch -- "--session $(printf %q "$session_name") --cwd $(printf %q "$SESS") --layout my"
+			zoxide add "$(printf %q "$SESS")"
+			zellij_switch -- "--session $(printf %q "$session_name") --cwd $(printf %q "$SESS") --layout $LAYOUT"
 		else
-			zellij_switch -- "--session $(printf %q "$SESS") --layout my"
+			zellij_switch -- "--session $(printf %q "$SESS") --layout $LAYOUT"
 		fi
 	else
 		if is_directory "$SESS"; then
 			session_name=$(derive_session_name "$SESS")
-			cd "$SESS" && zellij attach --create "$session_name" --layout my
+			zoxide add "$(printf %q "$SESS")"
+			cd "$SESS" && zellij attach --create "$session_name" --layout "$LAYOUT"
 		else
-			zellij attach --create "$SESS" --layout my
+			zellij attach --create "$SESS" --layout "$LAYOUT"
 		fi
 	fi
 fi
