@@ -1,6 +1,6 @@
 { config, pkgs, ... }:
 let
-  inherit (config) colors theme exchange_api_key openai_token context7_api_key fullName email workEmail authorizedKeys ssh_config;
+  inherit (config) colors theme exchange_api_key openai_token context7_api_key fullName email workEmail authorizedKeys ssh_config github_token;
   inherit (pkgs) writeShellScriptBin;
 
   username = "ataranchiev";
@@ -59,12 +59,14 @@ in
           tmux = {
             enable = false;
             terminal = "xterm-256color";
-            install = false;
           };
         };
         direnv.enable = true;
         scripts.enable = true;
-        parm.enable = true;
+        parm = {
+          enable = true;
+          inherit github_token;
+        };
       };
 
     home.username = username;

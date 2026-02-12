@@ -178,6 +178,7 @@ in
       openai_token = mkOption { type = types.str; };
       context7_api_key = mkOption { type = types.str; };
       exchange_api_key = mkOption { type = types.str; };
+      github_token = mkOption { type = types.str; };
 
       ssh_config = mkOption { type = types.str; };
       authorizedKeys = mkOption { type = types.str; };

@@ -1,6 +1,6 @@
 { config, pkgs, ... }:
 let
-  inherit (config) colors theme openai_token context7_api_key fullName email workEmail authorizedKeys;
+  inherit (config) colors theme openai_token context7_api_key fullName email workEmail authorizedKeys github_token;
   inherit (pkgs) writeShellScriptBin;
 
   username = "a_taranchiev";
@@ -71,6 +71,10 @@ in
         };
         direnv.enable = true;
         aws.enable = true;
+        parm = {
+          enable = true;
+          github_token = github_token;
+        };
         tailscale.enable = false;
         scripts.enable = true;
         syncthing = {

@@ -50,9 +50,19 @@ in
 {
   options.opt.parm = {
     enable = mkEnableOption "parm - package manager for GitHub Releases";
+    github_token = lib.mkOption {
+      type = lib.types.str;
+      default = "";
+    };
   };
 
   config = mkIf cfg.enable {
     home.packages = [ parm ];
+
+    xdg.configFile."bash/rc.d/99_parm.sh".text = ''
+      export GITHUB_TOKEN="${cfg.github_token}"
+      export PATH="$PATH:$HOME/.local/share/parm/bin"
+    '';
   };
 }
+
