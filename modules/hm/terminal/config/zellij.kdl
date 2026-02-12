@@ -7,6 +7,9 @@ keybinds clear-defaults=true {
     }
     locked {
         bind "F12" { SwitchToMode "normal"; }
+        bind "Ctrl F12" {
+            ToggleFloatingPanes;
+        }
     }
 
     // Normal mode
@@ -20,6 +23,10 @@ keybinds clear-defaults=true {
     }
 
     normal {
+        bind "Ctrl F12" {
+            ToggleFloatingPanes;
+            SwitchToMode "locked";
+        }
 
         bind "Ctrl j" {  MoveFocus  "Down"; }
         bind "Ctrl k" {  MoveFocus  "Up"; }
@@ -32,8 +39,8 @@ keybinds clear-defaults=true {
         // From tmux
         bind "Space" { NextSwapLayout; SwitchToMode "locked";}
 
-        bind "f" { ToggleFloatingPanes; SwitchToMode "locked";}
-        bind "F" { TogglePaneEmbedOrFloating; SwitchToMode "locked"; }
+        // bind "f" { ToggleFloatingPanes; SwitchToMode "locked";}
+        bind "f" { TogglePaneEmbedOrFloating; SwitchToMode "locked"; }
         bind "p" { TogglePanePinned; SwitchToMode "locked"; }
         bind "c" { NewTab; SwitchToMode "locked"; }
         bind "d" {
@@ -63,9 +70,7 @@ keybinds clear-defaults=true {
         bind "z" { ToggleFocusFullscreen; SwitchToMode "locked"; }
 
         // scroll
-        bind "Ctrl u" { PageScrollUp; SwitchToMode "scroll"; }
         bind "u" { PageScrollUp; SwitchToMode "scroll"; }
-        bind "Ctrl y" { ScrollUp; SwitchToMode "scroll"; }
         bind "/" { SwitchToMode "entersearch"; SearchInput 0; }
 
         bind "w" {
@@ -94,8 +99,6 @@ keybinds clear-defaults=true {
             }
             SwitchToMode "locked"
         }
-
-        bind "a" { Write 111;} // find key for F12
     }
 
     // Resize mode DONE
@@ -197,7 +200,7 @@ plugins {
   configuration location="zellij:configuration"
   sequence location="zellij:sequence"
   nvim-nav location="file:{{ conf.homeDir }}/.config/zellij/plugins/zellij-nvim-nav-plugin.wasm" {
-        match_commands "vim,nvim,fzf,bash_pass_keys,vifm"
+        match_commands "vim,nvim,fzf,bash_pass_keys,vifm,gg,lazygit"
   }
 }
 
