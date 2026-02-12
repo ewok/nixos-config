@@ -53,12 +53,12 @@
       overlays = [
         # inputs.neovim-nightly-overlay.overlays.default
         # yazi.overlays.default
-        self.overlays.default
+        # self.overlays.default
       ];
     in
     {
 
-      overlays.default = import ./overlays { inherit inputs; };
+      # overlays.default = import ./overlays { inherit inputs; };
 
       homeConfigurations.lgo =
         let
