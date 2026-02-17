@@ -89,7 +89,19 @@ list_available_layouts() {
 
 get_layout_preference() {
 	local session_name="$1"
-	[[ -f "$LAYOUT_PREFS_FILE" ]] && grep -- "^${session_name}=" "$LAYOUT_PREFS_FILE" | cut -d= -f2
+	local stored_layout=""
+
+	if [[ -f "$LAYOUT_PREFS_FILE" ]]; then
+		stored_layout=$(grep -- "^${session_name}=" "$LAYOUT_PREFS_FILE" | cut -d= -f2)
+	fi
+
+	# Validate the layout exists before returning it
+	if [[ -n "$stored_layout" ]]; then
+		if list_available_layouts | grep -qxF -- "$stored_layout"; then
+			echo "$stored_layout"
+		fi
+		# If layout not in available layouts, return empty (implicit)
+	fi
 }
 
 record_layout_preference() {
@@ -251,7 +263,7 @@ if [[ -n $SESS ]]; then
 			fi
 			record_session_switch "$session_name"
 			zoxide add "$(printf %q "$SESS")"
- 			zellij_switch -- "--session $(printf %q "$session_name") --cwd $(printf %q "$SESS") --layout $(printf %q "$chosen_layout")"
+			zellij_switch -- "--session $(printf %q "$session_name") --cwd $(printf %q "$SESS") --layout $(printf %q "$chosen_layout")"
 		else
 			record_session_switch "$SESS"
 			zellij_switch -- "--session $(printf %q "$SESS") --layout $LAYOUT"
