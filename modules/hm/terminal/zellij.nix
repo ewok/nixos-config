@@ -104,36 +104,38 @@ in
           zj
           bashPassKeys
         ] ++ external ++ optionalPkgs;
-      xdg.configFile."zellij/config.kdl".source = utils.templateFile "zellij.kdl" ./config/zellij.kdl vars;
-      xdg.configFile."zellij/layouts/my.kdl".source = utils.templateFile "my.kdl" ./config/my.kdl vars;
+      xdg.configFile."zellij/config.kdl".source = utils.templateFile "zellij.kdl" ./config/zellij/zellij.kdl vars;
+      xdg.configFile."zellij/layouts/dev.kdl".source = utils.templateFile "dev.kdl" ./config/zellij/dev.kdl vars;
+      xdg.configFile."zellij/layouts/agent.kdl".source = utils.templateFile "agent.kdl" ./config/zellij/agent.kdl vars;
+      xdg.configFile."zellij/layouts/default.kdl".source = utils.templateFile "default.kdl" ./config/zellij/default.kdl vars;
       # Monitoring scripts
       xdg.configFile."zellij/scripts/zellij_cpu" = {
-        source = utils.templateFile "zellij_cpu" ./config/zellij_cpu vars;
+        source = utils.templateFile "zellij_cpu" ./config/zellij/zellij_cpu vars;
         executable = true;
       };
       xdg.configFile."zellij/scripts/zellij_ram" = {
-        source = utils.templateFile "zellij_ram" ./config/zellij_ram vars;
+        source = utils.templateFile "zellij_ram" ./config/zellij/zellij_ram vars;
         executable = true;
       };
       xdg.configFile."zellij/scripts/zellij_network" = {
-        source = utils.templateFile "zellij_network" ./config/zellij_network vars;
+        source = utils.templateFile "zellij_network" ./config/zellij/zellij_network vars;
         executable = true;
       };
       xdg.configFile."zellij/scripts/zellij_battery" = {
-        source = utils.templateFile "zellij_battery" ./config/zellij_battery vars;
+        source = utils.templateFile "zellij_battery" ./config/zellij/zellij_battery vars;
         executable = true;
       };
       xdg.configFile."zellij/scripts/zellij_blocks" = {
-        source = utils.templateFile "zellij_blocks" ./config/zellij_blocks vars;
+        source = utils.templateFile "zellij_blocks" ./config/zellij/zellij_blocks vars;
         executable = true;
       };
       # xdg.configFile."zellij/scripts/zesh" = {
       home.file."bin/zesh" = {
-        source = utils.templateFile "zesh" ./config/zesh.sh vars;
+        source = utils.templateFile "zesh" ./config/zellij/zesh.sh vars;
         executable = true;
       };
       xdg.configFile."zellij/scripts/zellij_toggle" = {
-        source = utils.templateFile "zellij_toggle" ./config/zellij_toggle vars;
+        source = utils.templateFile "zellij_toggle" ./config/zellij/zellij_toggle vars;
         executable = true;
       };
       xdg.configFile."zellij/plugins/zellij-nvim-nav-plugin.wasm".source = pkgs.fetchurl {

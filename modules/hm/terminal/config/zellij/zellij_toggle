@@ -21,7 +21,7 @@ get_pane_count() {
     # Get layout as JSON and count panes in focused tab
     local count=$(zellij action dump-layout 2>/dev/null |
         kdl2json 2>/dev/null |
-        jq '[.[] | .children[] | select(.name == "tab" and .props.focus == true) | .children[]? | select(.name == "pane")] | length' 2>/dev/null)
+        jq 'def count_leaf_panes: if .name == "pane" then if ([.children[]? | select(.name == "pane")] | length) == 0 then (if .props.command == "opencode" then 0 else 1 end) else [.children[] | select(.name == "pane") | count_leaf_panes] | add // 0 end else 0 end; [.[] | .children[] | select(.name == "tab" and .props.focus == true) | .children[]? | select(.name == "pane") | count_leaf_panes] | add // 0' 2>/dev/null)
 
     # If count is empty or 0, assume 1 pane (empty tab with default pane)
     if [ "$count" = "" ] || [ "$count" -eq 0 ]; then

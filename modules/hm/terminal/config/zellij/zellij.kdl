@@ -219,4 +219,4 @@ stacked_resize false
 
 show_startup_tips false
 session_serialization false
-default_layout "my"
+default_layout "default"
