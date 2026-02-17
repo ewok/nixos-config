@@ -1,6 +1,6 @@
 { config, pkgs, ... }:
 let
-  inherit (config) colors theme exchange_api_key openai_token context7_api_key fullName email workEmail authorizedKeys ssh_config;
+  inherit (config) colors theme exchange_api_key openai_token context7_api_key fullName email workEmail authorizedKeys ssh_config github_token;
   inherit (pkgs) writeShellScriptBin;
 
   username = "ataranchiev";
@@ -86,6 +86,10 @@ in
         direnv.enable = true;
         scripts.enable = true;
         tf.enable = false;
+        parm = {
+          enable = true;
+          github_token = github_token;
+        };
       };
 
     xdg.configFile."sway/config.d/99-myconf.conf".text = ''

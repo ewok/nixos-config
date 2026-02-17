@@ -14,7 +14,7 @@ let
     src = {
       x86_64-linux = fetchurl {
         url = "https://github.com/alxrw/parm/releases/download/v${parmVersion}/parm-linux-amd64.tar.gz";
-        sha256 = "sha256-jqtFv9rAwHyo1K/TND8Ktj8L6YgKU6HXQfMFyRgAU34=";
+        sha256 = "sha256-jqtFv9rAt8qISt+RNrbP0DhH2+r0E4iaF18wXJGPBT4=";
       };
 
       aarch64-linux = fetchurl {
