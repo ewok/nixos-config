@@ -126,7 +126,7 @@ return {
                         table.insert(matches, entry.filename)
                     end)
                     matches = vim.fn.uniq(vim.fn.sort(matches)) -- Remove duplicates
-                    builtin.find_files(require('telescope.themes').get_ivy({ search_dirs = matches }))
+                    builtin.find_files(require("telescope.themes").get_ivy({ search_dirs = matches }))
                 end
             end
 
@@ -235,14 +235,20 @@ return {
                         theme_opts = {
                             layout_config = {
                                 height = function(_, _, max_lines)
-                                    local percentage = 0.4
-                                    local min = 40
-                                    return math.max(math.floor(percentage * max_lines), min)
+                                    if conf.packages.fyler then
+                                        return 0.6
+                                    end
+                                    local percentage = 0.9
+                                    local max = 40
+                                    return math.min(math.floor(percentage * max_lines), max)
                                 end,
                                 width = function(_, max_columns)
-                                    local percentage = 0.3
-                                    local min = 60
-                                    return math.max(math.floor(percentage * max_columns), min)
+                                    if conf.packages.fyler then
+                                        return 0.3
+                                    end
+                                    local percentage = 0.9
+                                    local max = 60
+                                    return math.min(math.floor(percentage * max_columns), max)
                                 end,
                             },
                         },
@@ -272,7 +278,10 @@ return {
                                 return
                             end
                             if conf.packages.fyler then
-                                vim.cmd("Fyler " .. path)
+                                local fyler = require("fyler")
+                                fyler.open({ dir = vim.fn.getcwd() })
+                                fyler.focus()
+                                fyler.navigate(path)
                                 return
                             end
                         end,

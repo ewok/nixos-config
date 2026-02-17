@@ -101,6 +101,9 @@ return {
                 auto_show_console = true,
                 console_timeout = 500,
                 disable_insert_on_commit = true,
+                integrations = {
+                    codediff = true,
+                },
             })
         end,
     },

@@ -49,12 +49,13 @@ if conf.in_zellij then
     map("n", "<leader><c-space>", function()
         vim.cmd("silent !zellij run -c --cwd " .. vim.fn.shellescape(get_file_cwd()) .. " -- bash")
         vim.cmd("silent !zellij action next-swap-layout 2>/dev/null || true")
-    end, { noremap = true, silent = true }, "Split window horizontally")
+    end, { noremap = true, silent = true }, "Split window")
 
     -- Toggle bottom terminal (tab-scoped, create or fullscreen zoom)
     map("n", "<c-space>", function()
+        -- vim.cmd("silent !zellij action toggle-fullscreen")
         vim.cmd("silent !~/.config/zellij/scripts/zellij_toggle " .. vim.fn.shellescape(get_file_cwd()) .. " -- bash")
-    end, { silent = true }, "Toggle bottom terminal")
+    end, { silent = true }, "Toggle fullscreen")
 
     -- Lazygit in floating terminal (unchanged)
     map("n", "<leader>gg", function()

@@ -128,6 +128,128 @@ return {
         end,
     },
     {
+        "A7Lavinraj/fyler.nvim",
+        enabled = conf.packages.fyler,
+        cmd = { "Fyler" },
+        config = function()
+            local fyler = require("fyler")
+
+            lib.reg_ft("fyler", function(ev)
+
+                map("n", "w", "<cmd>w<cr>", { buffer = ev.buf })
+                vim.api.nvim_create_autocmd("ModeChanged", {
+                    buffer = ev.buf,
+                    callback = function()
+                        if not vim.b.fyler_map_stopped then
+                            if has_value({ "v", "i", "o" }, vim.fn.mode()) then
+                                umap("n", "h", { buffer = ev.buf })
+                                umap("n", "l", { buffer = ev.buf })
+                                umap("n", "u", { buffer = ev.buf })
+                                umap("n", "<C-v>", { buffer = ev.buf })
+                                vim.notify("Disabled h/l in fyler buffer to prevent accidental navigation")
+                                vim.b.fyler_map_stopped = true
+                            end
+                        end
+                    end,
+                })
+            end)
+
+            fyler.setup({
+                integrations = {
+                    icon = "mini_icons",
+                    winpick = "none",
+                },
+                views = {
+                    finder = {
+                        close_on_select = true,
+                        confirm_simple = false,
+                        delete_to_trash = false,
+                        columns_order = { "link", "git", "diagnostic" },
+                        columns = {
+                            git = {
+                                enabled = true,
+                                symbols = {
+                                    Untracked = conf.icons.git.Untracked,
+                                    Added = conf.icons.git.Added,
+                                    Modified = conf.icons.git.Modified,
+                                    Deleted = conf.icons.git.Deleted,
+                                    Renamed = conf.icons.git.Renamed,
+                                    Copied = conf.icons.git.Copied,
+                                    Conflict = conf.icons.git.Conflict,
+                                    Ignored = conf.icons.git.Ignored,
+                                },
+                            },
+                            diagnostic = {
+                                enabled = true,
+                                symbols = conf.icons.diagnostic,
+                            },
+                            link = { enabled = true },
+                            permission = { enabled = false },
+                            size = { enabled = false },
+                        },
+                        indentscope = {
+                            enabled = true,
+                            markers = {
+                                { "│", "FylerIndentMarker" },
+                                { "└", "FylerIndentMarker" },
+                            },
+                        },
+                        follow_current_file = true,
+                        watcher = {
+                            enabled = false,
+                        },
+                        mappings = {
+                            ["q"] = "CloseView",
+                            [";"] = "CloseView",
+                            ["<CR>"] = "Select",
+                            ["l"] = "Select",
+                            ["<C-v>"] = "SelectVSplit",
+                            ["<C-s>"] = "SelectSplit",
+                            ["<C-t>"] = "SelectTab",
+                            ["u"] = "GotoParent",
+                            ["^"] = "GotoCwd",
+                            ["."] = "GotoNode",
+                            ["R"] = "Refresh",
+                            ["#"] = "CollapseAll",
+                            ["<BS>"] = "CollapseNode",
+                            ["h"] = "CollapseNode",
+                        },
+                        mappings_opts = {
+                            nowait = false,
+                            noremap = true,
+                            silent = true,
+                        },
+                        win = {
+                            border = conf.options.float_border,
+                            kind = "float",
+                            kinds = {
+                                float = {
+                                    top = "20%",
+                                    left = "35%",
+                                    height = "60%",
+                                    width = "30%",
+                                },
+                            },
+                            buf_opts = {
+                                bufhidden = "hide",
+                                buflisted = false,
+                                swapfile = false,
+                            },
+                            win_opts = {
+                                number = false,
+                                relativenumber = false,
+                                signcolumn = "no",
+                                wrap = false,
+                                conceallevel = 3,
+                                concealcursor = "nvic",
+                            },
+                        },
+                    },
+                },
+            })
+        end,
+    },
+    {
         "nvim-mini/mini.files",
         version = "*",
         dependencies = { "nvim-mini/mini.icons" },

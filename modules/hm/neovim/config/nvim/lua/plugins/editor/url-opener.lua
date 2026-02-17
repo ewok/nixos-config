@@ -1,5 +1,3 @@
-local lib = require("lib")
-local reg_ft, map = lib.reg_ft, lib.map
 
 return {
     {

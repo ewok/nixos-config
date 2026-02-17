@@ -236,7 +236,7 @@ return {
             nes = { enabled = false },
             cli = {
                 mux = {
-                    enabled = true,
+                    enabled = false,
                     backend = "zellij",
                     -- backend = "tmux",
                 },
@@ -261,17 +261,17 @@ return {
             },
         },
         keys = {
-            {
-                "<tab>",
-                function()
-                    -- if #require("sidekick.status").cli() > 0 then
-                        require("sidekick.cli").toggle({ filter = { installed = true } })
-                    -- end
-                    -- return "<Tab>" -- fallback to normal tab
-                end,
-                -- expr = true,
-                desc = "Goto/Apply Next Edit Suggestion",
-            },
+            -- {
+            --     "<tab>",
+            --     function()
+            --         -- if #require("sidekick.status").cli() > 0 then
+            --             require("sidekick.cli").toggle({ filter = { installed = true } })
+            --         -- end
+            --         -- return "<Tab>" -- fallback to normal tab
+            --     end,
+            --     -- expr = true,
+            --     desc = "Goto/Apply Next Edit Suggestion",
+            -- },
             {
                 "<leader>aa",
                 function()
