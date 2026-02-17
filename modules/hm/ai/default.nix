@@ -26,7 +26,7 @@ let
     autoupdate = false;
     share = "manual";
     theme = cfg.opencode_theme;
-
+    plugin = [ "@zenobius/opencode-skillful" ];
     mcp = {
       mcp_context7 = {
         enabled = false;
@@ -437,6 +437,17 @@ let
       ln -s $out/bin/opencode $out/bin/oc
     '';
   };
+
+  anthropicSkills = builtins.fetchGit {
+    url = "https://github.com/anthropics/skills.git";
+    rev = "1ed29a03dc852d30fa6ef2ca53a67dc2c2c2c563";
+  };
+
+  # clawbotSkills = builtins.fetchGit {
+  #   url = "https://github.com/openclaw/skills.git";
+  #   rev = "6410136271c1f3dab8f5b413e626ac63e8ae07fa";
+  # };
+
 in
 {
   options.opt.ai = {
@@ -477,13 +488,34 @@ in
 
     # Install OpenCode configuration
     xdg.configFile."opencode/opencode.json".source = opencodeConfigFile;
+    xdg.configFile."opencode/.opencode-skillful.json".text = ''
+      {
+        "debug": false,
+        "basePaths": ["~/.config/opencode/skills", ".opencode/skills"],
+        "promptRenderer": "xml",
+        "modelRenderers": {}
+      }
+    '';
+    xdg.configFile."opencode/agent".source = ./agents;
+    xdg.configFile."opencode/skills/terraform-skill".source =
+      builtins.fetchGit {
+        url = "https://github.com/antonbabenko/terraform-skill";
+        rev = "2271bc4a037a99523b1750d078bbcb3eae05a8e0";
+      };
+
+    xdg.configFile."opencode/skills/mcp-builder".source = "${anthropicSkills}/skills/mcp-builder";
+    xdg.configFile."opencode/skills/doc-coauthoring".source = "${anthropicSkills}/skills/doc-coauthoring";
+    # xdg.configFile."opencode/skills/garmin-health-analysis".source = "${clawbotSkills}/skills/eversonl/garmin-health-analysis";
+    # xdg.configFile."opencode/skills/firefly-iii".source = "${clawbotSkills}/skills/pushp1997/firefly-iii";
+
     xdg.configFile."bash/profile.d/99-opencode.sh".text = ''
       export CONTEXT7_API_KEY="${cfg.context7_api_key}"
       export OPENAI_API_KEY="${cfg.openai_token}"
     '';
-    xdg.configFile."opencode/agent".source = ./agents;
 
     home.file.".claude/settings.json".source = claudeCodeConfigFile;
     # home.file.".claude/keybindings.json".source = claudeKeybindingsConfigFile;
+
+
   };
 }

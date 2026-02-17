@@ -1,7 +1,7 @@
 ---
 name: quick
 description: Fast reasoning with limited iterations
-mode: primary
+mode: subagent
 temperature: 0.1
 maxSteps: 5
 tools:
