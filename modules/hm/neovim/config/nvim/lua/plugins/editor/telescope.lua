@@ -236,7 +236,7 @@ return {
                             layout_config = {
                                 height = function(_, _, max_lines)
                                     if conf.packages.fyler then
-                                        return 0.6
+                                        return math.floor(0.6 * max_lines)
                                     end
                                     local percentage = 0.9
                                     local max = 40
@@ -244,7 +244,7 @@ return {
                                 end,
                                 width = function(_, max_columns)
                                     if conf.packages.fyler then
-                                        return 0.3
+                                        return math.floor(0.3 * max_columns)
                                     end
                                     local percentage = 0.9
                                     local max = 60
@@ -268,6 +268,12 @@ return {
                                 end
                                 if conf.packages.fyler then
                                     vim.cmd("Fyler")
+                                    return
+                                end
+                                if conf.packages.minifiles then
+                                    if not require("mini.files").close() then
+                                        require("mini.files").open()
+                                    end
                                     return
                                 end
                             end,

@@ -53,6 +53,9 @@ return {
                 day_brightness = 0.3,
                 dim_inactive = false,
                 lualine_bold = false,
+                on_colors = function(colors)
+                    colors.border = conf.colors.base0B
+                end,
             })
             vim.cmd.colorscheme("tokyonight")
             update_bg(true)
