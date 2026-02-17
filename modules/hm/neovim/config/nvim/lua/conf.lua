@@ -41,6 +41,7 @@ M.options = {
     treesitter_nvim_highlighting = false,
     pbclip = "{{ conf.orb }}" == "true" and true or false,
     tmuxclip = "{{ conf.remote }}" == "true" and true or false,
+    fishclip = "{{ conf.termux }}" == "true" and true or false,
     remote = "{{ conf.remote }}" == "true" and true or false,
     show_virtual_lines = false,
     auto_hide_hlsearch = true,

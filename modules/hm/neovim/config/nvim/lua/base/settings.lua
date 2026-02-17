@@ -25,6 +25,16 @@ if conf.options.tmuxclip then
     }
 end
 
+-- when conf.options.tmuxclip
+if conf.options.fishclip then
+    vim.g.clipboard = {
+        name = "fish",
+        copy = { ["+"] = { "fish_clipboard_copy" }, ["*"] = { "fish_clipboard_copy" } },
+        paste = { ["+"] = { "fish_clipboard_paste" }, ["*"] = { "fish_clipboard_paste" } },
+        cache_enabled = 1,
+    }
+end
+
 local settings = {
     shell = "bash",
     backspace = "2",

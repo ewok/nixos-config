@@ -20,6 +20,7 @@ in
         };
         nvim = {
           enable = true;
+          termux = true;
           inherit colors;
           theme = {
             inherit (theme) common nvim;

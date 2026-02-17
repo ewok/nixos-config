@@ -70,6 +70,7 @@ let
     conf.theme.nvim = cfg.theme.nvim;
     is_nix = "true";
     conf.orb = cfg.orb;
+    conf.termux = cfg.termux;
     conf.remote = cfg.remote;
   };
 in
@@ -120,6 +121,7 @@ in
     };
     android = mkOption { type = types.bool; default = false; };
     orb = mkOption { type = types.bool; default = false; };
+    termux = mkOption { type = types.bool; default = false; };
     remote = mkOption { type = types.bool; default = false; };
   };
 
